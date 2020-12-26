@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_type">类型</string>
+    <string name="home_language">语言</string>
+    <string name="home_country">国家</string>
+</resources>

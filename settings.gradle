@@ -1,0 +1,7 @@
+include ':shareTest'
+include ':base'
+include ':view'
+include ':logic'
+include ':data'
+include ':app'
+rootProject.name = "Rtmp"
