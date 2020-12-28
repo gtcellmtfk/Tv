@@ -52,4 +52,20 @@ abstract class BaseViewModel : ViewModel() {
         compositeDisposable?.dispose()
         super.onCleared()
     }
+
+    fun <T> getDefaultLoadData(): LoadData<T> {
+        return object : LoadData<T> {
+            override fun start() {
+                showLoading(true)
+            }
+
+            override fun success(data: T) {
+                showLoading(false)
+            }
+
+            override fun fail(error: Throwable) {
+                showLoading(false)
+            }
+        }
+    }
 }

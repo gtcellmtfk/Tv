@@ -1,0 +1,11 @@
+package com.bytebyte6.view
+
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.Module
+import org.koin.dsl.module
+
+val viewModule:Module= module {
+    factory <Player> { SimpleExoPlayer.Builder(androidApplication()).build() }
+}

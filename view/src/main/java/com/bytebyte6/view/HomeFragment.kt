@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.View
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModel
-import com.bytebyte6.logic.HomeViewModel
+import com.bytebyte6.logic.TAB_CATEGORY
+import com.bytebyte6.logic.TAB_COUNTRY
+import com.bytebyte6.logic.TAB_LANGUAGE
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
@@ -15,17 +16,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         const val TAG = "HomeFragment"
     }
 
-    private val viewModel: HomeViewModel by viewModel()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding?.apply {
             viewPager.adapter = ViewPagerAdapter(this@HomeFragment)
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
-                    0 -> tab.setText(R.string.home_country)
-                    1 -> tab.setText(R.string.home_language)
-                    2 -> tab.setText(R.string.home_type)
+                    TAB_COUNTRY -> tab.setText(R.string.home_country)
+                    TAB_LANGUAGE -> tab.setText(R.string.home_language)
+                    TAB_CATEGORY -> tab.setText(R.string.home_type)
                 }
             }.attach()
         }
@@ -35,7 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         return FragmentHomeBinding.bind(view)
     }
 
-    override fun initViewModel(): BaseViewModel {
-        return viewModel
+    override fun initViewModel(): BaseViewModel? {
+        return null
     }
 }

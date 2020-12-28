@@ -6,12 +6,17 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Language(
-    @SerializedName("code")
-    val languageCode: String?,
     @SerializedName("name")
-    val languageName: String?
-) : Parcelable{
+    val languageName: String = "",
+    @SerializedName("code")
+    val languageCode: String = ""
+) : Parcelable, Comparable<Language> {
+
+    override fun compareTo(other: Language): Int {
+        return languageName.compareTo(other.languageName)
+    }
+
     override fun toString(): String {
-        return "Language(languageCode=$languageCode, languageName=$languageName)"
+        return languageName
     }
 }

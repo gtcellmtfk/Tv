@@ -7,10 +7,10 @@ import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private val baseViewModel by lazy { initViewModel() }
+    private val baseViewModel:BaseViewModel? by lazy { initViewModel() }
 
     protected fun initToast() {
-        baseViewModel.getToastLiveData().observe(this, EventObserver {
+        baseViewModel?.getToastLiveData()?.observe(this, EventObserver {
             showToast(it)
         })
     }
@@ -24,7 +24,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected fun initSnack(view: View, listener: View.OnClickListener? = null) {
-        baseViewModel.getSnackBarLiveData().observe(this, EventObserver {
+        baseViewModel?.getSnackBarLiveData()?.observe(this, EventObserver {
             val bar = Snackbar.make(
                 view,
                 it.get(this),
@@ -38,11 +38,11 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected fun initShowLoading(loadingView: View) {
-        baseViewModel.getLoadingLiveData().observe(this, EventObserver { showLoading ->
+        baseViewModel?.getLoadingLiveData()?.observe(this, EventObserver { showLoading ->
             loadingView.visibility = if (showLoading) View.VISIBLE else View.GONE
         })
     }
 
-    abstract fun initViewModel(): BaseViewModel
+    abstract fun initViewModel(): BaseViewModel?
 }
 

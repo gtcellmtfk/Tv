@@ -36,14 +36,6 @@ android {
 }
 
 dependencies {
-
-
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':view')
-
-    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.2'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.2'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.2'
     implementation project(path: ':shareTest')
 }

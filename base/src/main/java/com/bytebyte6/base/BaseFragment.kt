@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
 
-    private val baseViewModel by lazy { initViewModel() }
+    private val baseViewModel : BaseViewModel? by lazy { initViewModel() }
 
     protected var binding: Binding? = null
 
@@ -24,7 +24,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     }
 
     protected fun initToast() {
-        baseViewModel.getToastLiveData().observe(this, EventObserver {
+        baseViewModel?.getToastLiveData()?.observe(this, EventObserver {
             showToast(it)
         })
     }
@@ -38,7 +38,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     }
 
     protected fun initSnack(view: View, listener: View.OnClickListener? = null) {
-        baseViewModel.getSnackBarLiveData().observe(this, EventObserver {
+        baseViewModel?.getSnackBarLiveData()?.observe(this, EventObserver {
             val bar = Snackbar.make(
                 view,
                 it.get(context!!),
@@ -52,12 +52,12 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     }
 
     protected fun initShowLoading(loadingView: View) {
-        baseViewModel.getLoadingLiveData().observe(this, EventObserver { showLoading ->
+        baseViewModel?.getLoadingLiveData()?.observe(this, EventObserver { showLoading ->
             loadingView.visibility = if (showLoading) View.VISIBLE else View.GONE
         })
     }
 
-    abstract fun initViewModel(): BaseViewModel
+    abstract fun initViewModel(): BaseViewModel?
     abstract fun initBinding(view: View): Binding
 }
 

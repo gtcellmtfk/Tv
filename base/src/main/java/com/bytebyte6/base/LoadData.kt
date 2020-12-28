@@ -1,4 +1,4 @@
-package com.bytebyte6.data
+package com.bytebyte6.base
 
 interface LoadData<T> {
     fun start()

@@ -1,30 +1,29 @@
 package com.bytebyte6.base
 
-import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T>(baseDiffUtil: BaseDiffUtil<T>) :
-    ListAdapter<T, BaseViewHolder>(baseDiffUtil) {
+abstract class BaseAdapter<T,V:RecyclerView.ViewHolder>(diffUtil: DiffUtil.ItemCallback<T>) :
+    ListAdapter<T,V>(diffUtil) {
 
-    private var onLoadMoreListener: OnLoadMoreListener? = null
+    private var onLoadMoreListener: (()->Unit)? = null
+    private var onItemClick: ((pos:Int) -> Unit)? = null
 
-    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener) {
+    fun setOnLoadMoreListener(onLoadMoreListener:  (()->Unit)?) {
         this.onLoadMoreListener = onLoadMoreListener
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    fun setOnItemClick(onItemClick: ((pos:Int) -> Unit)) {
+        this.onItemClick = onItemClick
+    }
+
+    override fun onBindViewHolder(holder: V, position: Int) {
         if (position == itemCount - 1) {
-            onLoadMoreListener?.onLoadMore()
+            onLoadMoreListener?.invoke()
+        }
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(position)
         }
     }
-}
-
-abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-abstract class BaseDiffUtil<T> : DiffUtil.ItemCallback<T>()
-
-interface OnLoadMoreListener {
-    fun onLoadMore()
 }
