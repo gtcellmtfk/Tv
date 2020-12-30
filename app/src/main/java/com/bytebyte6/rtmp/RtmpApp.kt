@@ -1,6 +1,7 @@
 package com.bytebyte6.rtmp
 
 import android.app.Application
+import com.bytebyte6.base.baseModule
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.logic.logicModule
 import com.bytebyte6.view.viewModule
@@ -14,7 +15,7 @@ class RtmpApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RtmpApp)
-            modules(dataModule, logicModule, viewModule)
+            modules(baseModule,dataModule, logicModule, viewModule)
         }
     }
 }

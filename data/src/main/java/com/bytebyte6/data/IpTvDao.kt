@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.WrapLanguages
+import com.bytebyte6.data.model.Language
 import io.reactivex.rxjava3.core.Single
 
 const val PAGE_SIZE = 100
@@ -16,12 +16,6 @@ interface IpTvDao {
 
     @Query("SELECT * FROM ipTvs LIMIT $PAGE_SIZE OFFSET :offset")
     fun paging(offset: Int): List<IpTv>
-
-    @Query("SELECT * FROM ipTvs LIMIT $PAGE_SIZE OFFSET :offset")
-    fun pagingLiveData(offset: Int): LiveData<List<IpTv>>
-
-    @Query("SELECT * FROM ipTvs")
-    fun allLiveData(): LiveData<List<IpTv>>
 
     /**
      * 列出所有分类
@@ -33,7 +27,7 @@ interface IpTvDao {
      * 列出所有语言
      */
     @Query("SELECT DISTINCT language FROM ipTvs ORDER BY language ASC ")
-    fun liveDataByAllLanguage(): LiveData<List<WrapLanguages>>
+    fun liveDataByAllLanguage(): LiveData<List<String>>
 
     /**
      * 列出所有国家
@@ -59,9 +53,27 @@ interface IpTvDao {
     @Query("SELECT * FROM ipTvs WHERE countryName=:countryName")
     fun liveDataByCountry(countryName: String): LiveData<List<IpTv>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(list: List<IpTv>)
+    /**
+     * 根据category获取Iptv总数
+     */
+    @Query("SELECT COUNT(category) FROM ipTvs WHERE category=:category")
+    fun countByCategory(category: String): Int
+
+    /**
+     * 根据language获取Iptv总数
+     */
+    @Query("SELECT COUNT(language) FROM ipTvs WHERE language=:language")
+    fun countByLanguage(language: String): Int
+
+    /**
+     * 根据countryName获取Iptv总数
+     */
+    @Query("SELECT COUNT(countryName) FROM ipTvs WHERE countryName=:countryName")
+    fun countByCountry(countryName: String): Int
 
     @Query("SELECT * FROM ipTvs LIMIT 1")
     fun getAnyIpTv(): Single<IpTv>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(list: List<IpTv>)
 }

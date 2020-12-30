@@ -2,27 +2,41 @@ package com.bytebyte6.view
 
 import android.os.Bundle
 import com.bytebyte6.base.BaseActivity
-import com.bytebyte6.base.BaseViewModel
-import com.bytebyte6.logic.IpTvViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.bytebyte6.base.EventObserver
+import com.bytebyte6.base.NetworkErrorFragment
+import com.bytebyte6.base.NetworkHelper
+import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
-    private val viewModel by viewModel<IpTvViewModel>()
-
-    override fun initViewModel(): BaseViewModel? {
-        return viewModel
-    }
+    private val networkHelper by inject<NetworkHelper>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_single)
+        setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.container,HomeFragment(),HomeFragment.TAG)
-            .commit()
-
-        initShowLoading(findViewById(R.id.progressBar))
-
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.main_container, HomeFragment(), HomeFragment.TAG)
+//                .commit()
+//        }
+//
+        networkHelper.liveData().observe(this, EventObserver { connected ->
+            if (!connected) {
+                val f = NetworkErrorFragment()
+                f.setNavigationOnClickListener {
+                    supportFragmentManager.popBackStack()
+                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_container, f, NetworkErrorFragment.TAG)
+                    .addToBackStack(HomeFragment.TAG)
+                    .commit()
+            } else {
+                val f = supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)
+                f?.apply {
+                    supportFragmentManager.popBackStack()
+                }
+            }
+        })
     }
 }

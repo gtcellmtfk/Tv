@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <ImageView
-        android:layout_gravity="center"
-        android:scaleType="center"
-        android:src="@drawable/ic_landscape_96"
         android:id="@+id/ivPreview"
         android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/ic_landscape" />
 
     <TextView
-        android:background="?attr/colorPrimary"
-        android:gravity="center"
-        android:layout_gravity="bottom"
+        android:textColor="@color/white"
         android:id="@+id/tvName"
+        style="@style/Widget.MaterialComponents.TextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="#99000000"
+        android:gravity="center" />
 
 </FrameLayout>

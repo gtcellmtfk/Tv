@@ -35,5 +35,6 @@ android {
 dependencies {
     debugApi 'junit:junit:4.13.1'
     debugApi 'androidx.test.ext:junit:1.1.2'
-    debugApi'androidx.test.espresso:espresso-core:3.3.0'
+    debugApi 'androidx.test.espresso:espresso-core:3.3.0'
+    debugApi "androidx.navigation:navigation-testing:2.3.2"
 }

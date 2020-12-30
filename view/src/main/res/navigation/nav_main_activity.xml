@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main_activity"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.bytebyte6.view.HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_videoListFragment"
+            app:destination="@id/videoListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/videoListFragment"
+        android:name="com.bytebyte6.view.VideoListFragment" />
+
+</navigation>

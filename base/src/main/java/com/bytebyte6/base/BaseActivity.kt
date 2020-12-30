@@ -1,48 +1,38 @@
 package com.bytebyte6.base
 
-import android.view.View
-import android.widget.Toast
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity : AppCompatActivity() {
-
-    private val baseViewModel:BaseViewModel? by lazy { initViewModel() }
-
-    protected fun initToast() {
-        baseViewModel?.getToastLiveData()?.observe(this, EventObserver {
-            showToast(it)
-        })
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logd("onCreate")
     }
 
-    protected fun showToast(it: Message) {
-        Toast.makeText(
-            this,
-            it.get(this),
-            if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        ).show()
+    override fun onStart() {
+        super.onStart()
+        logd("onStart")
     }
 
-    protected fun initSnack(view: View, listener: View.OnClickListener? = null) {
-        baseViewModel?.getSnackBarLiveData()?.observe(this, EventObserver {
-            val bar = Snackbar.make(
-                view,
-                it.get(this),
-                if (it.longDuration) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            )
-            if (it.actionId != 0) {
-                bar.setAction(it.actionId, listener)
-            }
-            bar.show()
-        })
+    override fun onResume() {
+        super.onResume()
+        logd("onResume")
     }
 
-    protected fun initShowLoading(loadingView: View) {
-        baseViewModel?.getLoadingLiveData()?.observe(this, EventObserver { showLoading ->
-            loadingView.visibility = if (showLoading) View.VISIBLE else View.GONE
-        })
+    override fun onPause() {
+        super.onPause()
+        logd("onPause")
     }
 
-    abstract fun initViewModel(): BaseViewModel?
+    override fun onStop() {
+        super.onStop()
+        logd("onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        logd("onDestroy")
+    }
 }
 

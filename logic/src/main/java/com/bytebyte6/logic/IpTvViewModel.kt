@@ -1,53 +1,74 @@
 package com.bytebyte6.logic
 
+import android.util.ArrayMap
 import androidx.lifecycle.LiveData
-import com.bytebyte6.base.BaseViewModel
-import com.bytebyte6.data.Converter
+import androidx.lifecycle.ViewModel
+import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.IpTvRepository
+import com.bytebyte6.data.model.Category
+import com.bytebyte6.data.model.Country
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.WrapLanguages
+import com.bytebyte6.data.model.Languages
 
-class IpTvViewModel(private val repository: IpTvRepository, private val converter: Converter) :
-    BaseViewModel() {
+class IpTvViewModel(
+    private val repository: IpTvRepository,
+    private val baseViewModelDelegate: BaseViewModelDelegate
+) : ViewModel(), BaseViewModelDelegate by baseViewModelDelegate {
+
+    var tab: Int = 0
+
+    var clickItem: Any = Any()
+
+    private val map = ArrayMap<Int, LiveData<*>>(3)
+
+    init {
+        repository.init(getDefaultLoadData())
+        map[TAB_COUNTRY] = repository.liveDataByAllCountry()
+        map[TAB_LANGUAGE] = repository.liveDataByAllLanguage()
+        map[TAB_CATEGORY] = repository.liveDataByAllCategory()
+    }
 
     /**
      * ViewPager展示的内容
+     * @return LiveData<List<Any>>
      */
     fun listLiveData(tab: Int): LiveData<*>? {
-        return when (tab) {
-            TAB_COUNTRY -> repository.liveDataByAllCountry()
-            TAB_LANGUAGE -> repository.liveDataByAllLanguage()
-            TAB_CATEGORY -> repository.liveDataByAllCategory()
-            else -> null
-        }
+        return map[tab]
+//        return when (tab) {
+//            TAB_COUNTRY -> repository.liveDataByAllCountry()
+//            TAB_LANGUAGE -> repository.liveDataByAllLanguage()
+//            TAB_CATEGORY -> repository.liveDataByAllCategory()
+//            else -> null
+//        }
     }
 
     /**
      * VideoDialog展示的内容
      */
-    fun ipTvsLiveData(tab: Int, clickItem: Any): LiveData<List<IpTv>>? {
+    fun ipTvsLiveData(): LiveData<List<IpTv>>? {
         return when (tab) {
-            TAB_COUNTRY -> repository.liveDataByCountry(clickItem.toString())
-            TAB_LANGUAGE -> repository.liveDataByLanguage(converter.toJson((clickItem as WrapLanguages).language))
-            TAB_CATEGORY -> repository.liveDataByCategory(clickItem.toString())
+            TAB_COUNTRY -> {
+                val country = clickItem as Country
+                repository.liveDataByCountry(countryName = country.countryName)
+            }
+            TAB_LANGUAGE -> {
+                repository.liveDataByLanguage(((clickItem as Languages)))
+            }
+            TAB_CATEGORY -> {
+                val category = clickItem as Category
+                repository.liveDataByCategory(category.category)
+            }
             else -> null
         }
     }
 
-    /**
-     * 分页查询
-     */
-    fun nextPage(): LiveData<List<IpTv>> {
-        return repository.nextPage()
-    }
-
     override fun onCleared() {
-        repository.clear()
+        repository.dispose()
         super.onCleared()
     }
 
-    init {
-        repository.init(getDefaultLoadData())
+    fun refresh() {
+        repository.refresh(getDefaultLoadData())
     }
 }
 

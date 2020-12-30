@@ -3,6 +3,7 @@ package com.bytebyte6.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bytebyte6.base.BaseAdapter
 import com.bytebyte6.data.model.IpTv
 import com.bytebyte6.data.model.IpTvDiff
@@ -16,10 +17,12 @@ class VideoAdapter : BaseAdapter<IpTv, VideoViewHolder>(IpTvDiff) {
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.binding.apply {
-            tvName.text = getItem(position).name
-//            Glide.with(ivPreview)
-//                .load(VideoFragment.url)
-//                .into(ivPreview)
+            val item = getItem(position)
+            tvName.text = item.name
+            Glide.with(ivPreview)
+                .load(item.logo)
+                .placeholder(R.drawable.ic_landscape)
+                .into(ivPreview)
         }
     }
 }

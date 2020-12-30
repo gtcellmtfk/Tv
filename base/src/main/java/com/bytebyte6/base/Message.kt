@@ -6,11 +6,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Message(
-    val id: Int = 0,
-    val actionId: Int = 0,
-    val message: String = "",
-    val args: List<String> = emptyList(),
-    val longDuration: Boolean = false
+    var id: Int = 0,//字符串资源id
+    var actionId: Int = 0,//action字符串资源id
+    var message: String = "",//消息
+    var args: List<String> = emptyList(),//字符串资源对应参数，如共计：%d or %s
+    var longDuration: Boolean = false//时间长短
 ) : Parcelable {
     fun get(context: Context): String {
         return if (id == 0) message else {

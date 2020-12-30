@@ -11,34 +11,39 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val dataModule = module {
-    val retrofit = createRetrofit()
-    single<IpTvApi> { retrofit.create(IpTvApi::class.java) }
 
-    single<AppDatabase> {
-        createDb(androidApplication())
+    single { createRetrofit(get()) }
+
+    single<IpTvApi> { get(Retrofit::class.java).create(IpTvApi::class.java) }
+
+    single { createDb(androidApplication()) }
+
+    single { get(AppDatabase::class.java).ipTvDao() }
+
+    factory<IpTvRepository> { IpTvRepositoryImpl(get(), get(), androidApplication(),get()) }
+
+    factory { Converter() }
+
+    factory {
+        GsonBuilder()
+            //.excludeFieldsWithoutExposeAnnotation()
+            .registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
+            .create()
     }
 
-    single<IpTvDao> { get(AppDatabase::class.java).ipTvDao() }
-
-    factory<IpTvRepository> { IpTvRepositoryImpl(get(), get(), get()) }
-
-    factory<Converter> { Converter() }
+    factory {
+        GsonConverterFactory.create(get())
+    }
 }
 
 private fun createDb(context: Context): AppDatabase {
-    return Room.databaseBuilder(context, AppDatabase::class.java, "rtmp").build()
+    return Room.databaseBuilder(context, AppDatabase::class.java, "rtmp.db").build()
 }
 
-private fun createRetrofit(): Retrofit {
+private fun createRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://iptv-org.github.io/iptv/")
-        .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder().registerTypeAdapterFactory(
-                    GsonConfig.NullStringToEmptyAdapterFactory()
-                ).create()
-            )
-        )
+        .addConverterFactory(gsonConverterFactory)
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 }

@@ -11,4 +11,8 @@
     <style name="Style.BottomSheetDialog.Round.Top" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="Rtmp.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:elevation">0dp</item>
+    </style>
 </resources>
