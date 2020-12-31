@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
 
-    protected val baseViewModelDelegate: BaseViewModelDelegate? by lazy { initBaseViewModelDelegate() }
+    protected var baseViewModelDelegate: BaseViewModelDelegate? = null
 
     protected var binding: Binding? = null
 
@@ -45,6 +44,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         super.onViewCreated(view, savedInstanceState)
         logd("onViewCreated")
         binding = initBinding(view)
+        baseViewModelDelegate = initBaseViewModelDelegate()
     }
 
     override fun onStart() {
@@ -87,7 +87,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     protected fun showToast(it: Message) {
         Toast.makeText(
             context,
-            it.get(context!!),
+            it.get(requireContext()),
             if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         ).show()
     }
@@ -105,7 +105,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     ) {
         val bar = Snackbar.make(
             view,
-            it.get(context!!),
+            it.get(requireContext()),
             if (it.longDuration) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
         )
         if (it.actionId != 0) {
@@ -121,6 +121,6 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     }
 
     abstract fun initBaseViewModelDelegate(): BaseViewModelDelegate?
-    abstract fun initBinding(view: View): Binding
+    abstract fun initBinding(view: View): Binding?
 }
 

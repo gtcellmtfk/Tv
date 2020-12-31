@@ -1,5 +1,6 @@
 package com.bytebyte6.logic
 
+import android.content.Context
 import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +13,8 @@ import com.bytebyte6.data.model.Languages
 
 class IpTvViewModel(
     private val repository: IpTvRepository,
-    private val baseViewModelDelegate: BaseViewModelDelegate
+    private val baseViewModelDelegate: BaseViewModelDelegate,
+    private val context: Context
 ) : ViewModel(), BaseViewModelDelegate by baseViewModelDelegate {
 
     var tab: Int = 0
@@ -28,18 +30,27 @@ class IpTvViewModel(
         map[TAB_CATEGORY] = repository.liveDataByAllCategory()
     }
 
+    fun getTitle(): String {
+        return when (clickItem) {
+            is Country -> {
+                (clickItem as Country).countryName
+            }
+            is Category -> {
+                (clickItem as Category).category
+            }
+            is Languages -> {
+                (clickItem as Languages).getString()
+            }
+            else -> ""
+        }
+    }
+
     /**
      * ViewPager展示的内容
      * @return LiveData<List<Any>>
      */
     fun listLiveData(tab: Int): LiveData<*>? {
         return map[tab]
-//        return when (tab) {
-//            TAB_COUNTRY -> repository.liveDataByAllCountry()
-//            TAB_LANGUAGE -> repository.liveDataByAllLanguage()
-//            TAB_CATEGORY -> repository.liveDataByAllCategory()
-//            else -> null
-//        }
     }
 
     /**
@@ -49,7 +60,7 @@ class IpTvViewModel(
         return when (tab) {
             TAB_COUNTRY -> {
                 val country = clickItem as Country
-                repository.liveDataByCountry(countryName = country.countryName)
+                repository.liveDataByCountry(country.countryName)
             }
             TAB_LANGUAGE -> {
                 repository.liveDataByLanguage(((clickItem as Languages)))

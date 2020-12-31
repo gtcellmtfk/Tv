@@ -3,23 +3,17 @@ package com.bytebyte6.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.transition.TransitionInflater
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.Country
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.Languages
 import com.bytebyte6.logic.IpTvViewModel
 import com.bytebyte6.view.databinding.FragmentVideoListBinding
-import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialFadeThrough
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragment_video_list) {
@@ -32,12 +26,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        sharedElementEnterTransition = TransitionInflater.from(requireContext())
-//            .inflateTransition(R.transition.share_enter)
-//        sharedElementReturnTransition = TransitionInflater.from(requireContext())
-//            .inflateTransition(R.transition.share_exit)
         sharedElementEnterTransition = MaterialContainerTransform()
-        exitTransition=Hold().apply { addTarget(R.id.home_root) }
     }
 
     override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
@@ -45,41 +34,41 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
     }
 
     override fun initBinding(view: View): FragmentVideoListBinding {
+        return FragmentVideoListBinding.bind(view)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.transitionName = requireArguments().getString("TransName")
 
         postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
-//        view.transitionName="share"
+        var title = viewModel.getTitle()
+        if (title.isEmpty()) {
+            title = getString(R.string.home_other)
+        }
 
-        return FragmentVideoListBinding.bind(view).apply {
-            when (val item = viewModel.clickItem) {
-                is Country -> {
-                    toolbar.title = item.countryName
-                }
-                is Category -> {
-                    toolbar.title = item.category
-                }
-                is Languages -> {
-                    toolbar.title = item.getString()
-                }
-            }
-            val adapter = VideoAdapter()
-            adapter.setOnItemClick { pos, _ ->
-                startActivity(Intent(context, VideoActivity::class.java).apply {
-                    putExtra(IpTv.TAG, adapter.currentList[pos])
-                })
-            }
+        val adapter = VideoAdapter()
+
+        adapter.setOnItemClick { pos, _ ->
+            startActivity(Intent(context, VideoActivity::class.java).apply {
+                putExtra(IpTv.TAG, adapter.currentList[pos])
+            })
+        }
+
+        val navController = findNavController(this@VideoListFragment)
+
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding?.apply {
+            toolbar.title = title
             recyclerView.adapter = adapter
-
-            val navController = findNavController(this@VideoListFragment)
-            val appBarConfiguration = AppBarConfiguration(navController.graph)
             toolbar.setupWithNavController(navController, appBarConfiguration)
-
-            viewModel.ipTvsLiveData()?.observe(this@VideoListFragment, Observer {
+            viewModel.ipTvsLiveData()?.observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it)
                 toolbar.subtitle = getString(R.string.total, it.size)
-                startPostponedEnterTransition()
             })
         }
     }
-
 }

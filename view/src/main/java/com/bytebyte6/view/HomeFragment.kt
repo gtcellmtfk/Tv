@@ -2,6 +2,7 @@ package com.bytebyte6.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
@@ -28,8 +29,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         exitTransition=Hold()
     }
 
+    override fun initBinding(view: View): FragmentHomeBinding {
+        return FragmentHomeBinding.bind(view)
+    }
+
+    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postponeEnterTransition()
+        view.doOnPreDraw {  startPostponedEnterTransition() }
 
         binding?.apply {
             viewPager.adapter = ViewPagerAdapter(this@HomeFragment)
@@ -65,11 +75,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             initSnack(viewPager)
         }
     }
-
-    override fun initBinding(view: View): FragmentHomeBinding {
-        return FragmentHomeBinding.bind(view)
-    }
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
-
 }

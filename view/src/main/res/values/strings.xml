@@ -4,6 +4,8 @@
     <string name="home_language">语言</string>
     <string name="home_country">国家</string>
     <string name="home_other">Other</string>
+    <string name="home_other_language">Other Language</string>
+    <string name="home_other_category">Other Category</string>
     <string name="home_category_view">分类浏览</string>
     <string name="share">Share</string>
     <string name="search">Search</string>
