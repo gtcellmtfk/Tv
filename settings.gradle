@@ -1,7 +1,7 @@
 include ':shareTest'
 include ':base'
 include ':view'
-include ':logic'
+include ':viewmodel'
 include ':data'
 include ':app'
 rootProject.name = "Rtmp"

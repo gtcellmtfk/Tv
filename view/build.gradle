@@ -38,7 +38,7 @@ android {
 
 dependencies {
 
-    api project(path: ':logic')
+    api project(path: ':viewmodel')
     implementation project(path: ':shareTest')
 
     def exoplayer="2.12.2"
