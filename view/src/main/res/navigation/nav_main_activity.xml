@@ -14,6 +14,10 @@
 
     <fragment
         android:id="@+id/videoListFragment"
-        android:name="com.bytebyte6.view.VideoListFragment" />
+        android:name="com.bytebyte6.view.VideoListFragment" >
+        <argument
+            android:name="transName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

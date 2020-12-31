@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
@@ -24,6 +25,8 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     private val viewModel: IpTvViewModel by sharedViewModel()
 
+    private val args by navArgs<VideoListFragmentArgs>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
@@ -39,7 +42,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.transitionName = requireArguments().getString("TransName")
+        view.transitionName = args.transName
 
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }

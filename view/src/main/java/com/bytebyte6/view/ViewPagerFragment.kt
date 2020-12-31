@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
+import androidx.navigation.NavDestinationBuilder
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.bytebyte6.base.BaseFragment
@@ -72,13 +73,9 @@ class ViewPagerFragment :
 
     private fun showVideoListFragment(view: View) {
         val extras = FragmentNavigatorExtras(view to view.transitionName)
-        findNavController().navigate(
-            R.id.action_homeFragment_to_videoListFragment,
-            Bundle().apply {
-                putString("TransName", view.transitionName)
-            },
-            null,
-            extras
-        )
+
+        val d= HomeFragmentDirections.actionHomeFragmentToVideoListFragment(view.transitionName)
+
+        findNavController().navigate(d,extras)
     }
 }
