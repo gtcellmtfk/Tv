@@ -1,5 +1,6 @@
 package com.bytebyte6.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
@@ -35,6 +36,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,6 +44,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         view.doOnPreDraw {  startPostponedEnterTransition() }
 
         binding?.apply {
+
+            toolbar.setOnMenuItemClickListener {
+                if (it.itemId==R.id.app_bar_share){
+                    startActivity(
+                        Intent(requireContext(),MainActivity::class.java)
+                    )
+                }
+                true
+            }
+
             viewPager.adapter = ViewPagerAdapter(this@HomeFragment)
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
