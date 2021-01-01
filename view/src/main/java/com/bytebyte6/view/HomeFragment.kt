@@ -1,13 +1,15 @@
 package com.bytebyte6.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.EventObserver
+import com.bytebyte6.base.logd
 import com.bytebyte6.logic.IpTvViewModel
 import com.bytebyte6.logic.TAB_CATEGORY
 import com.bytebyte6.logic.TAB_COUNTRY
@@ -27,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition=Hold()
+        exitTransition = Hold()
     }
 
     override fun initBinding(view: View): FragmentHomeBinding {
@@ -36,20 +38,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         postponeEnterTransition()
-        view.doOnPreDraw {  startPostponedEnterTransition() }
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
         binding?.apply {
 
+            toolbar.transitionName = "searchShare"
+
             toolbar.setOnMenuItemClickListener {
-                if (it.itemId==R.id.app_bar_share){
-                    startActivity(
-                        Intent(requireContext(),MainActivity::class.java)
-                    )
+                if (it.itemId == R.id.app_bar_share) {
+
+                } else {
+                    val ex = FragmentNavigatorExtras(
+                        toolbar to toolbar.transitionName)
+                    val d = HomeFragmentDirections
+                        .actionHomeFragmentToSearchFragment(toolbar.transitionName)
+                    findNavController().navigate(d, ex)
                 }
                 true
             }
@@ -79,6 +86,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 listLiveData(TAB_LANGUAGE)?.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = (it as List<*>).size
                 })
+
+
             }
 
             swipeRefreshLayout.setOnRefreshListener {

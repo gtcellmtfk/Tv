@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-@Entity(tableName = "iptvs")
+@Entity(tableName = "IpTvs")
 data class IpTv(
     val category: String = "",
     val logo: String = "",

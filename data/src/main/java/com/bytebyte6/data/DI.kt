@@ -20,7 +20,9 @@ val dataModule = module {
 
     single { get(AppDatabase::class.java).ipTvDao() }
 
-    factory<IpTvRepository> { IpTvRepositoryImpl(get(), get(), androidApplication(),get()) }
+    single { get(AppDatabase::class.java).ipTvFtsDao() }
+
+    factory<IpTvRepository> { IpTvRepositoryImpl(get(), get(), get(), androidApplication(), get()) }
 
     factory { Converter() }
 

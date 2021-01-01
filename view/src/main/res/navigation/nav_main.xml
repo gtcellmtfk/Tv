@@ -10,6 +10,9 @@
         <action
             android:id="@+id/action_homeFragment_to_videoListFragment"
             app:destination="@id/videoListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 
     <fragment
@@ -19,7 +22,14 @@
             android:name="transName"
             app:argType="string" />
     </fragment>
-
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.bytebyte6.view.SearchFragment"
+     >
+        <argument
+            android:name="transName"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

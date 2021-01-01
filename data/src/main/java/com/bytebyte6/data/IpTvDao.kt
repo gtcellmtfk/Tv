@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.Language
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
 const val PAGE_SIZE = 100
@@ -14,64 +14,67 @@ const val PAGE_SIZE = 100
 @Dao
 interface IpTvDao {
 
-    @Query("SELECT * FROM ipTvs LIMIT $PAGE_SIZE OFFSET :offset")
+    @Query("SELECT * FROM IpTvs WHERE category AND countryName AND language MATCH :key")
+    fun search(key:String):Single<List<IpTv>>
+
+    @Query("SELECT * FROM IpTvs LIMIT $PAGE_SIZE OFFSET :offset")
     fun paging(offset: Int): List<IpTv>
 
     /**
      * 列出所有分类
      */
-    @Query("SELECT DISTINCT category FROM ipTvs ORDER BY category ASC ")
+    @Query("SELECT DISTINCT category FROM IpTvs ORDER BY category ASC ")
     fun liveDataByAllCategory(): LiveData<List<String>>
 
     /**
      * 列出所有语言
      */
-    @Query("SELECT DISTINCT language FROM ipTvs ORDER BY language ASC ")
+    @Query("SELECT DISTINCT language FROM IpTvs ORDER BY language ASC ")
     fun liveDataByAllLanguage(): LiveData<List<String>>
 
     /**
      * 列出所有国家
      */
-    @Query("SELECT DISTINCT countryName FROM ipTvs ORDER BY countryName ASC")
+    @Query("SELECT DISTINCT countryName FROM IpTvs ORDER BY countryName ASC")
     fun liveDataByAllCountry(): LiveData<List<String>>
 
     /**
      * 根据category列出所有Iptv
      */
-    @Query("SELECT * FROM ipTvs WHERE category=:category")
+    @Query("SELECT * FROM IpTvs WHERE category=:category")
     fun liveDataByCategory(category: String): LiveData<List<IpTv>>
 
     /**
      * 根据language列出所有Iptv
      */
-    @Query("SELECT * FROM ipTvs WHERE language=:language")
+    @Query("SELECT * FROM IpTvs WHERE language=:language")
     fun liveDataByLanguage(language: String): LiveData<List<IpTv>>
 
     /**
      * 根据countryName列出所有Iptv
      */
-    @Query("SELECT * FROM ipTvs WHERE countryName=:countryName")
+    @Query("SELECT * FROM IpTvs WHERE countryName=:countryName")
     fun liveDataByCountry(countryName: String): LiveData<List<IpTv>>
 
     /**
      * 根据category获取Iptv总数
      */
-    @Query("SELECT COUNT(category) FROM ipTvs WHERE category=:category")
+    @Query("SELECT COUNT(category) FROM IpTvs WHERE category=:category")
     fun countByCategory(category: String): Int
 
     /**
      * 根据language获取Iptv总数
      */
-    @Query("SELECT COUNT(language) FROM ipTvs WHERE language=:language")
+    @Query("SELECT COUNT(language) FROM IpTvs WHERE language=:language")
     fun countByLanguage(language: String): Int
 
     /**
      * 根据countryName获取Iptv总数
      */
-    @Query("SELECT COUNT(countryName) FROM ipTvs WHERE countryName=:countryName")
+    @Query("SELECT COUNT(countryName) FROM IpTvs WHERE countryName=:countryName")
     fun countByCountry(countryName: String): Int
 
-    @Query("SELECT * FROM ipTvs LIMIT 1")
+    @Query("SELECT * FROM IpTvs LIMIT 1")
     fun getAnyIpTv(): Single<IpTv>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

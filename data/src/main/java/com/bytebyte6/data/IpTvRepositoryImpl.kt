@@ -14,6 +14,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class IpTvRepositoryImpl(
     private val api: IpTvApi,
     private val tvDao: IpTvDao,
+    private val tvFtsDao: IpTvFtsDao,
     private val context: Context,
     private val converter: Converter
 ) : IpTvRepository {
@@ -42,7 +43,7 @@ class IpTvRepositoryImpl(
                         tvDao.insertAll(getIpTVs())
                     }
                 }
-                .subscribe()
+                .subscribe({}, { it.printStackTrace() })
         )
     }
 
@@ -126,5 +127,16 @@ class IpTvRepositoryImpl(
 
     override fun liveDataByCountry(countryName: String): LiveData<List<IpTv>> {
         return tvDao.liveDataByCountry(countryName)
+    }
+
+    override fun search(key: String, loadData: LoadData<List<IpTv>>) {
+        compositeDisposable.add(
+            tvFtsDao.search(key)
+                .map<List<IpTv>> {
+                    IpTvFts.toIpTvs(it)
+                }
+                .compose(loadData = loadData)
+                .subscribe()
+        )
     }
 }
