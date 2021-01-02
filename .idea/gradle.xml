@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/shareTest" />
             <option value="$PROJECT_DIR$/view" />
-            <option value="$PROJECT_DIR$/viewmodel" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

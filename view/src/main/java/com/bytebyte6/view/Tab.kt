@@ -1,4 +1,4 @@
-package com.bytebyte6.logic
+package com.bytebyte6.view
 
 
 const val TAB_COUNTRY = 0

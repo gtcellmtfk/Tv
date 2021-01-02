@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.video
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.logic.IpTvViewModel
+import com.bytebyte6.view.IpTvViewModel
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoListBinding
 import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.sharedViewModel

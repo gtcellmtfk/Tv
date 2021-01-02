@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.dialog
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.logic.IpTvViewModel
+import com.bytebyte6.view.IpTvViewModel
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.DialogVideoBinding
+import com.bytebyte6.view.video.VideoActivity
+import com.bytebyte6.view.video.VideoAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 

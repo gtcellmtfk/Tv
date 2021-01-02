@@ -4,9 +4,9 @@
 
     <application>
         <activity
-            android:name=".VideoActivity"
+            android:name=".video.VideoActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/FullScreen" />
+            android:theme="@style/Theme.FullScreen" />
         <activity
             android:name="com.bytebyte6.view.MainActivity"
             android:screenOrientation="portrait">

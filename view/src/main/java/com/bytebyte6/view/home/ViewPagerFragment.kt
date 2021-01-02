@@ -1,17 +1,16 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.home
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import androidx.navigation.NavDestinationBuilder
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
-import com.bytebyte6.logic.IpTvViewModel
-import com.bytebyte6.logic.TAB
+import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentViewPagerBinding
+import com.bytebyte6.view.dialog.VideoDialog
 import com.google.android.material.transition.Hold
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import kotlin.random.Random
@@ -40,7 +39,7 @@ class ViewPagerFragment :
 
         val tab = requireArguments().getInt(TAB)
 
-        val singleLineAdapter = SingleLineAdapter()
+        val singleLineAdapter = StringAdapter()
 
         singleLineAdapter.setOnItemClick { pos, view1 ->
             val item = singleLineAdapter.currentList[pos]
@@ -58,7 +57,7 @@ class ViewPagerFragment :
         }
 
         viewModel.listLiveData(tab)?.observe(viewLifecycleOwner, Observer {
-            singleLineAdapter.submitList(it as MutableList<*>)
+            singleLineAdapter.submitList(it)
         })
     }
 
@@ -68,13 +67,18 @@ class ViewPagerFragment :
         FragmentViewPagerBinding.bind(view)
 
     private fun showBottomSheetDialog() {
-        dialog.show(parentFragmentManager, VideoDialog.TAG)
+        dialog.show(parentFragmentManager,
+            VideoDialog.TAG
+        )
     }
 
     private fun showVideoListFragment(view: View) {
         val extras = FragmentNavigatorExtras(view to view.transitionName)
 
-        val d= HomeFragmentDirections.actionHomeFragmentToVideoListFragment(view.transitionName)
+        val d=
+            HomeFragmentDirections.actionHomeFragmentToVideoListFragment(
+                view.transitionName
+            )
 
         findNavController().navigate(d,extras)
     }

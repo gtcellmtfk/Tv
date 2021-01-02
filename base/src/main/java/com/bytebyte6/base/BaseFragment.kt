@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
 
@@ -78,43 +76,19 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         logd("onDetach")
     }
 
-    protected fun initToast() {
+    protected fun observeToast() {
         baseViewModelDelegate?.toast?.observe(this, EventObserver {
             showToast(it)
         })
     }
 
-    protected fun showToast(it: Message) {
-        Toast.makeText(
-            context,
-            it.get(requireContext()),
-            if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    protected fun initSnack(view: View, listener: View.OnClickListener? = null) {
+    protected fun observeSnack(view: View, listener: View.OnClickListener? = null) {
         baseViewModelDelegate?.snackBar?.observe(this, EventObserver {
             showSnack(view, it, listener)
         })
     }
 
-    protected fun showSnack(
-        view: View,
-        it: Message,
-        listener: View.OnClickListener?
-    ) {
-        val bar = Snackbar.make(
-            view,
-            it.get(requireContext()),
-            if (it.longDuration) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-        )
-        if (it.actionId != 0) {
-            bar.setAction(it.actionId, listener)
-        }
-        bar.show()
-    }
-
-    protected fun initShowLoading(loadingView: View) {
+    protected fun observeLoading(loadingView: View) {
         baseViewModelDelegate?.loading?.observe(this, EventObserver { showLoading ->
             loadingView.visibility = if (showLoading) View.VISIBLE else View.GONE
         })

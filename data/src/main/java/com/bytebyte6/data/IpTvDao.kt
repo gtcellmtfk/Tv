@@ -6,16 +6,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bytebyte6.data.model.IpTv
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
 const val PAGE_SIZE = 100
 
 @Dao
 interface IpTvDao {
-
-    @Query("SELECT * FROM IpTvs WHERE category AND countryName AND language MATCH :key")
-    fun search(key:String):Single<List<IpTv>>
 
     @Query("SELECT * FROM IpTvs LIMIT $PAGE_SIZE OFFSET :offset")
     fun paging(offset: Int): List<IpTv>
@@ -39,22 +35,16 @@ interface IpTvDao {
     fun liveDataByAllCountry(): LiveData<List<String>>
 
     /**
-     * 根据category列出所有Iptv
+     * 列出所有空值Iptv
      */
     @Query("SELECT * FROM IpTvs WHERE category=:category")
     fun liveDataByCategory(category: String): LiveData<List<IpTv>>
 
     /**
-     * 根据language列出所有Iptv
+     * 列出所有空值Iptv
      */
     @Query("SELECT * FROM IpTvs WHERE language=:language")
     fun liveDataByLanguage(language: String): LiveData<List<IpTv>>
-
-    /**
-     * 根据countryName列出所有Iptv
-     */
-    @Query("SELECT * FROM IpTvs WHERE countryName=:countryName")
-    fun liveDataByCountry(countryName: String): LiveData<List<IpTv>>
 
     /**
      * 根据category获取Iptv总数

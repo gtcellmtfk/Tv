@@ -10,5 +10,7 @@
     <string name="share">Share</string>
     <string name="search">Search</string>
     <string name="total">总计: %d</string>
-    <string name="tip_search">搜索 列如、CCTV、China</string>
+    <string name="tip_search">输入 例如: CCTV、China、Auto</string>
+    <string name="tip_play_error">出现错误,请重试!!!</string>
+    <string name="tip_play_retry">重试</string>
 </resources>

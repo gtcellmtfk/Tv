@@ -8,8 +8,8 @@ import com.google.gson.reflect.TypeToken
 
 
 class Converter {
+
     val gson: Gson = GsonBuilder()
-        //.excludeFieldsWithoutExposeAnnotation()
         .registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
         .create()
 

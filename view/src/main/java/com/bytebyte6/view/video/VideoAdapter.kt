@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.video
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bytebyte6.base.BaseAdapter
 import com.bytebyte6.data.model.IpTv
 import com.bytebyte6.data.model.IpTvDiff
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemVideoBinding
 
 class VideoAdapter : BaseAdapter<IpTv, VideoViewHolder>(IpTvDiff) {

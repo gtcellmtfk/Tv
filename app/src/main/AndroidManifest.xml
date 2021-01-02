@@ -11,10 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Rtmp"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:replace="name,roundIcon,theme"
-        >
+        android:theme="@style/Theme.Rtmp">
 
     </application>
 

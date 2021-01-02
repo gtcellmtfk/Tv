@@ -13,9 +13,7 @@ interface IpTvRepository {
     fun liveDataByAllCategory(): LiveData<List<Category>>
     fun liveDataByAllLanguage(): LiveData<List<Languages>>
     fun liveDataByAllCountry(): LiveData<List<Country>>
-    fun liveDataByCategory(category: String): LiveData<List<IpTv>>
-    fun liveDataByLanguage(languages: Languages): LiveData<List<IpTv>>
-    fun liveDataByCountry(countryName: String): LiveData<List<IpTv>>
     fun search(key: String,loadData: LoadData<List<IpTv>>)
+    fun search(key: String):LiveData<List<IpTv>>
 }
 

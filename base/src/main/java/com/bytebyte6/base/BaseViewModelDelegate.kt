@@ -21,7 +21,7 @@ interface BaseViewModelDelegate {
 
     fun postToast(message: Message)
 
-    fun postSnackBar(message: Message)
+    fun postSnack(message: Message)
 
     fun <T> getDefaultLoadData(): LoadData<T> {
         return object : LoadData<T> {
@@ -35,7 +35,7 @@ interface BaseViewModelDelegate {
 
             override fun fail(error: Throwable) {
                 postLoading(false)
-                postSnackBar(Message(id = ErrorUtils.getMessage(error)))
+                postSnack(Message(id = ErrorUtils.getMessage(error)))
             }
         }
     }

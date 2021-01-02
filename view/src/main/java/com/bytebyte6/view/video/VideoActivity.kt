@@ -1,7 +1,8 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.video
 
 import android.os.Bundle
 import com.bytebyte6.base.BaseActivity
+import com.bytebyte6.view.R
 
 class VideoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

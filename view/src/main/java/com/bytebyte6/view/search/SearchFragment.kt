@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,12 +11,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.airbnb.lottie.LottieAnimationView
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
+import com.bytebyte6.base.KeyboardUtils
 import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.logic.IpTvViewModel
+import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentSearchBinding
+import com.bytebyte6.view.video.VideoActivity
+import com.bytebyte6.view.video.VideoAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -26,7 +28,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         const val TAG = "SearchFragment"
     }
 
-    private val viewModel: IpTvViewModel by sharedViewModel()
+    private val viewModel: SearchViewModel by sharedViewModel()
 
     private val args by navArgs<SearchFragmentArgs>()
 
@@ -55,7 +57,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         binding?.apply {
 
             etSearch.doOnTextChanged { text, start, before, count ->
-                viewModel.search(text.toString())
+                viewModel.search(text)
             }
 
             val adapter = VideoAdapter()
@@ -70,6 +72,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 adapter.submitList(it)
                 lavEmpty.isVisible = it.isEmpty()
             })
+
+            KeyboardUtils.showSoftInput(etSearch, requireContext())
         }
+    }
+
+    override fun onDestroyView() {
+        KeyboardUtils.hideSoftInput(requireActivity())
+        super.onDestroyView()
     }
 }

@@ -22,7 +22,7 @@ class BaseViewModelDelegateImpl : BaseViewModelDelegate {
         toast.postValue(Event(message))
     }
 
-    override fun postSnackBar(message: Message) {
+    override fun postSnack(message: Message) {
         snackBar.postValue(Event(message))
     }
 

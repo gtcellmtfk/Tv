@@ -5,6 +5,7 @@ import com.bytebyte6.base.BaseActivity
 import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.NetworkErrorFragment
 import com.bytebyte6.base.NetworkHelper
+import com.bytebyte6.view.home.HomeFragment
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {

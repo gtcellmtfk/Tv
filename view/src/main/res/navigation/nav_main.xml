@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.bytebyte6.view.HomeFragment">
+        android:name="com.bytebyte6.view.home.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_videoListFragment"
             app:destination="@id/videoListFragment" />
@@ -17,14 +17,14 @@
 
     <fragment
         android:id="@+id/videoListFragment"
-        android:name="com.bytebyte6.view.VideoListFragment" >
+        android:name="com.bytebyte6.view.video.VideoListFragment" >
         <argument
             android:name="transName"
             app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.bytebyte6.view.SearchFragment"
+        android:name="com.bytebyte6.view.search.SearchFragment"
      >
         <argument
             android:name="transName"

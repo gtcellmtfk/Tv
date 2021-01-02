@@ -3,6 +3,8 @@ package com.bytebyte6.data
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.room.rxjava3.EmptyResultSetException
 import com.bytebyte6.base.LoadData
 import com.bytebyte6.data.model.*
@@ -116,19 +118,6 @@ class IpTvRepositoryImpl(
         return liveData
     }
 
-    override fun liveDataByCategory(category: String): LiveData<List<IpTv>> {
-        return tvDao.liveDataByCategory(category)
-    }
-
-    override fun liveDataByLanguage(languages: Languages): LiveData<List<IpTv>> {
-        val json = converter.toJson(languages.languages)
-        return tvDao.liveDataByLanguage(json)
-    }
-
-    override fun liveDataByCountry(countryName: String): LiveData<List<IpTv>> {
-        return tvDao.liveDataByCountry(countryName)
-    }
-
     override fun search(key: String, loadData: LoadData<List<IpTv>>) {
         compositeDisposable.add(
             tvFtsDao.search(key)
@@ -138,5 +127,11 @@ class IpTvRepositoryImpl(
                 .compose(loadData = loadData)
                 .subscribe()
         )
+    }
+
+    override fun search(key: String): LiveData<List<IpTv>> {
+        return Transformations.map(tvFtsDao.searchLiveData(key)){
+            IpTvFts.toIpTvs(it)
+        }
     }
 }

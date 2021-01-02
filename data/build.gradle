@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     api project(path: ':base')
     implementation project(path: ':shareTest')
 
