@@ -1,6 +1,6 @@
 include ':shareTest'
 include ':base'
-include ':view'
-include ':data'
-include ':app'
-rootProject.name = "Rtmp"
+include ':tv_view'
+include ':tv_data'
+include ':tv_app'
+rootProject.name = "ByteByte"

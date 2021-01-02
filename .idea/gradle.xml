@@ -12,11 +12,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
-            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/shareTest" />
-            <option value="$PROJECT_DIR$/view" />
+            <option value="$PROJECT_DIR$/tv_app" />
+            <option value="$PROJECT_DIR$/tv_data" />
+            <option value="$PROJECT_DIR$/tv_view" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
