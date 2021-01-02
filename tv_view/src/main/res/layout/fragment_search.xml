@@ -25,6 +25,7 @@
             </com.google.android.material.appbar.MaterialToolbar>
 
             <EditText
+                android:imeOptions="actionDone"
                 android:id="@+id/etSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
