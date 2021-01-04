@@ -14,21 +14,20 @@ val dataModule = module {
 
     single { createRetrofit(get()) }
 
-    single<IpTvApi> { get(Retrofit::class.java).create(IpTvApi::class.java) }
+    single<TvApi> { get(Retrofit::class.java).create(TvApi::class.java) }
 
     single { createDb(androidApplication()) }
 
-    single { get(AppDatabase::class.java).ipTvDao() }
+    single { get(AppDatabase::class.java).tvDao() }
 
-    single { get(AppDatabase::class.java).ipTvFtsDao() }
+    single { get(AppDatabase::class.java).tvFtsDao() }
 
-    factory<IpTvRepository> { IpTvRepositoryImpl(get(), get(), get(), androidApplication(), get()) }
+    factory<TvRepository> { TvRepositoryImpl(get(), get(), get(), androidApplication(), get()) }
 
     factory { Converter() }
 
     factory {
         GsonBuilder()
-            //.excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
             .create()
     }

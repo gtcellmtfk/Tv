@@ -1,7 +1,7 @@
 package com.bytebyte6.data
 
 import com.bytebyte6.data.GsonConfig.NullStringToEmptyAdapterFactory
-import com.bytebyte6.data.model.IpTv
+import com.bytebyte6.data.entity.Tv
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.junit.Assert.assertEquals
@@ -43,7 +43,7 @@ class ExampleUnitTest {
         val gson2 =
             GsonBuilder().registerTypeAdapterFactory(NullStringToEmptyAdapterFactory()).create()
 
-        val iptv = gson2.fromJson<IpTv>(json, IpTv::class.java)
+        val iptv = gson2.fromJson<Tv>(json, Tv::class.java)
 
         println(iptv.name==null)
         println(iptv.name+"1")

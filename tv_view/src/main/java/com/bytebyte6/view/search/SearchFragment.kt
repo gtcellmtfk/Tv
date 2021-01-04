@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.KeyboardUtils
-import com.bytebyte6.data.model.IpTv
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import com.bytebyte6.view.video.VideoActivity
@@ -63,7 +63,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             val adapter = VideoAdapter()
             adapter.setOnItemClick { pos, _ ->
                 startActivity(Intent(context, VideoActivity::class.java).apply {
-                    putExtra(IpTv.TAG, adapter.currentList[pos])
+                    putExtra(Tv.TAG, adapter.currentList[pos])
                 })
             }
 

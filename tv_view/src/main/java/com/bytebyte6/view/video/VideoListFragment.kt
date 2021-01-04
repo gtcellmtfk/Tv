@@ -11,8 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
-import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.view.IpTvViewModel
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.view.TvViewModel
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoListBinding
 import com.google.android.material.transition.MaterialContainerTransform
@@ -24,7 +24,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
         const val TAG = "VideoListFragment"
     }
 
-    private val viewModel: IpTvViewModel by sharedViewModel()
+    private val viewModel: TvViewModel by sharedViewModel()
 
     private val args by navArgs<VideoListFragmentArgs>()
 
@@ -57,7 +57,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
         adapter.setOnItemClick { pos, _ ->
             startActivity(Intent(context, VideoActivity::class.java).apply {
-                putExtra(IpTv.TAG, adapter.currentList[pos])
+                putExtra(Tv.TAG, adapter.currentList[pos])
             })
         }
 
@@ -69,7 +69,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
             toolbar.title = title
             recyclerView.adapter = adapter
             toolbar.setupWithNavController(navController, appBarConfiguration)
-            viewModel.ipTvsLiveData()?.observe(viewLifecycleOwner, Observer {
+            viewModel.ipTvsLiveData().observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it)
                 toolbar.subtitle = getString(R.string.total, it.size)
             })

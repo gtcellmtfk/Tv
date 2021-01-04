@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.view.IpTvViewModel
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.view.TvViewModel
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.DialogVideoBinding
 import com.bytebyte6.view.video.VideoActivity
@@ -22,7 +22,7 @@ class VideoDialog : BottomSheetDialogFragment() {
 
     private var binding: DialogVideoBinding? = null
 
-    private val viewModel by sharedViewModel<IpTvViewModel>()
+    private val viewModel by sharedViewModel<TvViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +40,7 @@ class VideoDialog : BottomSheetDialogFragment() {
         adapter.setOnItemClick { pos,view->
             dismiss()
             startActivity(Intent(context, VideoActivity::class.java).apply {
-                putExtra(IpTv.TAG, adapter.currentList[pos])
+                putExtra(Tv.TAG, adapter.currentList[pos])
             })
         }
 
@@ -48,7 +48,7 @@ class VideoDialog : BottomSheetDialogFragment() {
             recyclerView.adapter = adapter
         }
 
-        viewModel.ipTvsLiveData()?.observe(this, Observer {
+        viewModel.ipTvsLiveData().observe(this, Observer {
             adapter.submitList(it)
             binding?.tvTotal?.apply {
                 text = getString(R.string.total, it.size)

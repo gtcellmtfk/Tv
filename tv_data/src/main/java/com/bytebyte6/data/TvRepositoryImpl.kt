@@ -3,27 +3,31 @@ package com.bytebyte6.data
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.room.rxjava3.EmptyResultSetException
 import com.bytebyte6.base.LoadData
-import com.bytebyte6.data.model.*
-import com.google.gson.reflect.TypeToken
+import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.data.dao.TvFtsDao
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.TvFts
+import com.bytebyte6.data.model.Category
+import com.bytebyte6.data.model.Country
+import com.bytebyte6.data.model.Language
+import com.bytebyte6.data.model.Languages
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class IpTvRepositoryImpl(
-    private val api: IpTvApi,
-    private val tvDao: IpTvDao,
-    private val tvFtsDao: IpTvFtsDao,
+class TvRepositoryImpl(
+    private val api: TvApi,
+    private val tvDao: TvDao,
+    private val tvFtsDao: TvFtsDao,
     private val context: Context,
     private val converter: Converter
-) : IpTvRepository {
+) : TvRepository {
 
     private val compositeDisposable = CompositeDisposable()
 
-    override fun refresh(loadData: LoadData<List<IpTv>>) {
+    override fun refresh(loadData: LoadData<List<Tv>>) {
         compositeDisposable.add(
             api.getList()
                 .compose(loadData = loadData)
@@ -35,27 +39,25 @@ class IpTvRepositoryImpl(
         )
     }
 
-    override fun init(loadData: LoadData<IpTv>) {
+    override fun init(loadData: LoadData<Int>) {
         compositeDisposable.add(
-            tvDao.getAnyIpTv()
+            tvDao.count()
                 .compose(loadData = loadData)
                 .subscribeOn(Schedulers.io())
-                .doOnError {
-                    if (it is EmptyResultSetException) {
-                        tvDao.insertAll(getIpTVs())
+                .subscribe({ count ->
+                    if (count == 0) {
+                        tvDao.insertAll(converter.getTvs(context).map {
+                            if (it.category.isEmpty()) {
+                                it.category = "Other"
+                            }
+                            if (it.language.isEmpty()) {
+                                val list = mutableListOf(Language(languageName = "Other"))
+                                it.language = list
+                            }
+                            it
+                        })
                     }
-                }
-                .subscribe({}, { it.printStackTrace() })
-        )
-    }
-
-    private fun getIpTVs(): List<IpTv> {
-        val json: String = context.assets.open("channels.json")
-            .bufferedReader()
-            .use { it.readText() }
-        return converter.gson.fromJson(
-            json,
-            object : TypeToken<List<IpTv>>() {}.type
+                }, { it.printStackTrace() })
         )
     }
 
@@ -75,7 +77,9 @@ class IpTvRepositoryImpl(
                     }
                     liveData.postValue(result)
                 }.subscribeOn(Schedulers.io())
-                    .subscribe()
+                    .subscribe({}, {
+                        it.printStackTrace()
+                    })
             )
         }
         return liveData
@@ -94,7 +98,9 @@ class IpTvRepositoryImpl(
                     }
                     liveData.postValue(languages)
                 }.subscribeOn(Schedulers.io())
-                    .subscribe()
+                    .subscribe({}, {
+                        it.printStackTrace()
+                    })
             )
         }
         return liveData
@@ -112,26 +118,26 @@ class IpTvRepositoryImpl(
                     }
                     liveData.postValue(result)
                 }.subscribeOn(Schedulers.io())
-                    .subscribe()
+                    .subscribe({}, { it.printStackTrace() })
             )
         }
         return liveData
     }
 
-    override fun search(key: String, loadData: LoadData<List<IpTv>>) {
+    override fun search(key: String, loadData: LoadData<List<Tv>>) {
         compositeDisposable.add(
             tvFtsDao.search(key)
-                .map<List<IpTv>> {
-                    IpTvFts.toIpTvs(it)
+                .map<List<Tv>> {
+                    TvFts.toIpTvs(it)
                 }
                 .compose(loadData = loadData)
-                .subscribe()
+                .subscribe({}, { it.printStackTrace() })
         )
     }
 
-    override fun search(key: String): LiveData<List<IpTv>> {
-        return Transformations.map(tvFtsDao.searchLiveData(key)){
-            IpTvFts.toIpTvs(it)
+    override fun search(key: String): LiveData<List<Tv>> {
+        return Transformations.map(tvFtsDao.searchLiveData(key)) {
+            TvFts.toIpTvs(it)
         }
     }
 }

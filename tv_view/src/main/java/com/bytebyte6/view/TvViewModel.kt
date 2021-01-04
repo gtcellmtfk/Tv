@@ -5,18 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.bytebyte6.base.BaseViewModelDelegate
-import com.bytebyte6.data.IpTvRepository
+import com.bytebyte6.data.TvRepository
 import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Country
-import com.bytebyte6.data.model.IpTv
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.Languages
 
-class IpTvViewModel(
-    private val repository: IpTvRepository,
+class TvViewModel(
+    private val repository: TvRepository,
     private val baseViewModelDelegate: BaseViewModelDelegate
 ) : ViewModel(),
     BaseViewModelDelegate by baseViewModelDelegate,
-    IpTvRepository by repository {
+    TvRepository by repository {
 
     var tab: Int = 0
 
@@ -74,7 +74,7 @@ class IpTvViewModel(
      * VideoListFragment
      * 展示的内容
      */
-    fun ipTvsLiveData(): LiveData<List<IpTv>> = search(clickItem)
+    fun ipTvsLiveData(): LiveData<List<Tv>> = search(clickItem)
 
     override fun onCleared() {
         dispose()

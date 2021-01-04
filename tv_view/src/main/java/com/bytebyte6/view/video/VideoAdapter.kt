@@ -5,12 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bytebyte6.base.BaseAdapter
-import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.IpTvDiff
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.TvDiff
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemVideoBinding
 
-class VideoAdapter : BaseAdapter<IpTv, VideoViewHolder>(IpTvDiff) {
+class VideoAdapter : BaseAdapter<Tv, VideoViewHolder>(
+    TvDiff
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder =
         VideoViewHolder.create(parent)

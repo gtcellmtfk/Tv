@@ -12,7 +12,7 @@ import org.koin.dsl.module
 val viewModule:Module= module {
     factory <Player> { SimpleExoPlayer.Builder(androidApplication()).build() }
     viewModel {
-        IpTvViewModel(
+        TvViewModel(
             get(),
             get()
         )

@@ -7,25 +7,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.LoadData
-import com.bytebyte6.data.IpTvRepository
-import com.bytebyte6.data.model.IpTv
+import com.bytebyte6.data.TvRepository
+import com.bytebyte6.data.entity.Tv
 
 class SearchViewModel(
-    private val repository: IpTvRepository,
+    private val repository: TvRepository,
     private val baseViewModelDelegate: BaseViewModelDelegate
 ) : ViewModel(),
     BaseViewModelDelegate by baseViewModelDelegate,
-    IpTvRepository by repository {
+    TvRepository by repository {
 
-    private val searchLiveData = MutableLiveData<List<IpTv>>()
+    private val searchLiveData = MutableLiveData<List<Tv>>()
 
     private val searchLoadData by lazy {
-        object : LoadData<List<IpTv>> {
+        object : LoadData<List<Tv>> {
             override fun start() {
 
             }
 
-            override fun success(data: List<IpTv>) {
+            override fun success(data: List<Tv>) {
                 searchLiveData.postValue(data)
             }
 
@@ -35,7 +35,7 @@ class SearchViewModel(
         }
     }
 
-    fun searchLiveData(): LiveData<List<IpTv>> {
+    fun searchLiveData(): LiveData<List<Tv>> {
         return searchLiveData
     }
 

@@ -37,4 +37,6 @@ dependencies {
     debugApi 'androidx.test.ext:junit:1.1.2'
     debugApi 'androidx.test.espresso:espresso-core:3.3.0'
     debugApi "androidx.navigation:navigation-testing:2.3.2"
+    debugApi "org.koin:koin-test:2.2.1"
+    debugApi "androidx.arch.core:core-testing:2.0.0"
 }

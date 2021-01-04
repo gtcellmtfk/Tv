@@ -15,14 +15,14 @@ import com.google.android.material.transition.Hold
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import kotlin.random.Random
 
-class ViewPagerFragment :
+class TabFragment :
     BaseFragment<FragmentViewPagerBinding>(R.layout.fragment_view_pager) {
 
     companion object {
         const val TAG = "ViewPagerFragment"
     }
 
-    private val viewModel: IpTvViewModel by sharedViewModel()
+    private val viewModel: TvViewModel by sharedViewModel()
 
     private val dialog = VideoDialog()
 

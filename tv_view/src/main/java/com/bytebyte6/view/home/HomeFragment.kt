@@ -21,7 +21,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         const val TAG = "HomeFragment"
     }
 
-    private val viewModel: IpTvViewModel by sharedViewModel()
+    private val viewModel: TvViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
-
+                    //share intent
                 } else {
                     val ex = FragmentNavigatorExtras(
                         toolbar to toolbar.transitionName)
@@ -60,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
 
             viewPager.adapter =
-                ViewPagerAdapter(this@HomeFragment)
+                TabAdapter(this@HomeFragment)
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
                     TAB_COUNTRY -> tab.setText(
@@ -91,8 +91,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 listLiveData(TAB_LANGUAGE)?.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = (it as List<*>).size
                 })
-
-
             }
 
             swipeRefreshLayout.setOnRefreshListener {

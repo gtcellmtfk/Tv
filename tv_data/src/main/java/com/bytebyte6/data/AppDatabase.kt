@@ -1,13 +1,28 @@
 package com.bytebyte6.data
 
-import androidx.room.*
-import com.bytebyte6.data.model.IpTv
-import com.bytebyte6.data.model.IpTvFts
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.bytebyte6.data.dao.*
+import com.bytebyte6.data.entity.*
 
-@Database(entities = [IpTv::class,IpTvFts::class], version = 1, exportSchema = true)
+@Database(
+    entities = [
+        Tv::class,
+        TvFts::class,
+        Playlist::class,
+        PlaylistTvCrossRef::class,
+        User::class,
+        UserPlaylistCrossRef::class
+    ], version = 1, exportSchema = true
+)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun ipTvDao(): IpTvDao
-    abstract fun ipTvFtsDao(): IpTvFtsDao
+    abstract fun tvDao(): TvDao
+    abstract fun tvFtsDao(): TvFtsDao
+    abstract fun userDao(): UserDao
+    abstract fun playlistDao(): PlaylistDao
+    abstract fun playlistTvCrossRefDao(): PlaylistTvCrossRefDao
+    abstract fun userPlaylistCrossRefDao(): UserPlaylistCrossRefDao
 }
 

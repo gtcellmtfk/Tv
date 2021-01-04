@@ -5,7 +5,7 @@ import android.view.View
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.Message
-import com.bytebyte6.data.model.IpTv
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoBinding
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -26,7 +26,7 @@ class VideoFragment :
 
     private val simpleExoPlayer by inject<Player>()
 
-    private lateinit var ipTv: IpTv
+    private lateinit var tv: Tv
 
     override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
@@ -34,7 +34,7 @@ class VideoFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ipTv = requireArguments().get(IpTv.TAG) as IpTv
+        tv = requireArguments().get(Tv.TAG) as Tv
         binding?.let {
             observeLoading(it.progressBar)
             observeSnack(view, View.OnClickListener { simpleExoPlayer.play() })
@@ -79,7 +79,7 @@ class VideoFragment :
         binding?.apply {
             playerView.player = simpleExoPlayer
             val item = MediaItem.Builder()
-                    .setUri(ipTv.url)
+                    .setUri(tv.url)
                     .setMimeType(MimeTypes.APPLICATION_M3U8)
                     .build()
             simpleExoPlayer.setMediaItem(item)
