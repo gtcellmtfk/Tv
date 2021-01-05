@@ -30,13 +30,15 @@
 
 15、~~命名更改~~
 
-16、导入m3u文件，自定义源
+16、~~导入m3u文件，自定义源~~
+
+17、添加删除功能
 
 ##### RTMP网络电视
 
 记录以下技术使用
 
-+ Kotlin
++ Kotlin 
 + RxJava
 + Retrofit
 + ExoPlayer
@@ -46,3 +48,27 @@
 + Jetpack
 + 网络状态监听
 + Kotlin类代理
+
+# Kotlin
+
+属性代理、类代理、扩展函数
+
+# RxJava
+
+RxUseCase 用例实现，用于编写业务逻辑
+
+# ExoPlayer
+
+基本运用
+
+# Material Design 
+
+过渡动画实践、MotionLayout运用
+
+# Room
+
+fts全文检索实践、对象多对多关联
+
+# Jetpack
+
+导航组件运用，效果不怎么理想，移除！！！ 
