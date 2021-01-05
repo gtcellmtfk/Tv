@@ -42,7 +42,7 @@ fun Context.showSnack(
 fun Fragment.showSnack(
     view: View,
     it: Message,
-    listener: View.OnClickListener?
+    listener: View.OnClickListener?=null
 ) {
     requireContext().showSnack(view, it, listener)
 }

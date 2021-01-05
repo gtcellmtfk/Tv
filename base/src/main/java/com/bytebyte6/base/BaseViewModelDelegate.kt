@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 
 
 interface BaseViewModelDelegate {
+
     //模糊进度条
     val loading: LiveData<Event<Boolean>>
-
-    //Toast
-    val toast: LiveData<Event<Message>>
 
     //snack bar
     val snackBar: LiveData<Event<Message>>
@@ -18,8 +16,6 @@ interface BaseViewModelDelegate {
     }
 
     fun postLoading(loading: Boolean)
-
-    fun postToast(message: Message)
 
     fun postSnack(message: Message)
 

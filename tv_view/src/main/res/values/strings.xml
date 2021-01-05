@@ -13,4 +13,11 @@
     <string name="tip_search">输入 例如: CCTV、China、Auto</string>
     <string name="tip_play_error">出现错误,请重试!!!</string>
     <string name="tip_play_retry">重试</string>
+    <string name="nav_me">个人中心</string>
+    <string name="nav_home">首页</string>
+    <string name="nav_name">Cloud</string>
+    <string name="m3u">导入m3u文件</string>
+    <string name="me_import_file">导入m3u文件后可展示列表</string>
+    <string name="me_playlist">我的播放列表</string>
+    <string name="tip_parse_file_error">文件解析失败</string>
 </resources>

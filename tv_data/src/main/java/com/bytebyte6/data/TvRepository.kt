@@ -14,5 +14,6 @@ interface TvRepository {
     fun liveDataByAllCountry(): LiveData<List<Country>>
     fun search(key: String,loadData: LoadData<List<Tv>>)
     fun search(key: String):LiveData<List<Tv>>
+    fun tvs(playlistId: Long):LiveData<List<Tv>>
 }
 

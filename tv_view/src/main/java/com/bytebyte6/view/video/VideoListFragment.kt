@@ -5,16 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.view.TvViewModel
+import com.bytebyte6.view.KEY_TRANS_NAME
 import com.bytebyte6.view.R
+import com.bytebyte6.view.TvViewModel
 import com.bytebyte6.view.databinding.FragmentVideoListBinding
+import com.bytebyte6.view.setupToolbar
 import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -22,11 +20,16 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     companion object {
         const val TAG = "VideoListFragment"
+        fun newInstance(transName: String): VideoListFragment {
+            return VideoListFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_TRANS_NAME, transName)
+                }
+            }
+        }
     }
 
     private val viewModel: TvViewModel by sharedViewModel()
-
-    private val args by navArgs<VideoListFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.transitionName = args.transName
+        view.transitionName = requireArguments().getString(KEY_TRANS_NAME)
 
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
@@ -61,14 +64,10 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
             })
         }
 
-        val navController = findNavController(this@VideoListFragment)
-
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-
         binding?.apply {
             toolbar.title = title
             recyclerView.adapter = adapter
-            toolbar.setupWithNavController(navController, appBarConfiguration)
+            setupToolbar()
             viewModel.ipTvsLiveData().observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it)
                 toolbar.subtitle = getString(R.string.total, it.size)

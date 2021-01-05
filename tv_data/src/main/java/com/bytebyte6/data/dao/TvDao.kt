@@ -59,7 +59,10 @@ interface TvDao {
     fun count(): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(list: List<Tv>)
+    fun insertAll(list: List<Tv>):List<Long>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllRx(list: List<Tv>):Single<List<Long>>
 
     @TestOnly
     @Query("SELECT COUNT(tvId) FROM Tv")

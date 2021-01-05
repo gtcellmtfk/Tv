@@ -76,12 +76,6 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         logd("onDetach")
     }
 
-    protected fun observeToast() {
-        baseViewModelDelegate?.toast?.observe(this, EventObserver {
-            showToast(it)
-        })
-    }
-
     protected fun observeSnack(view: View, listener: View.OnClickListener? = null) {
         baseViewModelDelegate?.snackBar?.observe(this, EventObserver {
             showSnack(view, it, listener)

@@ -22,9 +22,17 @@ val dataModule = module {
 
     single { get(AppDatabase::class.java).tvFtsDao() }
 
-    factory<TvRepository> { TvRepositoryImpl(get(), get(), get(), androidApplication(), get()) }
+    single { get(AppDatabase::class.java).userDao() }
 
-    factory { Converter() }
+    single { get(AppDatabase::class.java).playlistDao() }
+
+    single { get(AppDatabase::class.java).playlistTvCrossRefDao() }
+
+    single { get(AppDatabase::class.java).userPlaylistCrossRefDao() }
+
+    factory<TvRepository> { TvRepositoryImpl(androidApplication(), get(), get(), get(), get(),get()) }
+
+    factory<Converter> { Converter() }
 
     factory {
         GsonBuilder()

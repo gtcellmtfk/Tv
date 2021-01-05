@@ -14,6 +14,10 @@ abstract class BaseAdapter<T,V:RecyclerView.ViewHolder>(diffUtil: DiffUtil.ItemC
         this.onItemClick = onItemClick
     }
 
+    fun getData(pos:Int):T{
+        return currentList[pos]
+    }
+
     override fun onBindViewHolder(holder: V, position: Int) {
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(position,it)

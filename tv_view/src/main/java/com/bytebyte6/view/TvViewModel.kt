@@ -4,12 +4,14 @@ import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.TvRepository
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Country
-import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.Languages
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class TvViewModel(
     private val repository: TvRepository,

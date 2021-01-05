@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.EventObserver
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
+import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.Hold
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -28,33 +27,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         exitTransition = Hold()
     }
 
-    override fun initBinding(view: View): FragmentHomeBinding {
-        return FragmentHomeBinding.bind(view)
-    }
-
     override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initBinding(view: View): FragmentHomeBinding {
+        return FragmentHomeBinding.bind(view).apply {
 
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-
-        binding?.apply {
+            postponeEnterTransition()
+            view.doOnPreDraw { startPostponedEnterTransition() }
 
             toolbar.transitionName = "searchShare"
+
+            setupToolbar(requireActivity())
 
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
                     //share intent
                 } else {
-                    val ex = FragmentNavigatorExtras(
-                        toolbar to toolbar.transitionName)
-                    val d =
-                        HomeFragmentDirections.actionHomeFragmentToSearchFragment(
-                            toolbar.transitionName
-                        )
-                    findNavController().navigate(d, ex)
+                    replaceWithShareElement(
+                        SearchFragment.newInstance(toolbar.transitionName),
+                        SearchFragment.TAG,
+                        toolbar
+                    )
                 }
                 true
             }
@@ -99,4 +92,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             observeSnack(viewPager)
         }
     }
+
+
 }

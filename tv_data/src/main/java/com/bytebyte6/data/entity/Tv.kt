@@ -10,7 +10,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(
     indices = [
-        Index(value = ["url"], unique = true),
         Index(value = ["tvId"])
     ]
 )

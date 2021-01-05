@@ -19,7 +19,7 @@ data class TvFts(
 ) : Parcelable {
     companion object {
         const val TAG = "TvFts"
-        fun toIpTv(fts: TvFts): Tv {
+        private fun toIpTv(fts: TvFts): Tv {
             return Tv(
                 logo = fts.logo,
                 name = fts.name,

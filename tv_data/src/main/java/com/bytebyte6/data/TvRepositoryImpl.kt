@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.bytebyte6.base.LoadData
+import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.Tv
@@ -18,10 +20,11 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class TvRepositoryImpl(
+    private val context: Context,
     private val api: TvApi,
     private val tvDao: TvDao,
     private val tvFtsDao: TvFtsDao,
-    private val context: Context,
+    private val playlistDao: PlaylistDao,
     private val converter: Converter
 ) : TvRepository {
 
@@ -138,6 +141,12 @@ class TvRepositoryImpl(
     override fun search(key: String): LiveData<List<Tv>> {
         return Transformations.map(tvFtsDao.searchLiveData(key)) {
             TvFts.toIpTvs(it)
+        }
+    }
+
+    override fun tvs(playlistId: Long): LiveData<List<Tv>> {
+        return playlistDao.tvsById(playlistId).map {
+            it.tvs
         }
     }
 }

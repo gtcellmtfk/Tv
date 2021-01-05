@@ -7,16 +7,14 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.bytebyte6.base.BaseFragment
 import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.KeyboardUtils
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.view.*
+import com.bytebyte6.view.KEY_TRANS_NAME
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSearchBinding
+import com.bytebyte6.view.setupToolbar
 import com.bytebyte6.view.video.VideoActivity
 import com.bytebyte6.view.video.VideoAdapter
 import com.google.android.material.transition.MaterialContainerTransform
@@ -26,11 +24,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     companion object {
         const val TAG = "SearchFragment"
+        fun newInstance(transName: String): SearchFragment {
+            return SearchFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_TRANS_NAME, transName)
+                }
+            }
+        }
     }
 
     private val viewModel: SearchViewModel by sharedViewModel()
-
-    private val args by navArgs<SearchFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +46,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     override fun initBinding(view: View): FragmentSearchBinding {
         return FragmentSearchBinding.bind(view).apply {
-            val navController = findNavController()
-            val appBarConfiguration = AppBarConfiguration(navController.graph)
-            toolbar.setupWithNavController(navController, appBarConfiguration)
-            view.transitionName = args.transName
-        }
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-        binding?.apply {
+            view.transitionName = requireArguments().getString(KEY_TRANS_NAME)
+            postponeEnterTransition()
+            view.doOnPreDraw { startPostponedEnterTransition() }
+
+            setupToolbar { KeyboardUtils.hideSoftInput(requireActivity()) }
 
             etSearch.doOnTextChanged { text, start, before, count ->
                 viewModel.search(text)
@@ -75,10 +72,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
             KeyboardUtils.showSoftInput(etSearch, requireContext())
         }
-    }
-
-    override fun onDestroyView() {
-        KeyboardUtils.hideSoftInput(requireActivity())
-        super.onDestroyView()
     }
 }

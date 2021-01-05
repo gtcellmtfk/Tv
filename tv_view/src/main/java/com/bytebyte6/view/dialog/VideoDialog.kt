@@ -37,7 +37,7 @@ class VideoDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = VideoAdapter()
-        adapter.setOnItemClick { pos,view->
+        adapter.setOnItemClick { pos, _ ->
             dismiss()
             startActivity(Intent(context, VideoActivity::class.java).apply {
                 putExtra(Tv.TAG, adapter.currentList[pos])
