@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 
 const val KEY_TRANS_NAME = "KEY_TRANS_NAME"
+const val KEY_ITEM = "KEY_ITEM"
 const val KEY_PLAY_LIST_ID = "KEY_PLAY_LIST_ID"
 const val KEY_TITLE = "KEY_TITLE"
 

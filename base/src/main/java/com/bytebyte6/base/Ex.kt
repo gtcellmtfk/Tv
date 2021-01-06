@@ -26,7 +26,7 @@ fun Activity.showToast(it: Message) {
 fun Context.showSnack(
     view: View,
     it: Message,
-    listener: View.OnClickListener?
+    listener: View.OnClickListener?=null
 ) {
     val bar = Snackbar.make(
         view,

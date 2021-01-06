@@ -2,9 +2,10 @@ package com.bytebyte6.view.video
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.Message
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoBinding
@@ -14,6 +15,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.util.MimeTypes
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class VideoFragment :
     BaseFragment<FragmentVideoBinding>(R.layout.fragment_video) {
@@ -22,23 +24,17 @@ class VideoFragment :
         const val TAG: String = "VideoFragment"
     }
 
-    private val viewModel by sharedViewModel<VideoViewModel>()
+    private val viewModel by viewModel<VideoViewModel>()
 
     private val simpleExoPlayer by inject<Player>()
 
     private lateinit var tv: Tv
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
     override fun initBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv = requireArguments().get(Tv.TAG) as Tv
-        binding?.let {
-            observeLoading(it.progressBar)
-            observeSnack(view, View.OnClickListener { simpleExoPlayer.play() })
-        }
     }
 
     override fun onResume() {
@@ -54,7 +50,9 @@ class VideoFragment :
     private val listener: Player.EventListener = object : Player.EventListener {
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            baseViewModelDelegate?.postLoading(!isPlaying)
+            requireActivity().runOnUiThread {
+                binding?.progressBar?.isVisible=!isPlaying
+            }
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
@@ -71,7 +69,10 @@ class VideoFragment :
                     longDuration = true
                 )
             }
-            baseViewModelDelegate?.postSnack(m)
+            requireActivity()
+                .runOnUiThread {
+                    showSnack(requireView(), m)
+                }
         }
     }
 
@@ -79,9 +80,9 @@ class VideoFragment :
         binding?.apply {
             playerView.player = simpleExoPlayer
             val item = MediaItem.Builder()
-                    .setUri(tv.url)
-                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                    .build()
+                .setUri(tv.url)
+                .setMimeType(MimeTypes.APPLICATION_M3U8)
+                .build()
             simpleExoPlayer.setMediaItem(item)
             simpleExoPlayer.playWhenReady = true
             simpleExoPlayer.prepare()

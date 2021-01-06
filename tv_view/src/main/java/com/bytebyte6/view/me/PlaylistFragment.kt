@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.KEY_PLAY_LIST_ID
 import com.bytebyte6.view.KEY_TITLE
@@ -33,10 +32,6 @@ class PlaylistFragment : BaseFragment<FragmentPlayListBinding>(R.layout.fragment
     }
 
     private val viewModel: MeViewModel by sharedViewModel()
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
-        return viewModel
-    }
 
     override fun initBinding(view: View): FragmentPlayListBinding {
         return FragmentPlayListBinding.bind(view).apply {

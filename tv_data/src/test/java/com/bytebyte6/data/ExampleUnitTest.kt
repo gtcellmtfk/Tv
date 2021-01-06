@@ -16,19 +16,12 @@ import org.junit.Test
 class ExampleUnitTest {
 
     @Test
-    fun test(){
-        val list= mutableListOf<String>()
-        list.add("1")
-        list.add("2")
-        list.add("3")
-        list.add("4")
-        list.add("5")
+    fun test() {
+        val converter = Converter()
 
-        val list2= mutableListOf<String>()
-        list2.add("2")
-        list2.add("5")
+        val tv = Tv(category = "", url = "")
 
-        println(list.containsAll(list2))
+        println(tv)
     }
 
     @Test
@@ -45,8 +38,8 @@ class ExampleUnitTest {
 
         val iptv = gson2.fromJson<Tv>(json, Tv::class.java)
 
-        println(iptv.name==null)
-        println(iptv.name+"1")
+        println(iptv.name == null)
+        println(iptv.name + "1")
         println(iptv)
 
         println(gson2.toJson(iptv))

@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.Message
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.base.showSnack
@@ -34,10 +33,6 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
     }
 
     private val stringAdapter = StringAdapter()
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
-        return viewModel
-    }
 
     override fun initBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view).apply {

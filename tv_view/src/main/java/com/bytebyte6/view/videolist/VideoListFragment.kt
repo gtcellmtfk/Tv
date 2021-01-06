@@ -1,4 +1,4 @@
-package com.bytebyte6.view.video
+package com.bytebyte6.view.videolist
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,13 +6,11 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.view.KEY_TRANS_NAME
-import com.bytebyte6.view.R
-import com.bytebyte6.view.TvViewModel
+import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentVideoListBinding
-import com.bytebyte6.view.setupToolbar
+import com.bytebyte6.view.video.VideoActivity
+import com.bytebyte6.view.video.VideoAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -20,24 +18,21 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
 
     companion object {
         const val TAG = "VideoListFragment"
-        fun newInstance(transName: String): VideoListFragment {
+        fun newInstance(transName: String, item: String): VideoListFragment {
             return VideoListFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_TRANS_NAME, transName)
+                    putString(KEY_ITEM, item)
                 }
             }
         }
     }
 
-    private val viewModel: TvViewModel by sharedViewModel()
+    private val viewModel: VideoListViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
-    }
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
-        return viewModel
     }
 
     override fun initBinding(view: View): FragmentVideoListBinding {
@@ -51,8 +46,8 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
 
-        var title = viewModel.getTitle()
-        if (title.isEmpty()) {
+        var title = requireArguments().getString(KEY_ITEM)
+        if (title.isNullOrEmpty()) {
             title = getString(R.string.home_other)
         }
 
@@ -68,7 +63,7 @@ class VideoListFragment : BaseFragment<FragmentVideoListBinding>(R.layout.fragme
             toolbar.title = title
             recyclerView.adapter = adapter
             setupToolbar()
-            viewModel.ipTvsLiveData().observe(viewLifecycleOwner, Observer {
+            viewModel.search(title).observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it)
                 toolbar.subtitle = getString(R.string.total, it.size)
             })

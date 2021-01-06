@@ -12,14 +12,12 @@ import com.bytebyte6.base.NetworkHelper
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.me.MeFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
 
     private val networkHelper by inject<NetworkHelper>()
-
-    private val viewModel by viewModel<MainViewModel>()
 
     private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawLayout) }
 
@@ -29,6 +27,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val enter = MaterialFadeThrough()
+        window.enterTransition = enter
+
+        window.allowEnterTransitionOverlap = true
+
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
@@ -38,13 +42,9 @@ class MainActivity : BaseActivity() {
         networkHelper.liveData().observe(this, EventObserver { connected ->
             if (!connected) {
                 val fragment = NetworkErrorFragment()
-                fragment.setNavigationOnClickListener {
-                    supportFragmentManager.popBackStack()
-                }
                 replace(fragment, NetworkErrorFragment.TAG)
             } else {
-                val f = supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)
-                f?.apply {
+                supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)?.apply {
                     supportFragmentManager.popBackStack()
                 }
             }
@@ -75,6 +75,9 @@ class MainActivity : BaseActivity() {
 
             override fun onDrawerClosed(drawerView: View) {
                 menuItem?.apply {
+                    if (navView.checkedItem == this) {
+                        return@apply
+                    }
                     when (itemId) {
                         R.id.nav_home -> {
                             replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
@@ -90,8 +93,6 @@ class MainActivity : BaseActivity() {
 
             }
         })
-
-        viewModel.init()
     }
 
     fun openDrawer() {

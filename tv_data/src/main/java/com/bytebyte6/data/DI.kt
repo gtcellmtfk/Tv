@@ -3,6 +3,8 @@ package com.bytebyte6.data
 import android.content.Context
 import androidx.room.Room
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -30,8 +32,6 @@ val dataModule = module {
 
     single { get(AppDatabase::class.java).userPlaylistCrossRefDao() }
 
-    factory<TvRepository> { TvRepositoryImpl(androidApplication(), get(), get(), get(), get(),get()) }
-
     factory<Converter> { Converter() }
 
     factory {
@@ -51,6 +51,9 @@ private fun createDb(context: Context): AppDatabase {
 
 private fun createRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
     return Retrofit.Builder()
+        .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }).build())
         .baseUrl("https://iptv-org.github.io/iptv/")
         .addConverterFactory(gsonConverterFactory)
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

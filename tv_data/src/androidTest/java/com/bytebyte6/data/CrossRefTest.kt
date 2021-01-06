@@ -61,9 +61,9 @@ class CrossRefTest : KoinTest {
         userPlaylistCrossRefDao = db.userPlaylistCrossRefDao()
         playlistTvCrossRefDao = db.playlistTvCrossRefDao()
 
-        tvDao.insertAll(tvs)
-        userDao.insertAll(users)
-        playlistDao.insertAll(playlists)
+        tvDao.insert(tvs)
+        userDao.insert(users)
+        playlistDao.insert(playlists)
     }
 
     @After
@@ -76,7 +76,7 @@ class CrossRefTest : KoinTest {
     @Throws(Exception::class)
     fun tvOneToMany() {
         val playlists = playlistDao.getAll()
-        val tvs = tvDao.getAllForTest()
+        val tvs = tvDao.get()
 
         val a = PlaylistTvCrossRef(playlists[0].playlistId, tvs[0].tvId)
         val b = PlaylistTvCrossRef(playlists[1].playlistId, tvs[0].tvId)

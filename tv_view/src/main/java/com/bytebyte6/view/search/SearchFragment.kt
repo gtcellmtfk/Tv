@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.KeyboardUtils
+import com.bytebyte6.base.mvi.success
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.KEY_TRANS_NAME
 import com.bytebyte6.view.R
@@ -18,7 +18,7 @@ import com.bytebyte6.view.setupToolbar
 import com.bytebyte6.view.video.VideoActivity
 import com.bytebyte6.view.video.VideoAdapter
 import com.google.android.material.transition.MaterialContainerTransform
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
@@ -33,15 +33,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
     }
 
-    private val viewModel: SearchViewModel by sharedViewModel()
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
-    }
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
-        return viewModel
     }
 
     override fun initBinding(view: View): FragmentSearchBinding {
@@ -65,9 +61,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             }
 
             recyclerView.adapter = adapter
-            viewModel.searchLiveData().observe(viewLifecycleOwner, Observer {
-                adapter.submitList(it)
-                lavEmpty.isVisible = it.isEmpty()
+            viewModel.tvs.observe(viewLifecycleOwner, Observer {
+                it.success()?.apply {
+                    adapter.submitList(this)
+                    lavEmpty.isVisible = isEmpty()
+                }
             })
 
             KeyboardUtils.showSoftInput(etSearch, requireContext())

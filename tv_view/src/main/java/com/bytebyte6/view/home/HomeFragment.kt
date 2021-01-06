@@ -5,14 +5,17 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
-import com.bytebyte6.base.EventObserver
+import com.bytebyte6.base.ErrorUtils
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.mvi.isError
+import com.bytebyte6.base.mvi.isLoading
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.Hold
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
@@ -20,14 +23,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         const val TAG = "HomeFragment"
     }
 
-    private val viewModel: TvViewModel by sharedViewModel()
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exitTransition = Hold()
     }
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
     override fun initBinding(view: View): FragmentHomeBinding {
         return FragmentHomeBinding.bind(view).apply {
@@ -69,9 +70,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }.attach()
 
             viewModel.apply {
-                loading.observe(viewLifecycleOwner, EventObserver { loading ->
-                    swipeRefreshLayout.isRefreshing = loading
-                })
 
                 listLiveData(TAB_CATEGORY)?.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_CATEGORY)?.orCreateBadge?.number = (it as List<*>).size
@@ -84,12 +82,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 listLiveData(TAB_LANGUAGE)?.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = (it as List<*>).size
                 })
+
+                callTvApi.observe(viewLifecycleOwner, Observer {
+                    swipeRefreshLayout.isRefreshing = it.isLoading()
+                    it.isError()?.apply {
+                        showSnack(
+                            view,
+                            Message(id = ErrorUtils.getMessage(this))
+                        )
+                    }
+                })
             }
 
             swipeRefreshLayout.setOnRefreshListener {
                 viewModel.refresh()
             }
-            observeSnack(viewPager)
+
         }
     }
 

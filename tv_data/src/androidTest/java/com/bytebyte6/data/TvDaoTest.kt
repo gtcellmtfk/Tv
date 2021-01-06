@@ -1,10 +1,6 @@
 package com.bytebyte6.data
 
 import android.content.Context
-import android.util.ArrayMap
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -60,38 +56,38 @@ class TvDaoTest : KoinTest {
     @Test
     @Throws(Exception::class)
     fun testReplaceSameUrl() {
-        val allForTest1 = tvDao.getAllForTest()
+        val allForTest1 = tvDao.get()
         val tv =
             Tv(url = "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/a.m3u8", name = "D")
         val list = mutableListOf(tv)
         tvDao.insertAll(list)
-        val allForTest2 = tvDao.getAllForTest()
+        val allForTest2 = tvDao.get()
         assert(allForTest2 != allForTest1)
     }
 
     @Test
     @Throws(Exception::class)
     fun testReplaceUrl() {
-        var allForTest = tvDao.getAllForTest()
+        var allForTest = tvDao.get()
         allForTest[0].url = "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8"
         tvDao.insertAll(allForTest)
-        allForTest = tvDao.getAllForTest()
+        allForTest = tvDao.get()
         assert(allForTest[0].url == "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8")
     }
 
     @Test
     @Throws(Exception::class)
     fun testReplaceName() {
-        var allForTest = tvDao.getAllForTest()
+        var allForTest = tvDao.get()
         allForTest[0].name = "D"
         tvDao.insertAll(allForTest)
-        allForTest = tvDao.getAllForTest()
+        allForTest = tvDao.get()
         assert(allForTest[0].name == "D")
     }
 
     @Test
     @Throws(Exception::class)
     fun testInsertAll() {
-        assert(tvDao.countForTest() == list.size)
+        assert(tvDao.count() == list.size)
     }
 }

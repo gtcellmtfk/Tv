@@ -10,8 +10,6 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
 
-    protected var baseViewModelDelegate: BaseViewModelDelegate? = null
-
     protected var binding: Binding? = null
 
     override fun onAttach(context: Context) {
@@ -42,7 +40,6 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         super.onViewCreated(view, savedInstanceState)
         logd("onViewCreated")
         binding = initBinding(view)
-        baseViewModelDelegate = initBaseViewModelDelegate()
     }
 
     override fun onStart() {
@@ -76,19 +73,6 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         logd("onDetach")
     }
 
-    protected fun observeSnack(view: View, listener: View.OnClickListener? = null) {
-        baseViewModelDelegate?.snackBar?.observe(this, EventObserver {
-            showSnack(view, it, listener)
-        })
-    }
-
-    protected fun observeLoading(loadingView: View) {
-        baseViewModelDelegate?.loading?.observe(this, EventObserver { showLoading ->
-            loadingView.visibility = if (showLoading) View.VISIBLE else View.GONE
-        })
-    }
-
-    abstract fun initBaseViewModelDelegate(): BaseViewModelDelegate?
     abstract fun initBinding(view: View): Binding?
 }
 

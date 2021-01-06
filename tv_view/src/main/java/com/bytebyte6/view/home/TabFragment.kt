@@ -5,13 +5,11 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
-import com.bytebyte6.view.TvViewModel
 import com.bytebyte6.view.databinding.FragmentTabBinding
 import com.bytebyte6.view.replaceWithShareElement
-import com.bytebyte6.view.video.VideoListFragment
+import com.bytebyte6.view.videolist.VideoListFragment
 import com.google.android.material.transition.Hold
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -22,14 +20,12 @@ class TabFragment :
         const val TAG = "ViewPagerFragment"
     }
 
-    private val viewModel: TvViewModel by sharedViewModel()
+    private val viewModel: HomeViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exitTransition = Hold()
     }
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? = viewModel
 
     override fun initBinding(view: View): FragmentTabBinding =
         FragmentTabBinding.bind(view).apply {
@@ -42,9 +38,7 @@ class TabFragment :
 
             singleLineAdapter.setOnItemClick { pos, view1 ->
                 val item = singleLineAdapter.currentList[pos]
-                viewModel.tab = tab
-                viewModel.clickItem = item
-                showVideoListFragment(view1)
+                showVideoListFragment(view1,item)
             }
 
             recyclerView.adapter = singleLineAdapter
@@ -54,9 +48,9 @@ class TabFragment :
             })
         }
 
-    private fun showVideoListFragment(view: View) {
+    private fun showVideoListFragment(view: View, item: String) {
         replaceWithShareElement(
-            VideoListFragment.newInstance(view.transitionName),
+            VideoListFragment.newInstance(view.transitionName,item),
             VideoListFragment.TAG,
             view
         )

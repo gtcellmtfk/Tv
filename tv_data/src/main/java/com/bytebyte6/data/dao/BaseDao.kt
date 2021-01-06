@@ -1,26 +1,23 @@
 package com.bytebyte6.data.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
-import io.reactivex.rxjava3.core.Single
+import androidx.room.*
 
 interface BaseDao<T> {
-    @Insert(onConflict = REPLACE)
-    fun insert(vararg data: T):LongArray
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(data: T): Long
 
-    @Insert(onConflict = REPLACE)
-    fun insert( data: T):Long
-
-    @Insert(onConflict = REPLACE)
-    fun insertAll(list: List<T>):List<Long>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(list: List<T>): List<Long>
 
     @Delete
-    fun delete(data:T)
+    fun delete(data: T)
 
     @Delete
-    fun delete(vararg data:T)
+    fun delete(list: List<T>)
 
-    @Delete
-    fun deleteAll(data:T)
+    @Update
+    fun update(data: T)
+
+    @Update
+    fun update(list: List<T>)
 }

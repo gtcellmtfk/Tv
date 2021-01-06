@@ -64,6 +64,7 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$retrofit"
     api "com.squareup.retrofit2:adapter-rxjava3:$retrofit"
     api "com.squareup.retrofit2:converter-gson:$retrofit"
+    api("com.squareup.okhttp3:logging-interceptor:4.7.2")
 
     def koin = '2.2.1'
     api "org.koin:koin-android:$koin"

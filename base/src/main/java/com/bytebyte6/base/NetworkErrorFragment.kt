@@ -10,22 +10,12 @@ class NetworkErrorFragment :
         const val TAG="NetworkErrorFragment"
     }
 
-    private var navClickListener: ((view: View) -> Unit)? = null
-
-    override fun initBaseViewModelDelegate(): BaseViewModelDelegate? {
-        return null
-    }
-
     override fun initBinding(view: View): FragmentNetworkErrorBinding {
         val binding = FragmentNetworkErrorBinding.bind(view)
         binding.toolbar.title = getString(R.string.network_disconnected)
         binding.toolbar.setNavigationOnClickListener {
-            navClickListener?.invoke(it)
+            requireActivity().supportFragmentManager.popBackStack()
         }
         return binding
-    }
-
-    fun setNavigationOnClickListener(navigationOnClickListener: ((view: View) -> Unit)) {
-        navClickListener = navigationOnClickListener
     }
 }

@@ -16,9 +16,9 @@ import kotlinx.android.parcel.Parcelize
 data class Tv(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tvId")
-    val tvId: Long=0,
+    val tvId: Long = 0,
     var url: String,
-    var category: String = "",
+    var category: String = "Other",
     var logo: String = "",
     var name: String = "",
     var language: List<Language> = emptyList(),
@@ -26,7 +26,23 @@ data class Tv(
 ) : Parcelable {
     companion object {
         const val TAG = "Tv"
+        fun init(list: List<Tv>): List<Tv> {
+            return list.apply {
+                map {
+                    if (it.category.isEmpty()) {
+                        it.category = "Other"
+                    }
+                    if (it.language.isEmpty()) {
+                        it.language = mutableListOf(Language("Other"))
+                    }
+                    if (it.country.countryName.isEmpty()) {
+                        it.country.countryName = "Other"
+                    }
+                }
+            }
+        }
     }
+
 }
 
 object TvDiff : DiffUtil.ItemCallback<Tv>() {

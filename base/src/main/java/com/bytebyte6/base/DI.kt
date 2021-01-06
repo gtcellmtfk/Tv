@@ -4,6 +4,5 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val baseModule = module {
-    factory<BaseViewModelDelegate> { BaseViewModelDelegateImpl() }
     single { NetworkHelper(androidApplication()) }
 }

@@ -27,10 +27,15 @@ class ExampleUnitTest2 {
 
     @Test
     fun test2() {
-        val path = "C:\\Users\\zacks\\Videos\\zho.m3u"
-        val m3uFile = File(path)
-        m3uFile.m3uToIpTvs()
-        println(m3uFile.m3uToIpTvs())
+        //content://com.android.fileexplorer.myprovider/external_files/index.m3u
+        val p = "content://com.android.fileexplorer.myprovider/external_files/index.m3u"
+        val s = p.substring(p.indexOfLast { it == '/' }.plus(1))
+        println(s)
+
+//        val path = "C:\\Users\\zacks\\Videos\\zho.m3u"
+//        val m3uFile = File(path)
+//        m3uFile.m3uToIpTvs()
+//        println(m3uFile.m3uToIpTvs())
     }
 
     //匹配两个字符串A与B中间的字符串包含A与B：

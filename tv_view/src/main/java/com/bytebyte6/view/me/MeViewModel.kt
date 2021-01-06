@@ -4,21 +4,18 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.bytebyte6.base.BaseViewModelDelegate
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.base.mvi.success
-import com.bytebyte6.data.TvRepository
+import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.view.usecase.ParseM3uUseCase
 import com.bytebyte6.view.usecase.PlaylistByUserIdUseCase
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class MeViewModel(
-    private val baseViewModelDelegate: BaseViewModelDelegate,
     private val playlistByUserIdUseCase: PlaylistByUserIdUseCase,
     private val parseM3uUseCase: ParseM3uUseCase,
-    private val tvRepository: TvRepository
-) : ViewModel(),
-    BaseViewModelDelegate by baseViewModelDelegate {
+    private val playlistDao: PlaylistDao
+) : ViewModel(){
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -42,7 +39,9 @@ class MeViewModel(
         )
     }
 
-    fun tvs(playlistId: Long) = tvRepository.tvs(playlistId)
+    fun tvs(playlistId: Long) = playlistDao.tvsById(playlistId).map {
+        it.tvs
+    }
 
     fun getPlaylistId(pos: Int): Long {
         return userWithPlaylist.value!!.success()!!.playlists[pos].playlistId
