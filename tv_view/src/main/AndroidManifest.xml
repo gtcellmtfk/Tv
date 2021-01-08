@@ -8,19 +8,20 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" />
         <activity
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Rtmp"
             android:name="com.bytebyte6.view.MainActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:theme="@style/Theme.Launcher"
+            android:name=".LauncherActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:theme="@style/Theme.Launcher"
-            android:name=".LauncherActivity" >
-
         </activity>
     </application>
 </manifest>

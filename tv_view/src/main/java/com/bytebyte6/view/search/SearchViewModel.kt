@@ -9,7 +9,7 @@ class SearchViewModel(
     private val searchTvUseCase: SearchTvUseCase
 ) : ViewModel() {
 
-    val tvs = searchTvUseCase.liveData()
+    val tvs = searchTvUseCase.eventLiveData()
 
     private val compositeDisposable = CompositeDisposable()
 

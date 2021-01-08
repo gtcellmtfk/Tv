@@ -1,28 +1,39 @@
 package com.bytebyte6.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.bytebyte6.data.entity.User
-import com.bytebyte6.data.entity.UserWithPlaylists
-import io.reactivex.rxjava3.core.Single
+import com.bytebyte6.data.model.UserWithPlaylists
 
 @Dao
-abstract class UserDao : BaseDao<User> {
+interface UserDao : BaseDao<User> {
     @Transaction
     @Query("SELECT * FROM User")
-    abstract fun getUsersWithPlaylists(): List<UserWithPlaylists>
+    fun getUsersWithPlaylists(): List<UserWithPlaylists>
 
     @Transaction
     @Query("SELECT * FROM User WHERE userId=:userId")
-    abstract fun getPlaylistsByUserId(userId: Long): UserWithPlaylists
+    fun getPlaylistsByUserId(userId: Long): UserWithPlaylists
 
     @Query("SELECT * FROM User")
-    abstract fun getAll(): List<User>
+    fun getAll(): List<User>
 
     @Query("SELECT * FROM User")
-    abstract fun get(): User
+    fun get(): User
 
     @Query("SELECT COUNT(*) FROM User")
-    abstract fun count(): Int
+    fun count(): Int
+
+    /**
+     * LiveData
+     */
+
+    @Query("SELECT * FROM User")
+    fun liveData(): LiveData<User>
+
+    @Transaction
+    @Query("SELECT * FROM User WHERE userId=:userId")
+    fun playlistsLiveData(userId: Long): LiveData<UserWithPlaylists>
 }

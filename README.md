@@ -34,7 +34,9 @@
 
 17、添加删除功能
 
-18、mainactivity逻辑调整，导航视图的，replace
+18、~~mainactivity逻辑调整，导航视图的，replace~~
+
+19、~~重建后的recyclerview Item是没有transName的 所以在onbind要重新复制一遍 动画效果才会有~~
 
 ##### RTMP网络电视
 

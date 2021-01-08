@@ -1,5 +1,6 @@
 package com.bytebyte6.base
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -33,6 +34,16 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         logd("onDestroy")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        logd("onActivityResult")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        logd("onRestart")
     }
 }
 

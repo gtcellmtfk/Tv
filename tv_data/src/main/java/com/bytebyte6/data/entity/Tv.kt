@@ -3,46 +3,50 @@ package com.bytebyte6.data.entity
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.room.*
-import com.bytebyte6.data.model.Country
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(
     indices = [
-        Index(value = ["tvId"])
+        Index(value = ["tvId"], unique = true),
+        Index(value = ["url"], unique = true)
     ]
 )
 data class Tv(
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tvId")
-    val tvId: Long = 0,
-    var url: String,
-    var category: String = "Other",
+    var tvId: Long = 0,
+
+    @ColumnInfo(name = "url")
+    var url: String = "",
+
+    @ColumnInfo(name = "category")
+    var category: String = "",
+
+    @ColumnInfo(name = "logo")
     var logo: String = "",
+
+    @ColumnInfo(name = "name")
     var name: String = "",
+
+    @ColumnInfo(name = "language")
     var language: List<Language> = emptyList(),
-    @Embedded var country: Country = Country()
+
+    @Ignore
+    var country: Country = Country(),
+
+    @ColumnInfo(name = "countryId")
+    var countryId: Long = 0,
+
+    @ColumnInfo(name = "countryName")
+    var countryName: String = country.name
+
 ) : Parcelable {
     companion object {
         const val TAG = "Tv"
-        fun init(list: List<Tv>): List<Tv> {
-            return list.apply {
-                map {
-                    if (it.category.isEmpty()) {
-                        it.category = "Other"
-                    }
-                    if (it.language.isEmpty()) {
-                        it.language = mutableListOf(Language("Other"))
-                    }
-                    if (it.country.countryName.isEmpty()) {
-                        it.country.countryName = "Other"
-                    }
-                }
-            }
-        }
     }
-
 }
 
 object TvDiff : DiffUtil.ItemCallback<Tv>() {

@@ -5,7 +5,10 @@ import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 
 @Dao
-abstract class PlaylistTvCrossRefDao : BaseDao<PlaylistTvCrossRef>
+interface PlaylistTvCrossRefDao : BaseDao<PlaylistTvCrossRef>
 
 @Dao
-abstract class UserPlaylistCrossRefDao : BaseDao<UserPlaylistCrossRef>
+interface UserPlaylistCrossRefDao : BaseDao<UserPlaylistCrossRef>
+
+//@Dao
+//interface TvAndCountryCrossRefDao : BaseDao<TvAndCountry>

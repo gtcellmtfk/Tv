@@ -18,14 +18,13 @@ val viewModule: Module = module {
     factory<Player> { SimpleExoPlayer.Builder(androidApplication()).build() }
     factory { CreateUserUseCase(get(UserDao::class)) }
     factory { SearchTvUseCase(get()) }
-    factory { CallTvApiUseCase(get(), get()) }
-    factory { AppInitUseCase(get(), get(), get(), androidApplication()) }
-    factory { PlaylistByUserIdUseCase(get(UserDao::class)) }
+    factory { TvRefreshUseCase(get(), get()) }
+    factory { AppInitUseCase(get(), get(), get(),androidApplication()) }
     factory { ParseM3uUseCase(get(), get(), get(), get(), get(), get()) }
-    viewModel { VideoListViewModel(get()) }
+    viewModel { VideoListViewModel(get(),get()) }
     viewModel { VideoViewModel() }
     viewModel { SearchViewModel(get()) }
     viewModel { MeViewModel(get(), get(), get()) }
     viewModel { LauncherViewModel(get(),get()) }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(),get()) }
 }

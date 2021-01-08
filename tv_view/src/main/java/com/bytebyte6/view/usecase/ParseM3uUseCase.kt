@@ -2,7 +2,7 @@ package com.bytebyte6.view.usecase
 
 import android.content.Context
 import android.net.Uri
-import com.bytebyte6.data.RxUseCase
+import com.bytebyte6.data.RxSingleUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
@@ -19,7 +19,7 @@ class ParseM3uUseCase(
     private val playlistCrossRefDao: PlaylistTvCrossRefDao,
     private val playlistDao: PlaylistDao,
     private val context: Context
-) : RxUseCase<Uri, Long>() {
+) : RxSingleUseCase<Uri, Long>() {
     var playlistName: String = ""
     override fun getSingle(param: Uri): Single<Long> {
         return Single.create { emitter ->
@@ -41,7 +41,7 @@ class ParseM3uUseCase(
             userPlaylistCrossRefDao.insert(userPlaylistCrossRef)
 
             //2、tv对象关联播放列表
-            val tvIds = tvDao.insert(Tv.init(tvs))
+            val tvIds = tvDao.insert(tvs)
             val playlistTvCrossRefs = mutableListOf<PlaylistTvCrossRef>()
             for (tvId in tvIds) {
                 val playlistTvCrossRef = PlaylistTvCrossRef(playlistId, tvId)

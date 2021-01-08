@@ -2,16 +2,15 @@ package com.bytebyte6.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.data.entity.TvWithPlaylists
 import com.bytebyte6.data.model.Languages
-import io.reactivex.rxjava3.core.Single
-import org.jetbrains.annotations.TestOnly
-
-const val PAGE_SIZE = 100
+import com.bytebyte6.data.model.CountryWithTvs
+import com.bytebyte6.data.model.TvWithPlaylists
 
 @Dao
 interface TvDao : BaseDao<Tv>{
+
     @Transaction
     @Query("SELECT * FROM Tv")
     fun getTvsWithPlaylists(): List<TvWithPlaylists>
@@ -25,12 +24,13 @@ interface TvDao : BaseDao<Tv>{
     @Query("SELECT DISTINCT language FROM Tv ORDER BY language ASC ")
     fun liveDataByAllLanguage(): LiveData<List<Languages>>
 
-    @Query("SELECT DISTINCT countryName FROM Tv ORDER BY countryName ASC")
+    @Query("SELECT DISTINCT name FROM Tv ORDER BY name ASC")
     fun liveDataByAllCountry(): LiveData<List<String>>
 
     @Query("SELECT COUNT(tvId) FROM Tv")
     fun count(): Int
 
     @Query("SELECT * FROM Tv")
-    fun get(): List<Tv>
+    fun getList(): List<Tv>
+
 }

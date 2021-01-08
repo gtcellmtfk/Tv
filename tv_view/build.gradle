@@ -39,6 +39,7 @@ dependencies {
 
     api project(path: ':tv_data')
     implementation project(path: ':shareTest')
+    implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
     def exoplayer="2.12.2"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayer"

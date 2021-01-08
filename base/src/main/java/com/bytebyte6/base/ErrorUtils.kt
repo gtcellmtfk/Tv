@@ -7,6 +7,7 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
+import javax.net.ssl.SSLHandshakeException
 
 object ErrorUtils {
     fun getMessage(e: Throwable?): Int {
@@ -20,7 +21,7 @@ object ErrorUtils {
             R.string.data_parse_error
         } else if (e is SocketException) {
             R.string.network_connect_error
-        } else if (e is UnknownHostException) {
+        } else if (e is UnknownHostException || e is SSLHandshakeException) {
             R.string.network_un_connected
         } else if (e is SocketTimeoutException) {
             R.string.network_timeout

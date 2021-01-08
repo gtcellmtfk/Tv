@@ -2,6 +2,8 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.room.Room
+import com.bytebyte6.data.work.AppDelegatingWorkerFactory
+import com.bytebyte6.data.work.CountryImageSearch
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +29,12 @@ val dataModule = module {
     single { get(AppDatabase::class.java).userDao() }
 
     single { get(AppDatabase::class.java).playlistDao() }
+
+    single { get(AppDatabase::class.java).countryDao() }
+
+    single { AppDelegatingWorkerFactory(get()) }
+
+    single { CountryImageSearch(get()) }
 
     single { get(AppDatabase::class.java).playlistTvCrossRefDao() }
 

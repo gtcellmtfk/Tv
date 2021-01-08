@@ -10,6 +10,7 @@ import com.bytebyte6.data.entity.*
     entities = [
         Tv::class,
         TvFts::class,
+        Country::class,
         Playlist::class,
         PlaylistTvCrossRef::class,
         User::class,
@@ -19,6 +20,7 @@ import com.bytebyte6.data.entity.*
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tvDao(): TvDao
+    abstract fun countryDao(): CountryDao
     abstract fun tvFtsDao(): TvFtsDao
     abstract fun userDao(): UserDao
     abstract fun playlistDao(): PlaylistDao

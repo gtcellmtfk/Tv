@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.BaseFragment
-import com.bytebyte6.base.ErrorUtils
-import com.bytebyte6.base.Message
+import com.bytebyte6.base.*
 import com.bytebyte6.base.mvi.isError
 import com.bytebyte6.base.mvi.isLoading
-import com.bytebyte6.base.showSnack
 import com.bytebyte6.view.*
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -57,15 +55,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 TabAdapter(this@HomeFragment)
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
-                    TAB_COUNTRY -> tab.setText(
-                        R.string.home_country
-                    )
-                    TAB_LANGUAGE -> tab.setText(
-                        R.string.home_language
-                    )
-                    TAB_CATEGORY -> tab.setText(
-                        R.string.home_category
-                    )
+                    TAB_COUNTRY -> tab.setText(R.string.home_country)
+                    TAB_LANGUAGE -> tab.setText(R.string.home_language)
+                    TAB_CATEGORY -> tab.setText(R.string.home_category)
                 }
             }.attach()
 
@@ -83,7 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = (it as List<*>).size
                 })
 
-                callTvApi.observe(viewLifecycleOwner, Observer {
+                tvRefresh.observe(viewLifecycleOwner, EventObserver {
                     swipeRefreshLayout.isRefreshing = it.isLoading()
                     it.isError()?.apply {
                         showSnack(

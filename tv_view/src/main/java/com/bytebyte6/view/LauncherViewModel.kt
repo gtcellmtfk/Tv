@@ -2,6 +2,7 @@ package com.bytebyte6.view
 
 import androidx.lifecycle.LiveData
 import com.bytebyte6.base.BaseViewModel
+import com.bytebyte6.base.Event
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
@@ -13,16 +14,13 @@ class LauncherViewModel(
     private val appInitUseCase: AppInitUseCase
 ) : BaseViewModel() {
 
-
-    fun init(): LiveData<Result<List<Tv>>> {
+    fun init(): LiveData<Event<Result<List<Tv>>>> {
         addDisposable(
             createUserUseCase.execute(User(name = "Admin"))
         )
         addDisposable(
             appInitUseCase.execute("init")
         )
-        return appInitUseCase.liveData()
+        return appInitUseCase.eventLiveData()
     }
-
-
 }

@@ -6,10 +6,10 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseFragment
+import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.KeyboardUtils
-import com.bytebyte6.base.mvi.success
+import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.view.KEY_TRANS_NAME
 import com.bytebyte6.view.R
@@ -49,7 +49,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
             setupToolbar { KeyboardUtils.hideSoftInput(requireActivity()) }
 
-            etSearch.doOnTextChanged { text, start, before, count ->
+            etSearch.doOnTextChanged { text, _, _, _ ->
                 viewModel.search(text)
             }
 
@@ -61,8 +61,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             }
 
             recyclerView.adapter = adapter
-            viewModel.tvs.observe(viewLifecycleOwner, Observer {
-                it.success()?.apply {
+            viewModel.tvs.observe(viewLifecycleOwner, EventObserver {
+                it.isSuccess()?.apply {
                     adapter.submitList(this)
                     lavEmpty.isVisible = isEmpty()
                 }

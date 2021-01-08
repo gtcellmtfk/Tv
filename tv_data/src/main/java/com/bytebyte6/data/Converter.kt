@@ -17,6 +17,8 @@ class Converter {
 
     private val type = object : TypeToken<List<Language>>() {}.type
 
+    private val stype = object : TypeToken<List<String>>() {}.type
+
     @TypeConverter
     fun toList(json: String): List<Language> {
         return gson.fromJson(json, type)
@@ -26,6 +28,17 @@ class Converter {
     fun toJson(list: List<Language>): String {
         return gson.toJson(list)
     }
+
+    @TypeConverter
+    fun jsonToStringList(json: String): List<String> {
+        return gson.fromJson(json, stype)
+    }
+
+    @TypeConverter
+    fun stringListToJson(list: List<String>): String {
+        return gson.toJson(list)
+    }
+
 
     fun getTvs(context: Context): List<Tv> {
         val json: String = context.assets.open("channels.json")

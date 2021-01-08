@@ -9,6 +9,6 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowActivityTransitions">true</item>
         <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialog.Round.Top</item>
-        <item name="android:windowBackground">@drawable/diyfinsh</item>
+        <item name="android:windowBackground">@color/purple_200</item>
     </style>
 </resources>

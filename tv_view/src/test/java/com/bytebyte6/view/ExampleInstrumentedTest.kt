@@ -11,13 +11,16 @@ import java.io.FileNotFoundException
  */
 
 class ExampleInstrumentedTest {
+
+
     @Test
     fun useAppContext() {
-        get("").subscribe({
-
-        }, {
-            it.printStackTrace()
-        })
+        val res=Result.success("")
+//        get("").subscribe({
+//
+//        }, {
+//            it.printStackTrace()
+//        })
     }
 
     fun get(string: String): Single<String> {

@@ -24,7 +24,7 @@ data class TvFts(
                 logo = fts.logo,
                 name = fts.name,
                 url = fts.url,
-                tvId = 0
+                tvId = fts.tvId
             )
         }
 

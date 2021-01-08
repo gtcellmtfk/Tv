@@ -5,22 +5,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T,V:RecyclerView.ViewHolder>(diffUtil: DiffUtil.ItemCallback<T>) :
-    ListAdapter<T,V>(diffUtil) {
+abstract class BaseAdapter<T, V : RecyclerView.ViewHolder>(diffUtil: DiffUtil.ItemCallback<T>) :
+    ListAdapter<T, V>(diffUtil) {
 
-    private var onItemClick: ((pos:Int, view:View) -> Unit)? = null
+    private var onItemClick: ((pos: Int, view: View) -> Unit)? = null
 
-    fun setOnItemClick(onItemClick: ((pos:Int, view:View) -> Unit)) {
+    fun setOnItemClick(onItemClick: ((pos: Int, view: View) -> Unit)) {
         this.onItemClick = onItemClick
-    }
-
-    fun getData(pos:Int):T{
-        return currentList[pos]
     }
 
     override fun onBindViewHolder(holder: V, position: Int) {
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(position,it)
+            onItemClick?.invoke(position, holder.itemView)
         }
     }
 }

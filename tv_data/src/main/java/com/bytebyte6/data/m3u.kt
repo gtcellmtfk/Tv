@@ -10,10 +10,6 @@ private val urlRegex = Regex(urlPattern)
 private const val logoPattern = "(?<=tvg-logo=\").*?(?=\")"
 private val logoRegex = Regex(logoPattern)
 
-fun String.m3uToIpTvs(): List<Tv> {
-    return File(this).m3uToIpTvs()
-}
-
 fun InputStream.toTvs():List<Tv>{
     val containNameAndUrlList = this.readBytes().commonToUtf8String().split("#EXTINF:")
     val list = mutableListOf<Tv>()
@@ -40,6 +36,10 @@ fun InputStream.toTvs():List<Tv>{
         }
     }
     return list
+}
+
+fun String.m3uToIpTvs(): List<Tv> {
+    return File(this).m3uToIpTvs()
 }
 
 fun File.m3uToIpTvs(): List<Tv> {

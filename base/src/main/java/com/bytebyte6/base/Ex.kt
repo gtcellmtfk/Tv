@@ -2,8 +2,11 @@ package com.bytebyte6.base
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -53,4 +56,17 @@ fun Activity.showSnack(
     listener: View.OnClickListener?
 ) {
     baseContext.showSnack(view, it, listener)
+}
+
+fun navigationItemBackground(context: Context): Drawable? {
+    var background =
+        AppCompatResources.getDrawable(context, R.drawable.navigation_item_background)
+    if (background != null) {
+        val tint = AppCompatResources.getColorStateList(
+            context, R.color.navigation_item_background_tint
+        )
+        background = DrawableCompat.wrap(background.mutate())
+        background.setTintList(tint)
+    }
+    return background
 }
