@@ -1,6 +1,8 @@
-include ':shareTest'
-include ':base'
-include ':tv_view'
-include ':tv_data'
-include ':tv_app'
+include ':app_ui'
+include ':lib_ui'
+include ':lib_test'
+include ':lib_dependency'
+include ':app_tv_view'
+include ':app_tv_model'
+include ':app_tv'
 rootProject.name = "ByteByte"
