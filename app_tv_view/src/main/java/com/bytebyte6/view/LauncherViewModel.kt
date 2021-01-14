@@ -3,15 +3,15 @@ package com.bytebyte6.view
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.Event
-import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
+import com.bytebyte6.data.onIo
 import com.bytebyte6.view.usecase.CreateUserUseCase
 import com.bytebyte6.view.usecase.InitDataUseCase
+import java.util.concurrent.TimeUnit
 
 class LauncherViewModel(
     private val initDataUseCase: InitDataUseCase,
@@ -35,15 +35,16 @@ class LauncherViewModel(
     }
 
     init {
+        //1、没有用户就创建用户
         addDisposable(
-            createUserUseCase.execute(User(name = "Admin"))
+            createUserUseCase.execute(User(name = "Admin")).onIo()
         )
         createUserUseCase.result().observeForever(eventObserver)
     }
 
     fun init(): LiveData<Result<List<Tv>>> {
         addDisposable(
-            initDataUseCase.execute("init")
+            initDataUseCase.execute("init").onIo()
         )
         return initDataUseCase.result()
     }

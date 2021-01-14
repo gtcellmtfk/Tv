@@ -2,6 +2,7 @@ package com.bytebyte6.view.search
 
 import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base_ui.BaseViewModel
+import com.bytebyte6.data.onIo
 import com.bytebyte6.view.usecase.SearchTvUseCase
 import com.bytebyte6.view.usecase.TvLogoSearchUseCase
 
@@ -15,7 +16,7 @@ class SearchViewModel(
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
             addDisposable(
-                searchTvUseCase.execute(key.toString())
+                searchTvUseCase.execute(key.toString()).onIo()
             )
         }
     }
@@ -25,7 +26,7 @@ class SearchViewModel(
             this.isSuccess()?.apply {
                 val tvId= this[pos].tvId
                 addDisposable(
-                    tvLogoSearchUseCase.execute(tvId)
+                    tvLogoSearchUseCase.execute(tvId).onIo()
                 )
             }
         }

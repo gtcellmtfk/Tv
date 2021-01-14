@@ -20,42 +20,39 @@ class InitDataUseCase(
     private val countryDao: CountryDao,
     private val userDao: UserDao,
     private val context: Context,
-    private val gson:Gson
+    private val gson: Gson
 ) : RxSingleUseCase<String, List<Tv>>() {
-    override fun getSingle(param: String): Single<List<Tv>> {
-        return Single.create<List<Tv>> { emitter ->
-            if (tvDao.getCount() == 0) {
-                val tvs = getTvs(context)
-                val cs = mutableSetOf<Country>()
-                tvs.forEach {
-                    if (it.language.isEmpty()) {
-                        it.language = mutableListOf(Language("Other", "777"))
-                    }
-                    if (it.category.isEmpty()) {
-                        it.category = "Other"
-                    }
-                    it.countryName = it.country.name
-                    cs.add(it.country)
+
+    override fun doSomething(param: String): List<Tv> {
+        if (tvDao.getCount() == 0) {
+            val tvs = getTvs(context)
+            val cs = mutableSetOf<Country>()
+            tvs.forEach {
+                if (it.language.isEmpty()) {
+                    it.language = mutableListOf(Language("Other", "777"))
                 }
-                countryDao.insert(cs.toList())
-                val newTvs = tvs.map {
-                    val name = it.country.name
-                    if (name.isNotEmpty()) {
-                        it.countryId = countryDao.getIdByName(name)
-                    }
-                    it
+                if (it.category.isEmpty()) {
+                    it.category = "Other"
                 }
-                tvDao.insert(newTvs)
+                it.countryName = it.country.name
+                cs.add(it.country)
             }
-
-
-            if (userDao.getUser().capturePic) {
-                findImageLink()
+            countryDao.insert(cs.toList())
+            val newTvs = tvs.map {
+                val name = it.country.name
+                if (name.isNotEmpty()) {
+                    it.countryId = countryDao.getIdByName(name)
+                }
+                it
             }
-
-            emitter.onSuccess(emptyList())
+            tvDao.insert(newTvs)
         }
-            .delay(1, TimeUnit.SECONDS)
+
+        if (userDao.getUser().capturePic) {
+            findImageLink()
+        }
+
+        return emptyList()
     }
 
     private fun findImageLink() {

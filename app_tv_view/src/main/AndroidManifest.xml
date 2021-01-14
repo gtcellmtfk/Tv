@@ -18,19 +18,19 @@
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove" />
+            tools:node="remove"
+            android:exported="false" />
 
         <activity
             android:name=".player.PlayerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" />
+
         <activity
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Rtmp"
             android:name="com.bytebyte6.view.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"/>
 
-        </activity>
         <activity
             android:theme="@style/Theme.Launcher"
             android:name=".LauncherActivity" >

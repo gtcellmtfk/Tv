@@ -12,6 +12,7 @@ import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.UserWithPlaylists
+import com.bytebyte6.data.onIo
 import com.bytebyte6.view.usecase.DeletePlaylistUseCase
 import com.bytebyte6.view.usecase.ParseM3uUseCase
 import com.bytebyte6.view.usecase.TvLogoSearchUseCase
@@ -40,7 +41,7 @@ class MeViewModel(
 
     fun searchLogo(pos: Int) {
         addDisposable(
-            tvLogoSearchUseCase.execute(tvs[pos].tvId)
+            tvLogoSearchUseCase.execute(tvs[pos].tvId).onIo()
         )
     }
 
@@ -57,7 +58,7 @@ class MeViewModel(
 
     fun parseM3u(it: Uri) {
         addDisposable(
-            parseM3uUseCase.execute(it)
+            parseM3uUseCase.execute(it).onIo()
         )
     }
 
@@ -71,7 +72,7 @@ class MeViewModel(
             selectedPos.forEach {
                 playlist.add(userWithPlaylist.playlists[it.toInt()])
             }
-            addDisposable(deletePlaylistUseCase.execute(playlist))
+            addDisposable(deletePlaylistUseCase.execute(playlist).onIo())
         }
     }
 }

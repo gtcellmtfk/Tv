@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface TvFtsDao {
     @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key ")
-    fun search(key: String): Single<List<TvFts>>
+    fun search(key: String): List<TvFts>
 
     @Query("SELECT COUNT(*) FROM TvFts WHERE TvFts MATCH :key ")
     fun getCount(key: String): Int

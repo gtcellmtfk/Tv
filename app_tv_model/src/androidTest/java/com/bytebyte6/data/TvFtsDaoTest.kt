@@ -78,16 +78,6 @@ class TvFtsDaoTest : KoinTest {
     }
 
     @Test
-    fun test_search() {
-        tvFtsDao.search("CHINA")
-            .subscribe({
-                assert(it.size == map["CHINA"])
-            }, {
-                it.printStackTrace()
-            })
-    }
-
-    @Test
     fun test_getCount() {
         assert(map["CHINA"] == tvFtsDao.getCount("CHINA"))
         assert(map["US"] == tvFtsDao.getCount("US"))
@@ -107,5 +97,7 @@ class TvFtsDaoTest : KoinTest {
             )
         }
         assert(list.size == count)
+        assert(list.size == map["CHINA"])
+        assert(count == map["CHINA"])
     }
 }

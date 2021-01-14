@@ -58,12 +58,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val enter = MaterialFadeThrough()
-
-        window.enterTransition = enter
-
-        window.allowEnterTransitionOverlap = true
-
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)

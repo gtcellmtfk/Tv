@@ -6,10 +6,8 @@ import com.bytebyte6.data.entity.User
 import io.reactivex.rxjava3.core.Single
 
 class UpdateUserUseCase(private val userDao: UserDao) : RxSingleUseCase<User,Boolean> (){
-    override fun getSingle(param: User): Single<Boolean> {
-        return Single.create{
-            userDao.update(param)
-            it.onSuccess(true)
-        }
+    override fun doSomething(param: User): Boolean {
+        userDao.update(param)
+        return (true)
     }
 }

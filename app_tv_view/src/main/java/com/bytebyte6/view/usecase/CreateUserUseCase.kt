@@ -8,12 +8,11 @@ import io.reactivex.rxjava3.core.Single
 class CreateUserUseCase(
     private val userDao: UserDao
 ) : RxSingleUseCase<User, User>() {
-    override fun getSingle(param: User): Single<User> {
-        return Single.create {
-            if (userDao.getCount() == 0) {
-                userDao.insert(param)
-            }
-            it.onSuccess(userDao.getUser())
+
+    override fun doSomething(param: User): User {
+        if (userDao.getCount() == 0) {
+            userDao.insert(param)
         }
+        return userDao.getUser()
     }
 }

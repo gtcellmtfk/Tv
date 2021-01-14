@@ -9,17 +9,15 @@ class TvLogoSearchUseCase(
     private val imageSearch: ImageSearch,
     private val tvDao: TvDao
 ) : RxSingleUseCase<Long, Boolean>() {
-    override fun getSingle(tvId: Long): Single<Boolean> {
-        return Single.create { emitter ->
-            val tv = tvDao.getTv(tvId)
-            if (tv.logo.isEmpty()) {
-                val logos = imageSearch.search(tv.name)
-                if (logos.isNotEmpty()) {
-                    tv.logo = logos[0]
-                    tvDao.insert(tv)
-                }
+    override fun doSomething(param: Long): Boolean {
+        val tv = tvDao.getTv(param)
+        if (tv.logo.isEmpty()) {
+            val logos = imageSearch.search(tv.name)
+            if (logos.isNotEmpty()) {
+                tv.logo = logos[0]
+                tvDao.insert(tv)
             }
-            emitter.onSuccess(true)
         }
+        return (true)
     }
 }

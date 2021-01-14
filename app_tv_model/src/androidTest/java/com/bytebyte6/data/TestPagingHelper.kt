@@ -91,8 +91,7 @@ class TestPagingHelper : KoinTest {
 
         //数据刚好加载完成
         for (i in 0 until pageCount) {
-            pagingHelper.loadData()
-            assert(pagingHelper.getPage()==i+1)
+            pagingHelper.loadData().subscribe()
         }
         assert(pagingHelper.getPage()==pageCount)
 

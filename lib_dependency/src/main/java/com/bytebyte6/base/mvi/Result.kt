@@ -17,32 +17,32 @@ sealed class Result<out R> {
 }
 
 fun <T> Result<T>.branch(
-    Success: (() -> Unit)? = null,
-    Error: (() -> Unit)? = null,
-    Loading: (() -> Unit)? = null
+    success: ((s: Result.Success<T>) -> Unit)? = null,
+    error: ((e: Result.Error) -> Unit)? = null,
+    loading: ((l: Result.Loading) -> Unit)? = null
 ) {
     when (this) {
         is Result.Success -> {
-            Success?.invoke()
+            success?.invoke(this)
         }
         is Result.Error -> {
-            Error?.invoke()
+            error?.invoke(this)
         }
         is Result.Loading -> {
-            Loading?.invoke()
+            loading?.invoke(this)
         }
     }
 }
 
 fun <T> Result<T>.branchIfNotHandled(
-    Success: (() -> Unit)? = null,
-    Error: (() -> Unit)? = null,
-    Loading: (() -> Unit)? = null
+    success: ((s: Result.Success<T>) -> Unit)? = null,
+    error: ((e: Result.Error) -> Unit)? = null,
+    loading: ((l: Result.Loading) -> Unit)? = null
 ) {
     when (this) {
-        is Result.Success -> this.doSomethingIfNotHandled { Success?.invoke() }
-        is Result.Error -> this.doSomethingIfNotHandled { Error?.invoke() }
-        is Result.Loading -> this.doSomethingIfNotHandled { Loading?.invoke() }
+        is Result.Success -> this.doSomethingIfNotHandled { success?.invoke(this) }
+        is Result.Error -> this.doSomethingIfNotHandled { error?.invoke(this) }
+        is Result.Loading -> this.doSomethingIfNotHandled { loading?.invoke(this) }
     }
 }
 

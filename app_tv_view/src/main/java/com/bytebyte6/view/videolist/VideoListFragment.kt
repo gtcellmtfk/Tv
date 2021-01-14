@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.mvi.branch
 import com.bytebyte6.base.mvi.doSomethingIfNotHandled
 import com.bytebyte6.base_ui.*
 import com.bytebyte6.base_ui.databinding.FragmentListBinding
@@ -59,29 +59,29 @@ class VideoListFragment : ListFragment() {
             toolbar.subtitle = getString(R.string.total, it)
         })
 
-        viewModel.tvs.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Result.Success -> {
+        viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
+            result.branch(
+                {
                     adapter.submitList(TvFts.toIpTvs(it.data))
                     end = it.end
                     it.doSomethingIfNotHandled {
                         hideSwipeRefresh()
                         hideProgress()
                     }
-                }
-                is Result.Error -> {
+                },
+                {
                     it.doSomethingIfNotHandled {
                         showSnack(view, Message(message = it.error.message.toString()))
                         hideSwipeRefresh()
                         hideProgress()
                     }
-                }
-                is Result.Loading -> {
+                },
+                {
                     it.doSomethingIfNotHandled {
                         showProgress()
                     }
                 }
-            }
+            )
         })
     }
 

@@ -8,8 +8,8 @@ import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.ErrorUtils
-import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base.mvi.doSomethingIfNotHandled
+import com.bytebyte6.base.mvi.branchIfNotHandled
+import com.bytebyte6.base.mvi.isLoading
 import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
@@ -95,31 +95,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
                 })
 
-                tvRefresh.observe(viewLifecycleOwner, Observer {
-                    when (it) {
-                        is Result.Success -> {
-                            it.doSomethingIfNotHandled {
-                                swipeRefreshLayout.isRefreshing = false
-                            }
+                tvRefresh.observe(viewLifecycleOwner, Observer { result ->
+                    result.branchIfNotHandled(
+                        {
+                            swipeRefreshLayout.isRefreshing = false
+                        },
+                        {
+                            swipeRefreshLayout.isRefreshing = false
+                            showSnack(view, Message(id = ErrorUtils.getMessage(it.error)))
+                        },
+                        {
+                            swipeRefreshLayout.isRefreshing = true
                         }
-                        is Result.Loading -> {
-                            it.doSomethingIfNotHandled {
-                                swipeRefreshLayout.isRefreshing = true
-                            }
-                        }
-                        is Result.Error -> {
-                            it.doSomethingIfNotHandled {
-                                showSnack(
-                                    view,
-                                    Message(
-                                        id = ErrorUtils.getMessage(
-                                            it.error
-                                        )
-                                    )
-                                )
-                            }
-                        }
-                    }
+                    )
                 })
             }
 

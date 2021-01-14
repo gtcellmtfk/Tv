@@ -5,8 +5,8 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.base.mvi.Result
+import io.reactivex.rxjava3.core.Single
 import kotlinx.android.parcel.Parcelize
-import java.util.concurrent.Executors
 
 @Parcelize
 data class PageResponse<T : Parcelable>(
@@ -39,11 +39,6 @@ abstract class PagingHelper<T> {
     private val result = MutableLiveData<Result<List<T>>>()
     private var page = 0
     private var list = mutableListOf<T>()
-    private val service = Executors.newSingleThreadExecutor()
-
-    init {
-        loadData()
-    }
 
     fun result(): LiveData<Result<List<T>>> = result
 
@@ -53,28 +48,30 @@ abstract class PagingHelper<T> {
 
     fun getList() = list
 
-    fun loadData() {
-        service.execute {
+    fun loadData(): Single<Result<List<T>>> {
+        return Single.create<Result<List<T>>> {
             try {
-                result.postValue((Result.Loading()))
                 if (list.size < count()) {
                     list.addAll(paging(offset = page * PAGE_SIZE))
                     page++
-                    result.postValue((Result.Success(list, list.size >= count())))
+                    it.onSuccess(Result.Success(list, list.size >= count()))
                 } else {
-                    result.postValue((Result.Success(list, true)))
+                    it.onSuccess((Result.Success(list, true)))
                 }
             } catch (e: Exception) {
-                result.postValue((Result.Error(e)))
+                it.onError(e)
             }
         }
+            .doOnSubscribe { result.postValue((Result.Loading())) }
+            .doOnSuccess { result.postValue(it) }
+            .doOnError { result.postValue(Result.Error(it)) }
     }
 
-    fun refresh() {
+    fun refresh(): Single<Result<List<T>>> {
         page = 0
         list.clear()
         list = mutableListOf()
-        loadData()
+        return loadData()
     }
 
     @WorkerThread

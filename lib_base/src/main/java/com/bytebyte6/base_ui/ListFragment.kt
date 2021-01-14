@@ -20,6 +20,7 @@ abstract class ListFragment : BaseFragment<FragmentListBinding>(R.layout.fragmen
     lateinit var linearProgressIndicator: LinearProgressIndicator
     lateinit var emptyBox: LottieAnimationView
     lateinit var appBarLayout: AppBarLayout
+    //是否已经加载全部数据
     var end = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

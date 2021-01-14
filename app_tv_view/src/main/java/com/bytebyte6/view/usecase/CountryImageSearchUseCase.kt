@@ -10,18 +10,17 @@ class CountryImageSearchUseCase(
     private val imageSearch: ImageSearch,
     private val countryDao: CountryDao
 ) : RxSingleUseCase<Country, Boolean>() {
-    override fun getSingle(country: Country): Single<Boolean> {
-        return Single.create { emitter ->
-            if (country.images.isEmpty() && country.name.isNotEmpty()) {
-                val images = imageSearch.search(
-                    country.name
-                        .replace(" ", "+")
-                        .plus("+flag+国旗")
-                )
-                country.images = images
-                countryDao.insert(country)
-            }
-            emitter.onSuccess(true)
+
+    override fun doSomething(param: Country): Boolean {
+        if (param.images.isEmpty() && param.name.isNotEmpty()) {
+            val images = imageSearch.search(
+                param.name
+                    .replace(" ", "+")
+                    .plus("+flag+国旗")
+            )
+            param.images = images
+            countryDao.insert(param)
         }
+        return true
     }
 }
