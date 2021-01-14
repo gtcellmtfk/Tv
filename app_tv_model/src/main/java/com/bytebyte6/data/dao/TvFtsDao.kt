@@ -12,15 +12,16 @@ interface TvFtsDao {
     @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key ")
     fun search(key: String): Single<List<TvFts>>
 
-    @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key ")
-    fun searchLiveData(key: String): LiveData<List<TvFts>>
-
     @Query("SELECT COUNT(*) FROM TvFts WHERE TvFts MATCH :key ")
-    fun count(key: String): Int
-
-    @Query("SELECT COUNT(*) FROM TvFts WHERE TvFts MATCH :key ")
-    fun countLiveData(key: String): LiveData<Int>
+    fun getCount(key: String): Int
 
     @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key LIMIT $PAGE_SIZE OFFSET :offset")
     fun paging(offset: Int, key: String): List<TvFts>
+
+    /**
+     * LiveData
+     */
+
+    @Query("SELECT COUNT(*) FROM TvFts WHERE TvFts MATCH :key ")
+    fun count(key: String): LiveData<Int>
 }

@@ -32,8 +32,6 @@ class TvDaoTest : KoinTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    val converter by inject(Converter::class.java)
-
     @Before
     fun createDb() {
         context = ApplicationProvider.getApplicationContext<Context>()
@@ -50,7 +48,7 @@ class TvDaoTest : KoinTest {
 
     @Test
     fun testPaging() {
-        val count = tvDao.count()
+        val count = tvDao.getCount()
         assert(count != 0)
 
         val all = mutableListOf<Tv>()
@@ -68,38 +66,38 @@ class TvDaoTest : KoinTest {
     @Test
     @Throws(Exception::class)
     fun testReplaceSameUrl() {
-        val allForTest1 = tvDao.getList()
+        val allForTest1 = tvDao.getTvs()
         val tv =
             Tv(url = "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/a.m3u8", name = "D")
         val list = mutableListOf(tv)
         tvDao.insert(list)
-        val allForTest2 = tvDao.getList()
+        val allForTest2 = tvDao.getTvs()
         assert(allForTest2 != allForTest1)
     }
 
     @Test
     @Throws(Exception::class)
     fun testReplaceUrl() {
-        var allForTest = tvDao.getList()
+        var allForTest = tvDao.getTvs()
         allForTest[0].url = "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8"
         tvDao.insert(allForTest)
-        allForTest = tvDao.getList()
+        allForTest = tvDao.getTvs()
         assert(allForTest[0].url == "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8")
     }
 
     @Test
     @Throws(Exception::class)
     fun testReplaceName() {
-        var allForTest = tvDao.getList()
+        var allForTest = tvDao.getTvs()
         allForTest[0].name = "D"
         tvDao.insert(allForTest)
-        allForTest = tvDao.getList()
+        allForTest = tvDao.getTvs()
         assert(allForTest[0].name == "D")
     }
 
     @Test
     @Throws(Exception::class)
     fun testInsertAll() {
-        assert(tvDao.count() == tvList.size)
+        assert(tvDao.getCount() == tvList.size)
     }
 }

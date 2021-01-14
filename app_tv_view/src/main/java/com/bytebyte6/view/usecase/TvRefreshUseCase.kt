@@ -12,13 +12,13 @@ import io.reactivex.rxjava3.core.Single
 class TvRefreshUseCase(private val api: TvApi, private val tvDao: TvDao) :
     RxSingleUseCase<String, Boolean>() {
     override fun getSingle(param: String): Single<Boolean> {
-        return api.getList().map { list ->
+        return api.getTvs().map { list ->
             tvDao.insert(list.map {
                 if (it.category.isEmpty()){
                     it.category="Other"
                 }
                 if (it.language.isEmpty()){
-                    it.language= mutableListOf(Language("Other"))
+                    it.language= mutableListOf(Language("Other","777"))
                 }
                 it.countryName = it.country.name
                 it

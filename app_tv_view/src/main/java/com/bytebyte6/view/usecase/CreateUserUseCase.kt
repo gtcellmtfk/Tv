@@ -7,13 +7,13 @@ import io.reactivex.rxjava3.core.Single
 
 class CreateUserUseCase(
     private val userDao: UserDao
-) : RxSingleUseCase<User, Boolean>() {
-    override fun getSingle(param: User): Single<Boolean> {
+) : RxSingleUseCase<User, User>() {
+    override fun getSingle(param: User): Single<User> {
         return Single.create {
-            if (userDao.count() == 0) {
+            if (userDao.getCount() == 0) {
                 userDao.insert(param)
             }
-            it.onSuccess(true)
+            it.onSuccess(userDao.getUser())
         }
     }
 }

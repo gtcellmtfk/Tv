@@ -17,7 +17,7 @@ import com.bytebyte6.data.entity.*
         UserPlaylistCrossRef::class
     ], version = 1, exportSchema = true
 )
-@TypeConverters(Converter::class)
+@TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tvDao(): TvDao
     abstract fun countryDao(): CountryDao

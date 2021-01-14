@@ -16,4 +16,11 @@
         android:icon="@drawable/ic_live_tv"
         android:title="@string/nav_me" />
 
+    <item
+        android:checkable="true"
+        app:showAsAction="ifRoom"
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/nav_setting" />
+
 </menu>

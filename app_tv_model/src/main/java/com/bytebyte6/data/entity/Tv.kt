@@ -1,18 +1,21 @@
 package com.bytebyte6.data.entity
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.DiffUtil
 import androidx.room.*
+import com.bytebyte6.data.model.Image
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(
     indices = [
-        Index(value = ["tvId"], unique = true),
-        Index(value = ["url"], unique = true)
+        Index(value = ["tvId"]),
+        Index(value = ["url"] , unique = true)
     ]
 )
+@Keep
 data class Tv(
 
     @PrimaryKey(autoGenerate = true)
@@ -20,7 +23,7 @@ data class Tv(
     var tvId: Long = 0,
 
     @ColumnInfo(name = "url")
-    var url: String = "",
+     var url: String = "",
 
     @ColumnInfo(name = "category")
     var category: String = "",
@@ -43,14 +46,14 @@ data class Tv(
     @ColumnInfo(name = "countryName")
     var countryName: String = country.name
 
-) : Parcelable {
-    companion object {
-        const val TAG = "Tv"
-    }
-}
+) : Parcelable , Image{
 
-object TvDiff : DiffUtil.ItemCallback<Tv>() {
-    override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean = oldItem.url == oldItem.url
+    override val title: String
+        get() = name
 
-    override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean = oldItem == oldItem
+    override val imageUrl: String
+        get() = logo
+
+    override val videoUrl: String
+        get() = url
 }

@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.base_ui.BaseFragment
-import com.bytebyte6.view.R
-import com.bytebyte6.view.TAB
-import com.bytebyte6.view.TAB_LANGUAGE
+import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.view.*
+import com.bytebyte6.view.card.CardAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
-import com.bytebyte6.view.showVideoListFragment
+import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class LanguageFragment :
@@ -18,26 +18,19 @@ class LanguageFragment :
         const val TAG = "ViewPagerFragment"
         fun newInstance(): LanguageFragment {
             return LanguageFragment().apply {
-                arguments = Bundle().apply { putInt(TAB, TAB_LANGUAGE) }
+                arguments = Bundle().apply {
+                    putInt(TAB, TAB_LANGUAGE)
+                }
             }
         }
     }
 
-    private val viewModel: HomeViewModel by sharedViewModel()
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        exitTransition = Hold()
-//    }
+    private val viewModel: HomeViewModel by lazy {
+        requireParentFragment().getViewModel<HomeViewModel>()
+    }
 
     override fun initBinding(view: View): FragmentRecyclerViewBinding =
         FragmentRecyclerViewBinding.bind(view).apply {
-//
-//            postponeEnterTransition()
-//
-//            view.doOnPreDraw { startPostponedEnterTransition() }
-//
-//            val tab = requireArguments().getInt(TAB)
 
             val cardAdapter = CardAdapter()
 
@@ -47,13 +40,10 @@ class LanguageFragment :
             }
 
             recyclerView.adapter = cardAdapter
-
-            cardAdapter.setupSelection(recyclerView)
+            recyclerView.addItemDecoration(LinearSpaceDecoration())
 
             viewModel.lang.observe(viewLifecycleOwner, Observer {
                 cardAdapter.submitList(it)
             })
         }
-
-
 }

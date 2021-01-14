@@ -6,22 +6,29 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.data.dao.CountryDao
-import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.work.CountryImageSearch
+import com.bytebyte6.data.entity.Country
+import com.bytebyte6.data.entity.Tv
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 
 @RunWith(AndroidJUnit4::class)
-class CountryDaoTest {
+class CountryDaoTest : KoinTest {
+
+    companion object {
+        const val CHINA = "China"
+        const val US = "US"
+    }
 
     private lateinit var db: AppDatabase
-    private lateinit var tvDao: TvDao
     private lateinit var countryDao: CountryDao
     private lateinit var context: Context
+    private val china = Country(name = CHINA)
+    private val us = Country(name = US)
 
     @get:Rule
     val koinTestRule = KoinTestRule.create {
@@ -33,30 +40,9 @@ class CountryDaoTest {
 
     @Before
     fun createDb() {
-        val converter = Converter()
         context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        tvDao = db.tvDao()
         countryDao = db.countryDao()
-
-        val tvs = converter.getTvs(context)
-
-        val cs = tvs.map {
-            it.country
-        }
-
-        val defaultImageSearch= CountryImageSearch(cs)
-
-        countryDao.insert(defaultImageSearch.doThatShit())
-
-        tvs.forEach {
-            val countryName = it.country.name
-            if (countryName.isNotEmpty()) {
-                it.countryId = countryDao.getIdByName(countryName)
-            }
-        }
-
-        tvDao.insert(tvs)
     }
 
     @After
@@ -65,13 +51,90 @@ class CountryDaoTest {
     }
 
     @Test
-    fun test() {
-        val list = countryDao.getCountryWithTvs()
-        list.forEach { countryWithTvs ->
-            println("country = ${countryWithTvs.country.name} tv count = ${countryWithTvs.tvs.size}")
-            countryWithTvs.tvs.forEach {
-                assert(countryWithTvs.country.countryId==it.countryId)
+    fun test_getCount() {
+        assert(countryDao.getCount() == 0)
+        countryDao.insert(china)
+        assert(countryDao.getCount() == 1)
+    }
+
+    @Test
+    fun test_getIdByName() {
+        countryDao.insert(china)
+        countryDao.getIdByName(CHINA)
+    }
+
+    @Test
+    fun test_getCountries() {
+        countryDao.insert(china)
+        assert(countryDao.getCountries().size == 1)
+        assert(countryDao.getCountries()[0].name == CHINA)
+    }
+
+    @Test
+    fun test_getCountryWithTvss() {
+        val ids = countryDao.insert(mutableListOf(china, us))
+        val tvDao = db.tvDao()
+        val tv1 = Tv(url = "www.baidu1.com", countryId = ids[1])
+        val tv2 = Tv(url = "www.baidu2.com", countryId = ids[0])
+        val tv3 = Tv(url = "www.baidu3.com", countryId = ids[0])
+        tvDao.insert(mutableListOf(tv1, tv2, tv3))
+        val countryWithTvs = countryDao.getCountryWithTvss()
+        countryWithTvs.forEach {
+            if (it.country.countryId == ids[0]) {
+                assert(it.country.name == CHINA)
+                assert(it.tvs.size == 2)
+            } else if (it.country.countryId == ids[1]) {
+                assert(it.country.name == US)
+                assert(it.tvs.size == 1)
+                assert(it.tvs[0].url==tv1.url)
             }
+        }
+    }
+
+    @Test
+    fun test_getCountryWithTvs() {
+        val ids = countryDao.insert(mutableListOf(china, us))
+        val tvDao = db.tvDao()
+        val tv1 = Tv(url = "www.baidu1.com", countryId = ids[1])
+        val tv2 = Tv(url = "www.baidu2.com", countryId = ids[0])
+        val tv3 = Tv(url = "www.baidu3.com", countryId = ids[0])
+        tvDao.insert(mutableListOf(tv1, tv2, tv3))
+        val countryWithTvs = countryDao.getCountryWithTvs(ids[0])
+        assert(countryWithTvs.country.name == CHINA)
+        assert(countryWithTvs.tvs.size == 2)
+        val countryWithTvsUs = countryDao.getCountryWithTvs(ids[1])
+        assert(countryWithTvsUs.country.name == US)
+        assert(countryWithTvsUs.tvs.size == 1)
+        assert(countryWithTvsUs.tvs[0].url==tv1.url)
+    }
+
+    @Test
+    fun test_countryWithTvs() {
+        val ids = countryDao.insert(mutableListOf(china, us))
+        val tvDao = db.tvDao()
+        val tv1 = Tv(url = "www.baidu1.com", countryId = ids[1])
+        val tv2 = Tv(url = "www.baidu2.com", countryId = ids[0])
+        val tv3 = Tv(url = "www.baidu3.com", countryId = ids[0])
+        tvDao.insert(mutableListOf(tv1, tv2, tv3))
+        val countryWithTvs = countryDao.countryWithTvs(ids[0])
+        countryWithTvs.observeForever {
+            assert(it.country.name == CHINA)
+            assert(it.tvs.size == 2)
+        }
+        val countryWithTvsUs = countryDao.countryWithTvs(ids[1])
+        countryWithTvsUs.observeForever {
+            assert(it.country.name == US)
+            assert(it.tvs.size == 1)
+            assert(it.tvs[0].url==tv1.url)
+        }
+    }
+
+    @Test
+    fun test_countries() {
+        countryDao.insert(china)
+        countryDao.countries().observeForever {
+            assert(it.size == 1)
+            assert(it[0].name == CHINA)
         }
     }
 }

@@ -75,8 +75,8 @@ class CrossRefTest : KoinTest {
     @Test
     @Throws(Exception::class)
     fun tvOneToMany() {
-        val playlists = playlistDao.getList()
-        val tvs = tvDao.getList()
+        val playlists = playlistDao.getPlaylists()
+        val tvs = tvDao.getTvs()
 
         val a = PlaylistTvCrossRef(playlists[0].playlistId, tvs[0].tvId)
         val b = PlaylistTvCrossRef(playlists[1].playlistId, tvs[0].tvId)
@@ -84,7 +84,7 @@ class CrossRefTest : KoinTest {
 
         playlistTvCrossRefDao.insert(mutableListOf(a,b,c))
 
-        val list = tvDao.getTvsWithPlaylists()
+        val list = tvDao.getTvWithPlaylistss()
         assert(list[0].tv.tvId == tvs[0].tvId)
         assert(list[0].playlists.size == 3)
     }
@@ -92,8 +92,8 @@ class CrossRefTest : KoinTest {
     @Test
     @Throws(Exception::class)
     fun userOneToMany() {
-        val playlists = playlistDao.getList()
-        val users = userDao.getAll()
+        val playlists = playlistDao.getPlaylists()
+        val users = userDao.getUsers()
 
         val a = UserPlaylistCrossRef(users[0].userId, playlists[0].playlistId)
         val b = UserPlaylistCrossRef(users[0].userId, playlists[1].playlistId)
@@ -110,9 +110,9 @@ class CrossRefTest : KoinTest {
     @Test
     @Throws(Exception::class)
     fun playlistOneToMany() {
-        val tvs = tvDao.getList()
-        val playlists = playlistDao.getList()
-        val users = userDao.getAll()
+        val tvs = tvDao.getTvs()
+        val playlists = playlistDao.getPlaylists()
+        val users = userDao.getUsers()
 
         val ref1 = PlaylistTvCrossRef(playlists[0].playlistId, tvs[0].tvId)
         val ref2 = PlaylistTvCrossRef(playlists[0].playlistId, tvs[1].tvId)
@@ -126,7 +126,7 @@ class CrossRefTest : KoinTest {
 
         userPlaylistCrossRefDao.insert(mutableListOf(a, b, c))
 
-        val playlistsWithTvs = playlistDao.getPlaylistsWithTvs()
+        val playlistsWithTvs = playlistDao.getPlaylistsWithTvss()
         assert(playlistsWithTvs[0].playlist.playlistId == playlists[0].playlistId)
         assert(playlistsWithTvs[0].tvs.size == 3)
 

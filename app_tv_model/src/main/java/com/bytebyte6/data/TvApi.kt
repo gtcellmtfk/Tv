@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface TvApi {
     @GET("channels.json")
-    fun getList(): Single<List<Tv>>
+    fun getTvs(): Single<List<Tv>>
 }

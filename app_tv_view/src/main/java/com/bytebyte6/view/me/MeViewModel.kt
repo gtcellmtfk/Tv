@@ -2,39 +2,53 @@ package com.bytebyte6.view.me
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
-import com.bytebyte6.base.Event
+import androidx.recyclerview.selection.Selection
 import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.data.dao.UserDao
+import com.bytebyte6.data.entity.Playlist
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.UserWithPlaylists
+import com.bytebyte6.view.usecase.DeletePlaylistUseCase
 import com.bytebyte6.view.usecase.ParseM3uUseCase
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import com.bytebyte6.view.usecase.TvLogoSearchUseCase
 
 class MeViewModel(
     private val userDao: UserDao,
     private val parseM3uUseCase: ParseM3uUseCase,
+    private val deletePlaylistUseCase: DeletePlaylistUseCase,
+    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
     private val playlistDao: PlaylistDao
-) : ViewModel() {
-
-    private val compositeDisposable = CompositeDisposable()
+) : BaseViewModel() {
 
     private lateinit var userWithPlaylist: UserWithPlaylists
 
-    val playlistNames = userDao.liveData().switchMap { user ->
-        userDao.playlistsLiveData(user.userId).map { userWithPlaylists ->
+    val playlistNames = userDao.user().switchMap { user ->
+        userDao.userWithPlaylists(user.userId).map { userWithPlaylists ->
             userWithPlaylist = userWithPlaylists
 
             userWithPlaylists.playlists
         }
     }
 
-    val playlistId: LiveData<Event<Result<Long>>> = parseM3uUseCase.eventLiveData()
+    val playlistId: LiveData<Result<Long>> = parseM3uUseCase.result()
 
-    fun tvs(playlistId: Long) = playlistDao.tvsById(playlistId).map {
-        it.tvs
+    val deleteAction = deletePlaylistUseCase.result()
+
+    fun searchLogo(pos: Int) {
+        addDisposable(
+            tvLogoSearchUseCase.execute(tvs[pos].tvId)
+        )
+    }
+
+    private lateinit var tvs: List<Tv>
+
+    fun tvs(playlistId: Long) = playlistDao.playlistWithTvs(playlistId).map {
+        tvs = it.tvs
+        tvs
     }
 
     fun getPlaylistId(pos: Int): Long {
@@ -42,19 +56,22 @@ class MeViewModel(
     }
 
     fun parseM3u(it: Uri) {
-        compositeDisposable.add(
+        addDisposable(
             parseM3uUseCase.execute(it)
         )
-    }
-
-    override fun onCleared() {
-        compositeDisposable.dispose()
-        super.onCleared()
     }
 
     fun getPlaylistName(): String {
         return parseM3uUseCase.playlistName
     }
 
-
+    fun delete(selectedPos: Selection<Long>?) {
+        selectedPos?.apply {
+            val playlist = mutableListOf<Playlist>()
+            selectedPos.forEach {
+                playlist.add(userWithPlaylist.playlists[it.toInt()])
+            }
+            addDisposable(deletePlaylistUseCase.execute(playlist))
+        }
+    }
 }

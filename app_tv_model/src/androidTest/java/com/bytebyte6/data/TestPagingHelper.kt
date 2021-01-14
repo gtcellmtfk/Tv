@@ -2,6 +2,7 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -14,10 +15,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 
 @RunWith(AndroidJUnit4::class)
-class TestPagingHelper {
+class TestPagingHelper : KoinTest {
 
     private lateinit var db: AppDatabase
     private lateinit var tvDao: TvDao
@@ -48,7 +50,7 @@ class TestPagingHelper {
     fun testPaging() {
         val pagingHelper = object : PagingHelper<Tv>() {
             override fun count(): Int {
-                return tvDao.count()
+                return tvDao.getCount()
             }
 
             override fun paging(offset: Int): List<Tv> {
@@ -61,7 +63,7 @@ class TestPagingHelper {
         var errorCount = 0
         var loadingCount = 0
 
-        val observer = EventObserver<Result<List<Tv>>> {
+        val observer = Observer<Result<List<Tv>>> {
             when (it) {
                 is Result.Success -> {
                     successCount = successCount.plus(1)
@@ -69,7 +71,7 @@ class TestPagingHelper {
                 is Result.Error -> {
                     errorCount = errorCount.plus(1)
                 }
-                Result.Loading -> {
+                is Result.Loading -> {
                     loadingCount = loadingCount.plus(1)
                 }
             }
@@ -78,10 +80,10 @@ class TestPagingHelper {
         pagingHelper.result().observeForever(observer)
 
         //总页数
-        val pageCount = tvDao.count()
+        val pageCount = tvDao.getCount()
             .div(PAGE_SIZE)
             .plus(
-                if (tvDao.count() % PAGE_SIZE == 0)
+                if (tvDao.getCount() % PAGE_SIZE == 0)
                     0
                 else
                     1
@@ -95,7 +97,7 @@ class TestPagingHelper {
         assert(pagingHelper.getPage()==pageCount)
 
         //判断end标志是否正确
-        val peekContent0 = pagingHelper.result().value!!.peekContent()
+        val peekContent0 = pagingHelper.result().value
         assert(peekContent0 is Result.Success && peekContent0.end)
 
         assert(successCount == pageCount)

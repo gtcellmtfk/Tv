@@ -10,5 +10,6 @@
         <item name="android:windowActivityTransitions">true</item>
         <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialog.Round.Top</item>
         <item name="android:windowBackground">@color/teal_700</item>
+        <item name="toolbarStyle">@style/Toolbar.Rtmp</item>
     </style>
 </resources>

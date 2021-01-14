@@ -1,23 +1,24 @@
 package com.bytebyte6.view.me
 
+import android.content.Context
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.bytebyte6.base_ui.BaseFragment
-import com.bytebyte6.base.EventObserver
-import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.mvi.doSomethingIfNotHandled
+import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
-import com.bytebyte6.view.R
+import com.bytebyte6.view.*
+import com.bytebyte6.view.card.CardAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
-import com.bytebyte6.view.home.CardAdapter
-import com.bytebyte6.view.replace
-import com.bytebyte6.view.replaceWithShareElement
-import com.bytebyte6.view.setupToolbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
@@ -40,18 +41,14 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
     }
 
     private val cardAdapter = CardAdapter()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        exitTransition=Hold()
-//    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setupOnBackPressedDispatcher()
+    }
 
     override fun initBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view).apply {
-
-//            postponeEnterTransition()
-//
-//            view.doOnPreDraw { startPostponedEnterTransition() }
 
             setupToolbar(requireActivity())
 
@@ -63,6 +60,8 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
             }
 
             recyclerView.adapter = cardAdapter
+            recyclerView.addItemDecoration(LinearSpaceDecoration())
+
             cardAdapter.setOnItemClick { pos, view1 ->
                 replaceWithShareElement(
                     PlaylistFragment.newInstance(
@@ -73,35 +72,84 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
                     view1
                 )
             }
-            cardAdapter.setupDrag(recyclerView)
-
+            cardAdapter.setOnCurrentListChanged { _, currentList ->
+                lavEmpty.isVisible = currentList.isEmpty()
+            }
+            cardAdapter.setupSelection(recyclerView) {
+                val hasSelection = cardAdapter.hasSelection()
+                if (hasSelection != null) {
+                    if (hasSelection) {
+                        fab.show()
+                    } else {
+                        fab.hide()
+                    }
+                }
+            }
+            fab.setOnClickListener {
+                cardAdapter.getSelected()?.size()?.apply {
+                    if (this > 0) {
+                        showDialog()
+                    }
+                }
+            }
         }
+    }
+
+    private fun showDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.tip_del_playlist))
+            .setMessage(getString(R.string.tip_beyond_retrieve))
+            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()
+                viewModel.delete(cardAdapter.getSelected())
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
-            cardAdapter.submitList(it)
-            binding?.apply {
-                lavEmpty.isVisible = cardAdapter.itemCount == 0
+        viewModel.deleteAction.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Result.Success -> it.doSomethingIfNotHandled {
+                    cardAdapter.clearSelection()
+                    showSnack(view, Message(id = R.string.tip_del_success))
+                    binding?.apply {
+                        fab.hide()
+                    }
+                }
+                is Result.Error -> it.doSomethingIfNotHandled {
+                    showSnack(view, Message(id = R.string.tip_del_fail))
+                }
+                else -> {
+                }
             }
         })
-        viewModel.playlistId.observe(viewLifecycleOwner, EventObserver { result ->
+        viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
+            cardAdapter.submitList(it)
+        })
+        viewModel.playlistId.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
-                is Result.Success -> {
+                is Result.Success ->
+                    result.doSomethingIfNotHandled {
+                        hideProgressBar()
+                        replace(
+                            PlaylistFragment.newInstance(
+                                result.data,
+                                viewModel.getPlaylistName()
+                            ), PlaylistFragment.TAG
+                        )
+                    }
+                is Result.Error -> result.doSomethingIfNotHandled {
                     hideProgressBar()
-                    replace(
-                        PlaylistFragment.newInstance(result.data, viewModel.getPlaylistName()),
-                        PlaylistFragment.TAG
-                    )
-                }
-                is Result.Error -> {
-                    hideProgressBar()
-                    showSnack(view,
+                    showSnack(
+                        view,
                         Message(id = (R.string.tip_parse_file_error))
                     )
                 }
-                Result.Loading -> {
+                is Result.Loading -> result.doSomethingIfNotHandled {
                     showProgressBar()
                 }
             }

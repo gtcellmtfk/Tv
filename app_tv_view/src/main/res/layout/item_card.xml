@@ -5,31 +5,46 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="8dp"
-    app:strokeColor="?attr/colorPrimarySurface"
+    app:cardElevation="0dp"
     android:checkable="true"
     android:clickable="true"
     android:focusable="true"
     tools:viewBindingIgnore="true">
 
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:src="@drawable/ic_sentiment_very_dissatisfied"
+        android:layout_gravity="center_vertical"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"/>
+
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="12dp"
         android:gravity="center_vertical"
-        android:padding="16dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="@string/tip_search" />
 
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:id="@+id/tvBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="32dp"
-        android:padding="16dp"
-        android:text="@string/tip_iptv"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+        android:layout_marginBottom="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textAppearance="?attr/textAppearanceBody2"
+        tools:text="@string/tip_search" />
 
     <ImageView
         android:visibility="gone"

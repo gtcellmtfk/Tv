@@ -2,6 +2,7 @@ package com.bytebyte6.data.work
 
 import com.bytebyte6.base.logd
 import com.bytebyte6.data.dao.CountryDao
+import com.bytebyte6.data.dao.TvDao
 import org.jsoup.Jsoup
 
 interface UrlProvider {
@@ -10,37 +11,59 @@ interface UrlProvider {
 
 class GoogleUrlProvider : UrlProvider {
     override fun provide(key: String): String {
-        return "https://www.sogou.com/web?query=${key.replace(" ", "+")}+National+flag"
+        return "https://pic.sogou.com/pics?query=${key}"
     }
 }
 
 class BingUrlProvider : UrlProvider {
     override fun provide(key: String): String {
-        return "https://cn.bing.com/images/search?q=${key.replace(" ", "+")}+National+flag"
+        return "https://cn.bing.com/images/search?q=${key}"
 
     }
 }
 
 class BaiDuUrlProvider : UrlProvider {
     override fun provide(key: String): String {
-        return "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=${key.replace(
-            " ",
-            "+"
-        )}&fenlei=256&oq=%25E7%25BE%258E%25E5%259B%25BD%25E5%259B%25BD%25E6%2597%2597&rsv_pq=983eb46300019152&rsv_t=5430y4DtwiLf32MUG%2BQITNHeNsVlju%2Fw2Nhkv39gQOaRAJ6%2Fgf8BJax%2F90o&rqlang=cn&rsv_enter=0&rsv_dl=tb&rsv_btype=t"
+        return "https://image.baidu.com/search/index?tn=baiduimage&word=${key}"
+    }
+}
+
+class TvLogoSearch(private val dao: TvDao) : ImageSearch() {
+    fun doThatShit() {
+        dao.getTvs()
+            .filter {
+                it.logo.isEmpty()
+            }
+            .map {
+                if (it.name.isNotEmpty()) {
+                    val list = search(it.name
+                        .replace(" ", "+")
+                        .plus("+TV+Logo"))
+                    if (list.isNotEmpty()) {
+                        it.logo = list[0]
+                        logd(it.logo)
+                        dao.insert(it)
+                    }
+                }
+            }
     }
 }
 
 class CountryImageSearch(private val dao: CountryDao) : ImageSearch() {
     fun doThatShit() {
         dao.getCountries()
-                //只取为空的查询图片
+            //只取为空的查询图片
             .filter {
                 it.images.isEmpty()
             }
-                //查询到图片后直接插入数据库
+            //查询到图片后直接插入数据库
             .map { country ->
                 if (country.name.isNotEmpty()) {
-                    country.images = search(country.name)
+                    country.images = search(
+                        country.name
+                            .replace(" ", "+")
+                            .plus("+flag+国旗")
+                    )
                     logd(country.images.toString())
                     dao.insert(country)
                 }
@@ -63,6 +86,7 @@ open class ImageSearch : SearchAnything {
         val images = mutableListOf<String>()
         urls.forEach {
             val realUrl = it.provide(key)
+            logd("readUrl=$realUrl")
             val doc = Jsoup.connect(realUrl).get()
             val media = doc.select("[src]")
             for (src in media) {
@@ -71,7 +95,8 @@ open class ImageSearch : SearchAnything {
                     val width = src.attr("width")
                     val height = src.attr("height")
                     if (image.isNotEmpty() && width.isNotEmpty() && height.isNotEmpty()) {
-                        images.add(image)
+                        if (!image.contains("logo"))
+                            images.add(image)
                     }
                 }
             }

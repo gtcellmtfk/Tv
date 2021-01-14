@@ -5,11 +5,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.GridSpaceDecoration
 import com.bytebyte6.view.ImageAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.showVideoListFragment
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 class CountryFragment : BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
 
@@ -24,22 +25,21 @@ class CountryFragment : BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragm
         }
     }
 
-    private val viewModel: HomeViewModel by sharedViewModel()
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        exitTransition = Hold()
-//    }
+    private val viewModel: HomeViewModel by lazy {
+        requireParentFragment().getViewModel<HomeViewModel>()
+    }
 
     override fun initBinding(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view).apply {
-//
-//            postponeEnterTransition()
-//            view.doOnPreDraw { startPostponedEnterTransition() }
 
             val imageAdapter = ImageAdapter()
             recyclerView.adapter = imageAdapter
             recyclerView.layoutManager=GridLayoutManager(view.context,2)
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            imageAdapter.setOnBind { pos, _ ->
+                viewModel.searchLogo(pos)
+            }
+
             viewModel.cs.observe(viewLifecycleOwner, Observer {
                 imageAdapter.submitList(it)
             })
@@ -48,6 +48,4 @@ class CountryFragment : BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragm
             }
         }
     }
-
-
 }

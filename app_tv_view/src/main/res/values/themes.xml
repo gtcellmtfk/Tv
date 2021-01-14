@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Theme.FullScreen" parent="Theme.Rtmp">
         <item name="android:windowFullscreen">true</item>
@@ -9,7 +9,7 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
-    <style name="Theme.Rtmp" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Rtmp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -20,5 +20,8 @@
         <item name="android:windowActivityTransitions">true</item>
         <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialog.Round.Top</item>
         <item name="android:windowBackground">@color/teal_700</item>
+        <item name="toolbarStyle">@style/Toolbar.Rtmp</item>
+        <item name="android:toolbarStyle">@style/Toolbar.Rtmp</item>
     </style>
+
 </resources>

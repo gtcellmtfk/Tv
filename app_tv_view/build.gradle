@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'kotlin-android'
 }
 
@@ -8,6 +8,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
+        applicationId "com.bytebyte6.rtmp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -37,10 +38,9 @@ android {
 
 dependencies {
 
-    api project(path: ':app_tv_model')
+    implementation project(path: ':app_tv_model')
     implementation project(path: ':lib_test')
-    implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
-    implementation project(path: ':lib_ui')
+    implementation project(path: ':lib_base')
 
     def exoplayer="2.12.2"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayer"

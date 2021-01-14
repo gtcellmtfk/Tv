@@ -1,29 +1,34 @@
 package com.bytebyte6.view.search
 
-import androidx.lifecycle.ViewModel
+import com.bytebyte6.base.mvi.isSuccess
+import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.view.usecase.SearchTvUseCase
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-
+import com.bytebyte6.view.usecase.TvLogoSearchUseCase
 
 class SearchViewModel(
-    private val searchTvUseCase: SearchTvUseCase
-) : ViewModel() {
+    private val searchTvUseCase: SearchTvUseCase,
+    private val tvLogoSearchUseCase: TvLogoSearchUseCase
+) : BaseViewModel() {
 
-    val tvs = searchTvUseCase.eventLiveData()
-
-    private val compositeDisposable = CompositeDisposable()
+    val tvs = searchTvUseCase.result()
 
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
-            compositeDisposable.add(
+            addDisposable(
                 searchTvUseCase.execute(key.toString())
             )
         }
     }
 
-    override fun onCleared() {
-        compositeDisposable.dispose()
-        super.onCleared()
+    fun searchLogo(pos:Int){
+        tvs.value?.apply {
+            this.isSuccess()?.apply {
+                val tvId= this[pos].tvId
+                addDisposable(
+                    tvLogoSearchUseCase.execute(tvId)
+                )
+            }
+        }
     }
 }
 

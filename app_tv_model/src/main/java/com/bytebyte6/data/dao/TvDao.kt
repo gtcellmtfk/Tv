@@ -13,20 +13,27 @@ import com.bytebyte6.data.model.TvWithPlaylists
 interface TvDao : BaseDao<Tv>{
     @Transaction
     @Query("SELECT * FROM Tv")
-    fun getTvsWithPlaylists(): List<TvWithPlaylists>
+    fun getTvWithPlaylistss(): List<TvWithPlaylists>
 
     @Query("SELECT * FROM Tv LIMIT $PAGE_SIZE OFFSET :offset")
     fun paging(offset: Int): List<Tv>
 
-    @Query("SELECT DISTINCT category FROM Tv ORDER BY category ASC ")
-    fun liveDataByAllCategory(): LiveData<List<Category>>
-
-    @Query("SELECT DISTINCT language FROM Tv ORDER BY language ASC ")
-    fun liveDataByAllLanguage(): LiveData<List<Languages>>
-
     @Query("SELECT COUNT(tvId) FROM Tv")
-    fun count(): Int
+    fun getCount(): Int
 
     @Query("SELECT * FROM Tv")
-    fun getList(): List<Tv>
+    fun getTvs(): List<Tv>
+
+    @Query("SELECT * FROM Tv WHERE tvId =:id")
+    fun getTv(id:Long): Tv
+
+    /**
+     * LiveData
+     */
+
+    @Query("SELECT DISTINCT category FROM Tv ORDER BY category ASC ")
+    fun allCategory(): LiveData<List<Category>>
+
+    @Query("SELECT DISTINCT language FROM Tv ORDER BY language ASC ")
+    fun allLanguage(): LiveData<List<Languages>>
 }

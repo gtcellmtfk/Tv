@@ -12,13 +12,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app_tv" />
             <option value="$PROJECT_DIR$/app_tv_model" />
             <option value="$PROJECT_DIR$/app_tv_view" />
-            <option value="$PROJECT_DIR$/app_ui" />
+            <option value="$PROJECT_DIR$/lib_base" />
             <option value="$PROJECT_DIR$/lib_dependency" />
             <option value="$PROJECT_DIR$/lib_test" />
-            <option value="$PROJECT_DIR$/lib_ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

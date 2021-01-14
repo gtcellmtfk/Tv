@@ -2,7 +2,6 @@ package com.bytebyte6.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.base.EventLiveData
 import com.bytebyte6.base.EventObserver
 import org.junit.After
 import org.junit.Before

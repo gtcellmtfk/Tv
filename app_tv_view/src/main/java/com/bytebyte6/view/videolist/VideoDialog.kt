@@ -1,17 +1,15 @@
 package com.bytebyte6.view.videolist
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
-import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.view.ImageAdapter
 import com.bytebyte6.view.KEY_ITEM
 
 import com.bytebyte6.view.databinding.DialogVideoBinding
-import com.bytebyte6.view.video.VideoActivity
-import com.bytebyte6.view.video.VideoAdapter
+import com.bytebyte6.view.showVideoActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -44,12 +42,10 @@ class VideoDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = VideoAdapter()
+        val adapter = ImageAdapter()
         adapter.setOnItemClick { pos, _ ->
             dismiss()
-            startActivity(Intent(context, VideoActivity::class.java).apply {
-                putExtra(Tv.TAG, adapter.currentList[pos])
-            })
+            showVideoActivity(adapter.currentList[pos].videoUrl)
         }
 
         binding?.apply {

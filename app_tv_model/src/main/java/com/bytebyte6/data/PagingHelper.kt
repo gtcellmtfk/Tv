@@ -3,10 +3,8 @@ package com.bytebyte6.data
 import android.os.Parcelable
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.bytebyte6.base.Event
-import com.bytebyte6.base.EventLiveData
+import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.base.mvi.Result
-import io.reactivex.rxjava3.core.Single
 import kotlinx.android.parcel.Parcelize
 import java.util.concurrent.Executors
 
@@ -38,30 +36,36 @@ abstract class NetWorkPagingHelper<T : Parcelable> : PagingHelper<T>() {
 
 abstract class PagingHelper<T> {
 
-    private val result = EventLiveData<Result<List<T>>>()
+    private val result = MutableLiveData<Result<List<T>>>()
     private var page = 0
     private var list = mutableListOf<T>()
     private val service = Executors.newSingleThreadExecutor()
 
-    fun result(): LiveData<Event<Result<List<T>>>> = result.liveData()
+    init {
+        loadData()
+    }
+
+    fun result(): LiveData<Result<List<T>>> = result
 
     fun getPage() = page
 
     fun getCurrentSize(): Int = list.size
 
+    fun getList() = list
+
     fun loadData() {
         service.execute {
             try {
-                result.postEventValue(Result.Loading)
+                result.postValue((Result.Loading()))
                 if (list.size < count()) {
                     list.addAll(paging(offset = page * PAGE_SIZE))
                     page++
-                    result.postEventValue(Result.Success(list, list.size >= count()))
+                    result.postValue((Result.Success(list, list.size >= count())))
                 } else {
-                    result.postEventValue(Result.Success(emptyList(), true))
+                    result.postValue((Result.Success(list, true)))
                 }
             } catch (e: Exception) {
-                result.postEventValue(Result.Error(e))
+                result.postValue((Result.Error(e)))
             }
         }
     }

@@ -1,22 +1,20 @@
 package com.bytebyte6.view.search
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import com.bytebyte6.base_ui.BaseFragment
-import com.bytebyte6.base.EventObserver
-import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import androidx.lifecycle.Observer
 import com.bytebyte6.base.KeyboardUtils
 import com.bytebyte6.base.mvi.isSuccess
-import com.bytebyte6.data.entity.Tv
-
+import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.GridSpaceDecoration
+import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import com.bytebyte6.view.ImageAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import com.bytebyte6.view.setupToolbar
-import com.bytebyte6.view.video.VideoActivity
-import com.bytebyte6.view.video.VideoAdapter
+import com.bytebyte6.view.showVideoActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
@@ -34,36 +32,36 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     private val viewModel: SearchViewModel by viewModel()
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        sharedElementEnterTransition = MaterialContainerTransform()
-//    }
-
     override fun initBinding(view: View): FragmentSearchBinding {
         return FragmentSearchBinding.bind(view).apply {
-
-//            view.transitionName = requireArguments().getString(KEY_TRANS_NAME)
-//            postponeEnterTransition()
-//            view.doOnPreDraw { startPostponedEnterTransition() }
 
             setupToolbar { KeyboardUtils.hideSoftInput(requireActivity()) }
 
             etSearch.doOnTextChanged { text, _, _, _ ->
                 viewModel.search(text)
+                btnClear.isVisible = !text.isNullOrEmpty()
+            }
+            btnClear.setOnClickListener {
+                etSearch.setText("")
             }
 
-            val adapter = VideoAdapter()
+            val adapter = ImageAdapter()
             adapter.setOnItemClick { pos, _ ->
-                startActivity(Intent(context, VideoActivity::class.java).apply {
-                    putExtra(Tv.TAG, adapter.currentList[pos])
-                })
+                showVideoActivity(adapter.currentList[pos].videoUrl)
+            }
+            adapter.setOnBind { pos, _ ->
+                viewModel.searchLogo(pos)
+            }
+            adapter.setOnCurrentListChanged { _, currentList ->
+                lavEmpty.isVisible = currentList.isEmpty()
             }
 
             recyclerView.adapter = adapter
-            viewModel.tvs.observe(viewLifecycleOwner, EventObserver {
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+
+            viewModel.tvs.observe(viewLifecycleOwner, Observer {
                 it.isSuccess()?.apply {
                     adapter.submitList(this)
-                    lavEmpty.isVisible = isEmpty()
                 }
             })
 

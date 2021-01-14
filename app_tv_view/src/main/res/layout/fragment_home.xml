@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/home_root"
     android:background="@color/rootLayoutBackgroundColor"
-    android:transitionGroup="true"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        app:statusBarForeground="?attr/colorPrimary"
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:background="?attr/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/statusBarHeight"/>
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            app:navigationIcon="@drawable/ic_menu"
-            style="@style/Rtmp.Toolbar"
+            style="@style/Toolbar.Rtmp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/home_menu"
-            app:title="@string/home_category_view" />
+            app:navigationIcon="@drawable/ic_menu"
+            app:title="@string/home_category_view">
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -56,7 +58,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -66,4 +69,4 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

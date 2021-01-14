@@ -18,22 +18,22 @@ interface UserDao : BaseDao<User> {
     fun getPlaylistsByUserId(userId: Long): UserWithPlaylists
 
     @Query("SELECT * FROM User")
-    fun getAll(): List<User>
+    fun getUsers(): List<User>
 
     @Query("SELECT * FROM User")
-    fun get(): User
+    fun getUser(): User
 
     @Query("SELECT COUNT(*) FROM User")
-    fun count(): Int
+    fun getCount(): Int
 
     /**
      * LiveData
      */
 
     @Query("SELECT * FROM User")
-    fun liveData(): LiveData<User>
+    fun user(): LiveData<User>
 
     @Transaction
     @Query("SELECT * FROM User WHERE userId=:userId")
-    fun playlistsLiveData(userId: Long): LiveData<UserWithPlaylists>
+    fun userWithPlaylists(userId: Long): LiveData<UserWithPlaylists>
 }

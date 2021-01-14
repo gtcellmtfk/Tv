@@ -1,0 +1,37 @@
+package com.bytebyte6.view
+
+import android.app.Application
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import com.bytebyte6.base.baseModule
+import com.bytebyte6.base.logd
+import com.bytebyte6.data.dataModule
+import com.bytebyte6.data.work.AppDelegatingWorkerFactory
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+
+class RtmpApp : Application() {
+
+    private val factory by inject<AppDelegatingWorkerFactory>()
+
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidLogger()
+            androidContext(this@RtmpApp)
+            modules(baseModule, dataModule, viewModule)
+        }
+        WorkManager.initialize(
+            this, Configuration.Builder().setWorkerFactory(
+                factory
+            ).build()
+        )
+        RxJavaPlugins.setErrorHandler {
+            logd("Rx Global Exception Handler...")
+            it.printStackTrace()
+        }
+    }
+}

@@ -2,7 +2,7 @@ package com.bytebyte6.data
 
 import com.bytebyte6.data.entity.Tv
 
-const val FAKE_SIZE = 10
+const val FAKE_SIZE = 200
 
 val tvList = mutableListOf<Tv>().apply {
     for (i in 0 until FAKE_SIZE) {

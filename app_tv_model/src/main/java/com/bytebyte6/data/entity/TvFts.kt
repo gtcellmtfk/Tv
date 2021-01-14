@@ -1,6 +1,7 @@
 package com.bytebyte6.data.entity
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.Fts4
 import kotlinx.android.parcel.Parcelize
@@ -8,6 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Fts4(contentEntity = Tv::class)
 @Entity
+@Keep
 data class TvFts(
     val tvId: Long,
     var url: String,
@@ -19,7 +21,7 @@ data class TvFts(
 ) : Parcelable {
     companion object {
         const val TAG = "TvFts"
-        private fun toIpTv(fts: TvFts): Tv {
+         fun toIpTv(fts: TvFts): Tv {
             return Tv(
                 logo = fts.logo,
                 name = fts.name,

@@ -4,24 +4,27 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
-import com.bytebyte6.base.*
+import com.bytebyte6.base.EventObserver
+import com.bytebyte6.base.NetworkHelper
 import com.bytebyte6.base_ui.BaseActivity
 import com.bytebyte6.base_ui.NetworkErrorFragment
 import com.bytebyte6.base_ui.SimpleDrawerListener
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.me.MeFragment
+import com.bytebyte6.view.setting.SettingFragment
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
+
+    companion object {
+        const val CURRENT_MENU_ITEM_ID = "CURRENT_MENU_ITEM_ID"
+    }
 
     private val networkHelper by inject<NetworkHelper>()
 
     private var current: MenuItem? = null
-
-    private val viewModel by viewModel<LauncherViewModel>()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -34,6 +37,9 @@ class MainActivity : BaseActivity() {
                     }
                     R.id.nav_me -> {
                         replaceNotAddToBackStack(MeFragment(), MeFragment.TAG)
+                    }
+                    R.id.nav_setting -> {
+                        replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
                     }
                 }
                 removeDrawerListener()
@@ -92,18 +98,33 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            setCheckedItem(R.id.nav_home)
-
-            current = checkedItem
-
+            current = if (savedInstanceState != null) {
+                val id = savedInstanceState.getInt(CURRENT_MENU_ITEM_ID)
+                menu.findItem(id)
+            } else {
+                setCheckedItem(R.id.nav_home)
+                checkedItem
+            }
         }
 
         binding.drawLayout.apply {
+            fitsSystemWindows
             setScrimColor(0)
             drawerElevation = 0f
         }
+    }
 
-        viewModel.init()
+    override fun onSaveInstanceState(outState: Bundle) {
+        current?.apply {
+            outState.putInt(CURRENT_MENU_ITEM_ID, this.itemId)
+        }
+        super.onSaveInstanceState(outState)
+
+    }
+
+    fun chooseNavHomeMenuItem() {
+        binding.navView.setCheckedItem(R.id.nav_home)
+        current = binding.navView.checkedItem
     }
 
     fun openDrawer() {

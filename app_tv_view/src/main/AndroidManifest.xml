@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bytebyte6.view">
 
-    <application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application
+        android:name="com.bytebyte6.view.RtmpApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Rtmp">
+
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
+
         <activity
-            android:name=".video.VideoActivity"
+            android:name=".player.PlayerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" />
         <activity
@@ -24,4 +41,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

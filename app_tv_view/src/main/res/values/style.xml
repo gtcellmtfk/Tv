@@ -9,7 +9,23 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="Rtmp.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Toolbar.Rtmp" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:elevation">0dp</item>
     </style>
+
+    <style name="Widget.Rtmp.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
+    </style>
+
+    <style name="Widget.TextView.Primary" parent="">
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Rtmp.MaterialComponents.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+
+    </style>
+
 </resources>

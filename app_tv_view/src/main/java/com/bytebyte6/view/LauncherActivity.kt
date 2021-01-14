@@ -3,8 +3,11 @@ package com.bytebyte6.view
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import com.bytebyte6.base.*
+import androidx.lifecycle.Observer
+import com.bytebyte6.base.ErrorUtils
+import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.mvi.doSomethingIfNotHandled
 import com.bytebyte6.base_ui.BaseActivity
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
@@ -27,24 +30,29 @@ class LauncherActivity : BaseActivity() {
 
         setContentView(binding.root)
 
-        viewModel.init().observe(this, EventObserver {
+        viewModel.init().observe(this, Observer {
             when (it) {
                 is Result.Success -> {
-                    binding.lav.cancelAnimation()
-                    val bundle =
-                        ActivityOptions.makeSceneTransitionAnimation(this@LauncherActivity)
-                            .toBundle()
-                    startActivity(Intent(this@LauncherActivity, MainActivity::class.java), bundle)
-                    finish()
+                    it.doSomethingIfNotHandled {
+                        binding.lav.cancelAnimation()
+                        val bundle = ActivityOptions.makeSceneTransitionAnimation(this@LauncherActivity).toBundle()
+                        val intent = Intent(this@LauncherActivity, MainActivity::class.java)
+                        startActivity(intent, bundle)
+                        finish()
+                    }
                 }
                 is Result.Error -> {
-                    showSnack(binding.root,
-                        Message(
-                            id = ErrorUtils.getMessage(it.error)
+                    it.doSomethingIfNotHandled {
+                        showSnack(
+                            binding.root,
+                            Message(
+                                id = ErrorUtils.getMessage(it.error)
+                            )
                         )
-                    )
+                    }
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
     }

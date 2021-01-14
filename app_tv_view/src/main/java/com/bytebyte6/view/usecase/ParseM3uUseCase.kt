@@ -6,7 +6,6 @@ import com.bytebyte6.data.RxSingleUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
-import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
@@ -37,15 +36,15 @@ class ParseM3uUseCase(
                     it.category="Other"
                 }
                 if (it.language.isEmpty()){
-                    it.language= mutableListOf(Language("Other"))
+                    it.language= mutableListOf(Language("Other","777"))
                 }
             }
 
-            val user = userDao.get()
+            val user = userDao.getUser()
 
             //1、创建播放列表 然后获取播放列表id 然后关联用户id
-            val file = param.toString()
-            playlistName = file.substring(file.indexOfLast { it == '/' }.plus(1))
+            val fileUri = param.toString()
+            playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
             val playlistId = playlistDao.insert(Playlist(playlistName = playlistName))
             val userPlaylistCrossRef = UserPlaylistCrossRef(user.userId, playlistId)
             userPlaylistCrossRefDao.insert(userPlaylistCrossRef)

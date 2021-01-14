@@ -1,15 +1,19 @@
 package com.bytebyte6.view.home
 
+import android.content.Context
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ShareCompat
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.*
-import com.bytebyte6.base.mvi.isError
-import com.bytebyte6.base.mvi.isLoading
+import com.bytebyte6.base.ErrorUtils
+import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.mvi.doSomethingIfNotHandled
 import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.view.*
-import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,25 +27,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModel()
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        exitTransition = Hold()
-//    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(context)
+                        .setTitle(getString(R.string.tip))
+                        .setMessage(getString(R.string.enter_exit))
+                        .setPositiveButton(R.string.enter) { dialog, which ->
+                            dialog.dismiss()
+                            requireActivity().finish()
+                        }
+                        .setNegativeButton(R.string.cancel) { dialog, which -> dialog.dismiss() }
+                        .create()
+                        .show()
+                }
+            }
+        )
+    }
 
     override fun initBinding(view: View): FragmentHomeBinding {
         return FragmentHomeBinding.bind(view).apply {
 
-//            postponeEnterTransition()
-//
-//            view.doOnPreDraw { startPostponedEnterTransition() }
-
-            toolbar.transitionName = "searchShare"
+            toolbar.transitionName = getString(R.string.search_share)
 
             setupToolbar(requireActivity())
 
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
-                    //share intent
+                    ShareCompat.IntentBuilder
+                        .from(requireActivity())
+                        .setText("https://github.com/bytebyte6")
+                        .setType("text/plain")
+                        .startChooser()
                 } else {
                     replaceWithShareElement(
                         SearchFragment.newInstance(toolbar.transitionName),
@@ -76,17 +95,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
                 })
 
-                tvRefresh.observe(viewLifecycleOwner, EventObserver {
-                    swipeRefreshLayout.isRefreshing = it.isLoading()
-                    it.isError()?.apply {
-                        showSnack(
-                            view,
-                            Message(
-                                id = ErrorUtils.getMessage(
-                                    this
+                tvRefresh.observe(viewLifecycleOwner, Observer {
+                    when (it) {
+                        is Result.Success -> {
+                            it.doSomethingIfNotHandled {
+                                swipeRefreshLayout.isRefreshing = false
+                            }
+                        }
+                        is Result.Loading -> {
+                            it.doSomethingIfNotHandled {
+                                swipeRefreshLayout.isRefreshing = true
+                            }
+                        }
+                        is Result.Error -> {
+                            it.doSomethingIfNotHandled {
+                                showSnack(
+                                    view,
+                                    Message(
+                                        id = ErrorUtils.getMessage(
+                                            it.error
+                                        )
+                                    )
                                 )
-                            )
-                        )
+                            }
+                        }
                     }
                 })
             }
@@ -95,8 +127,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 viewModel.refresh()
             }
 
+            //解决状态栏失效不见的问题
+            view.doOnPreDraw {
+                it.requestLayout()
+            }
         }
     }
-
-
 }
