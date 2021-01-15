@@ -7,7 +7,7 @@ import com.bytebyte6.base.PagingHelper
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class VideoListViewModel(
     private val tvFtsDao: TvFtsDao,

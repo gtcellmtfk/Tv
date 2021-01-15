@@ -1,8 +1,10 @@
 package com.bytebyte6.data
 
+import io.reactivex.rxjava3.core.Single
 import okio.internal.commonToUtf8String
 import org.junit.Test
 import java.io.File
+import java.io.FileNotFoundException
 
 class ExampleUnitTest {
 
@@ -19,6 +21,17 @@ class ExampleUnitTest {
     private val logoRegex = Regex(logoPattern)
     private val countryRegex = Regex(countryPattern)
     private val titleRegex = Regex(titlePattern)
+
+    @Test
+    fun test3() {
+        Single.create<String> {
+           it.onSuccess("ssss")
+        }
+            .doOnSuccess { println("Success") }
+            .doOnError { println("Error") }
+            .doOnSubscribe { println("Sub") }
+            .subscribe({},{it.printStackTrace()})
+    }
 
     @Test
     fun test2() {

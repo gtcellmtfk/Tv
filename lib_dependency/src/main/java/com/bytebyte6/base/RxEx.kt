@@ -7,19 +7,15 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-abstract class RxSingleUseCase<Param, R> {
+abstract class RxSingleUseCase<Param, ResultType> {
 
-    private val result: MutableLiveData<Result<R>> = MutableLiveData()
+    private val result: MutableLiveData<Result<ResultType>> = MutableLiveData()
 
-    fun result(): LiveData<Result<R>> = result
+    fun result(): LiveData<Result<ResultType>> = result
 
-    fun execute(param: Param): Single<R> = Single.create<R> {
-        try {
-            val r = doSomething(param)
-            it.onSuccess(r)
-        } catch (e: Exception) {
-            it.onError(e)
-        }
+    fun execute(param: Param): Single<ResultType> = Single.create<ResultType> {
+        val result = doSomething(param)
+        it.onSuccess(result)
     }
         .doOnSubscribe { result.postValue((Result.Loading())) }
         .doOnSuccess {
@@ -30,7 +26,7 @@ abstract class RxSingleUseCase<Param, R> {
             result.postValue((Result.Error(it)))
         }
 
-    abstract fun doSomething(param: Param): R
+    abstract fun doSomething(param: Param): ResultType
 }
 
 fun <T> Single<T>.onIo(): Disposable {

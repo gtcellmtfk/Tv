@@ -1,4 +1,4 @@
-package com.bytebyte6.view.usecase
+package com.bytebyte6.usecase
 
 import android.content.Context
 import android.net.Uri
@@ -17,11 +17,9 @@ class ParseM3uUseCase(
     private val playlistCrossRefDao: PlaylistTvCrossRefDao,
     private val playlistDao: PlaylistDao,
     private val context: Context
-) : RxSingleUseCase<Uri, Long>() {
+) : RxSingleUseCase<Uri, Playlist>() {
 
-    var playlistName: String = ""
-
-    override fun doSomething(param: Uri): Long {
+    override fun doSomething(param: Uri): Playlist {
         val tvs = context.contentResolver.openInputStream(param)!!.toTvs()
 
         tvs.forEach {
@@ -37,7 +35,7 @@ class ParseM3uUseCase(
 
         //1、创建播放列表 然后获取播放列表id 然后关联用户id
         val fileUri = param.toString()
-        playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
+        val playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
         val playlistId = playlistDao.insert(Playlist(playlistName = playlistName))
         val userPlaylistCrossRef = UserPlaylistCrossRef(user.userId, playlistId)
         userPlaylistCrossRefDao.insert(userPlaylistCrossRef)
@@ -52,6 +50,6 @@ class ParseM3uUseCase(
         playlistCrossRefDao.insert(playlistTvCrossRefs)
 
         //3、返回结果
-        return (playlistId)
+        return Playlist(playlistId,playlistName)
     }
 }

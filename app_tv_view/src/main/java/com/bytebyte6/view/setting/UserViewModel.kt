@@ -3,7 +3,7 @@ package com.bytebyte6.view.setting
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.UpdateUserUseCase
+import com.bytebyte6.usecase.UpdateUserUseCase
 
 class UserViewModel(
     private val dao: UserDao,

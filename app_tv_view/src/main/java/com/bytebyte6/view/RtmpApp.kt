@@ -6,7 +6,9 @@ import androidx.work.WorkManager
 import com.bytebyte6.base.baseModule
 import com.bytebyte6.base.logd
 import com.bytebyte6.data.dataModule
+import com.bytebyte6.data.roomModule
 import com.bytebyte6.data.work.AppDelegatingWorkerFactory
+import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -22,7 +24,7 @@ class RtmpApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RtmpApp)
-            modules(baseModule, dataModule, viewModule)
+            modules(baseModule, roomModule, dataModule, viewModule, useCaseModule)
         }
         WorkManager.initialize(
             this, Configuration.Builder().setWorkerFactory(

@@ -1,4 +1,4 @@
-package com.bytebyte6.view.usecase
+package com.bytebyte6.usecase
 
 import android.content.Context
 import androidx.work.*
@@ -22,6 +22,7 @@ class InitDataUseCase(
 ) : RxSingleUseCase<String, List<Tv>>() {
 
     override fun doSomething(param: String): List<Tv> {
+
         if (tvDao.getCount() == 0) {
             val tvs = getTvs(context)
             val cs = mutableSetOf<Country>()
@@ -46,7 +47,7 @@ class InitDataUseCase(
             tvDao.insert(newTvs)
         }
 
-        if (userDao.getUser().capturePic) {
+        if (userDao.getCount() != 0 && userDao.getUser().capturePic) {
             findImageLink()
         }
 

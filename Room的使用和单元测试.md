@@ -83,20 +83,50 @@ data class Playlist(
 ) : Parcelable
 ```
 
-实体交叉
+实体交叉，使用dao的insert方法将PlaylistTvCrossRef插入数据库进行关联，查询时需加上@Transaction注解，代表这是个原子操作。
 
 ```kotlin
 @Entity(primaryKeys = ["playlistId", "tvId"] ,indices = [Index("tvId")])
 @Keep
+//此实体会将播放列表和电视台关联起来
 data class PlaylistTvCrossRef(
     val playlistId: Long,
     val tvId: Long
 )
+
+@Dao
+interface PlaylistTvCrossRefDao : BaseDao<PlaylistTvCrossRef>
+
+interface BaseDao<T> {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(data: T): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(list: List<T>): List<Long>
+}
+
+@Test
+fun tvOneToMany() {
+    val playlists = playlistDao.getPlaylists()
+    val tvs = tvDao.getTvs()
+
+    val a = PlaylistTvCrossRef(playlists[0].playlistId, tvs[0].tvId)
+    val b = PlaylistTvCrossRef(playlists[1].playlistId, tvs[0].tvId)
+    val c = PlaylistTvCrossRef(playlists[2].playlistId, tvs[0].tvId)
+
+    playlistTvCrossRefDao.insert(mutableListOf(a, b, c))
+    
+    val list = tvDao.getTvWithPlaylistss()
+    
+    assert(list[0].tv.tvId == tvs[0].tvId)
+    assert(list[0].playlists.size == 3)
+}
 ```
 
 ```kotlin
 @Parcelize
 @Keep
+//查询播放列表和对应的电视台
 data class PlaylistWithTvs(
     @Embedded val playlist: Playlist,
     @Relation(
@@ -111,6 +141,7 @@ data class PlaylistWithTvs(
 ```kotlin
 @Parcelize
 @Keep
+//查询电视台和对应的播放列表
 data class TvWithPlaylists(
     @Embedded val tv: Tv,
     @Relation(

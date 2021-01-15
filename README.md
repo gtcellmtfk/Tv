@@ -1,47 +1,5 @@
 # 网络电视
 
-1、~~预览图~~
-
-2、~~代码模板~~
-
-3、~~全屏样式~~
-
-4、~~加载更多~~
-
-5、~~数据库预载入数据~~
-
-6、单元测试，界面测试
-
-7、~~RecyclerView合并适配器~~
-
-8、~~丰富样式、例如字体、换肤~~
-
-9、~~网络状态监听~~
-
-10、~~弹幕~~
-
-11、~~组合由于继承，请修改BaseViewModel，委托或者依赖注入~~
-
-12、~~过场动画~~
-
-13、~~锁屏还在播放~~
-
-14、~~会动的图标~~
-
-15、~~命名更改~~
-
-16、~~导入m3u文件，自定义源~~
-
-17、~~添加删除修改功能~~
-
-18、~~mainactivity逻辑调整，导航视图的，replace~~
-
-19、~~重建后的recyclerview Item是没有transName的 所以在onbind要重新复制一遍 动画效果才会有~~
-
-20、~~状态栏~~  ~~分割线~~
-
-# 网络电视
-
 记录以下技术使用
 
 + Kotlin 
@@ -49,7 +7,7 @@
 + Retrofit
 + ExoPlayer
 + Material Design 主题样式、动画Motion、过渡动画 
-+ 依赖注入
++ 依赖注入Koin
 + Room
 + Jetpack
 + 网络状态监听
@@ -61,7 +19,7 @@
 
 # RxJava
 
-RxUseCase 用例实现，用于编写业务逻辑
+[RxUseCase 用例实现，用于编写业务逻辑](https://github.com/bytebyte6/Rtmp/blob/master/lib_dependency/src/main/java/com/bytebyte6/base/RxEx.kt)
 
 # ExoPlayer
 
@@ -78,3 +36,15 @@ RxUseCase 用例实现，用于编写业务逻辑
 # Jetpack
 
 导航组件运用，效果不怎么理想，移除！！！ 
+
+# Todo
+
+5、~~数据库预载入数据~~
+
+6、单元测试，界面测试
+
+8、~~丰富样式、例如字体、换肤~~
+
+17、~~添加删除修改功能~~
+
+19、~~重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~

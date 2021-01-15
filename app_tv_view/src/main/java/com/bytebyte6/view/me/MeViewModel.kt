@@ -13,9 +13,9 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.UserWithPlaylists
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.DeletePlaylistUseCase
-import com.bytebyte6.view.usecase.ParseM3uUseCase
-import com.bytebyte6.view.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.DeletePlaylistUseCase
+import com.bytebyte6.usecase.ParseM3uUseCase
+import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class MeViewModel(
     private val userDao: UserDao,
@@ -35,7 +35,7 @@ class MeViewModel(
         }
     }
 
-    val playlistId: LiveData<Result<Long>> = parseM3uUseCase.result()
+    val playlistId: LiveData<Result<Playlist>> = parseM3uUseCase.result()
 
     val deleteAction = deletePlaylistUseCase.result()
 
@@ -60,10 +60,6 @@ class MeViewModel(
         addDisposable(
             parseM3uUseCase.execute(it).onIo()
         )
-    }
-
-    fun getPlaylistName(): String {
-        return parseM3uUseCase.playlistName
     }
 
     fun delete(selectedPos: Selection<Long>?) {

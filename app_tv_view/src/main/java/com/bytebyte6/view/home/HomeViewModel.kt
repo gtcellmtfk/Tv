@@ -6,8 +6,8 @@ import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.CountryImageSearchUseCase
-import com.bytebyte6.view.usecase.TvRefreshUseCase
+import com.bytebyte6.usecase.CountryImageSearchUseCase
+import com.bytebyte6.usecase.TvRefreshUseCase
 
 class HomeViewModel(
     tvDao: TvDao,

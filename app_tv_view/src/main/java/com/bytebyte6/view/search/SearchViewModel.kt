@@ -3,8 +3,8 @@ package com.bytebyte6.view.search
 import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.SearchTvUseCase
-import com.bytebyte6.view.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.SearchTvUseCase
+import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class SearchViewModel(
     private val searchTvUseCase: SearchTvUseCase,

@@ -1,4 +1,4 @@
-package com.bytebyte6.view.usecase
+package com.bytebyte6.usecase
 
 import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.TvDao
@@ -17,6 +17,6 @@ class TvLogoSearchUseCase(
                 tvDao.insert(tv)
             }
         }
-        return (true)
+        return true
     }
 }

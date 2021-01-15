@@ -9,8 +9,8 @@ import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
 import com.bytebyte6.base.onIo
-import com.bytebyte6.view.usecase.CreateUserUseCase
-import com.bytebyte6.view.usecase.InitDataUseCase
+import com.bytebyte6.usecase.CreateUserUseCase
+import com.bytebyte6.usecase.InitDataUseCase
 
 class LauncherViewModel(
     private val initDataUseCase: InitDataUseCase,

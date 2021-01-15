@@ -8,7 +8,7 @@ fun randomColor(): Int {
     val dark = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
     val from = if (dark) 0 else 150
     val until = if (dark) 150 else 256
-    val a = Random.Default.nextInt(0, 256)
+    val a = Random.Default.nextInt(from, until)
     val r = Random.Default.nextInt(from, until)
     val g = Random.Default.nextInt(from, until)
     val b = Random.Default.nextInt(from, until)

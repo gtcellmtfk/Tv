@@ -137,8 +137,8 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
                         hideProgressBar()
                         replace(
                             PlaylistFragment.newInstance(
-                                result.data,
-                                viewModel.getPlaylistName()
+                                result.data.playlistId,
+                                result.data.playlistName
                             ), PlaylistFragment.TAG
                         )
                     }
