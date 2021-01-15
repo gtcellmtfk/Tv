@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.base.EventObserver
+import com.bytebyte6.base.PagingHelper
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.entity.Tv

@@ -8,10 +8,9 @@ import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
-import com.bytebyte6.data.onIo
+import com.bytebyte6.base.onIo
 import com.bytebyte6.view.usecase.CreateUserUseCase
 import com.bytebyte6.view.usecase.InitDataUseCase
-import java.util.concurrent.TimeUnit
 
 class LauncherViewModel(
     private val initDataUseCase: InitDataUseCase,

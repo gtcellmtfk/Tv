@@ -2,15 +2,13 @@ package com.bytebyte6.view.usecase
 
 import android.content.Context
 import android.net.Uri
-import com.bytebyte6.data.RxSingleUseCase
+import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
-import io.reactivex.rxjava3.core.Single
-import java.io.FileNotFoundException
 
 class ParseM3uUseCase(
     private val tvDao: TvDao,

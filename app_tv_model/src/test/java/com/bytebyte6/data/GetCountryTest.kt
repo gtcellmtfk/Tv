@@ -15,11 +15,7 @@ class GetCountryTest {
     @Test
     @Throws(IOException::class)
     fun testCountryList() {
-        val filter = getTvs().filter {
-            it.countryName == "China"
-        }
-        println(filter.size)
-//        getCountryList(getTvs())
+        getCountryList(getTvs())
     }
 
     private fun getTvs(): List<Tv> {

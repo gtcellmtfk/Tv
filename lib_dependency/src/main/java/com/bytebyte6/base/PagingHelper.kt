@@ -1,4 +1,4 @@
-package com.bytebyte6.data
+package com.bytebyte6.base
 
 import android.os.Parcelable
 import androidx.annotation.WorkerThread
@@ -39,6 +39,11 @@ abstract class PagingHelper<T> {
     private val result = MutableLiveData<Result<List<T>>>()
     private var page = 0
     private var list = mutableListOf<T>()
+    private var pageSize = 20
+
+    fun setPageSize(pageSize: Int){
+        this.pageSize=pageSize
+    }
 
     fun result(): LiveData<Result<List<T>>> = result
 
@@ -52,7 +57,7 @@ abstract class PagingHelper<T> {
         return Single.create<Result<List<T>>> {
             try {
                 if (list.size < count()) {
-                    list.addAll(paging(offset = page * PAGE_SIZE))
+                    list.addAll(paging(offset = page * pageSize))
                     page++
                     it.onSuccess(Result.Success(list, list.size >= count()))
                 } else {

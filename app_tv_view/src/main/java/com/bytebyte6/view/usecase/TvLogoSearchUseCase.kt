@@ -1,9 +1,8 @@
 package com.bytebyte6.view.usecase
 
-import com.bytebyte6.data.RxSingleUseCase
+import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.work.ImageSearch
-import io.reactivex.rxjava3.core.Single
 
 class TvLogoSearchUseCase(
     private val imageSearch: ImageSearch,

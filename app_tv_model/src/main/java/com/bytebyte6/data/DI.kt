@@ -2,6 +2,7 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.room.Room
+import com.bytebyte6.base.GsonConfig
 import com.bytebyte6.data.work.AppDelegatingWorkerFactory
 import com.bytebyte6.data.work.CountryImageSearch
 import com.bytebyte6.data.work.ImageSearch

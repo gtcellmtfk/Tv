@@ -2,7 +2,7 @@ package com.bytebyte6.view.usecase
 
 import android.content.Context
 import androidx.work.*
-import com.bytebyte6.data.RxSingleUseCase
+import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dao.UserDao
@@ -12,8 +12,6 @@ import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.rxjava3.core.Single
-import java.util.concurrent.TimeUnit
 
 class InitDataUseCase(
     private val tvDao: TvDao,

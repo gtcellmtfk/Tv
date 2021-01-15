@@ -82,7 +82,7 @@ class CrossRefTest : KoinTest {
         val b = PlaylistTvCrossRef(playlists[1].playlistId, tvs[0].tvId)
         val c = PlaylistTvCrossRef(playlists[2].playlistId, tvs[0].tvId)
 
-        playlistTvCrossRefDao.insert(mutableListOf(a,b,c))
+        playlistTvCrossRefDao.insert(mutableListOf(a, b, c))
 
         val list = tvDao.getTvWithPlaylistss()
         assert(list[0].tv.tvId == tvs[0].tvId)
@@ -99,7 +99,7 @@ class CrossRefTest : KoinTest {
         val b = UserPlaylistCrossRef(users[0].userId, playlists[1].playlistId)
         val c = UserPlaylistCrossRef(users[0].userId, playlists[2].playlistId)
 
-        userPlaylistCrossRefDao.insert(mutableListOf(a,b,c))
+        userPlaylistCrossRefDao.insert(mutableListOf(a, b, c))
 
         userDao.getUsersWithPlaylists().apply {
             assert(this[0].user.userId == users[0].userId)
@@ -133,5 +133,14 @@ class CrossRefTest : KoinTest {
         val playlistsWithUsers = playlistDao.getPlaylistsWithUsers()
         assert(playlistsWithUsers[0].playlist.playlistId == playlists[0].playlistId)
         assert(playlistsWithUsers[0].users.size == 3)
+
+        printList(playlistsWithTvs)
+        printList(playlistsWithUsers)
+    }
+
+    private fun printList(list: List<Any>) {
+        list.forEach {
+            println(it)
+        }
     }
 }

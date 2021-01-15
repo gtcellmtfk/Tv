@@ -1,4 +1,4 @@
-package com.bytebyte6.data
+package com.bytebyte6.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

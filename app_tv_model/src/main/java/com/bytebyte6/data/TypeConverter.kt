@@ -1,6 +1,7 @@
 package com.bytebyte6.data
 
 import androidx.room.TypeConverter
+import com.bytebyte6.base.GsonConfig
 import com.bytebyte6.data.model.Language
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

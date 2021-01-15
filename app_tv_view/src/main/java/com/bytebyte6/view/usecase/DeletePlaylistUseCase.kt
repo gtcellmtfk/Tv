@@ -1,11 +1,10 @@
 package com.bytebyte6.view.usecase
 
-import com.bytebyte6.data.RxSingleUseCase
+import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
-import io.reactivex.rxjava3.core.Single
 
 class DeletePlaylistUseCase(
     private val playlistDao: PlaylistDao,

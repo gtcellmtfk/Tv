@@ -1,6 +1,7 @@
 package com.bytebyte6.data.entity
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -13,7 +14,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(
     indices = [Index(value = ["name"], unique = true)]
 )
-
+@Keep
 data class Country(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "countryId")

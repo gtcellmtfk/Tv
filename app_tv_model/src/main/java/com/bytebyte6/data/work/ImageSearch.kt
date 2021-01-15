@@ -9,7 +9,7 @@ interface UrlProvider {
     fun provide(key: String): String
 }
 
-class GoogleUrlProvider : UrlProvider {
+class SogouUrlProvider : UrlProvider {
     override fun provide(key: String): String {
         return "https://pic.sogou.com/pics?query=${key}"
     }
@@ -77,7 +77,7 @@ open class ImageSearch : SearchAnything {
         get() = mutableListOf(
             BingUrlProvider(),
             BaiDuUrlProvider(),
-            GoogleUrlProvider()
+            SogouUrlProvider()
         )
 
     override fun search(key: String): List<String> = list(key)

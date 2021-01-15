@@ -5,7 +5,7 @@ import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.onIo
+import com.bytebyte6.base.onIo
 import com.bytebyte6.view.usecase.CountryImageSearchUseCase
 import com.bytebyte6.view.usecase.TvRefreshUseCase
 

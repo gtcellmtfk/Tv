@@ -1,4 +1,4 @@
-package com.bytebyte6.data;
+package com.bytebyte6.base;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

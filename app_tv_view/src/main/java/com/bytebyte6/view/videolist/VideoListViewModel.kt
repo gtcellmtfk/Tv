@@ -3,10 +3,10 @@ package com.bytebyte6.view.videolist
 import androidx.lifecycle.LiveData
 import com.bytebyte6.base.mvi.Result
 import com.bytebyte6.base_ui.BaseViewModel
-import com.bytebyte6.data.PagingHelper
+import com.bytebyte6.base.PagingHelper
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
-import com.bytebyte6.data.onIo
+import com.bytebyte6.base.onIo
 import com.bytebyte6.view.usecase.TvLogoSearchUseCase
 
 class VideoListViewModel(
