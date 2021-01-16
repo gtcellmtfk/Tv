@@ -87,7 +87,7 @@ fun Fragment.replaceWithShareElement(fragment: Fragment, tag: String?, share: Vi
 
 [CountryFragment](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/home/CountryFragment.kt)
 
-[SearchFragment]( https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/search/SearchFragment)
+[SearchFragment](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/search/SearchFragment.kt)
 
 # 颜色相关
 
