@@ -1,16 +1,17 @@
 package com.bytebyte6.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Languages
-import com.bytebyte6.data.model.CountryWithTvs
 import com.bytebyte6.data.model.TvWithPlaylists
 
 @Dao
-interface TvDao : BaseDao<Tv>{
+interface TvDao : BaseDao<Tv> {
     @Transaction
     @Query("SELECT * FROM Tv")
     fun getTvWithPlaylistss(): List<TvWithPlaylists>
@@ -25,7 +26,7 @@ interface TvDao : BaseDao<Tv>{
     fun getTvs(): List<Tv>
 
     @Query("SELECT * FROM Tv WHERE tvId =:id")
-    fun getTv(id:Long): Tv
+    fun getTv(id: Long): Tv
 
     /**
      * LiveData
@@ -36,4 +37,7 @@ interface TvDao : BaseDao<Tv>{
 
     @Query("SELECT DISTINCT language FROM Tv ORDER BY language ASC ")
     fun allLanguage(): LiveData<List<Languages>>
+
+    @Query("SELECT * FROM Tv WHERE favorite = 1 ")
+    fun allFavorite(): LiveData<List<Tv>>
 }

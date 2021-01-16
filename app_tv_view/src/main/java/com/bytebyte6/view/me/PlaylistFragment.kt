@@ -5,13 +5,15 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.GridSpaceDecoration
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentPlayListBinding
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.android.viewmodel.ext.android.getViewModel
 
-class PlaylistFragment : BaseFragment<FragmentPlayListBinding>(R.layout.fragment_play_list) {
+class PlaylistFragment : BaseShareFragment/*<FragmentPlayListBinding>*/(R.layout.fragment_play_list) {
 
     companion object {
         fun newInstance(
@@ -41,11 +43,13 @@ class PlaylistFragment : BaseFragment<FragmentPlayListBinding>(R.layout.fragment
     override fun initBinding(view: View): FragmentPlayListBinding {
         return FragmentPlayListBinding.bind(view).apply {
 
-            setupToolbar()
+            setupToolbarArrowBack()
 
             toolbar.title = requireArguments().getString(KEY_TITLE)
 
-            val adapter = ImageAdapter()
+            val adapter = ImageAdapter {
+                viewModel?.fav(it)
+            }
             adapter.setOnItemClick { pos, _ ->
                 showVideoActivity(adapter.currentList[pos].videoUrl)
             }
@@ -55,11 +59,15 @@ class PlaylistFragment : BaseFragment<FragmentPlayListBinding>(R.layout.fragment
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
 
-            viewModel?.tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
-                ?.observe(viewLifecycleOwner, Observer {
-                    adapter.submitList(it)
-                    toolbar.subtitle = getString(R.string.total, adapter.itemCount)
-                })
+            load(adapter, toolbar)
         }
+    }
+
+    private fun load(adapter: ImageAdapter, toolbar: MaterialToolbar) {
+        viewModel?.tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
+            ?.observe(viewLifecycleOwner, Observer {
+                adapter.submitList(it)
+                toolbar.subtitle = getString(R.string.total, adapter.itemCount)
+            })
     }
 }

@@ -14,9 +14,13 @@ sealed class Result<out R> {
     ) : Result<Nothing>()
 
     class Loading : Result<Nothing>()
+
+    override fun toString(): String {
+        return "Result(handled=$handled)"
+    }
 }
 
-fun <T> Result<T>.branch(
+fun <T> Result<T>.emit(
     success: ((s: Result.Success<T>) -> Unit)? = null,
     error: ((e: Result.Error) -> Unit)? = null,
     loading: ((l: Result.Loading) -> Unit)? = null
@@ -34,7 +38,7 @@ fun <T> Result<T>.branch(
     }
 }
 
-fun <T> Result<T>.branchIfNotHandled(
+fun <T> Result<T>.emitIfNotHandled(
     success: ((s: Result.Success<T>) -> Unit)? = null,
     error: ((e: Result.Error) -> Unit)? = null,
     loading: ((l: Result.Loading) -> Unit)? = null

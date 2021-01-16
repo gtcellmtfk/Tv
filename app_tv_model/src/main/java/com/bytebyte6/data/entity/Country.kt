@@ -30,10 +30,16 @@ data class Country(
     var images: List<String> = emptyList()
 
 ) : Parcelable, Image {
-    override val imageUrl: String
+    override var imageUrl: String
         get() = if (images.isNotEmpty()) images[0] else "https://tse4-mm.cn.bing.net/th/id/OIP.9IK3tQifJ2Zmtnm0GqlfOgHaHN?pid=Api&rs=1"
-    override val title: String
+        set(value) {}
+    override var title: String
         get() = name
-    override val videoUrl: String
+        set(value) {}
+    override var videoUrl: String
         get() = ""
+        set(value) {}
+    override var love: Boolean
+        get() = false
+        set(value) {}
 }

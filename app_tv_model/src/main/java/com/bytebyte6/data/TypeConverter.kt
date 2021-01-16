@@ -15,7 +15,7 @@ class TypeConverter {
 
     private val type = object : TypeToken<List<Language>>() {}.type
 
-    private val stype = object : TypeToken<List<String>>() {}.type
+    private val sType = object : TypeToken<List<String>>() {}.type
 
     @TypeConverter
     fun toList(json: String): List<Language> {
@@ -29,7 +29,7 @@ class TypeConverter {
 
     @TypeConverter
     fun jsonToStringList(json: String): List<String> {
-        return gson.fromJson(json, stype)
+        return gson.fromJson(json, sType)
     }
 
     @TypeConverter

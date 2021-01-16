@@ -1,31 +1,53 @@
 package com.bytebyte6.view.videolist
 
 import androidx.lifecycle.LiveData
-import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.base.PagingHelper
+import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.mvi.emitIfNotHandled
+import com.bytebyte6.base.onIo
+import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
-import com.bytebyte6.base.onIo
+import com.bytebyte6.usecase.FavoriteTvParam
+import com.bytebyte6.usecase.FavoriteTvUseCase
 import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class VideoListViewModel(
     private val tvFtsDao: TvFtsDao,
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase
+    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
+    private val favoriteTvUseCase: FavoriteTvUseCase
 ) : BaseViewModel() {
 
-    private val pagingHelper: PagingHelper<TvFts> = object : PagingHelper<TvFts>() {
-        override fun count(): Int = tvFtsDao.getCount(getKey())
-
-        override fun paging(offset: Int): List<TvFts> = tvFtsDao.paging(offset, getKey())
-    }
+    private val pagingHelper: PagingHelper<TvFts>
 
     private var key: String = ""
 
-    val tvs: LiveData<Result<List<TvFts>>> = pagingHelper.result()
+    val tvs: LiveData<Result<List<TvFts>>>
+
+    private val favorite = favoriteTvUseCase.result()
+
+    private val favoriteObserver: (Result<FavoriteTvParam>) -> Unit
 
     init {
-        loadMore()
+        pagingHelper = object : PagingHelper<TvFts>() {
+            override fun count(): Int = tvFtsDao.getCount(getKey())
+
+            override fun paging(offset: Int): List<TvFts> = tvFtsDao.paging(offset, getKey())
+        }
+        tvs = pagingHelper.result()
+        favoriteObserver = { result ->
+            result.emitIfNotHandled(success = {
+                val data = pagingHelper.getList()[it.data.pos]
+                data.favorite = it.data.tv.favorite
+                pagingHelper.theDataHasBeenChanged()
+            })
+        }
+        favorite.observeForever(favoriteObserver)
+    }
+
+    override fun onCleared() {
+        favorite.removeObserver(favoriteObserver)
+        super.onCleared()
     }
 
     fun setKey(key: String) {
@@ -33,7 +55,6 @@ class VideoListViewModel(
     }
 
     fun getKey() = key
-
 
     fun count(item: String): LiveData<Int> = tvFtsDao.count(item)
 
@@ -43,10 +64,27 @@ class VideoListViewModel(
         )
     }
 
+    private var first = true
+
+    fun loadOnce() {
+        if (first) {
+            first = false
+            loadMore()
+        }
+    }
+
     fun searchLogo(pos: Int) {
         val tvId = pagingHelper.getList()[pos].tvId
         addDisposable(
             tvLogoSearchUseCase.execute(tvId).onIo()
+        )
+    }
+
+    fun fav(pos: Int) {
+        addDisposable(
+            favoriteTvUseCase.execute(
+                FavoriteTvParam(pos, TvFts.toTv(pagingHelper.getList()[pos]))
+            ).onIo()
         )
     }
 }

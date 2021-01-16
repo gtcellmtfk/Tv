@@ -19,7 +19,6 @@ class UserViewModel(
                 updateUserUseCase.execute(this).onIo()
             )
         }
-
     }
 
     fun updateCapturePic(capturePic: Boolean) {

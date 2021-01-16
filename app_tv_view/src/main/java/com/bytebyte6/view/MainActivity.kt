@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.NetworkHelper
 import com.bytebyte6.base_ui.BaseActivity
@@ -40,6 +41,9 @@ class MainActivity : BaseActivity() {
                     }
                     R.id.nav_setting -> {
                         replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
+                    }
+                    R.id.nav_fav -> {
+                        replaceNotAddToBackStack(FavoriteFragment.newInstance(), FavoriteFragment.TAG)
                     }
                 }
                 removeDrawerListener()
@@ -116,9 +120,17 @@ class MainActivity : BaseActivity() {
 
     }
 
-    fun chooseNavHomeMenuItem() {
+    fun selectedNavHomeMenuItem() {
         binding.navView.setCheckedItem(R.id.nav_home)
         current = binding.navView.checkedItem
+    }
+
+    fun lockDrawer(){
+        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,GravityCompat.START)
+    }
+
+    fun unlockDrawer(){
+        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,GravityCompat.START)
     }
 
     fun openDrawer() {

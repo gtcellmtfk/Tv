@@ -1,11 +1,10 @@
 package com.bytebyte6.view
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.ErrorUtils
-import com.bytebyte6.base.mvi.branchIfNotHandled
+import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base_ui.BaseActivity
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
@@ -20,8 +19,8 @@ class LauncherActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityLauncherBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel.init().observe(this, Observer {
-            it.branchIfNotHandled(
+        viewModel.start().observe(this, Observer { result ->
+            result.emitIfNotHandled(
                 success = {
                     binding.root.postDelayed({
                         val intent = Intent(
@@ -36,7 +35,7 @@ class LauncherActivity : BaseActivity() {
                     showSnack(
                         binding.root,
                         Message(
-                            id = ErrorUtils.getMessage(it.error)
+                            message = it.error.message.toString()
                         )
                     )
                 }

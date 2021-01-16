@@ -11,7 +11,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
-abstract class ListFragment : BaseFragment<FragmentListBinding>(R.layout.fragment_list) {
+abstract class ListFragment : BaseShareFragment/*<FragmentListBinding>*/(R.layout.fragment_list) {
 
     lateinit var recyclerView: RecyclerView
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -20,8 +20,9 @@ abstract class ListFragment : BaseFragment<FragmentListBinding>(R.layout.fragmen
     lateinit var linearProgressIndicator: LinearProgressIndicator
     lateinit var emptyBox: LottieAnimationView
     lateinit var appBarLayout: AppBarLayout
+
     //是否已经加载全部数据
-    var end = false
+    protected var end = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,10 +40,10 @@ abstract class ListFragment : BaseFragment<FragmentListBinding>(R.layout.fragmen
                 if (end) {
                     return
                 }
-                if (swipeRefreshLayout.isRefreshing){
+                if (swipeRefreshLayout.isRefreshing) {
                     return
                 }
-                if (linearProgressIndicator.isVisible){
+                if (linearProgressIndicator.isVisible) {
                     return
                 }
                 onLoadMore()
@@ -66,7 +67,7 @@ abstract class ListFragment : BaseFragment<FragmentListBinding>(R.layout.fragmen
     fun hideSwipeRefresh() {
         swipeRefreshLayout.postDelayed({
             swipeRefreshLayout.isRefreshing = false
-        }, 600)
+        }, 400)
     }
 
     fun showProgress() {

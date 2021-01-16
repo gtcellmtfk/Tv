@@ -3,10 +3,10 @@ package com.bytebyte6.data.dao
 import androidx.room.*
 
 interface BaseDao<T> {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(data: T): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(list: List<T>): List<Long>
 
     @Delete

@@ -8,6 +8,7 @@ import org.koin.dsl.module
 
 val useCaseModule: Module = module {
     factory { CreateUserUseCase(get(UserDao::class)) }
+    factory { FavoriteTvUseCase(get()) }
     factory { SearchTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
     factory { TvRefreshUseCase(get(), get()) }

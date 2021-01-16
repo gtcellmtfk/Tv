@@ -41,8 +41,8 @@ abstract class PagingHelper<T> {
     private var list = mutableListOf<T>()
     private var pageSize = 20
 
-    fun setPageSize(pageSize: Int){
-        this.pageSize=pageSize
+    fun setPageSize(pageSize: Int) {
+        this.pageSize = pageSize
     }
 
     fun result(): LiveData<Result<List<T>>> = result
@@ -53,18 +53,21 @@ abstract class PagingHelper<T> {
 
     fun getList() = list
 
+    /**
+     * 数据已被更改,重新发出值
+     */
+    fun theDataHasBeenChanged() {
+        result.postValue(Result.Success(list))
+    }
+
     fun loadData(): Single<Result<List<T>>> {
         return Single.create<Result<List<T>>> {
-            try {
-                if (list.size < count()) {
-                    list.addAll(paging(offset = page * pageSize))
-                    page++
-                    it.onSuccess(Result.Success(list, list.size >= count()))
-                } else {
-                    it.onSuccess((Result.Success(list, true)))
-                }
-            } catch (e: Exception) {
-                it.onError(e)
+            if (list.size < count()) {
+                list.addAll(paging(offset = page * pageSize))
+                page++
+                it.onSuccess(Result.Success(list, list.size >= count()))
+            } else {
+                it.onSuccess((Result.Success(list, true)))
             }
         }
             .doOnSubscribe { result.postValue((Result.Loading())) }

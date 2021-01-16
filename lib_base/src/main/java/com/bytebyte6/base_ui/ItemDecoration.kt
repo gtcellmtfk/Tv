@@ -51,9 +51,13 @@ class GridSpaceDecoration(
         if (itemCount != null) {
             val pos = parent.getChildLayoutPosition(view)
 
-            if (itemCount <= span ) {
+            if (itemCount <= span) {
                 //只有一行
-                outRect.set(start, top, end, bottom)
+                if (pos == 0) {
+                    outRect.set(start, top, end, bottom)
+                } else {
+                    outRect.set(0, top, end, bottom)
+                }
                 return
             }
 

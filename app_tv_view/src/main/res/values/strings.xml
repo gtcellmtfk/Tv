@@ -53,4 +53,5 @@
     <string name="nav_setting">设置</string>
     <string name="tip">提示</string>
     <string name="enter_exit">是否要退出应用!</string>
+    <string name="nav_fav">收藏</string>
 </resources>

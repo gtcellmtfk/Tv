@@ -5,7 +5,7 @@ import kotlin.random.Random
 
 
 fun randomImage(): Int {
-    return when (Random.Default.nextInt(8)) {
+    return when (Random.Default.nextInt(9)) {
         0 -> R.drawable.ic_coronavirus
         1 -> R.drawable.ic_domain
         2 -> R.drawable.ic_favorite

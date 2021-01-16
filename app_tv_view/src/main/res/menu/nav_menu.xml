@@ -23,4 +23,11 @@
         android:icon="@drawable/ic_setting"
         android:title="@string/nav_setting" />
 
+    <item
+        android:checkable="true"
+        app:showAsAction="ifRoom"
+        android:id="@+id/nav_fav"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/nav_fav" />
+
 </menu>

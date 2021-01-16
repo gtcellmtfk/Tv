@@ -16,25 +16,27 @@ data class TvFts(
     var category: String = "",
     var logo: String = "",
     var name: String = "",
+    var favorite: Boolean = false,
     var countryName: String = "",
     var language: String = ""
 ) : Parcelable {
     companion object {
         const val TAG = "TvFts"
-         fun toIpTv(fts: TvFts): Tv {
+         fun toTv(fts: TvFts): Tv {
             return Tv(
                 logo = fts.logo,
                 name = fts.name,
                 url = fts.url,
-                tvId = fts.tvId
+                tvId = fts.tvId,
+                favorite = fts.favorite
             )
         }
 
-        fun toIpTvs(tvFts: List<TvFts>): List<Tv> {
+        fun toTvs(tvFts: List<TvFts>): List<Tv> {
             val result = mutableListOf<Tv>()
             for (ipTvFt in tvFts) {
                 result.add(
-                    toIpTv(
+                    toTv(
                         ipTvFt
                     )
                 )

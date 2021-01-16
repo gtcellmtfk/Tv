@@ -62,7 +62,7 @@ class CountryImageSearch(private val dao: CountryDao) : ImageSearch() {
                     country.images = search(
                         country.name
                             .replace(" ", "+")
-                            .plus("+flag+国旗")
+                            .plus("+flag")
                     )
                     logd(country.images.toString())
                     dao.insert(country)

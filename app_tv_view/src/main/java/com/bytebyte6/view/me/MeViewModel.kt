@@ -6,22 +6,21 @@ import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.recyclerview.selection.Selection
 import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.onIo
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.UserWithPlaylists
-import com.bytebyte6.base.onIo
-import com.bytebyte6.usecase.DeletePlaylistUseCase
-import com.bytebyte6.usecase.ParseM3uUseCase
-import com.bytebyte6.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.*
 
 class MeViewModel(
     private val userDao: UserDao,
     private val parseM3uUseCase: ParseM3uUseCase,
     private val deletePlaylistUseCase: DeletePlaylistUseCase,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
+    private val favoriteTvUseCase: FavoriteTvUseCase,
     private val playlistDao: PlaylistDao
 ) : BaseViewModel() {
 
@@ -30,14 +29,13 @@ class MeViewModel(
     val playlistNames = userDao.user().switchMap { user ->
         userDao.userWithPlaylists(user.userId).map { userWithPlaylists ->
             userWithPlaylist = userWithPlaylists
-
-            userWithPlaylists.playlists
+            userWithPlaylist.playlists
         }
     }
 
-    val playlistId: LiveData<Result<Playlist>> = parseM3uUseCase.result()
+    val playlist: LiveData<Result<Playlist>> = parseM3uUseCase.result()
 
-    val deleteAction = deletePlaylistUseCase.result()
+    val deletePlaylist = deletePlaylistUseCase.result()
 
     fun searchLogo(pos: Int) {
         addDisposable(
@@ -70,5 +68,11 @@ class MeViewModel(
             }
             addDisposable(deletePlaylistUseCase.execute(playlist).onIo())
         }
+    }
+
+    fun fav(pos: Int) {
+        addDisposable(
+            favoriteTvUseCase.execute(FavoriteTvParam(pos, tvs[pos])).onIo()
+        )
     }
 }

@@ -10,18 +10,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base.mvi.doSomethingIfNotHandled
-import com.bytebyte6.base_ui.BaseFragment
-import com.bytebyte6.base_ui.LinearSpaceDecoration
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.mvi.emitIfNotHandled
+import com.bytebyte6.base_ui.*
 import com.bytebyte6.view.*
+import com.bytebyte6.view.R
 import com.bytebyte6.view.card.CardAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
+class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me) {
 
     companion object {
         const val TAG = "MeFragment"
@@ -44,13 +41,13 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setupOnBackPressedDispatcher()
+        setupOnBackPressedDispatcherBackToHome()
     }
 
     override fun initBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view).apply {
 
-            setupToolbar(requireActivity())
+            setupToolbarMenuMode()
 
             toolbar.apply {
                 setOnMenuItemClickListener {
@@ -111,59 +108,51 @@ class MeFragment : BaseFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.deleteAction.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Result.Success -> it.doSomethingIfNotHandled {
-                    cardAdapter.clearSelection()
-                    showSnack(view, Message(id = R.string.tip_del_success))
-                    binding?.apply {
-                        fab.hide()
-                    }
+        viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
+            it.emitIfNotHandled({
+                cardAdapter.clearSelection()
+                showSnack(view, Message(id = R.string.tip_del_success))
+                binding<FragmentMeBinding>()?.apply {
+                    fab.hide()
                 }
-                is Result.Error -> it.doSomethingIfNotHandled {
-                    showSnack(view, Message(id = R.string.tip_del_fail))
-                }
-                else -> {
-                }
-            }
+            }, {
+                showSnack(view, Message(id = R.string.tip_del_fail))
+            })
         })
         viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
             cardAdapter.submitList(it)
         })
-        viewModel.playlistId.observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is Result.Success ->
-                    result.doSomethingIfNotHandled {
-                        hideProgressBar()
-                        replace(
-                            PlaylistFragment.newInstance(
-                                result.data.playlistId,
-                                result.data.playlistName
-                            ), PlaylistFragment.TAG
-                        )
-                    }
-                is Result.Error -> result.doSomethingIfNotHandled {
+        viewModel.playlist.observe(viewLifecycleOwner, Observer { result ->
+            result.emitIfNotHandled(
+                {
+                    hideProgressBar()
+                    replace(
+                        PlaylistFragment.newInstance(
+                            it.data.playlistId,
+                            it.data.playlistName
+                        ), PlaylistFragment.TAG
+                    )
+                }, {
                     hideProgressBar()
                     showSnack(
                         view,
                         Message(id = (R.string.tip_parse_file_error))
                     )
-                }
-                is Result.Loading -> result.doSomethingIfNotHandled {
+                }, {
                     showProgressBar()
                 }
-            }
+            )
         })
     }
 
     private fun showProgressBar() {
-        binding?.apply {
+        binding<FragmentMeBinding>()?.apply {
             progressBar.visibility = View.VISIBLE
         }
     }
 
     private fun hideProgressBar() {
-        binding?.apply {
+        binding<FragmentMeBinding>()?.apply {
             progressBar.visibility = View.GONE
         }
     }

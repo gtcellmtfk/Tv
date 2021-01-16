@@ -56,8 +56,6 @@ class NetworkHelper(context: Context) {
 
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
 
-        networkConnected.postValue(Event(isConnected()))
-
     }
 
     fun liveData():LiveData<Event<Boolean>> = networkConnected

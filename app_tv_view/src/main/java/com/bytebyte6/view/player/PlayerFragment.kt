@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.bytebyte6.base.logd
 import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.view.KEY_VIDEO_URL
@@ -20,7 +21,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PlayerFragment :
-    BaseFragment<FragmentVideoBinding>(R.layout.fragment_video) {
+    BaseShareFragment/*<FragmentVideoBinding>*/(R.layout.fragment_video) {
 
     companion object {
         const val TAG: String = "PlayerFragment"
@@ -56,7 +57,7 @@ class PlayerFragment :
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             requireActivity().runOnUiThread {
-                binding?.progressBar?.isVisible=!isPlaying
+                binding<FragmentVideoBinding>()?.progressBar?.isVisible=!isPlaying
             }
         }
 
@@ -82,7 +83,7 @@ class PlayerFragment :
     }
 
     private fun play() {
-        binding?.apply {
+        binding<FragmentVideoBinding>()?.apply {
             val url=requireArguments().getString(KEY_VIDEO_URL)
             logd("url=$url")
             playerView.player = simpleExoPlayer
@@ -100,7 +101,7 @@ class PlayerFragment :
     }
 
     private fun stop() {
-        binding?.apply {
+        binding<FragmentVideoBinding>()?.apply {
             playerView.keepScreenOn = false
             playerView.onPause()
             simpleExoPlayer.removeListener(listener)

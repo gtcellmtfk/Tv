@@ -1,6 +1,7 @@
 package com.bytebyte6.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,25 +10,34 @@ import com.bytebyte6.base_ui.BaseAdapter
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.view.databinding.ItemImageBinding
 
-class ImageAdapter : BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
+class ImageAdapter(private val favClickListener: ((pos: Int) -> Unit)? = null) :
+    BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
+        //重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~
         holder.itemView.transitionName = currentList[position].title
         holder.binding.apply {
             val item = getItem(position)
             tvName.text = item.title
-            if (item.imageUrl.isEmpty()) {
-                ivPreview.setImageResource(R.drawable.ic_landscape)
-                return
-            }
             Glide.with(ivPreview)
                 .load(item.imageUrl)
-                .placeholder(R.drawable.ic_landscape)
+                .placeholder(R.drawable.landscape)
                 .into(ivPreview)
+            favClickListener?.apply {
+                ivFavorite.visibility = View.VISIBLE
+                if (item.love) {
+                    ivFavorite.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    ivFavorite.setImageResource(R.drawable.ic_favorite_border)
+                }
+                ivFavorite.setOnClickListener {
+                    this.invoke(position)
+                }
+            }
         }
     }
 }
@@ -52,14 +62,17 @@ object ImageDIFF : DiffUtil.ItemCallback<Image>() {
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem.imageUrl == newItem.imageUrl
+        return oldItem.videoUrl == newItem.videoUrl
     }
 
     override fun areContentsTheSame(
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem.imageUrl == newItem.imageUrl && oldItem.title == newItem.title
+        return oldItem.imageUrl == newItem.imageUrl
+                && oldItem.title == newItem.title
+                && oldItem.love == newItem.love
+                && oldItem.videoUrl == newItem.videoUrl
     }
 }
 

@@ -1,5 +1,6 @@
 package com.bytebyte6.data
 
+import com.bytebyte6.data.entity.Tv
 import io.reactivex.rxjava3.core.Single
 import okio.internal.commonToUtf8String
 import org.junit.Test
@@ -21,6 +22,14 @@ class ExampleUnitTest {
     private val logoRegex = Regex(logoPattern)
     private val countryRegex = Regex(countryPattern)
     private val titleRegex = Regex(titlePattern)
+
+    @Test
+    fun test4() {
+        val tv=Tv()
+        tv.love=true
+        println(tv.favorite)
+    }
+
 
     @Test
     fun test3() {

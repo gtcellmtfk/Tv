@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.LinearSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.card.CardAdapter
@@ -12,7 +13,7 @@ import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class LanguageFragment :
-    BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
+    BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.layout.fragment_recycler_view) {
 
     companion object {
         const val TAG = "ViewPagerFragment"

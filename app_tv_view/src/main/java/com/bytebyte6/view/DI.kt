@@ -11,17 +11,19 @@ import com.bytebyte6.view.videolist.VideoListViewModel
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val viewModule: Module = module {
-    factory<Player> { SimpleExoPlayer.Builder(androidApplication()).build() }
-    viewModel { VideoListViewModel(get(),get()) }
+    factory<Player> { SimpleExoPlayer.Builder(androidContext()).build() }
+    viewModel { VideoListViewModel(get(),get(),get()) }
     viewModel { PlayerViewModel() }
-    viewModel { SearchViewModel(get(),get()) }
-    viewModel { MeViewModel(get(), get(), get(),get(),get()) }
+    viewModel { SearchViewModel(get(),get(),get()) }
+    viewModel { MeViewModel(get(), get(), get(),get(),get(),get()) }
     viewModel { LauncherViewModel(get(),get()) }
     viewModel { HomeViewModel(get(), get(),get(),get()) }
     viewModel { UserViewModel(get(), get()) }
+    viewModel { FavoriteViewModel( get()) }
 }

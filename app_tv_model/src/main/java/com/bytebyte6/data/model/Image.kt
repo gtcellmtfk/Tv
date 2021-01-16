@@ -4,7 +4,8 @@ import androidx.annotation.Keep
 
 @Keep
 interface Image {
-    val imageUrl: String
-    val title: String
-    val videoUrl: String
+    var imageUrl: String
+    var title: String
+    var videoUrl: String
+    var love: Boolean
 }

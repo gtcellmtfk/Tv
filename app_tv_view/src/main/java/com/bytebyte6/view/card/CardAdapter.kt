@@ -38,6 +38,7 @@ class CardAdapter(
         val item = getItem(position)
 
         holder.apply {
+            //重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~
             itemView.transitionName = item.title
             tvTitle.text = item.title
             details.pos = position.toLong()

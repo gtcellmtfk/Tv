@@ -12,11 +12,10 @@ import com.bytebyte6.base.logd
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialContainerTransform
 
-const val KEY_TRANS_NAME = "KEY_TRANS_NAME"
 
-abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
+abstract class BaseFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Fragment(layoutId) {
 
-    protected var binding: Binding? = null
+    var viewBinding: ViewBinding? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,8 +25,6 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logd("onCreate")
-        exitTransition = Hold()
-        sharedElementEnterTransition = MaterialContainerTransform()
     }
 
     override fun onCreateView(
@@ -46,14 +43,8 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val name = arguments?.getString(KEY_TRANS_NAME)
-        logd("onViewCreated name= $name")
-        view.transitionName = name
-        postponeEnterTransition()
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
-        binding = initBinding(view)
+        logd("onViewCreated")
+        viewBinding = initBinding(view)
     }
 
     override fun onStart() {
@@ -72,7 +63,7 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
     }
 
     override fun onDestroyView() {
-        binding = null
+        viewBinding = null
         super.onDestroyView()
         logd("onDestroyView")
     }
@@ -87,6 +78,10 @@ abstract class BaseFragment<Binding : ViewBinding>(layoutId: Int) : Fragment(lay
         logd("onDetach")
     }
 
-    abstract fun initBinding(view: View): Binding?
+    inline fun <reified T : ViewBinding> binding(): T? {
+        return viewBinding as T?
+    }
+
+    abstract fun initBinding(view: View): ViewBinding?
 }
 

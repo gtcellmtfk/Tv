@@ -33,6 +33,9 @@ data class Tv(
     @ColumnInfo(name = "name")
     var name: String = "",
 
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false,
+
     @ColumnInfo(name = "language")
     var language: List<Language> = emptyList(),
 
@@ -48,12 +51,21 @@ data class Tv(
 
 ) : Parcelable, Image {
 
-    override val title: String
+    override var title: String
         get() = name
+        set(value) {}
 
-    override val imageUrl: String
+    override var imageUrl: String
         get() = logo
+        set(value) {}
 
-    override val videoUrl: String
+    override var videoUrl: String
         get() = url
+        set(value) {}
+
+    override var love: Boolean
+        get() = favorite
+        set(value) {
+            favorite = value
+        }
 }

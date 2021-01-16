@@ -1,16 +1,16 @@
 package com.bytebyte6.view.home
 
 import android.content.Context
+import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.ErrorUtils
-import com.bytebyte6.base.mvi.branchIfNotHandled
-import com.bytebyte6.base.mvi.isLoading
+import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base_ui.BaseFragment
+import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.view.*
@@ -19,7 +19,7 @@ import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragment_home) {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
             toolbar.transitionName = getString(R.string.search_share)
 
-            setupToolbar(requireActivity())
+            setupToolbarMenuMode()
 
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
@@ -71,8 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 true
             }
 
-            viewPager.adapter =
-                TabAdapter(this@HomeFragment)
+            viewPager.adapter = TabAdapter(this@HomeFragment)
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
                     TAB_COUNTRY -> tab.setText(R.string.home_country)
@@ -96,13 +95,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 })
 
                 tvRefresh.observe(viewLifecycleOwner, Observer { result ->
-                    result.branchIfNotHandled(
+                    result.emitIfNotHandled(
                         {
                             swipeRefreshLayout.isRefreshing = false
                         },
                         {
                             swipeRefreshLayout.isRefreshing = false
-                            showSnack(view, Message(id = ErrorUtils.getMessage(it.error)))
+                            showSnack(view, Message(message = it.error.message.toString()))
                         },
                         {
                             swipeRefreshLayout.isRefreshing = true

@@ -17,7 +17,7 @@ class LauncherViewModel(
     private val createUserUseCase: CreateUserUseCase
 ) : BaseViewModel() {
 
-    private val eventObserver = Observer<Result<User>> {
+    private val observer = Observer<Result<User>> {
         it.isSuccess()?.apply {
             AppCompatDelegate.setDefaultNightMode(
                 if (nightMode)
@@ -30,7 +30,7 @@ class LauncherViewModel(
     }
 
     private fun removeObserver() {
-        createUserUseCase.result().removeObserver(eventObserver)
+        createUserUseCase.result().removeObserver(observer)
     }
 
     init {
@@ -38,10 +38,10 @@ class LauncherViewModel(
         addDisposable(
             createUserUseCase.execute(User(name = "Admin")).onIo()
         )
-        createUserUseCase.result().observeForever(eventObserver)
+        createUserUseCase.result().observeForever(observer)
     }
 
-    fun init(): LiveData<Result<List<Tv>>> {
+    fun start(): LiveData<Result<List<Tv>>> {
         addDisposable(
             initDataUseCase.execute("init").onIo()
         )

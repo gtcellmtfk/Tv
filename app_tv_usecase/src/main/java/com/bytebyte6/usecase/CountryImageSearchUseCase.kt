@@ -14,7 +14,7 @@ class CountryImageSearchUseCase(
             val images = imageSearch.search(
                 param.name
                     .replace(" ", "+")
-                    .plus("+flag+国旗")
+                    .plus("+flag")
             )
             param.images = images
             countryDao.update(param)

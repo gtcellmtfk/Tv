@@ -5,7 +5,7 @@
     <item
         app:showAsAction="always"
         android:id="@+id/me_import_file"
-        android:icon="@drawable/ic_add_24"
+        android:icon="@drawable/ic_add"
         android:title="@string/m3u" />
 
 </menu>

@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -21,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * 实际环境使用
  */
 val roomModule = module {
-    single { createDb(androidApplication()) }
+    single { createDb(androidContext()) }
 }
 
 /**

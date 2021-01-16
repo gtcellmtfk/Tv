@@ -9,7 +9,7 @@ class SearchTvUseCase(private val tvFtsDao: TvFtsDao) : RxSingleUseCase<String, 
     override fun doSomething(param: String): List<Tv> {
         val list = tvFtsDao.search(param)
         return list.map {
-            TvFts.toIpTv(it)
+            TvFts.toTv(it)
         }
     }
 }
