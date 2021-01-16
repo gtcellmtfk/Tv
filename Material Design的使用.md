@@ -89,6 +89,8 @@ fun Fragment.replaceWithShareElement(fragment: Fragment, tag: String?, share: Vi
 
 [SearchFragment](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/search/SearchFragment.kt)
 
+[Material Design Motion](https://material.io/develop/android/theming/motion)
+
 # 颜色相关
 
 ```xml
