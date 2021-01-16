@@ -77,7 +77,17 @@ fun Fragment.replaceWithShareElement(fragment: Fragment, tag: String?, share: Vi
 }
 ```
 
- 
+## 相关链接
+
+[BaseShareFragment](https://github.com/bytebyte6/Rtmp/blob/master/lib_base/src/main/java/com/bytebyte6/base_ui/BaseShareFragment.kt)
+
+[ImageAdapter](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/ImageAdapter.kt)
+
+[HomeFragment](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/home/HomeFragment.kt)
+
+[CountryFragment](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/home/CountryFragment.kt)
+
+[SearchFragment]( https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/search/SearchFragment)
 
 # 颜色相关
 
@@ -103,6 +113,8 @@ colorOnSecondary 次色上显示的颜色
 # MotionLayout
 
 <img src="pic\1 (2).jpg" style="zoom:50%;" />
+
+[DrawerContent](https://github.com/bytebyte6/Rtmp/blob/efd1873bc6410a64d8ca34da248b200e1b30f4d6/lib_base/src/main/java/com/bytebyte6/base_ui/DrawerContent.kt)
 
 继承MotionLayout实现 DrawerLayout.DrawerListener
 
@@ -135,7 +147,7 @@ class DrawerContent @JvmOverloads constructor(
 }
 ```
 
-布局
+[布局](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/res/layout/activity_main.xml)
 
 ```xml
 <!--要注意设置约束布局属性 设置不对会导致片段显示不全-->
@@ -156,7 +168,7 @@ class DrawerContent @JvmOverloads constructor(
 </com.bytebyte6.base_ui.DrawerContent>
 ```
 
-scene_home_content.xml
+[scene_home_content.xml](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/res/xml/scene_home_content.xml)
 
 ```xml
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
