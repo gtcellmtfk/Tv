@@ -23,7 +23,7 @@
 
 # ExoPlayer
 
-[基本运用](https://github.com/bytebyte6/Rtmp/blob/master/Material%20Design%E7%9A%84%E4%BD%BF%E7%94%A8.md)
+[基本运用](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/player/PlayerFragment.kt)
 
 # Material Design 
 
@@ -32,8 +32,4 @@
 # Room
 
 [一对多关系，多对多关系映射，fts全文检索，单元测试](https://github.com/bytebyte6/Rtmp/blob/master/Room%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.md)
-
-# Jetpack
-
-导航组件运用，效果不怎么理想，移除！！！ 
 
