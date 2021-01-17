@@ -23,7 +23,7 @@
 
 # ExoPlayer
 
-[基本运用](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/player/PlayerFragment.kt)
+[基本用法](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/player/PlayerFragment.kt)
 
 # Material Design 
 
