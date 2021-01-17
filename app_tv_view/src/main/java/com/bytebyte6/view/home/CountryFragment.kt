@@ -33,10 +33,11 @@ class CountryFragment : BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.lay
     override fun initBinding(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view).apply {
 
-            val imageAdapter = ImageAdapter()
+            val imageAdapter = ImageAdapter(this@CountryFragment)
             recyclerView.adapter = imageAdapter
             recyclerView.layoutManager=GridLayoutManager(view.context,2)
             recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
             imageAdapter.setOnBind { pos, _ ->
                 viewModel.searchLogo(pos)
             }

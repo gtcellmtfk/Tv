@@ -47,7 +47,7 @@ class PlaylistFragment : BaseShareFragment/*<FragmentPlayListBinding>*/(R.layout
 
             toolbar.title = requireArguments().getString(KEY_TITLE)
 
-            val adapter = ImageAdapter {
+            val adapter = ImageAdapter(this@PlaylistFragment) {
                 viewModel?.fav(it)
             }
             adapter.setOnItemClick { pos, _ ->
@@ -58,6 +58,7 @@ class PlaylistFragment : BaseShareFragment/*<FragmentPlayListBinding>*/(R.layout
             }
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
 
             load(adapter, toolbar)
         }

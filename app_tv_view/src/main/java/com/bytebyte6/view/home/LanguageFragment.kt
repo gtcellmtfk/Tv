@@ -42,6 +42,7 @@ class LanguageFragment :
 
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
 
             viewModel.lang.observe(viewLifecycleOwner, Observer {
                 cardAdapter.submitList(it)

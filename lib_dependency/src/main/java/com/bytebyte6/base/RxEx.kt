@@ -9,7 +9,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 abstract class RxSingleUseCase<Param, ResultType> {
 
+    private var data: ResultType? = null
+
     private val result: MutableLiveData<Result<ResultType>> = MutableLiveData()
+
+    fun getData() = data
 
     fun result(): LiveData<Result<ResultType>> = result
 
@@ -19,6 +23,7 @@ abstract class RxSingleUseCase<Param, ResultType> {
     }
         .doOnSubscribe { result.postValue((Result.Loading())) }
         .doOnSuccess {
+            data = it
             result.postValue((Result.Success(it)))
         }
         .doOnError {

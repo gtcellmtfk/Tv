@@ -47,7 +47,7 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
                 etSearch.setText("")
             }
 
-            val adapter = ImageAdapter {
+            val adapter = ImageAdapter(this@SearchFragment) {
                 viewModel.fav(it)
             }
             adapter.setOnItemClick { pos, _ ->
@@ -62,8 +62,15 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
 
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
 
             viewModel.favorite.observe(viewLifecycleOwner, Observer {
+                it.emitIfNotHandled(success = {
+                    viewModel.search(etSearch.text)
+                })
+            })
+
+            viewModel.logoSearch.observe(viewLifecycleOwner, Observer {
                 it.emitIfNotHandled(success = {
                     viewModel.search(etSearch.text)
                 })

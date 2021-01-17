@@ -44,7 +44,7 @@ class VideoListFragment : ListFragment() {
         setupToolbarArrowBack()
         viewModel.setKey(title)
 
-        val adapter = ImageAdapter {
+        val adapter = ImageAdapter(this) {
             viewModel.fav(it)
         }
         adapter.setOnItemClick { pos, _ ->
@@ -59,6 +59,7 @@ class VideoListFragment : ListFragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
+        recyclerView.setHasFixedSize(true)
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
             toolbar.subtitle = getString(R.string.total, it)

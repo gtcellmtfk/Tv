@@ -5,13 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.bytebyte6.base.GsonConfig
 import com.bytebyte6.data.work.AppDelegatingWorkerFactory
-import com.bytebyte6.data.work.CountryImageSearch
-import com.bytebyte6.data.work.ImageSearch
-import com.bytebyte6.data.work.TvLogoSearch
+import com.bytebyte6.data.work.SearchImageImpl
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -46,7 +43,7 @@ val dataModule = module {
     single { TvLogoSearch(get()) }
     single { get(AppDatabase::class.java).playlistTvCrossRefDao() }
     single { get(AppDatabase::class.java).userPlaylistCrossRefDao() }
-    factory { ImageSearch() }
+    factory { SearchImageImpl() }
     factory {
         GsonBuilder().registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
             .create()

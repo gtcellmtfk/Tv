@@ -1,12 +1,8 @@
 package com.bytebyte6.view.player
 
-import android.content.Context
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.view.View
 import androidx.core.view.isVisible
 import com.bytebyte6.base.logd
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
@@ -29,19 +25,9 @@ class PlayerFragment :
 
     private val viewModel by viewModel<PlayerViewModel>()
 
-    private val simpleExoPlayer by inject<Player>()
+    private val player by inject<Player>()
 
     override fun initBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        requireActivity().requestedOrientation=SCREEN_ORIENTATION_LANDSCAPE
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        requireActivity().requestedOrientation=SCREEN_ORIENTATION_PORTRAIT
-    }
 
     override fun onResume() {
         super.onResume()
@@ -55,9 +41,20 @@ class PlayerFragment :
 
     private val listener: Player.EventListener = object : Player.EventListener {
 
+        private var playbackStateReady = false
+
+        override fun onPlaybackStateChanged(state: Int) {
+            playbackStateReady = state == Player.STATE_READY
+        }
+
+        override fun onIsLoadingChanged(isLoading: Boolean) {
+            super.onIsLoadingChanged(isLoading)
+            logd("onIsLoadingChanged $isLoading")
+        }
+
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             requireActivity().runOnUiThread {
-                binding<FragmentVideoBinding>()?.progressBar?.isVisible=!isPlaying
+                binding<FragmentVideoBinding>()?.progressBar?.isVisible = !isPlaying&&!playbackStateReady
             }
         }
 
@@ -84,17 +81,17 @@ class PlayerFragment :
 
     private fun play() {
         binding<FragmentVideoBinding>()?.apply {
-            val url=requireArguments().getString(KEY_VIDEO_URL)
+            val url = requireArguments().getString(KEY_VIDEO_URL)
             logd("url=$url")
-            playerView.player = simpleExoPlayer
+            playerView.player = player
             val item = MediaItem.Builder()
                 .setUri(url)
                 .setMimeType(MimeTypes.APPLICATION_M3U8)
                 .build()
-            simpleExoPlayer.setMediaItem(item)
-            simpleExoPlayer.playWhenReady = true
-            simpleExoPlayer.prepare()
-            simpleExoPlayer.addListener(listener)
+            player.setMediaItem(item)
+            player.playWhenReady = true
+            player.prepare()
+            player.addListener(listener)
             playerView.keepScreenOn = true
             playerView.onResume()
         }
@@ -104,8 +101,8 @@ class PlayerFragment :
         binding<FragmentVideoBinding>()?.apply {
             playerView.keepScreenOn = false
             playerView.onPause()
-            simpleExoPlayer.removeListener(listener)
-            simpleExoPlayer.release()
+            player.removeListener(listener)
+            player.release()
             playerView.player = null
         }
     }

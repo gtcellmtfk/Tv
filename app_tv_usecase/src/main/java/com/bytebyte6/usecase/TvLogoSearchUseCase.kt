@@ -2,21 +2,29 @@ package com.bytebyte6.usecase
 
 import com.bytebyte6.base.RxSingleUseCase
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.work.ImageSearch
+import com.bytebyte6.data.work.SearchImageImpl
 
 class TvLogoSearchUseCase(
-    private val imageSearch: ImageSearch,
+    private val imageSearch: SearchImageImpl,
     private val tvDao: TvDao
-) : RxSingleUseCase<Long, Boolean>() {
-    override fun doSomething(param: Long): Boolean {
-        val tv = tvDao.getTv(param)
+) : RxSingleUseCase<SearchParam, SearchParam>() {
+    override fun doSomething(param: SearchParam): SearchParam {
+        val tv = tvDao.getTv(param.id)
         if (tv.logo.isEmpty()) {
-            val logos = imageSearch.search(tv.name)
-            if (logos.isNotEmpty()) {
-                tv.logo = logos[0]
-                tvDao.insert(tv)
+            val logo = imageSearch.search(tv.name.replace("&", " "))
+            if (logo.isNotEmpty()) {
+                tv.logo = logo
+                tvDao.update(tv)
+                param.logo = logo
+                return param
             }
         }
-        return true
+        return param
     }
 }
+
+data class SearchParam(
+    var id: Long,
+    var pos: Int,
+    var logo: String = ""
+)

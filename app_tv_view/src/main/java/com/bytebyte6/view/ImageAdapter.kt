@@ -3,14 +3,19 @@ package com.bytebyte6.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bytebyte6.base.logd
 import com.bytebyte6.base_ui.BaseAdapter
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.view.databinding.ItemImageBinding
 
-class ImageAdapter(private val favClickListener: ((pos: Int) -> Unit)? = null) :
+class ImageAdapter(
+    private val fragment: Fragment,
+    private val favClickListener: ((pos: Int) -> Unit)? = null
+) :
     BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
@@ -23,10 +28,17 @@ class ImageAdapter(private val favClickListener: ((pos: Int) -> Unit)? = null) :
         holder.binding.apply {
             val item = getItem(position)
             tvName.text = item.title
-            Glide.with(ivPreview)
-                .load(item.imageUrl)
-                .placeholder(R.drawable.landscape)
-                .into(ivPreview)
+
+            logd(item.title+" "+item.imageUrl)
+            if (item.imageUrl.isEmpty()) {
+                ivPreview.setImageResource(R.drawable.landscape)
+            } else {
+                GlideApp.with(ivPreview)
+                    .load(item.imageUrl)
+                    .placeholder(R.drawable.landscape)
+                    .into(ivPreview)
+            }
+
             favClickListener?.apply {
                 ivFavorite.visibility = View.VISIBLE
                 if (item.love) {

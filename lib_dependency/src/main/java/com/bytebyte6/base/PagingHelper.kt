@@ -63,6 +63,7 @@ abstract class PagingHelper<T> {
     fun loadData(): Single<Result<List<T>>> {
         return Single.create<Result<List<T>>> {
             if (list.size < count()) {
+                result.postValue((Result.Loading()))
                 list.addAll(paging(offset = page * pageSize))
                 page++
                 it.onSuccess(Result.Success(list, list.size >= count()))
@@ -70,7 +71,6 @@ abstract class PagingHelper<T> {
                 it.onSuccess((Result.Success(list, true)))
             }
         }
-            .doOnSubscribe { result.postValue((Result.Loading())) }
             .doOnSuccess { result.postValue(it) }
             .doOnError { result.postValue(Result.Error(it)) }
     }

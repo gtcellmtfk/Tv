@@ -36,7 +36,7 @@ class FavoriteFragment : ListFragment() {
 
         setupToolbarMenuMode(getString(R.string.nav_fav),"")
 
-        val adapter = ImageAdapter()
+        val adapter = ImageAdapter(this)
         adapter.setOnItemClick { pos, _ ->
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }
@@ -46,6 +46,8 @@ class FavoriteFragment : ListFragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
+        recyclerView.setHasFixedSize(true)
+
         viewModel.fav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })

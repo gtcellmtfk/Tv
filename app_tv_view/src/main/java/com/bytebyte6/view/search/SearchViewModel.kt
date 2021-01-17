@@ -3,10 +3,7 @@ package com.bytebyte6.view.search
 import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base.onIo
 import com.bytebyte6.base_ui.BaseViewModel
-import com.bytebyte6.usecase.FavoriteTvParam
-import com.bytebyte6.usecase.FavoriteTvUseCase
-import com.bytebyte6.usecase.SearchTvUseCase
-import com.bytebyte6.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.*
 
 class SearchViewModel(
     private val searchTvUseCase: SearchTvUseCase,
@@ -18,6 +15,8 @@ class SearchViewModel(
     val tvs = searchTvUseCase.result()
 
     val favorite=favoriteTvUseCase.result()
+
+    val logoSearch=tvLogoSearchUseCase.result()
 
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
@@ -32,7 +31,7 @@ class SearchViewModel(
             this.isSuccess()?.apply {
                 val tvId = this[pos].tvId
                 addDisposable(
-                    tvLogoSearchUseCase.execute(tvId).onIo()
+                    tvLogoSearchUseCase.execute(SearchParam(id = tvId,pos=pos)).onIo()
                 )
             }
         }

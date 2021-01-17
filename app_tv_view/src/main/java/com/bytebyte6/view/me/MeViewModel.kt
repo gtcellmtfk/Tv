@@ -39,7 +39,7 @@ class MeViewModel(
 
     fun searchLogo(pos: Int) {
         addDisposable(
-            tvLogoSearchUseCase.execute(tvs[pos].tvId).onIo()
+            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId,pos=pos)).onIo()
         )
     }
 

@@ -10,6 +10,7 @@ import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.usecase.FavoriteTvParam
 import com.bytebyte6.usecase.FavoriteTvUseCase
+import com.bytebyte6.usecase.SearchParam
 import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class VideoListViewModel(
@@ -28,6 +29,8 @@ class VideoListViewModel(
 
     private val favoriteObserver: (Result<FavoriteTvParam>) -> Unit
 
+    private val searchObserver: (Result<SearchParam>) -> Unit
+
     init {
         pagingHelper = object : PagingHelper<TvFts>() {
             override fun count(): Int = tvFtsDao.getCount(getKey())
@@ -43,10 +46,19 @@ class VideoListViewModel(
             })
         }
         favorite.observeForever(favoriteObserver)
+        searchObserver = { result ->
+            result.emitIfNotHandled(success = {
+                val data = pagingHelper.getList()[it.data.pos]
+                data.logo = it.data.logo
+                pagingHelper.theDataHasBeenChanged()
+            })
+        }
+        tvLogoSearchUseCase.result().observeForever(searchObserver)
     }
 
     override fun onCleared() {
         favorite.removeObserver(favoriteObserver)
+        tvLogoSearchUseCase.result().removeObserver(searchObserver)
         super.onCleared()
     }
 
@@ -76,7 +88,7 @@ class VideoListViewModel(
     fun searchLogo(pos: Int) {
         val tvId = pagingHelper.getList()[pos].tvId
         addDisposable(
-            tvLogoSearchUseCase.execute(tvId).onIo()
+            tvLogoSearchUseCase.execute(SearchParam(id = tvId,pos=pos)).onIo()
         )
     }
 

@@ -42,7 +42,7 @@ class VideoDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ImageAdapter()
+        val adapter = ImageAdapter(this)
         adapter.setOnItemClick { pos, _ ->
             dismiss()
             showVideoActivity(adapter.currentList[pos].videoUrl)

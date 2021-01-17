@@ -43,6 +43,7 @@ class CategoryFragment :
 
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
 
             viewModel.category.observe(viewLifecycleOwner, Observer {
                 cardAdapter.submitList(it)

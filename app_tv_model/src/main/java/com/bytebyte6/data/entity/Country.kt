@@ -25,13 +25,13 @@ data class Country(
     @ColumnInfo(name = "name")
     var name: String = "",
 
-    @SerializedName("images")
-    @ColumnInfo(name = "images")
-    var images: List<String> = emptyList()
+    @SerializedName("image")
+    @ColumnInfo(name = "image")
+    var image: String = ""
 
 ) : Parcelable, Image {
     override var imageUrl: String
-        get() = if (images.isNotEmpty()) images[0] else "https://tse4-mm.cn.bing.net/th/id/OIP.9IK3tQifJ2Zmtnm0GqlfOgHaHN?pid=Api&rs=1"
+        get() = image
         set(value) {}
     override var title: String
         get() = name

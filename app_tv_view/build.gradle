@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -42,6 +43,9 @@ dependencies {
     implementation project(path: ':lib_base')
     implementation project(path: ':app_tv_usecase')
     implementation project(path: ':lib_dependency')
+
+    def glideVersion = '4.11.0'
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     def exoplayer="2.12.2"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayer"
