@@ -30,7 +30,6 @@ class ExampleUnitTest {
         println(tv.favorite)
     }
 
-
     @Test
     fun test3() {
         Single.create<String> {

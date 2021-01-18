@@ -42,6 +42,6 @@ class TvLogoSearchUseCaseTest : KoinTest {
     fun test() {
         val id = db.tvDao().insert(Tv(url = "A"))
         val tv = Tv(id, url = "A")
-        tvLogoSearchUseCase.execute(tv.tvId).test().assertValue(true)
+        tvLogoSearchUseCase.execute(SearchParam(tv.tvId,0)).test().assertValue(SearchParam(tv.tvId,0))
     }
 }

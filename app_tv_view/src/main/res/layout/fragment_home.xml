@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/home_menu"
+            app:menu="@menu/menu_home"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/home_category_view">
 

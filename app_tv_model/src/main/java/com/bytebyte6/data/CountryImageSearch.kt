@@ -15,7 +15,6 @@ class CountryImageSearch(private val dao: CountryDao) : SearchImageImpl() {
             .forEach { country ->
                 if (country.name.isNotEmpty()) {
                     country.image = search(country.name.plus("+flag"))
-                    logd(country.image)
                     dao.insert(country)
                 }
             }

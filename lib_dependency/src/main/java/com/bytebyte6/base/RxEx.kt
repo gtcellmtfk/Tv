@@ -18,7 +18,7 @@ abstract class RxSingleUseCase<Param, ResultType> {
     fun result(): LiveData<Result<ResultType>> = result
 
     fun execute(param: Param): Single<ResultType> = Single.create<ResultType> {
-        val result = doSomething(param)
+        val result = run(param)
         it.onSuccess(result)
     }
         .doOnSubscribe { result.postValue((Result.Loading())) }
@@ -31,7 +31,7 @@ abstract class RxSingleUseCase<Param, ResultType> {
             result.postValue((Result.Error(it)))
         }
 
-    abstract fun doSomething(param: Param): ResultType
+    abstract fun run(param: Param): ResultType
 }
 
 fun <T> Single<T>.onIo(): Disposable {

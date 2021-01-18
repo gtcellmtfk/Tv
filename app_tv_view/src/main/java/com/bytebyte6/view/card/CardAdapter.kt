@@ -16,16 +16,18 @@ import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
-import com.bytebyte6.base.logd
 import com.bytebyte6.base_ui.BaseAdapter
 import com.bytebyte6.data.model.Card
 import com.bytebyte6.view.R
 import com.bytebyte6.view.home.randomImage
 
 class CardAdapter(
-    private var selectionTracker: SelectionTracker<Long>? = null, /*多选模式必须设置*/
-    private var itemTouchHelper: ItemTouchHelper? = null, /*拖拽模式必须设置*/
-    private var drag: Boolean = false /*是否启用拖拽模式*/
+    /**多选模式必须设置*/
+    private var selectionTracker: SelectionTracker<Long>? = null,
+    /**拖拽模式必须设置*/
+    private var itemTouchHelper: ItemTouchHelper? = null,
+    /**是否启用拖拽模式*/
+    private var drag: Boolean = false
 ) : BaseAdapter<Card, CardViewHolder>(CardDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -164,7 +166,7 @@ class CardAdapter(
         }
     }
 
-    /*多选模式必须设置*/
+    /**多选模式必须设置*/
     fun setupSelection(recyclerView: RecyclerView, onSelectionChanged: (() -> (Unit))? = null) {
         if (recyclerView.adapter == null) {
             recyclerView.adapter = this

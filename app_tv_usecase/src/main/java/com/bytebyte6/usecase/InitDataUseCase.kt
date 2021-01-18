@@ -21,7 +21,7 @@ class InitDataUseCase(
     private val gson: Gson
 ) : RxSingleUseCase<String, List<Tv>>() {
 
-    override fun doSomething(param: String): List<Tv> {
+    override fun run(param: String): List<Tv> {
 
         if (tvDao.getCount() == 0) {
             val tvs = getTvs(context)

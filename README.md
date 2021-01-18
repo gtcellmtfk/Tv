@@ -27,7 +27,7 @@
 
 # Material Design 
 
-[过渡动画实践、MotionLayout运用](https://github.com/bytebyte6/Rtmp/blob/master/Material%20Design%E7%9A%84%E4%BD%BF%E7%94%A8.md)
+[过渡动画、MotionLayout](https://github.com/bytebyte6/Rtmp/blob/master/Material%20Design%E7%9A%84%E4%BD%BF%E7%94%A8.md)
 
 # Room
 

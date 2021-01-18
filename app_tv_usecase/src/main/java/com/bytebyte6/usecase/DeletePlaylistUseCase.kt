@@ -10,7 +10,7 @@ class DeletePlaylistUseCase(
     private val playlistDao: PlaylistDao,
     private val tvDao: TvDao
 ) : RxSingleUseCase<List<Playlist>, Boolean>() {
-    override fun doSomething(param: List<Playlist>): Boolean {
+    override fun run(param: List<Playlist>): Boolean {
         val tvs = mutableListOf<Tv>()
         param.forEach {
             tvs.addAll(

@@ -1,20 +1,17 @@
 package com.bytebyte6.view.videolist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.base.mvi.doSomethingIfNotHandled
+import com.bytebyte6.base.mvi.runIfNotHandled
 import com.bytebyte6.base.mvi.emit
 import com.bytebyte6.base_ui.*
 import com.bytebyte6.base_ui.databinding.FragmentListBinding
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class VideoListFragment : ListFragment() {
@@ -70,20 +67,20 @@ class VideoListFragment : ListFragment() {
                 {
                     adapter.submitList(TvFts.toTvs(it.data))
                     end = it.end
-                    it.doSomethingIfNotHandled {
+                    it.runIfNotHandled {
                         hideSwipeRefresh()
                         hideProgress()
                     }
                 },
                 {
-                    it.doSomethingIfNotHandled {
+                    it.runIfNotHandled {
                         showSnack(view, Message(message = it.error.message.toString()))
                         hideSwipeRefresh()
                         hideProgress()
                     }
                 },
                 {
-                    it.doSomethingIfNotHandled {
+                    it.runIfNotHandled {
                         showProgress()
                     }
                 }

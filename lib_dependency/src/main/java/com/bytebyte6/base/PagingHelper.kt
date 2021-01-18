@@ -56,7 +56,7 @@ abstract class PagingHelper<T> {
     /**
      * 数据已被更改,重新发出值
      */
-    fun theDataHasBeenChanged() {
+    fun dataHasBeenChanged() {
         result.postValue(Result.Success(list))
     }
 

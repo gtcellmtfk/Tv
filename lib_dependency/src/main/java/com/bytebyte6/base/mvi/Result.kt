@@ -5,7 +5,7 @@ sealed class Result<out R> {
 
     data class Success<out T>(
         val data: T,
-        /*加载更多的情况下使用表示数据全部加载完成*/
+        /**加载更多的情况下使用表示数据全部加载完成*/
         val end: Boolean = false
     ) : Result<T>()
 
@@ -14,10 +14,6 @@ sealed class Result<out R> {
     ) : Result<Nothing>()
 
     class Loading : Result<Nothing>()
-
-    override fun toString(): String {
-        return "Result(handled=$handled)"
-    }
 }
 
 fun <T> Result<T>.emit(
@@ -44,13 +40,13 @@ fun <T> Result<T>.emitIfNotHandled(
     loading: ((l: Result.Loading) -> Unit)? = null
 ) {
     when (this) {
-        is Result.Success -> this.doSomethingIfNotHandled { success?.invoke(this) }
-        is Result.Error -> this.doSomethingIfNotHandled { error?.invoke(this) }
-        is Result.Loading -> this.doSomethingIfNotHandled { loading?.invoke(this) }
+        is Result.Success -> this.runIfNotHandled { success?.invoke(this) }
+        is Result.Error -> this.runIfNotHandled { error?.invoke(this) }
+        is Result.Loading -> this.runIfNotHandled { loading?.invoke(this) }
     }
 }
 
-fun <T> Result<T>.doSomethingIfNotHandled(doSomething: (() -> Unit)) {
+fun <T> Result<T>.runIfNotHandled(doSomething: (() -> Unit)) {
     if (!handled) {
         handled = true
         doSomething()
@@ -64,9 +60,9 @@ fun <T> Result<T>.isSuccess(): T? {
     }
 }
 
-fun <T> Result<T>.isLoadingAndDoSomething(doSomething: (() -> Unit)) {
+fun <T> Result<T>.isLoadingAndRun(doSomething: (() -> Unit)) {
     if (isLoading()) {
-        doSomethingIfNotHandled {
+        runIfNotHandled {
             doSomething.invoke()
         }
     }
@@ -79,9 +75,9 @@ fun <T> Result<T>.isLoading(): Boolean {
     }
 }
 
-fun <T> Result<T>.isErrorAndDoSomething(doSomething: (() -> Unit)) {
+fun <T> Result<T>.isErrorAndRun(doSomething: (() -> Unit)) {
     if (isError() != null) {
-        doSomethingIfNotHandled {
+        runIfNotHandled {
             doSomething.invoke()
         }
     }

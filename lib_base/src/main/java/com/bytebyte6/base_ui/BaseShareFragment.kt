@@ -13,7 +13,6 @@ abstract class BaseShareFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Bas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        logd("onCreate")
         exitTransition = Hold()
         sharedElementEnterTransition = MaterialContainerTransform()
     }
@@ -21,7 +20,6 @@ abstract class BaseShareFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Bas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val name = arguments?.getString(KEY_TRANS_NAME)
-        logd("onViewCreated name= $name")
         view.transitionName = name
         postponeEnterTransition()
         view.doOnPreDraw {

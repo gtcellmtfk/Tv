@@ -18,7 +18,6 @@ class TvLogoSearch(private val dao: TvDao) : SearchImageImpl() {
                     )
                     if (logo.isNotEmpty()) {
                         it.logo = logo
-                        logd(it.logo)
                         dao.insert(it)
                     }
                 }

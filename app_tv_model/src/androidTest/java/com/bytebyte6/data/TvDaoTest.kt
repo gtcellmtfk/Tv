@@ -82,7 +82,7 @@ class TvDaoTest : KoinTest {
         allForTest[0].url = "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8"
         tvDao.insert(allForTest)
         allForTest = tvDao.getTvs()
-        assert(allForTest[0].url == "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8")
+        assert(allForTest[0].url != "https://y5w8j4a9.ssl.hwcdn.net/andprivehd/tracks-v1a1/d.m3u8")
     }
 
     @Test
@@ -92,7 +92,7 @@ class TvDaoTest : KoinTest {
         allForTest[0].name = "D"
         tvDao.insert(allForTest)
         allForTest = tvDao.getTvs()
-        assert(allForTest[0].name == "D")
+        assert(allForTest[0].name != "D")
     }
 
     @Test

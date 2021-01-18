@@ -42,7 +42,7 @@ class VideoListViewModel(
             result.emitIfNotHandled(success = {
                 val data = pagingHelper.getList()[it.data.pos]
                 data.favorite = it.data.tv.favorite
-                pagingHelper.theDataHasBeenChanged()
+                pagingHelper.dataHasBeenChanged()
             })
         }
         favorite.observeForever(favoriteObserver)
@@ -50,7 +50,7 @@ class VideoListViewModel(
             result.emitIfNotHandled(success = {
                 val data = pagingHelper.getList()[it.data.pos]
                 data.logo = it.data.logo
-                pagingHelper.theDataHasBeenChanged()
+                pagingHelper.dataHasBeenChanged()
             })
         }
         tvLogoSearchUseCase.result().observeForever(searchObserver)

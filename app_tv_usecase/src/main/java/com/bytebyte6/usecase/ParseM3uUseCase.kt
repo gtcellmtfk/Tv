@@ -19,7 +19,7 @@ class ParseM3uUseCase(
     private val context: Context
 ) : RxSingleUseCase<Uri, Playlist>() {
 
-    override fun doSomething(param: Uri): Playlist {
+    override fun run(param: Uri): Playlist {
         val tvs = context.contentResolver.openInputStream(param)!!.toTvs()
 
         tvs.forEach {

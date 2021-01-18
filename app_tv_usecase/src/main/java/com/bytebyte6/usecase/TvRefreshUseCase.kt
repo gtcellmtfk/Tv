@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Single
  * 更新本地数据库数据
  */
 class TvRefreshUseCase(private val api: TvApi, private val tvDao: TvDao) {
-    fun getSingle( ): Single<Boolean> {
+    fun getSingle(): Single<Boolean> {
         return api.getTvs().map { list ->
             tvDao.insert(list.map {
                 if (it.category.isEmpty()) {

@@ -9,7 +9,7 @@ class CountryImageSearchUseCase(
     private val imageSearch: SearchImageImpl,
     private val countryDao: CountryDao
 ) : RxSingleUseCase<Country, Boolean>() {
-    override fun doSomething(param: Country): Boolean {
+    override fun run(param: Country): Boolean {
         return if (param.image.isEmpty() && param.name.isNotEmpty()) {
             val image = imageSearch.search(param.name.plus("+flag"))
             param.image = image

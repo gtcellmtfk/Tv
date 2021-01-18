@@ -19,15 +19,15 @@
     <item
         android:checkable="true"
         app:showAsAction="ifRoom"
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/nav_setting" />
+        android:id="@+id/nav_fav"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/nav_fav" />
 
     <item
         android:checkable="true"
         app:showAsAction="ifRoom"
-        android:id="@+id/nav_fav"
-        android:icon="@drawable/ic_favorite"
-        android:title="@string/nav_fav" />
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/nav_setting" />
 
 </menu>

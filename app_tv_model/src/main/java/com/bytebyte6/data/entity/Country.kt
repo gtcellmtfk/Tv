@@ -17,18 +17,9 @@ import kotlinx.android.parcel.Parcelize
 @Keep
 data class Country(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "countryId")
-    @SerializedName("countryId")
     val countryId: Long = 0,
-
-    @SerializedName("name")
-    @ColumnInfo(name = "name")
     var name: String = "",
-
-    @SerializedName("image")
-    @ColumnInfo(name = "image")
     var image: String = ""
-
 ) : Parcelable, Image {
     override var imageUrl: String
         get() = image

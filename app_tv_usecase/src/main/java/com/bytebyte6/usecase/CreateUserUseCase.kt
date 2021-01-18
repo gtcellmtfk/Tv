@@ -8,7 +8,7 @@ class CreateUserUseCase(
     private val userDao: UserDao
 ) : RxSingleUseCase<User, User>() {
 
-    override fun doSomething(param: User): User {
+    override fun run(param: User): User {
         if (userDao.getCount() == 0) {
             userDao.insert(param)
         }
