@@ -94,25 +94,25 @@ class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragmen
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
                 })
 
-                tvRefresh.observe(viewLifecycleOwner, Observer { result ->
-                    result.emitIfNotHandled(
-                        {
-                            swipeRefreshLayout.isRefreshing = false
-                        },
-                        {
-                            swipeRefreshLayout.isRefreshing = false
-                            showSnack(view, Message(message = it.error.message.toString()))
-                        },
-                        {
-                            swipeRefreshLayout.isRefreshing = true
-                        }
-                    )
-                })
+//                tvRefresh.observe(viewLifecycleOwner, Observer { result ->
+//                    result.emitIfNotHandled(
+//                        {
+//                            swipeRefreshLayout.isRefreshing = false
+//                        },
+//                        {
+//                            swipeRefreshLayout.isRefreshing = false
+//                            showSnack(view, Message(message = it.error.message.toString()))
+//                        },
+//                        {
+//                            swipeRefreshLayout.isRefreshing = true
+//                        }
+//                    )
+//                })
             }
 
-            swipeRefreshLayout.setOnRefreshListener {
-                viewModel.refresh()
-            }
+//            swipeRefreshLayout.setOnRefreshListener {
+//                viewModel.refresh()
+//            }
 
             //解决状态栏失效不见的问题
             view.doOnPreDraw {

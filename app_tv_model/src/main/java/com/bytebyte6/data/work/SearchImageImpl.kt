@@ -41,7 +41,7 @@ object ImgStrategy : Strategy {
     }
 }
 
-open class SearchImageImpl : SearchImage {
+ class SearchImageImpl : SearchImage {
     override val strategys: List<Strategy>
         get() = mutableListOf(ImgStrategy, IuscStrategy)
 

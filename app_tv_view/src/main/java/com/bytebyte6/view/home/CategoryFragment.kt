@@ -38,7 +38,7 @@ class CategoryFragment :
             val cardAdapter = CardAdapter()
             cardAdapter.setOnItemClick { pos, view1 ->
                 val item = cardAdapter.currentList[pos]
-                showVideoListFragment(view1, item.title)
+                showVideoListFragment(view1, item.transitionName)
             }
 
             recyclerView.adapter = cardAdapter

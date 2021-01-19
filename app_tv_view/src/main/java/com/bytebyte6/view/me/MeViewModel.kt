@@ -20,7 +20,7 @@ class MeViewModel(
     private val parseM3uUseCase: ParseM3uUseCase,
     private val deletePlaylistUseCase: DeletePlaylistUseCase,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val favoriteTvUseCase: FavoriteTvUseCase,
+    private val updateTvUseCase: UpdateTvUseCase,
     private val playlistDao: PlaylistDao
 ) : BaseViewModel() {
 
@@ -37,13 +37,17 @@ class MeViewModel(
 
     val deletePlaylist = deletePlaylistUseCase.result()
 
+    val updateTv=updateTvUseCase.result()
+
     fun searchLogo(pos: Int) {
         addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId,pos=pos)).onIo()
+            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId, pos = pos)).onIo()
         )
     }
 
     private lateinit var tvs: List<Tv>
+
+    fun getTv(pos: Int) = tvs[pos]
 
     fun tvs(playlistId: Long) = playlistDao.playlistWithTvs(playlistId).map {
         tvs = it.tvs
@@ -60,8 +64,8 @@ class MeViewModel(
         )
     }
 
-    fun delete(selectedPos: Selection<Long>?) {
-        selectedPos?.apply {
+    fun delete(selectedPos: Selection<Long>) {
+        selectedPos.apply {
             val playlist = mutableListOf<Playlist>()
             selectedPos.forEach {
                 playlist.add(userWithPlaylist.playlists[it.toInt()])
@@ -70,9 +74,11 @@ class MeViewModel(
         }
     }
 
-    fun fav(pos: Int) {
+    fun download(pos: Int) {
         addDisposable(
-            favoriteTvUseCase.execute(FavoriteTvParam(pos, tvs[pos])).onIo()
+            updateTvUseCase.execute(UpdateTvParam(pos, tvs[pos].apply {
+                download = true
+            })).onIo()
         )
     }
 }

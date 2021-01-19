@@ -8,15 +8,15 @@ import com.bytebyte6.usecase.*
 class SearchViewModel(
     private val searchTvUseCase: SearchTvUseCase,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val favoriteTvUseCase: FavoriteTvUseCase
+    private val updateTvUseCase: UpdateTvUseCase
 
 ) : BaseViewModel() {
 
     val tvs = searchTvUseCase.result()
 
-    val favorite=favoriteTvUseCase.result()
+    val favorite = updateTvUseCase.result()
 
-    val logoSearch=tvLogoSearchUseCase.result()
+    val logoSearch = tvLogoSearchUseCase.result()
 
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
@@ -31,7 +31,7 @@ class SearchViewModel(
             this.isSuccess()?.apply {
                 val tvId = this[pos].tvId
                 addDisposable(
-                    tvLogoSearchUseCase.execute(SearchParam(id = tvId,pos=pos)).onIo()
+                    tvLogoSearchUseCase.execute(SearchParam(id = tvId, pos = pos)).onIo()
                 )
             }
         }
@@ -41,8 +41,9 @@ class SearchViewModel(
         tvs.value?.apply {
             this.isSuccess()?.apply {
                 val tv = this[pos]
+                tv.favorite = !tv.favorite
                 addDisposable(
-                    favoriteTvUseCase.execute(FavoriteTvParam(pos, tv)).onIo()
+                    updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
                 )
             }
         }

@@ -1,11 +1,12 @@
 package com.bytebyte6.view.card
 
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 
-class CardItemTouchHelperCallback(
-    private val cardAdapter: CardAdapter
+class CardItemTouchHelperCallback<T,V : RecyclerView.ViewHolder>(
+    private val adapter: ListAdapter<T,V>
 ) : ItemTouchHelper.Callback() {
 
     private var materialCardView: MaterialCardView? = null
@@ -32,7 +33,7 @@ class CardItemTouchHelperCallback(
     ): Boolean {
         val fromPos = viewHolder.bindingAdapterPosition
         val toPos = target.bindingAdapterPosition
-        cardAdapter.swapCards(fromPos, toPos)
+        adapter.swapCards(fromPos, toPos)
         return true
     }
 

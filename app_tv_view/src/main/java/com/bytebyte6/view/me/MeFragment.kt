@@ -10,11 +10,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.base.mvi.emitIfNotHandled
-import com.bytebyte6.base_ui.*
+import com.bytebyte6.base_ui.BaseShareFragment
+import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.base_ui.Message
+import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.view.*
-import com.bytebyte6.view.R
 import com.bytebyte6.view.card.CardAdapter
+import com.bytebyte6.view.card.getItemTouchHelper
+import com.bytebyte6.view.card.getSelectionTracker
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -37,7 +42,8 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
         registerForActivityResult(getContent, callback)
     }
 
-    private val cardAdapter = CardAdapter()
+    private lateinit var cardAdapter: CardAdapter
+    private lateinit var selectionTracker: SelectionTracker<Long>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,24 +52,37 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
 
     override fun initBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view).apply {
-
             setupToolbarMenuMode()
-
             toolbar.apply {
                 setOnMenuItemClickListener {
                     launcher.launch("*/m3u")
                     true
                 }
             }
+            cardAdapter = CardAdapter()
 
             recyclerView.adapter = cardAdapter
+            selectionTracker = getSelectionTracker(recyclerView,
+                object : SelectionTracker.SelectionObserver<Long>() {
+                    override fun onSelectionChanged() {
+                        val hasSelection = selectionTracker.hasSelection()
+                        if (hasSelection) {
+                            fab.show()
+                        } else {
+                            fab.hide()
+                        }
+                    }
+                })
+            cardAdapter.selectionTracker = selectionTracker
             recyclerView.addItemDecoration(LinearSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
 
             cardAdapter.setOnItemClick { pos, view1 ->
                 replaceWithShareElement(
                     PlaylistFragment.newInstance(
                         viewModel.getPlaylistId(pos),
-                        cardAdapter.currentList[pos].title
+                        cardAdapter.currentList[pos].title,
+                        cardAdapter.currentList[pos].transitionName
                     ),
                     PlaylistFragment.TAG,
                     view1
@@ -72,19 +91,10 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
             cardAdapter.setOnCurrentListChanged { _, currentList ->
                 lavEmpty.isVisible = currentList.isEmpty()
             }
-            cardAdapter.setupSelection(recyclerView) {
-                val hasSelection = cardAdapter.hasSelection()
-                if (hasSelection != null) {
-                    if (hasSelection) {
-                        fab.show()
-                    } else {
-                        fab.hide()
-                    }
-                }
-            }
+
             fab.setOnClickListener {
-                cardAdapter.getSelected()?.size()?.apply {
-                    if (this > 0) {
+                selectionTracker.selection.apply {
+                    if (!this.isEmpty) {
                         showDialog()
                     }
                 }
@@ -98,7 +108,7 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
             .setMessage(getString(R.string.tip_beyond_retrieve))
             .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
                 dialogInterface.dismiss()
-                viewModel.delete(cardAdapter.getSelected())
+                viewModel.delete(selectionTracker.selection)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
                 dialogInterface.dismiss()
@@ -110,7 +120,7 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
         super.onViewCreated(view, savedInstanceState)
         viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled({
-                cardAdapter.clearSelection()
+                selectionTracker.clearSelection()
                 showSnack(view, Message(id = R.string.tip_del_success))
                 binding<FragmentMeBinding>()?.apply {
                     fab.hide()
@@ -129,7 +139,8 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
                     replace(
                         PlaylistFragment.newInstance(
                             it.data.playlistId,
-                            it.data.playlistName
+                            it.data.playlistName,
+                            it.data.transitionName
                         ), PlaylistFragment.TAG
                     )
                 }, {

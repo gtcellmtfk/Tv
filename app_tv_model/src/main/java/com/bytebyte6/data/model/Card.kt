@@ -9,4 +9,5 @@ interface Card {
     val outline: Boolean
     val color: Int
     val radius: Int
+    val transitionName:String
 }

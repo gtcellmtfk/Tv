@@ -41,7 +41,7 @@ class VideoListFragment : ListFragment() {
         setupToolbarArrowBack()
         viewModel.setKey(title)
 
-        val adapter = ImageAdapter(this) {
+        val adapter = ImageAdapter(ButtonType.FAVORITE) {
             viewModel.fav(it)
         }
         adapter.setOnItemClick { pos, _ ->

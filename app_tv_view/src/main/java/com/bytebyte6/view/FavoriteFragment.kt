@@ -36,7 +36,7 @@ class FavoriteFragment : ListFragment() {
 
         setupToolbarMenuMode(getString(R.string.nav_fav),"")
 
-        val adapter = ImageAdapter(this)
+        val adapter = ImageAdapter(ButtonType.FAVORITE)
         adapter.setOnItemClick { pos, _ ->
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }

@@ -11,10 +11,10 @@ import com.bytebyte6.base_ui.BaseActivity
 import com.bytebyte6.base_ui.NetworkErrorFragment
 import com.bytebyte6.base_ui.SimpleDrawerListener
 import com.bytebyte6.view.databinding.ActivityMainBinding
+import com.bytebyte6.view.download.DownloadFragment
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.setting.SettingFragment
-import com.google.android.material.transition.platform.MaterialFadeThrough
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
@@ -44,6 +44,9 @@ class MainActivity : BaseActivity() {
                     }
                     R.id.nav_fav -> {
                         replaceNotAddToBackStack(FavoriteFragment.newInstance(), FavoriteFragment.TAG)
+                    }
+                    R.id.nav_download -> {
+                        replaceNotAddToBackStack(DownloadFragment.newInstance(), DownloadFragment.TAG)
                     }
                 }
                 removeDrawerListener()

@@ -12,7 +12,8 @@
     <color name="blue_700">#0336ff</color>
     <color name="red_500">#ff0266</color>
 
-    <color name="rootLayoutBackgroundColor">#eee</color>
+    <color name="rootLayoutBackgroundColor">#f2f2f2</color>
+    <color name="itemRootLayoutBackgroundColor">@android:color/white</color>
 
     <integer-array name="custom_progress_colors">
         <item>@color/purple_500</item>

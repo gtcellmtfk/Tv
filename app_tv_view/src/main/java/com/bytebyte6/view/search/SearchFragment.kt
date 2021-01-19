@@ -8,15 +8,11 @@ import androidx.lifecycle.Observer
 import com.bytebyte6.base.KeyboardUtils
 import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base.mvi.isSuccess
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.GridSpaceDecoration
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
-import com.bytebyte6.view.ImageAdapter
-import com.bytebyte6.view.R
+import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentSearchBinding
-import com.bytebyte6.view.setupToolbarArrowBack
-import com.bytebyte6.view.showVideoActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fragment_search) {
@@ -47,7 +43,7 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
                 etSearch.setText("")
             }
 
-            val adapter = ImageAdapter(this@SearchFragment) {
+            val adapter = ImageAdapter(ButtonType.FAVORITE) {
                 viewModel.fav(it)
             }
             adapter.setOnItemClick { pos, _ ->
@@ -64,9 +60,11 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
 
-            viewModel.favorite.observe(viewLifecycleOwner, Observer {
-                it.emitIfNotHandled(success = {
-                    viewModel.search(etSearch.text)
+            viewModel.favorite.observe(viewLifecycleOwner, Observer { result ->
+                result.emitIfNotHandled(success = {
+//                    viewModel.search(etSearch.text)
+//                    adapter.currentList[it.data.pos].favorite = it.data.tv.favorite
+                    adapter.notifyItemChanged(it.data.pos)
                 })
             })
 

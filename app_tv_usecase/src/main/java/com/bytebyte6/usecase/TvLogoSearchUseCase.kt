@@ -1,14 +1,14 @@
 package com.bytebyte6.usecase
 
 import androidx.annotation.Keep
-import com.bytebyte6.base.RxSingleUseCase
+import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.work.SearchImageImpl
+import com.bytebyte6.data.work.SearchImage
 
 class TvLogoSearchUseCase(
-    private val imageSearch: SearchImageImpl,
+    private val imageSearch: SearchImage,
     private val tvDao: TvDao
-) : RxSingleUseCase<SearchParam, SearchParam>() {
+) : RxUseCase<SearchParam, SearchParam>() {
     override fun run(param: SearchParam): SearchParam {
         val tv = tvDao.getTv(param.id)
         if (tv.logo.isEmpty()) {
@@ -17,7 +17,10 @@ class TvLogoSearchUseCase(
                 tv.logo = logo
                 tvDao.update(tv)
                 param.logo = logo
-                return param
+            }
+        } else {
+            param.apply {
+                logo = tv.logo
             }
         }
         return param

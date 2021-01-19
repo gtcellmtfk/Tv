@@ -33,7 +33,7 @@ class CountryFragment : BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.lay
     override fun initBinding(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view).apply {
 
-            val imageAdapter = ImageAdapter(this@CountryFragment)
+            val imageAdapter = ImageAdapter()
             recyclerView.adapter = imageAdapter
             recyclerView.layoutManager=GridLayoutManager(view.context,2)
             recyclerView.addItemDecoration(GridSpaceDecoration())
@@ -46,7 +46,7 @@ class CountryFragment : BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.lay
                 imageAdapter.submitList(it)
             })
             imageAdapter.setOnItemClick { pos, view ->
-                showVideoListFragment(view, imageAdapter.currentList[pos].title)
+                showVideoListFragment(view, imageAdapter.currentList[pos].transitionName)
             }
         }
     }

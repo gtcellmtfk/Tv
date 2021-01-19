@@ -3,14 +3,16 @@ package com.bytebyte6.view.home
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.LinearSpaceDecoration
-import com.bytebyte6.view.*
+import com.bytebyte6.view.R
+import com.bytebyte6.view.TAB
+import com.bytebyte6.view.TAB_LANGUAGE
 import com.bytebyte6.view.card.CardAdapter
+import com.bytebyte6.view.card.getItemTouchHelper
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
+import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class LanguageFragment :
     BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.layout.fragment_recycler_view) {
@@ -33,11 +35,12 @@ class LanguageFragment :
     override fun initBinding(view: View): FragmentRecyclerViewBinding =
         FragmentRecyclerViewBinding.bind(view).apply {
 
-            val cardAdapter = CardAdapter()
+            val cardAdapter = CardAdapter(drag = true)
+            cardAdapter.itemTouchHelper = cardAdapter.getItemTouchHelper(recyclerView)
 
             cardAdapter.setOnItemClick { pos, view1 ->
                 val item = cardAdapter.currentList[pos]
-                showVideoListFragment(view1, item.title)
+                showVideoListFragment(view1, item.transitionName)
             }
 
             recyclerView.adapter = cardAdapter

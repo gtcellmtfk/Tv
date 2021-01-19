@@ -2,7 +2,7 @@ package com.bytebyte6.usecase
 
 import android.content.Context
 import androidx.work.*
-import com.bytebyte6.base.RxSingleUseCase
+import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dao.UserDao
@@ -19,7 +19,7 @@ class InitDataUseCase(
     private val userDao: UserDao,
     private val context: Context,
     private val gson: Gson
-) : RxSingleUseCase<String, List<Tv>>() {
+) : RxUseCase<String, List<Tv>>() {
 
     override fun run(param: String): List<Tv> {
 

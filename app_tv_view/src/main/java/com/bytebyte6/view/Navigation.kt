@@ -13,13 +13,13 @@ import com.bytebyte6.base.logd
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.player.PlayerActivity
 import com.bytebyte6.view.videolist.VideoListFragment
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.exoplayer2.offline.DownloadRequest
 
 const val KEY_ITEM = "KEY_ITEM"
 const val KEY_VIDEO_URL = "KEY_VIDEO_URL"
 const val KEY_PLAY_LIST_ID = "KEY_PLAY_LIST_ID"
 const val KEY_TITLE = "KEY_TITLE"
+const val KEY_CACHE = "KEY_CACHE"
 
 fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     val mainActivity = requireActivity() as MainActivity
@@ -35,9 +35,10 @@ fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     }
 }
 
-fun Fragment.showVideoActivity(url: String) {
+fun Fragment.showVideoActivity(url: String, cache: DownloadRequest? = null) {
     startActivity(Intent(context, PlayerActivity::class.java).apply {
         putExtra(KEY_VIDEO_URL, url)
+        putExtra(KEY_CACHE, cache)
     })
 }
 
@@ -127,8 +128,8 @@ fun Fragment.setupToolbarMenuMode(title: String? = null, subTitle: String? = nul
     mainActivity.unlockDrawer()
 }
 
-fun Fragment.doOnCreate(){
-    lifecycle.addObserver(object : DefaultLifecycleObserver{
+fun Fragment.doOnCreate() {
+    lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onCreate(owner: LifecycleOwner) {
             logd("onCreate")
         }

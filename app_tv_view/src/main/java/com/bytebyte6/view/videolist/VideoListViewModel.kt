@@ -8,15 +8,15 @@ import com.bytebyte6.base.onIo
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
-import com.bytebyte6.usecase.FavoriteTvParam
-import com.bytebyte6.usecase.FavoriteTvUseCase
+import com.bytebyte6.usecase.UpdateTvParam
+import com.bytebyte6.usecase.UpdateTvUseCase
 import com.bytebyte6.usecase.SearchParam
 import com.bytebyte6.usecase.TvLogoSearchUseCase
 
 class VideoListViewModel(
     private val tvFtsDao: TvFtsDao,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val favoriteTvUseCase: FavoriteTvUseCase
+    private val updateTvUseCase: UpdateTvUseCase
 ) : BaseViewModel() {
 
     private val pagingHelper: PagingHelper<TvFts>
@@ -25,9 +25,9 @@ class VideoListViewModel(
 
     val tvs: LiveData<Result<List<TvFts>>>
 
-    private val favorite = favoriteTvUseCase.result()
+    private val favorite = updateTvUseCase.result()
 
-    private val favoriteObserver: (Result<FavoriteTvParam>) -> Unit
+    private val favoriteObserver: (Result<UpdateTvParam>) -> Unit
 
     private val searchObserver: (Result<SearchParam>) -> Unit
 
@@ -94,8 +94,10 @@ class VideoListViewModel(
 
     fun fav(pos: Int) {
         addDisposable(
-            favoriteTvUseCase.execute(
-                FavoriteTvParam(pos, TvFts.toTv(pagingHelper.getList()[pos]))
+            updateTvUseCase.execute(
+                UpdateTvParam(pos, TvFts.toTv(pagingHelper.getList()[pos]).apply {
+                    favorite=!favorite
+                })
             ).onIo()
         )
     }

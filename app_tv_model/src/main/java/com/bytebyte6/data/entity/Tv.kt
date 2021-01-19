@@ -3,6 +3,7 @@ package com.bytebyte6.data.entity
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.*
+import com.bytebyte6.data.model.Card
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
@@ -20,9 +21,10 @@ data class Tv(
     var tvId: Long = 0,
     var url: String = "",
     var category: String = "",
-    var logo: String = "",
-    var name: String = "",
-    var favorite: Boolean = false,
+    override var logo: String = "",
+    override var name: String = "",
+    override var favorite: Boolean = false,
+    override var download: Boolean = false,
     var language: List<Language> = emptyList(),
     @Ignore
     var country: Country = Country(),
@@ -30,22 +32,10 @@ data class Tv(
     var countryId: Long = 0,
     var countryName: String = country.name
 ) : Parcelable, Image {
-
-    override var title: String
-        get() = name
-        set(value) {}
-
-    override var imageUrl: String
-        get() = logo
-        set(value) {}
-
     override var videoUrl: String
         get() = url
         set(value) {}
 
-    override var love: Boolean
-        get() = favorite
-        set(value) {
-            favorite = value
-        }
+    override val transitionName: String
+        get() = url
 }

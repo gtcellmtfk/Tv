@@ -2,6 +2,7 @@ package com.bytebyte6.base_ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -9,6 +10,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bytebyte6.base_ui.databinding.FragmentListBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
 abstract class ListFragment : BaseShareFragment/*<FragmentListBinding>*/(R.layout.fragment_list) {
@@ -20,6 +22,8 @@ abstract class ListFragment : BaseShareFragment/*<FragmentListBinding>*/(R.layou
     lateinit var linearProgressIndicator: LinearProgressIndicator
     lateinit var emptyBox: LottieAnimationView
     lateinit var appBarLayout: AppBarLayout
+    lateinit var content: FrameLayout
+    lateinit var fab: FloatingActionButton
 
     //是否已经加载全部数据
     protected var end = false
@@ -34,6 +38,8 @@ abstract class ListFragment : BaseShareFragment/*<FragmentListBinding>*/(R.layou
         toolbar = view.findViewById(R.id.toolbar)
         statusBar = view.findViewById(R.id.statusBar)
         emptyBox = view.findViewById(R.id.emptyBox)
+        content = view.findViewById(R.id.content)
+        fab = view.findViewById(R.id.fab)
 
         recyclerView.addOnScrollListener(object : BottomingListener() {
             override fun onBottom() {

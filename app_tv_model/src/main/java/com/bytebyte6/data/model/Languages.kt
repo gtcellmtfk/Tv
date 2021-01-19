@@ -3,7 +3,7 @@ package com.bytebyte6.data.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.Ignore
-import com.bytebyte6.base.randomColor
+import com.bytebyte6.base.randomColorByNightMode
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 
@@ -12,7 +12,7 @@ import kotlin.random.Random
 data class Languages(
     var language: List<Language> = emptyList(),
     @Ignore var content: String = "",
-    @Ignore override val color: Int = randomColor(),
+    @Ignore override val color: Int = randomColorByNightMode(),
     @Ignore override val radius: Int = 0,
     @Ignore override val outline: Boolean = Random.Default.nextBoolean()
 ) : Parcelable, Card {
@@ -44,4 +44,7 @@ data class Languages(
 
     override val body: String
         get() = "Code: " + getLanguageCode()
+
+    override val transitionName: String
+        get() = title
 }

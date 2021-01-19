@@ -12,7 +12,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.java.KoinJavaComponent.inject
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import java.io.IOException
@@ -44,6 +43,20 @@ class TvDaoTest : KoinTest {
     @Throws(IOException::class)
     fun closeDb() {
         db.close()
+    }
+
+    @Test
+    fun testInsertExist() {
+        val tv = Tv(url = "https://y5w8j4a09.ssl.hwcdn.net/andprivehd/tracks-v1a1/a.m3u8")
+        val id = tvDao.insert(tv)
+        assert(id != 0L)
+    }
+
+    @Test
+    fun testGetTvByUrl() {
+        val url = "https://y5w8j4a09.ssl.hwcdn.net/andprivehd/tracks-v1a1/a1.m3u8"
+        val tv = tvDao.getTvByUrl(url)
+        assert(tv == null)
     }
 
     @Test

@@ -3,15 +3,14 @@ package com.bytebyte6.data.entity
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.bytebyte6.base.randomColor
+import com.bytebyte6.base.randomColorByNightMode
 import com.bytebyte6.data.model.Card
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 
 @Parcelize
-@Entity(indices = [Index(value = ["playlistName"], unique = true)])
+@Entity/*(indices = [Index(value = ["playlistName"], unique = true)])*/
 @Keep
 data class Playlist(
     @PrimaryKey(autoGenerate = true)
@@ -23,14 +22,17 @@ data class Playlist(
         get() = playlistName
 
     override val body: String
-        get() = "playlistId: $playlistId"
+        get() = "PlaylistId: $playlistId"
 
     override val outline: Boolean
         get() = Random.Default.nextBoolean()
 
     override val color: Int
-        get() = randomColor()
+        get() = randomColorByNightMode()
 
     override val radius: Int
-        get() = 0
+        get() = 10
+
+    override val transitionName: String
+        get() = body
 }

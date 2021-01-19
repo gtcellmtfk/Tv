@@ -2,6 +2,7 @@ package com.bytebyte6.view
 
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.usecase.*
+import com.bytebyte6.view.download.DownloadViewModel
 import com.bytebyte6.view.home.HomeViewModel
 import com.bytebyte6.view.me.MeViewModel
 import com.bytebyte6.view.search.SearchViewModel
@@ -17,7 +18,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val viewModule: Module = module {
-    factory<Player> { SimpleExoPlayer.Builder(androidContext()).build() }
     viewModel { VideoListViewModel(get(),get(),get()) }
     viewModel { PlayerViewModel() }
     viewModel { SearchViewModel(get(),get(),get()) }
@@ -26,4 +26,5 @@ val viewModule: Module = module {
     viewModel { HomeViewModel(get(), get(),get(),get()) }
     viewModel { UserViewModel(get(), get()) }
     viewModel { FavoriteViewModel( get()) }
+    viewModel { DownloadViewModel( androidContext(),get(),get()) }
 }

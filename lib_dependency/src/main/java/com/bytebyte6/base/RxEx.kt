@@ -3,15 +3,23 @@ package com.bytebyte6.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.base.mvi.Result
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
-abstract class RxSingleUseCase<Param, ResultType> {
+abstract class RxUseCase<Param, ResultType> {
 
     private var data: ResultType? = null
 
     private val result: MutableLiveData<Result<ResultType>> = MutableLiveData()
+
+    fun postResultAgain() {
+        data?.apply {
+            result.postValue(Result.Success(this))
+        }
+    }
 
     fun getData() = data
 
@@ -31,10 +39,24 @@ abstract class RxSingleUseCase<Param, ResultType> {
             result.postValue((Result.Error(it)))
         }
 
+    fun interval(param: Param,period:Long=2): Observable<Long> = Observable.interval(period, TimeUnit.SECONDS)
+        .doOnNext {
+            val result = run(param)
+            this.result.postValue((Result.Success(result)))
+        }.doOnError {
+            it.printStackTrace()
+            result.postValue((Result.Error(it)))
+        }
+
     abstract fun run(param: Param): ResultType
 }
 
 fun <T> Single<T>.onIo(): Disposable {
+    return subscribeOn(Schedulers.io())
+        .subscribe()
+}
+
+fun <T> Observable<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
         .subscribe()
 }

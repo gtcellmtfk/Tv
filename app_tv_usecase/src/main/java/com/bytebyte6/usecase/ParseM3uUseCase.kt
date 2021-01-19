@@ -2,10 +2,11 @@ package com.bytebyte6.usecase
 
 import android.content.Context
 import android.net.Uri
-import com.bytebyte6.base.RxSingleUseCase
+import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
@@ -17,17 +18,24 @@ class ParseM3uUseCase(
     private val playlistCrossRefDao: PlaylistTvCrossRefDao,
     private val playlistDao: PlaylistDao,
     private val context: Context
-) : RxSingleUseCase<Uri, Playlist>() {
+) : RxUseCase<Uri, Playlist>() {
 
     override fun run(param: Uri): Playlist {
-        val tvs = context.contentResolver.openInputStream(param)!!.toTvs()
+        val tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
 
-        tvs.forEach {
-            if (it.category.isEmpty()){
-                it.category="Other"
-            }
-            if (it.language.isEmpty()){
-                it.language= mutableListOf(Language("Other","777"))
+        val tvs: List<Tv> = tvsFromFile.map {
+            val tvFromDb = tvDao.getTvByUrl(it.url)
+            if (tvFromDb == null) {
+                if (it.category.isEmpty()) {
+                    it.category = "Other"
+                }
+                if (it.language.isEmpty()) {
+                    it.language = mutableListOf(Language("Other", "777"))
+                }
+                it.tvId = tvDao.insert(it)
+                it
+            } else {
+                tvFromDb
             }
         }
 
@@ -41,15 +49,14 @@ class ParseM3uUseCase(
         userPlaylistCrossRefDao.insert(userPlaylistCrossRef)
 
         //2、tv对象关联播放列表
-        val tvIds = tvDao.insert(tvs)
         val playlistTvCrossRefs = mutableListOf<PlaylistTvCrossRef>()
-        for (tvId in tvIds) {
-            val playlistTvCrossRef = PlaylistTvCrossRef(playlistId, tvId)
+        for (tv in tvs) {
+            val playlistTvCrossRef = PlaylistTvCrossRef(playlistId, tv.tvId)
             playlistTvCrossRefs.add(playlistTvCrossRef)
         }
         playlistCrossRefDao.insert(playlistTvCrossRefs)
 
         //3、返回结果
-        return Playlist(playlistId,playlistName)
+        return Playlist(playlistId, playlistName)
     }
 }

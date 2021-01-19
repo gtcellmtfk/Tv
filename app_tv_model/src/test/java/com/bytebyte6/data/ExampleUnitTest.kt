@@ -5,7 +5,6 @@ import io.reactivex.rxjava3.core.Single
 import okio.internal.commonToUtf8String
 import org.junit.Test
 import java.io.File
-import java.io.FileNotFoundException
 
 class ExampleUnitTest {
 
@@ -24,9 +23,18 @@ class ExampleUnitTest {
     private val titleRegex = Regex(titlePattern)
 
     @Test
+    fun test5() {
+        val tv1=Tv(url="A")
+        val tv2=Tv(url="B")
+        val tv3=Tv(url="C")
+
+    }
+
+
+    @Test
     fun test4() {
         val tv=Tv()
-        tv.love=true
+        tv.favorite=true
         println(tv.favorite)
     }
 
