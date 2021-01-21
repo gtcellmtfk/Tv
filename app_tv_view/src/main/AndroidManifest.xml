@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rtmp">
 
-        <service android:name=".download.RtmpDownloadService"
+        <service android:name=".download.DownloadServicePro"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.exoplayer.downloadService.action.RESTART"/>

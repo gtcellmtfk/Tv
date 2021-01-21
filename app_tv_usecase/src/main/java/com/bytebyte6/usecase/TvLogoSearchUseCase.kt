@@ -3,7 +3,7 @@ package com.bytebyte6.usecase
 import androidx.annotation.Keep
 import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.work.SearchImage
+import com.bytebyte6.image.SearchImage
 
 class TvLogoSearchUseCase(
     private val imageSearch: SearchImage,
@@ -12,7 +12,7 @@ class TvLogoSearchUseCase(
     override fun run(param: SearchParam): SearchParam {
         val tv = tvDao.getTv(param.id)
         if (tv.logo.isEmpty()) {
-            val logo = imageSearch.search(tv.name.replace("&", " "))
+            val logo = imageSearch.search(tv.name)
             if (logo.isNotEmpty()) {
                 tv.logo = logo
                 tvDao.update(tv)

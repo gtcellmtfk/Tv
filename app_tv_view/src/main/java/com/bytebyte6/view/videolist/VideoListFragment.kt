@@ -47,7 +47,7 @@ class VideoListFragment : ListFragment() {
         adapter.setOnItemClick { pos, _ ->
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }
-        adapter.setOnBind { pos, _ ->
+        adapter.setDoOnBind { pos, _ ->
             viewModel.searchLogo(pos)
         }
         adapter.setOnCurrentListChanged { _, currentList ->
@@ -57,6 +57,7 @@ class VideoListFragment : ListFragment() {
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
         recyclerView.setHasFixedSize(true)
+        recyclerView.itemAnimator=null
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
             toolbar.subtitle = getString(R.string.total, it)
@@ -97,7 +98,7 @@ class VideoListFragment : ListFragment() {
         //not to do
     }
 
-    override fun initBinding(view: View): FragmentListBinding? {
+    override fun onViewCreated(view: View): FragmentListBinding? {
         return null
     }
 }

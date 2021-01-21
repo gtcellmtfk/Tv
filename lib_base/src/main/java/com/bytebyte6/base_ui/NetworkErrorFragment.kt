@@ -10,7 +10,7 @@ class NetworkErrorFragment :
         const val TAG="NetworkErrorFragment"
     }
 
-    override fun initBinding(view: View): FragmentNetworkErrorBinding? {
+    override fun onViewCreated(view: View): FragmentNetworkErrorBinding? {
         val binding = FragmentNetworkErrorBinding.bind(view)
         binding.toolbar.title = getString(R.string.network_disconnected)
         binding.toolbar.setNavigationOnClickListener {

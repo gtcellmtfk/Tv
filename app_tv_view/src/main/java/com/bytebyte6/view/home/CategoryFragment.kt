@@ -32,7 +32,7 @@ class CategoryFragment :
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
-    override fun initBinding(view: View): FragmentRecyclerViewBinding =
+    override fun onViewCreated(view: View): FragmentRecyclerViewBinding =
         FragmentRecyclerViewBinding.bind(view).apply {
 
             val cardAdapter = CardAdapter()

@@ -47,6 +47,7 @@ class FavoriteFragment : ListFragment() {
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
         recyclerView.setHasFixedSize(true)
+        recyclerView.itemAnimator=null
 
         viewModel.fav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
@@ -61,7 +62,7 @@ class FavoriteFragment : ListFragment() {
 
     }
 
-    override fun initBinding(view: View): FragmentListBinding? {
+    override fun onViewCreated(view: View): FragmentListBinding? {
         return null
     }
 }

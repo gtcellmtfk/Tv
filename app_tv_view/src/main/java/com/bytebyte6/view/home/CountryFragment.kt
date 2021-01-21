@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.base_ui.GridSpaceDecoration
 import com.bytebyte6.view.ImageAdapter
@@ -30,7 +29,7 @@ class CountryFragment : BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.lay
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
-    override fun initBinding(view: View): FragmentRecyclerViewBinding {
+    override fun onViewCreated(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view).apply {
 
             val imageAdapter = ImageAdapter()
@@ -38,7 +37,8 @@ class CountryFragment : BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.lay
             recyclerView.layoutManager=GridLayoutManager(view.context,2)
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
-            imageAdapter.setOnBind { pos, _ ->
+            recyclerView.itemAnimator=null
+            imageAdapter.setDoOnBind { pos, _ ->
                 viewModel.searchLogo(pos)
             }
 

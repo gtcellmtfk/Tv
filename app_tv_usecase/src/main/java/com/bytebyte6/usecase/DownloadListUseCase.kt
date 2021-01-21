@@ -2,7 +2,6 @@ package com.bytebyte6.usecase
 
 import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.model.TvAndDownload
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 

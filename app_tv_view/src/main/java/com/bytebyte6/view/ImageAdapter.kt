@@ -18,8 +18,7 @@ enum class ButtonType {
 class ImageAdapter(
     private val type: ButtonType = ButtonType.NONE,
     private val btnClickListener: ((pos: Int) -> Unit)? = null
-) :
-    BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
+) : BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
@@ -35,10 +34,7 @@ class ImageAdapter(
             if (item.logo.isEmpty()) {
                 ivPreview.setImageResource(R.drawable.landscape)
             } else {
-                GlideApp.with(ivPreview)
-                    .load(item.logo)
-                    .placeholder(R.drawable.landscape)
-                    .into(ivPreview)
+                ivPreview.load(item.logo)
             }
 
             when (type) {
@@ -57,7 +53,7 @@ class ImageAdapter(
                 }
                 ButtonType.DOWNLOAD -> {
                     btnClickListener?.apply {
-                        button.isVisible = !item.download
+                        button.isVisible = !item.download /*&& item.videoUrl.contains(".mp4")*/
                         button.setImageResource(R.drawable.ic_download)
                         button.setOnClickListener {
                             this.invoke(position)

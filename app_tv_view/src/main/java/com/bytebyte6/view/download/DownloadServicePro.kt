@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import org.koin.android.ext.android.inject
 
-class RtmpDownloadService : DownloadService(ID) {
+class DownloadServicePro : DownloadService(ID) {
     companion object {
         const val ID = 1
         const val JOB_ID = 1
@@ -24,35 +24,35 @@ class RtmpDownloadService : DownloadService(ID) {
          */
         fun addDownload(context: Context, url: String) {
             val downloadRequest = DownloadRequest.Builder(url, Uri.parse(url)).build()
-            sendAddDownload(context, RtmpDownloadService::class.java, downloadRequest, true)
+            sendAddDownload(context, DownloadServicePro::class.java, downloadRequest, true)
         }
 
         /**
          * 删除单个
          */
         fun removeDownload(context: Context, url: String) {
-            sendRemoveDownload(context, RtmpDownloadService::class.java, url, true)
+            sendRemoveDownload(context, DownloadServicePro::class.java, url, true)
         }
 
         /**
          * 开始下载全部
          */
         fun resumeDownloads(context: Context){
-            sendResumeDownloads(context,RtmpDownloadService::class.java,true)
+            sendResumeDownloads(context,DownloadServicePro::class.java,true)
         }
 
         /**
          * 暂停下载全部
          */
         fun pauseDownloads(context: Context){
-            sendPauseDownloads(context,RtmpDownloadService::class.java,true)
+            sendPauseDownloads(context,DownloadServicePro::class.java,true)
         }
 
         /**
          * 删除所有
          */
         fun removeAllDownload(context: Context) {
-            sendRemoveAllDownloads(context, RtmpDownloadService::class.java, true)
+            sendRemoveAllDownloads(context, DownloadServicePro::class.java, true)
         }
     }
 

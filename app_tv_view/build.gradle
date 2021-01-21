@@ -47,5 +47,9 @@ dependencies {
     def glideVersion = '4.11.0'
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
-
+    def exoplayer="2.12.2"
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
 }

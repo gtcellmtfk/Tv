@@ -16,7 +16,13 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.HttpDataSource
+import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.MimeTypes
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -32,13 +38,17 @@ class PlayerFragment :
 
     private val viewModel by viewModel<PlayerViewModel>()
 
+    private val downloadCache by inject<Cache>()
+
+    private val httpDataSourceFactory by inject<HttpDataSource.Factory>()
+
     private var player: Player? = null
 
-    override fun initBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
+    override fun onViewCreated(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
 
     override fun onResume() {
         super.onResume()
-        playFromUrl()
+        start()
     }
 
     override fun onStop() {
@@ -87,28 +97,39 @@ class PlayerFragment :
         }
     }
 
-    private fun playFromUrl() {
+    private fun start() {
         binding<FragmentVideoBinding>()?.apply {
-            val url = requireArguments().getString(KEY_VIDEO_URL)!!
             val request = requireArguments().getParcelable(KEY_CACHE) as DownloadRequest?
-            player = SimpleExoPlayer.Builder(requireContext()).build()
+            val url = requireArguments().getString(KEY_VIDEO_URL)!!
             logd("url=$url")
+            if (url.isNotEmpty()) {
+                player = SimpleExoPlayer.Builder(requireContext()).build()
+                val mediaItem = MediaItem.Builder()
+                    .setUri(url)
+                    .setMimeType(MimeTypes.APPLICATION_M3U8)
+                    .build()
+                player!!.setMediaItem(mediaItem)
+            } else {
+                player = getLocalPlayer()
+                player!!.setMediaItem(request!!.toMediaItem())
+            }
+            player!!.playWhenReady = true
+            player!!.prepare()
+            player!!.addListener(listener)
             playerView.player = player
-            val item =
-                if (url.isNotEmpty())
-                    MediaItem.Builder()
-                        .setUri(url)
-                        .setMimeType(MimeTypes.APPLICATION_M3U8)
-                        .build()
-                else
-                    request!!.toMediaItem()
-            player?.setMediaItem(item)
-            player?.playWhenReady = true
-            player?.prepare()
-            player?.addListener(listener)
             playerView.keepScreenOn = true
             playerView.onResume()
         }
+    }
+
+    private fun getLocalPlayer(): SimpleExoPlayer {
+        val cacheDataSourceFactory: DataSource.Factory = CacheDataSource.Factory()
+            .setCache(downloadCache)
+            .setUpstreamDataSourceFactory(httpDataSourceFactory)
+            .setCacheWriteDataSinkFactory(null)
+        return SimpleExoPlayer.Builder(requireContext())
+            .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
+            .build()
     }
 
     private fun stop() {

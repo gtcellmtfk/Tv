@@ -34,7 +34,7 @@ class SettingFragment : BaseShareFragment/*<FragmentSettingBinding>*/(R.layout.f
         setupOnBackPressedDispatcherBackToHome()
     }
 
-    override fun initBinding(view: View): FragmentSettingBinding {
+    override fun onViewCreated(view: View): FragmentSettingBinding {
         return FragmentSettingBinding.bind(view).apply {
             setupToolbarMenuMode(getString(R.string.nav_setting),"")
 

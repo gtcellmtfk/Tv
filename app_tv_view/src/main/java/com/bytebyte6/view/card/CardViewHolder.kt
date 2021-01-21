@@ -13,10 +13,7 @@ class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
     val tvBody: TextView = itemView.findViewById(R.id.tvBody)
     val cardView: MaterialCardView = itemView.findViewById(R.id.cardView)
-    val dragHandlerView: ImageView = itemView.findViewById(R.id.iv_drag_handle)
     val ivIcon: ImageView = itemView.findViewById(R.id.ivIcon)
-    val details = Details()
-
     companion object {
         fun create(parent: ViewGroup): CardViewHolder {
             return CardViewHolder(

@@ -1,14 +1,15 @@
-package com.bytebyte6.data.model
+package com.bytebyte6.usecase
 
 import androidx.annotation.Keep
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.model.Card
 import com.google.android.exoplayer2.offline.Download
 
 @Keep
 data class TvAndDownload(
     val tv: Tv,
     val download: Download
-):Card{
+): Card {
     override val title: String
         get() = tv.name
     override val body: String

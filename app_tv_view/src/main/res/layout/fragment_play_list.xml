@@ -12,25 +12,37 @@
         android:layout_height="wrap_content">
 
         <View
-            android:background="?attr/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/statusBarHeight"/>
+            android:layout_height="@dimen/statusBarHeight"
+            android:background="?attr/colorPrimary" />
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             style="@style/Toolbar.Rtmp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/ic_menu" />
+            app:navigationIcon="@drawable/ic_menu">
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/appbar"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
+
+<!--    <com.google.android.material.progressindicator.CircularProgressIndicator-->
+<!--        android:id="@+id/progressBar"-->
+<!--        style="@style/Widget.MaterialComponents.CircularProgressIndicator"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:indeterminate="true"-->
+<!--        app:minHideDelay="400"-->
+<!--        android:visibility="invisible" />-->
 
 </RelativeLayout>

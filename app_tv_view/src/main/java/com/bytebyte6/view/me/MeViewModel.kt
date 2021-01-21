@@ -22,7 +22,7 @@ class MeViewModel(
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
     private val updateTvUseCase: UpdateTvUseCase,
     private val playlistDao: PlaylistDao
-) : BaseViewModel() {
+) : BaseViewModel(){
 
     private lateinit var userWithPlaylist: UserWithPlaylists
 
@@ -37,7 +37,7 @@ class MeViewModel(
 
     val deletePlaylist = deletePlaylistUseCase.result()
 
-    val updateTv=updateTvUseCase.result()
+    val updateTv = updateTvUseCase.result()
 
     fun searchLogo(pos: Int) {
         addDisposable(

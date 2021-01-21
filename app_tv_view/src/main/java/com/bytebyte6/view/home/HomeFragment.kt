@@ -47,7 +47,7 @@ class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragmen
         )
     }
 
-    override fun initBinding(view: View): FragmentHomeBinding {
+    override fun onViewCreated(view: View): FragmentHomeBinding {
         return FragmentHomeBinding.bind(view).apply {
 
             toolbar.transitionName = getString(R.string.search_share)
@@ -108,6 +108,7 @@ class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragmen
 //                        }
 //                    )
 //                })
+
             }
 
 //            swipeRefreshLayout.setOnRefreshListener {

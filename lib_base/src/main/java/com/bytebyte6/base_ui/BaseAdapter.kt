@@ -9,16 +9,21 @@ abstract class BaseAdapter<T, V : RecyclerView.ViewHolder>(diffUtil: DiffUtil.It
     ListAdapter<T, V>(diffUtil) {
 
     private var onItemClick: ((pos: Int, view: View) -> Unit)? = null
+    private var onItemLongClick: ((pos: Int, view: View) -> Boolean)? = null
     private var onCurrentListChanged: ((previousList: MutableList<T>, currentList: MutableList<T>) -> Unit)? =
         null
-    private var onBind: ((pos: Int, view: View) -> Unit)? = null
+    private var doOnBind: ((pos: Int, view: View) -> Unit)? = null
 
-    fun setOnBind(onItemClick: ((pos: Int, view: View) -> Unit)) {
-        this.onBind = onItemClick
+    fun setDoOnBind(onItemClick: ((pos: Int, view: View) -> Unit)) {
+        this.doOnBind = onItemClick
     }
 
     fun setOnItemClick(onItemClick: ((pos: Int, view: View) -> Unit)) {
         this.onItemClick = onItemClick
+    }
+
+    fun setOnItemLongClick(onItemLongClick: ((pos: Int, view: View) -> Boolean)) {
+        this.onItemLongClick = onItemLongClick
     }
 
     fun setOnCurrentListChanged(onCurrentListChanged: ((previousList: MutableList<T>, currentList: MutableList<T>) -> Unit)?) {
@@ -30,9 +35,16 @@ abstract class BaseAdapter<T, V : RecyclerView.ViewHolder>(diffUtil: DiffUtil.It
     }
 
     override fun onBindViewHolder(holder: V, position: Int) {
-        onBind?.invoke(position,holder.itemView)
+        doOnBind?.invoke(position, holder.itemView)
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(position, holder.itemView)
+        }
+        holder.itemView.setOnLongClickListener {
+            if (onItemLongClick == null) {
+                false
+            } else {
+                onItemLongClick!!.invoke(position, holder.itemView)
+            }
         }
     }
 

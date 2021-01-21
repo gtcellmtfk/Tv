@@ -16,27 +16,13 @@
     <string name="tip_play_retry">重试</string>
     <string name="tip_del_fail">删除失败</string>
     <string name="tip_del_success">删除成功</string>
-    <string name="nav_me">个人中心</string>
+    <string name="nav_import">导入</string>
     <string name="nav_home">首页</string>
     <string name="nav_name">Cloud</string>
     <string name="m3u">导入m3u文件</string>
     <string name="me_import_file">导入m3u文件后可展示列表</string>
     <string name="me_playlist">我的播放列表</string>
     <string name="tip_parse_file_error">文件解析失败</string>
-    <string name="tip_iptv">网络协议电视（英文：Internet Protocol Television，缩写：IPTV）是宽带电视的一种。IPTV是用宽带网络作为介质发送电视信息的一种系统，将广播节目透过宽带上的网际协议（Internet Protocol, IP）向订户传递数字电视服务。</string>
-    <string name="ic_drag_handle">ic_drag_handle</string>
-    <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one above it. [CHAR LIMIT=25]"
-        name="cat_card_action_move_up">Move Up</string>
-    <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one below it. [CHAR LIMIT=25]"
-        name="cat_card_action_move_down">Move Down</string>
-    <string description="A description of an action that a user of an accessibility service can perform to move the card to the top right corner of the screen. [CHAR LIMIT=25]"
-        name="cat_card_action_move_top_right">Move to top right</string>
-    <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom left corner of the screen. [CHAR LIMIT=25]"
-        name="cat_card_action_move_bottom_left">Move to bottom left</string>
-    <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom right corner of the screen. [CHAR LIMIT=25]"
-        name="cat_card_action_move_bottom_right">Move to bottom right</string>
-    <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
-        name="cat_card_action_move_center">Move to center</string>
     <string name="tip_replace_title">替换为你的标题</string>
     <string name="tip_video_image">Video Image</string>
     <string name="search_share">searchShare</string>
@@ -57,6 +43,8 @@
     <string name="nav_fav">我的收藏</string>
     <string name="nav_download">下载中心</string>
     <string name="tip_add_download_has_been">已添加到下载列表,如需取消请到下载页面!</string>
+    <string name="tip_un_support_download_live_stream">不支持下载实时流!</string>
     <string name="pause">暂停下载</string>
     <string name="resume">开始下载</string>
+    <string name="tip_please_wait">正在检测该视频是否支持下载,请稍等片刻…</string>
 </resources>

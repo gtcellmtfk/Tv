@@ -9,7 +9,6 @@ import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_LANGUAGE
 import com.bytebyte6.view.card.CardAdapter
-import com.bytebyte6.view.card.getItemTouchHelper
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
@@ -32,11 +31,10 @@ class LanguageFragment :
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
-    override fun initBinding(view: View): FragmentRecyclerViewBinding =
+    override fun onViewCreated(view: View): FragmentRecyclerViewBinding =
         FragmentRecyclerViewBinding.bind(view).apply {
 
-            val cardAdapter = CardAdapter(drag = true)
-            cardAdapter.itemTouchHelper = cardAdapter.getItemTouchHelper(recyclerView)
+            val cardAdapter = CardAdapter()
 
             cardAdapter.setOnItemClick { pos, view1 ->
                 val item = cardAdapter.currentList[pos]

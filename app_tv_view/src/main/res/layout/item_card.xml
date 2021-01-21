@@ -46,14 +46,4 @@
         android:textAppearance="?attr/textAppearanceBody2"
         tools:text="@string/tip_search" />
 
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/iv_drag_handle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:padding="16dp"
-        app:srcCompat="@drawable/ic_drag_handle"
-        android:contentDescription="@string/ic_drag_handle" />
-
 </com.google.android.material.card.MaterialCardView>

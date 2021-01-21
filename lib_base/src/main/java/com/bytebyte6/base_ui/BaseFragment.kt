@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base.logd
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialContainerTransform
 
 
 abstract class BaseFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Fragment(layoutId) {
@@ -44,7 +41,7 @@ abstract class BaseFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         logd("onViewCreated")
-        viewBinding = initBinding(view)
+        viewBinding = onViewCreated(view)
     }
 
     override fun onStart() {
@@ -82,6 +79,6 @@ abstract class BaseFragment/*<Binding : ViewBinding>*/(layoutId: Int) : Fragment
         return viewBinding as T?
     }
 
-    abstract fun initBinding(view: View): ViewBinding?
+    abstract fun onViewCreated(view: View): ViewBinding?
 }
 

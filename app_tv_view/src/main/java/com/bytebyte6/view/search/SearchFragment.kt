@@ -30,7 +30,7 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
 
     private val viewModel: SearchViewModel by viewModel()
 
-    override fun initBinding(view: View): FragmentSearchBinding {
+    override fun onViewCreated(view: View): FragmentSearchBinding {
         return FragmentSearchBinding.bind(view).apply {
 
             setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
@@ -49,7 +49,7 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
             adapter.setOnItemClick { pos, _ ->
                 showVideoActivity(adapter.currentList[pos].videoUrl)
             }
-            adapter.setOnBind { pos, _ ->
+            adapter.setDoOnBind { pos, _ ->
                 viewModel.searchLogo(pos)
             }
             adapter.setOnCurrentListChanged { _, currentList ->
@@ -59,11 +59,10 @@ class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fra
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator=null
 
             viewModel.favorite.observe(viewLifecycleOwner, Observer { result ->
                 result.emitIfNotHandled(success = {
-//                    viewModel.search(etSearch.text)
-//                    adapter.currentList[it.data.pos].favorite = it.data.tv.favorite
                     adapter.notifyItemChanged(it.data.pos)
                 })
             })

@@ -1,10 +1,8 @@
-package com.bytebyte6.data.work
+package com.bytebyte6.usecase.work
 
 import android.content.Context
 import androidx.work.*
 import com.bytebyte6.base.logd
-import com.bytebyte6.data.CountryImageSearch
-import com.bytebyte6.data.TvLogoSearch
 
 class FindImageWork(
     context: Context,

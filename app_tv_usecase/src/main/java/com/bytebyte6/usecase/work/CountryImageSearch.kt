@@ -1,9 +1,7 @@
-package com.bytebyte6.data
+package com.bytebyte6.usecase.work
 
-import com.bytebyte6.base.logd
 import com.bytebyte6.data.dao.CountryDao
-import com.bytebyte6.data.work.SearchImage
-import com.bytebyte6.data.work.SearchImageImpl
+import com.bytebyte6.image.SearchImage
 
 class CountryImageSearch(private val dao: CountryDao,private val searchImage: SearchImage)  {
     fun doThatShit() {

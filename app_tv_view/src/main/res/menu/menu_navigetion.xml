@@ -13,8 +13,8 @@
         android:checkable="true"
         app:showAsAction="ifRoom"
         android:id="@+id/nav_me"
-        android:icon="@drawable/ic_live_tv"
-        android:title="@string/nav_me" />
+        android:icon="@drawable/ic_playlist_add"
+        android:title="@string/nav_import" />
 
     <item
         android:checkable="true"

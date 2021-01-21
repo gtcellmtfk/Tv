@@ -7,7 +7,7 @@ import com.bytebyte6.base.baseModule
 import com.bytebyte6.base.logd
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomModule
-import com.bytebyte6.data.work.AppDelegatingWorkerFactory
+import com.bytebyte6.usecase.work.AppDelegatingWorkerFactory
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import org.koin.android.ext.android.inject

@@ -26,5 +26,5 @@ val viewModule: Module = module {
     viewModel { HomeViewModel(get(), get(),get(),get()) }
     viewModel { UserViewModel(get(), get()) }
     viewModel { FavoriteViewModel( get()) }
-    viewModel { DownloadViewModel( androidContext(),get(),get()) }
+    viewModel { DownloadViewModel( get(),get()) }
 }

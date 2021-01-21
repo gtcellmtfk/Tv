@@ -1,10 +1,7 @@
-package com.bytebyte6.data
+package com.bytebyte6.usecase.work
 
-import com.bytebyte6.base.logd
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.work.SearchImage
-import com.bytebyte6.data.work.SearchImageImpl
-
+import com.bytebyte6.image.SearchImage
 
 class TvLogoSearch(private val dao: TvDao,private val searchImage: SearchImage)  {
     fun doThatShit() {
@@ -14,9 +11,7 @@ class TvLogoSearch(private val dao: TvDao,private val searchImage: SearchImage) 
             }
             .forEach {
                 if (it.name.isNotEmpty()) {
-                    val logo = searchImage.search(
-                        it.name.replace("&"," ")
-                    )
+                    val logo = searchImage.search(it.name)
                     if (logo.isNotEmpty()) {
                         it.logo = logo
                         dao.insert(it)

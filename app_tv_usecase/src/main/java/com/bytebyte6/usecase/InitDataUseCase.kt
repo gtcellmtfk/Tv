@@ -9,7 +9,7 @@ import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.Language
-import com.bytebyte6.data.work.FindImageWork
+import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

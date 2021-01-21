@@ -39,14 +39,15 @@ abstract class RxUseCase<Param, ResultType> {
             result.postValue((Result.Error(it)))
         }
 
-    fun interval(param: Param,period:Long=2): Observable<Long> = Observable.interval(period, TimeUnit.SECONDS)
-        .doOnNext {
-            val result = run(param)
-            this.result.postValue((Result.Success(result)))
-        }.doOnError {
-            it.printStackTrace()
-            result.postValue((Result.Error(it)))
-        }
+    fun interval(param: Param, period: Long = 2): Observable<Long> =
+        Observable.interval(period, TimeUnit.SECONDS)
+            .doOnNext {
+                data = run(param)
+                result.postValue((Result.Success(data!!)))
+            }.doOnError {
+                it.printStackTrace()
+                result.postValue((Result.Error(it)))
+            }
 
     abstract fun run(param: Param): ResultType
 }
