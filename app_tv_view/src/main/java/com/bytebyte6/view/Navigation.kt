@@ -127,31 +127,3 @@ fun Fragment.setupToolbarMenuMode(title: String? = null, subTitle: String? = nul
     }
     mainActivity.unlockDrawer()
 }
-
-fun Fragment.doOnCreate() {
-    lifecycle.addObserver(object : DefaultLifecycleObserver {
-        override fun onCreate(owner: LifecycleOwner) {
-            logd("onCreate")
-        }
-
-        override fun onStart(owner: LifecycleOwner) {
-            logd("onStart")
-        }
-
-        override fun onResume(owner: LifecycleOwner) {
-            logd("onResume")
-        }
-
-        override fun onPause(owner: LifecycleOwner) {
-            logd("onPause")
-        }
-
-        override fun onStop(owner: LifecycleOwner) {
-            logd("onStop")
-        }
-
-        override fun onDestroy(owner: LifecycleOwner) {
-            logd("onDestroy")
-        }
-    })
-}

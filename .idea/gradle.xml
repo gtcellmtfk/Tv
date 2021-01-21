@@ -15,8 +15,6 @@
             <option value="$PROJECT_DIR$/app_tv_model" />
             <option value="$PROJECT_DIR$/app_tv_usecase" />
             <option value="$PROJECT_DIR$/app_tv_view" />
-            <option value="$PROJECT_DIR$/lib_base" />
-            <option value="$PROJECT_DIR$/lib_dependency" />
             <option value="$PROJECT_DIR$/lib_test" />
           </set>
         </option>

@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import com.bytebyte6.base.mvi.ResultObserver
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
-import com.bytebyte6.view.ImageAdapter
-import com.bytebyte6.view.KEY_ITEM
+import com.bytebyte6.data.entity.TvFts
+import com.bytebyte6.view.*
 
 import com.bytebyte6.view.databinding.DialogVideoBinding
-import com.bytebyte6.view.showVideoActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -41,7 +42,7 @@ class VideoDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val title = requireArguments().getString(KEY_TITLE)!!
         val adapter = ImageAdapter()
         adapter.setOnItemClick { pos, _ ->
             dismiss()
@@ -50,14 +51,20 @@ class VideoDialog : BottomSheetDialogFragment() {
 
         binding?.apply {
             recyclerView.adapter = adapter
+            recyclerView.itemAnimator = null
         }
-//
-//        viewModel.search(requireArguments().getString(KEY_ITEM)!!).observe(this, Observer {
-//            adapter.submitList(it)
-//            binding?.tvTotal?.apply {
-//                text = getString(R.string.total, it.size)
-//            }
-//        })
+
+        viewModel.count(title).observe(viewLifecycleOwner, Observer {
+            binding?.tvTotal?.apply {
+                text = getString(R.string.total, it)
+            }
+        })
+
+        viewModel.tvs.observe(viewLifecycleOwner, object : ResultObserver<List<TvFts>>() {
+            override fun success(data: List<TvFts>, end: Boolean) {
+                adapter.submitList(TvFts.toTvs(data))
+            }
+        })
     }
 
     override fun onDestroyView() {

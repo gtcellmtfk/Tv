@@ -8,9 +8,7 @@ import com.bumptech.glide.module.AppGlideModule
 
 @GlideModule
 class RtmpGlide : AppGlideModule() {
-    override fun applyOptions(context: Context, builder: GlideBuilder) {
-
-    }
+    override fun applyOptions(context: Context, builder: GlideBuilder) {}
 }
 
 fun ImageView.load(url: String) {

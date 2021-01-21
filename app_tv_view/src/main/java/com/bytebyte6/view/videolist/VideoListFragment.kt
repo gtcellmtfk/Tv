@@ -5,11 +5,13 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base.mvi.runIfNotHandled
 import com.bytebyte6.base.mvi.emit
 import com.bytebyte6.base_ui.*
-import com.bytebyte6.base_ui.databinding.FragmentListBinding
 import com.bytebyte6.data.entity.TvFts
+import com.bytebyte6.library.GridSpaceDecoration
+import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -98,7 +100,7 @@ class VideoListFragment : ListFragment() {
         //not to do
     }
 
-    override fun onViewCreated(view: View): FragmentListBinding? {
+    override fun onViewCreated(view: View): ViewBinding? {
         return null
     }
 }

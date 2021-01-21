@@ -5,6 +5,7 @@ import com.bytebyte6.usecase.*
 import com.bytebyte6.view.download.DownloadViewModel
 import com.bytebyte6.view.home.HomeViewModel
 import com.bytebyte6.view.me.MeViewModel
+import com.bytebyte6.view.me.PlaylistViewModel
 import com.bytebyte6.view.search.SearchViewModel
 import com.bytebyte6.view.setting.UserViewModel
 import com.bytebyte6.view.player.PlayerViewModel
@@ -21,7 +22,8 @@ val viewModule: Module = module {
     viewModel { VideoListViewModel(get(),get(),get()) }
     viewModel { PlayerViewModel() }
     viewModel { SearchViewModel(get(),get(),get()) }
-    viewModel { MeViewModel(get(), get(), get(),get(),get(),get()) }
+    viewModel { MeViewModel(get(), get(), get(),get(),get()) }
+    viewModel { PlaylistViewModel(get(), get(), get()) }
     viewModel { LauncherViewModel(get(),get()) }
     viewModel { HomeViewModel(get(), get(),get(),get()) }
     viewModel { UserViewModel(get(), get()) }

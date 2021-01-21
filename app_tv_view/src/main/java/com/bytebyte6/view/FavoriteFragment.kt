@@ -6,11 +6,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base_ui.BaseViewModel
-import com.bytebyte6.base_ui.GridSpaceDecoration
-import com.bytebyte6.base_ui.ListFragment
-import com.bytebyte6.base_ui.databinding.FragmentListBinding
 import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.library.GridSpaceDecoration
+import com.bytebyte6.library.ListFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : ListFragment() {
@@ -34,7 +34,7 @@ class FavoriteFragment : ListFragment() {
 
         disEnabledSwipeRefreshLayout()
 
-        setupToolbarMenuMode(getString(R.string.nav_fav),"")
+        setupToolbarMenuMode(getString(R.string.nav_fav), "")
 
         val adapter = ImageAdapter(ButtonType.FAVORITE)
         adapter.setOnItemClick { pos, _ ->
@@ -47,7 +47,7 @@ class FavoriteFragment : ListFragment() {
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
         recyclerView.setHasFixedSize(true)
-        recyclerView.itemAnimator=null
+        recyclerView.itemAnimator = null
 
         viewModel.fav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
@@ -62,7 +62,7 @@ class FavoriteFragment : ListFragment() {
 
     }
 
-    override fun onViewCreated(view: View): FragmentListBinding? {
+    override fun onViewCreated(view: View): ViewBinding? {
         return null
     }
 }

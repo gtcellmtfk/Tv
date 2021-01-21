@@ -9,13 +9,13 @@ import com.bytebyte6.base.KeyboardUtils
 import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base.mvi.isSuccess
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.GridSpaceDecoration
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchFragment : BaseShareFragment/*<FragmentSearchBinding>*/(R.layout.fragment_search) {
+class SearchFragment : BaseShareFragment(R.layout.fragment_search) {
 
     companion object {
         const val TAG = "SearchFragment"

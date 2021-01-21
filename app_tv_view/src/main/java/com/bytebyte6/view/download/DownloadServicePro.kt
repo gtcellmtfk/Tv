@@ -72,9 +72,9 @@ class DownloadServicePro : DownloadService(ID) {
     override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
         return downloadNotificationHelper.buildProgressNotification(
             this,
-            R.mipmap.ic_launcher,
+            R.drawable.ic_favorite,
             null,
-            null,
+            getString(R.string.tip_working),
             downloads
         )
     }

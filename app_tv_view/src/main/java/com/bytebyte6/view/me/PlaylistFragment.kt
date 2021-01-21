@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.mvi.ResultObserver
 import com.bytebyte6.base_ui.*
+import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
@@ -20,11 +21,10 @@ import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.getViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 
-class PlaylistFragment :
-    BaseShareFragment/*<FragmentPlayListBinding>*/(R.layout.fragment_play_list),
-    DownloadManager.Listener {
+class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), DownloadManager.Listener {
 
     companion object {
         fun newInstance(
@@ -52,13 +52,7 @@ class PlaylistFragment :
 
     private var downloadHelper: DownloadHelper? = null
 
-    private val viewModel: MeViewModel? by lazy {
-        var vm: MeViewModel? = null
-        parentFragmentManager.findFragmentByTag(MeFragment.TAG)?.apply {
-            vm = this.getViewModel()
-        }
-        vm
-    }
+    private val viewModel: PlaylistViewModel by viewModel()
 
     override fun onViewCreated(view: View): FragmentPlayListBinding {
         return FragmentPlayListBinding.bind(view).apply {
@@ -76,7 +70,7 @@ class PlaylistFragment :
                 showVideoActivity(adapter.currentList[pos].videoUrl)
             }
             adapter.setDoOnBind { pos, _ ->
-                viewModel?.searchLogo(pos)
+                viewModel.searchLogo(pos)
             }
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
@@ -88,7 +82,7 @@ class PlaylistFragment :
     }
 
     private fun onDownloadClick(pos: Int, view: View) {
-        viewModel?.apply {
+        viewModel.apply {
             showProgress()
             downloadHelper?.release()
             downloadHelper = DownloadHelper.forMediaItem(
@@ -125,7 +119,7 @@ class PlaylistFragment :
     }
 
     private fun load(adapter: ImageAdapter, toolbar: MaterialToolbar) {
-        viewModel?.apply {
+        viewModel.apply {
             tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
                 .observe(viewLifecycleOwner, Observer {
                     adapter.submitList(it)
@@ -142,6 +136,7 @@ class PlaylistFragment :
             })
         }
     }
+
 
     private val dialog by lazy {
         ProgressDialog(requireContext()).apply {

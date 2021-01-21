@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="SampleTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
-        <item name="colorControlNormal">@android:color/white</item>
-    </style>
-</resources>

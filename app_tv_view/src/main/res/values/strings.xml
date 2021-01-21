@@ -47,4 +47,5 @@
     <string name="pause">暂停下载</string>
     <string name="resume">开始下载</string>
     <string name="tip_please_wait">正在检测该视频是否支持下载,请稍等片刻…</string>
+    <string name="tip_working">任务进行中</string>
 </resources>

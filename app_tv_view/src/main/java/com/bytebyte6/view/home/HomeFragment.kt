@@ -19,7 +19,7 @@ import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragment_home) {
+class HomeFragment : BaseShareFragment(R.layout.fragment_home) {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -81,7 +81,6 @@ class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragmen
             }.attach()
 
             viewModel.apply {
-
                 category.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_CATEGORY)?.orCreateBadge?.number = it.size
                 })
@@ -93,27 +92,7 @@ class HomeFragment : BaseShareFragment/*<FragmentHomeBinding>*/(R.layout.fragmen
                 lang.observe(viewLifecycleOwner, Observer {
                     tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
                 })
-
-//                tvRefresh.observe(viewLifecycleOwner, Observer { result ->
-//                    result.emitIfNotHandled(
-//                        {
-//                            swipeRefreshLayout.isRefreshing = false
-//                        },
-//                        {
-//                            swipeRefreshLayout.isRefreshing = false
-//                            showSnack(view, Message(message = it.error.message.toString()))
-//                        },
-//                        {
-//                            swipeRefreshLayout.isRefreshing = true
-//                        }
-//                    )
-//                })
-
             }
-
-//            swipeRefreshLayout.setOnRefreshListener {
-//                viewModel.refresh()
-//            }
 
             //解决状态栏失效不见的问题
             view.doOnPreDraw {

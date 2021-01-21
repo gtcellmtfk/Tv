@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_LANGUAGE
@@ -13,8 +13,7 @@ import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
 
-class LanguageFragment :
-    BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.layout.fragment_recycler_view) {
+class LanguageFragment : BaseShareFragment(R.layout.fragment_recycler_view) {
 
     companion object {
         const val TAG = "ViewPagerFragment"

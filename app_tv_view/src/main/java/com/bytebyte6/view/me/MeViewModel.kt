@@ -20,8 +20,7 @@ class MeViewModel(
     private val parseM3uUseCase: ParseM3uUseCase,
     private val deletePlaylistUseCase: DeletePlaylistUseCase,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val updateTvUseCase: UpdateTvUseCase,
-    private val playlistDao: PlaylistDao
+    private val updateTvUseCase: UpdateTvUseCase
 ) : BaseViewModel(){
 
     private lateinit var userWithPlaylist: UserWithPlaylists
@@ -37,8 +36,6 @@ class MeViewModel(
 
     val deletePlaylist = deletePlaylistUseCase.result()
 
-    val updateTv = updateTvUseCase.result()
-
     fun searchLogo(pos: Int) {
         addDisposable(
             tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId, pos = pos)).onIo()
@@ -46,13 +43,6 @@ class MeViewModel(
     }
 
     private lateinit var tvs: List<Tv>
-
-    fun getTv(pos: Int) = tvs[pos]
-
-    fun tvs(playlistId: Long) = playlistDao.playlistWithTvs(playlistId).map {
-        tvs = it.tvs
-        tvs
-    }
 
     fun getPlaylistId(pos: Int): Long {
         return userWithPlaylist.playlists[pos].playlistId

@@ -56,7 +56,7 @@ Recyclerview使用同样要像例子一那样设置并执行如下操作
 
 ```kotlin
 class ImageAdapter(private val favClickListener: ((pos: Int) -> Unit)? = null) :
-    BaseAdapter<Image, ImageViewHolder>(ImageDIFF) {
+    BaseListAdapter<Image, ImageViewHolder>(ImageDIFF) {
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         //重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~

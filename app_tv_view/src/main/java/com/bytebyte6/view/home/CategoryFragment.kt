@@ -5,7 +5,8 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.library.LinearSpaceDecoration
+
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_CATEGORY
@@ -15,7 +16,7 @@ import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
 
 class CategoryFragment :
-    BaseShareFragment/*<FragmentRecyclerViewBinding>*/(R.layout.fragment_recycler_view) {
+    BaseShareFragment(R.layout.fragment_recycler_view) {
 
     companion object {
         const val TAG = "ViewPagerFragment"

@@ -1,7 +1,7 @@
-package com.bytebyte6.data
+package com.bytebyte6.usecase
 
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.work.SearchImageImpl
+import com.bytebyte6.image.SearchImageImpl
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okio.internal.commonToUtf8String

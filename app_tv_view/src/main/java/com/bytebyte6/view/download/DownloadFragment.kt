@@ -12,10 +12,10 @@ import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base.logd
 import com.bytebyte6.base.mvi.emit
 import com.bytebyte6.base.mvi.runIfNotHandled
-import com.bytebyte6.base_ui.LinearSpaceDecoration
-import com.bytebyte6.base_ui.ListFragment
+import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
@@ -57,12 +57,12 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
                 R.id.pause -> {
                     DownloadServicePro.pauseDownloads(requireContext())
                     showSnack(requireView(), Message(id = R.string.pause))
-                    viewModel.pause()
+                    viewModel.pauseInterval()
                 }
                 R.id.resume -> {
                     DownloadServicePro.resumeDownloads(requireContext())
                     showSnack(requireView(), Message(id = R.string.resume))
-                    viewModel.start()
+                    viewModel.startInterval()
                 }
             }
             true
@@ -87,7 +87,7 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
             emptyBox.isVisible = currentList.isEmpty()
         }
 
-        viewModel.list.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.downloadList.observe(viewLifecycleOwner, Observer { result ->
             result.emit({
                 adapter.submitList(it.data)
                 hideSwipeRefresh()
@@ -117,7 +117,7 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
             .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
                 DownloadServicePro.removeDownload(
                     requireContext(), adapter.currentList[pos].download.request.id)
-                viewModel.delete(pos)
+                viewModel.deleteDownload(pos)
                 dialogInterface.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
@@ -147,7 +147,7 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
 
     override fun onIdle(downloadManager: DownloadManager) {
         logd("onIdle")
-        viewModel.pause()
+        viewModel.pauseInterval()
     }
 
     override fun onLoadMore() {

@@ -2,7 +2,7 @@ package com.bytebyte6.view.download
 
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base.mvi.runIfNotHandled
+import com.bytebyte6.base.mvi.ResultObserver
 import com.bytebyte6.base.onIo
 import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.usecase.DownloadListUseCase
@@ -18,50 +18,48 @@ class DownloadViewModel(
 
     private var getDownloadList: Disposable? = null
 
-    val list = downloadListUseCase.result()
+    val downloadList = downloadListUseCase.result()
 
     init {
         downloadListUseCase.result().observeForever(this)
-        loadList()
+        loadDownloadList()
     }
 
-    private fun loadList() {
+    private fun loadDownloadList() {
         addDisposable(
             downloadListUseCase.execute("").onIo()
         )
     }
 
-    fun delete(pos: Int) {
+    fun deleteDownload(pos: Int) {
         val data = downloadListUseCase.getData() ?: return
         val tv = data[pos].tv
         tv.download = false
-        val observer = object : Observer<Result<UpdateTvParam>> {
-            override fun onChanged(it: Result<UpdateTvParam>) {
-                it.runIfNotHandled {
-                    loadList()
-                    updateTvUseCase.result().removeObserver(this)
-                }
+        val resultObserver = object : ResultObserver<UpdateTvParam>() {
+            override fun successOnce(data: UpdateTvParam, end: Boolean) {
+                loadDownloadList()
+                updateTvUseCase.result().removeObserver(this)
             }
         }
-        updateTvUseCase.result().observeForever(observer)
+        updateTvUseCase.result().observeForever(resultObserver)
         addDisposable(
             updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
         )
     }
 
-    fun start() {
-        pause()
+    fun startInterval() {
+        pauseInterval()
         getDownloadList = downloadListUseCase.interval("").onIo()
         addDisposable(getDownloadList!!)
     }
 
-    fun pause() {
+    fun pauseInterval() {
         getDownloadList?.dispose()
-        loadList()
+        loadDownloadList()
     }
 
     override fun onChanged(t: Result<List<TvAndDownload>>?) {
         downloadListUseCase.result().removeObserver(this)
-        start()
+        startInterval()
     }
 }

@@ -15,14 +15,17 @@
   ~ limitations under the License.
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list  xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@color/white" />
 
-<!--    <item>-->
-<!--        <bitmap-->
-<!--            android:gravity="center"-->
-<!--            android:src="" />-->
-<!--    </item>-->
+    <item  android:gravity="fill">
+        <bitmap
+            android:antialias="true"
+            android:dither="true"
+            android:filter="true"
+            android:gravity="fill"
+            android:src="@drawable/launcher" />
+    </item>
 
 </layer-list>

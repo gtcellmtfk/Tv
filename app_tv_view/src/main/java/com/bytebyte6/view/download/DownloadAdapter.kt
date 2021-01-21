@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bytebyte6.base_ui.BaseAdapter
+import com.bytebyte6.base_ui.BaseListAdapter
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.view.GlideApp
 import com.bytebyte6.view.R
@@ -12,7 +12,7 @@ import com.bytebyte6.view.databinding.ItemDownloadBinding
 import com.bytebyte6.view.load
 import java.math.RoundingMode
 
-class DownloadAdapter : BaseAdapter<TvAndDownload, DownloadViewHolder>(DownDiff) {
+class DownloadAdapter : BaseListAdapter<TvAndDownload, DownloadViewHolder>(DownDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
         return DownloadViewHolder.create(parent)

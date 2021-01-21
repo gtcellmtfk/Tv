@@ -10,17 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.LinearSpaceDecoration
+import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.library.getSelectionTracker
 import com.bytebyte6.view.*
-import com.bytebyte6.view.card.CardAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me) {
+class MeFragment : BaseShareFragment(R.layout.fragment_me) {
 
     companion object {
         const val TAG = "MeFragment"
@@ -39,8 +40,8 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
         registerForActivityResult(getContent, callback)
     }
 
-    private lateinit var cardAdapter: CardAdapter
-//    private lateinit var selectionTracker: SelectionTracker<Long>
+    private lateinit var playlistAdapter: PlaylistAdapter
+    private lateinit var selectionTracker: SelectionTracker<Long>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,45 +57,43 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
                     true
                 }
             }
-            cardAdapter = CardAdapter()
+            playlistAdapter = PlaylistAdapter()
 
-            recyclerView.adapter = cardAdapter
-//            selectionTracker = getSelectionTracker(recyclerView,
-//                object : SelectionTracker.SelectionObserver<Long>() {
-//                    override fun onSelectionChanged() {
-//                        val hasSelection = selectionTracker.hasSelection()
-//                        if (hasSelection) {
-//                            fab.show()
-//                        } else {
-//                            fab.hide()
-//                        }
-//                    }
-//                })
+            recyclerView.adapter = playlistAdapter
+            selectionTracker = getSelectionTracker(recyclerView,
+                object : SelectionTracker.SelectionObserver<Long>() {
+                    override fun onSelectionChanged() {
+                        val hasSelection = selectionTracker.hasSelection()
+                        if (hasSelection) {
+                            fab.show()
+                        } else {
+                            fab.hide()
+                        }
+                    }
+                })
+            playlistAdapter.selectionTracker=selectionTracker
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
 
-            cardAdapter.setOnItemClick { pos, view1 ->
+            playlistAdapter.onItemClick = { pos, view1 ->
                 replaceWithShareElement(
                     PlaylistFragment.newInstance(
                         viewModel.getPlaylistId(pos),
-                        cardAdapter.currentList[pos].title,
-                        cardAdapter.currentList[pos].transitionName
+                        playlistAdapter.list[pos].title,
+                        playlistAdapter.list[pos].transitionName
                     ),
                     PlaylistFragment.TAG,
                     view1
                 )
             }
-            cardAdapter.setOnCurrentListChanged { _, currentList ->
-                lavEmpty.isVisible = currentList.isEmpty()
-            }
 
-//            fab.setOnClickListener {
-//                selectionTracker.selection.apply {
-//                    if (!this.isEmpty) {
-//                        showDialog()
-//                    }
-//                }
-//            }
+            fab.setOnClickListener {
+                selectionTracker.selection.apply {
+                    if (!this.isEmpty) {
+                        showDialog()
+                    }
+                }
+            }
         }
     }
 
@@ -104,7 +103,7 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
             .setMessage(getString(R.string.tip_beyond_retrieve))
             .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
                 dialogInterface.dismiss()
-//                viewModel.delete(selectionTracker.selection)
+                viewModel.delete(selectionTracker.selection)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
                 dialogInterface.dismiss()
@@ -116,7 +115,7 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
         super.onViewCreated(view, savedInstanceState)
         viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled({
-//                selectionTracker.clearSelection()
+                selectionTracker.clearSelection()
                 showSnack(view, Message(id = R.string.tip_del_success))
                 binding<FragmentMeBinding>()?.apply {
                     fab.hide()
@@ -126,7 +125,10 @@ class MeFragment : BaseShareFragment/*<FragmentMeBinding>*/(R.layout.fragment_me
             })
         })
         viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
-            cardAdapter.submitList(it)
+            playlistAdapter.replace(it)
+            binding<FragmentMeBinding>()?.apply {
+                lavEmpty.isVisible = it.isEmpty()
+            }
         })
         viewModel.playlist.observe(viewLifecycleOwner, Observer { result ->
             result.emitIfNotHandled(

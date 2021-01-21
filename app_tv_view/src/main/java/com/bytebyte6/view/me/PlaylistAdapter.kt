@@ -1,4 +1,4 @@
-package com.bytebyte6.view.card
+package com.bytebyte6.view.me
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
@@ -9,18 +9,20 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.bytebyte6.base_ui.BaseListAdapter
 import com.bytebyte6.data.model.Card
+import com.bytebyte6.library.BaseAdapter
 import com.bytebyte6.view.R
+import com.bytebyte6.view.card.CardViewHolder
 import com.bytebyte6.view.home.randomImage
 
-class CardAdapter : BaseListAdapter<Card, CardViewHolder>(CardDiff) {
+class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        return CardViewHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
+        return PlaylistViewHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        val item = getItem(position)
+        val item = list[position]
 
         holder.apply {
             //重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~
@@ -28,7 +30,7 @@ class CardAdapter : BaseListAdapter<Card, CardViewHolder>(CardDiff) {
             tvTitle.text = item.title
             tvBody.text = item.body
             ivIcon.setImageResource(randomImage())
-            if (getItem(position).outline) {
+            if (item.outline) {
                 cardView.apply {
                     strokeWidth = 4
                     strokeColor = item.color

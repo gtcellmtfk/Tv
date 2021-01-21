@@ -6,7 +6,7 @@ import com.bytebyte6.base.onIo
 import com.bytebyte6.usecase.UpdateUserUseCase
 
 class UserViewModel(
-    private val dao: UserDao,
+    dao: UserDao,
     private val updateUserUseCase: UpdateUserUseCase
 ) : BaseViewModel() {
 
