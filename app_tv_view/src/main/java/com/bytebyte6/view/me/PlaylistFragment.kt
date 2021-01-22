@@ -27,7 +27,7 @@ import java.io.IOException
 /***
  * 播放列表
  */
-class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), DownloadManager.Listener {
+class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fragment_play_list), DownloadManager.Listener {
 
     companion object {
         fun newInstance(
@@ -57,7 +57,7 @@ class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), Downloa
 
     private val viewModel: PlaylistViewModel by viewModel()
 
-    override fun onViewCreated(view: View): FragmentPlayListBinding {
+    override fun initViewBinding(view: View): FragmentPlayListBinding {
         return FragmentPlayListBinding.bind(view).apply {
 
             setupToolbarArrowBack()
@@ -69,10 +69,10 @@ class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), Downloa
                     onDownloadClick(pos, view)
                 }
             }
-            adapter.setOnItemClick { pos, _ ->
+            adapter.onItemClick= { pos , view: View->
                 showVideoActivity(adapter.currentList[pos].videoUrl)
             }
-            adapter.setDoOnBind { pos, _ ->
+            adapter.doOnBind=  { pos , view: View->
                 viewModel.searchLogo(pos)
             }
             recyclerView.adapter = adapter

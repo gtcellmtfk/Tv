@@ -2,7 +2,6 @@ package com.bytebyte6.view.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.base_ui.BaseShareFragment
@@ -13,7 +12,7 @@ import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
 
-class CountryFragment : BaseShareFragment(R.layout.fragment_recycler_view) {
+class CountryFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
 
     companion object {
         const val TAG = "CountryFragment"
@@ -30,23 +29,27 @@ class CountryFragment : BaseShareFragment(R.layout.fragment_recycler_view) {
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
-    override fun onViewCreated(view: View): FragmentRecyclerViewBinding {
-        return FragmentRecyclerViewBinding.bind(view).apply {
+    override fun initViewBinding(view: View): FragmentRecyclerViewBinding {
+        return FragmentRecyclerViewBinding.bind(view)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
             val imageAdapter = ImageAdapter()
             recyclerView.adapter = imageAdapter
             recyclerView.layoutManager=GridLayoutManager(view.context,2)
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator=null
-            imageAdapter.setDoOnBind { pos, _ ->
+            imageAdapter.doOnBind=  { pos: Int, view: View ->
                 viewModel.searchLogo(pos)
             }
 
             viewModel.cs.observe(viewLifecycleOwner, Observer {
                 imageAdapter.submitList(it)
             })
-            imageAdapter.setOnItemClick { pos, view ->
+            imageAdapter.onItemClick= { pos, view: View ->
                 showVideoListFragment(view, imageAdapter.currentList[pos].transitionName)
             }
         }

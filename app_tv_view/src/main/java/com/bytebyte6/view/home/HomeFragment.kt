@@ -8,11 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.mvi.emitIfNotHandled
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.bytebyte6.view.search.SearchFragment
@@ -22,7 +18,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 /***
  * 首页
  */
-class HomeFragment : BaseShareFragment(R.layout.fragment_home) {
+class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -50,8 +46,13 @@ class HomeFragment : BaseShareFragment(R.layout.fragment_home) {
         )
     }
 
-    override fun onViewCreated(view: View): FragmentHomeBinding {
-        return FragmentHomeBinding.bind(view).apply {
+    override fun initViewBinding(view: View): FragmentHomeBinding {
+        return FragmentHomeBinding.bind(view)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
 
             toolbar.transitionName = getString(R.string.search_share)
 
@@ -74,14 +75,17 @@ class HomeFragment : BaseShareFragment(R.layout.fragment_home) {
                 true
             }
 
+            viewPager.isUserInputEnabled = false
+
             viewPager.adapter = TabAdapter(this@HomeFragment)
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            val mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
                     TAB_COUNTRY -> tab.setText(R.string.home_country)
                     TAB_LANGUAGE -> tab.setText(R.string.home_language)
                     TAB_CATEGORY -> tab.setText(R.string.home_category)
                 }
-            }.attach()
+            }
+            mediator.attach()
 
             viewModel.apply {
                 category.observe(viewLifecycleOwner, Observer {

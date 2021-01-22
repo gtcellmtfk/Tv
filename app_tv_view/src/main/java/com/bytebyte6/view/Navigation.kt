@@ -7,9 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import com.bytebyte6.base.logd
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.player.PlayerActivity
 import com.bytebyte6.view.videolist.VideoListFragment

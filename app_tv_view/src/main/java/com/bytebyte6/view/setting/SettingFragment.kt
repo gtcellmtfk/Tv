@@ -15,7 +15,7 @@ import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SettingFragment : BaseShareFragment(R.layout.fragment_setting) {
+class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     companion object {
         const val TAG = "SettingFragment"
         fun newInstance(): SettingFragment {
@@ -34,7 +34,7 @@ class SettingFragment : BaseShareFragment(R.layout.fragment_setting) {
         setupOnBackPressedDispatcherBackToHome()
     }
 
-    override fun onViewCreated(view: View): FragmentSettingBinding {
+    override fun initViewBinding(view: View): FragmentSettingBinding {
         return FragmentSettingBinding.bind(view).apply {
             setupToolbarMenuMode(getString(R.string.nav_setting),"")
 

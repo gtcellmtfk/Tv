@@ -35,8 +35,8 @@ android {
 
 dependencies {
     implementation project(path: ':app_tv_model')
-    implementation 'com.github.bytebyte6:Dependency:2.0'
     implementation 'com.github.bytebyte6:GetImage:3.0'
+    implementation project(path: ':lib_dependency')
 
     def exoplayer="2.12.2"
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"

@@ -23,8 +23,6 @@ class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>(),
     override var onItemLongClick: ((pos: Int, view: View) -> Boolean)? = null
     override var onBind: ((pos: Int, view: View) -> Unit)? = null
 
-    override fun getBaseAdapterHelper(): AdapterHelper<Card, PlaylistViewHolder> = this
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder.create(parent)
     }
@@ -60,5 +58,9 @@ class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>(),
                 }
             }
         }
+    }
+
+    override fun adapterHelper(): AdapterHelper<Card, PlaylistViewHolder> {
+       return this
     }
 }

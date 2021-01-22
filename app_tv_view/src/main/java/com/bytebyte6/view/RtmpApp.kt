@@ -3,6 +3,7 @@ package com.bytebyte6.view
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.bytebyte6.base.LogEx
 import com.bytebyte6.base.baseModule
 import com.bytebyte6.base.logd
 import com.bytebyte6.data.dataModule
@@ -35,5 +36,6 @@ class RtmpApp : Application() {
             logd("Rx Global Exception Handler...")
             it.printStackTrace()
         }
+        LogEx.logger=true
     }
 }

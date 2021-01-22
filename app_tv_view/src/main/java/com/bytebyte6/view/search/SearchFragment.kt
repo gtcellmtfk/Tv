@@ -15,7 +15,7 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchFragment : BaseShareFragment(R.layout.fragment_search) {
+class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
     companion object {
         const val TAG = "SearchFragment"
@@ -30,8 +30,13 @@ class SearchFragment : BaseShareFragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModel()
 
-    override fun onViewCreated(view: View): FragmentSearchBinding {
-        return FragmentSearchBinding.bind(view).apply {
+    override fun initViewBinding(view: View): FragmentSearchBinding {
+        return FragmentSearchBinding.bind(view)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
 
             setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
 
@@ -46,13 +51,13 @@ class SearchFragment : BaseShareFragment(R.layout.fragment_search) {
             val adapter = ImageAdapter(ButtonType.FAVORITE) {
                 viewModel.fav(it)
             }
-            adapter.setOnItemClick { pos, _ ->
+            adapter.onItemClick= { pos , view: View->
                 showVideoActivity(adapter.currentList[pos].videoUrl)
             }
-            adapter.setDoOnBind { pos, _ ->
+            adapter.doOnBind=  { pos, view: View ->
                 viewModel.searchLogo(pos)
             }
-            adapter.setOnCurrentListChanged { _, currentList ->
+            adapter.onCurrentListChanged= { _, currentList ->
                 lavEmpty.isVisible = currentList.isEmpty()
             }
 

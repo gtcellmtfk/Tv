@@ -1,14 +1,9 @@
 package com.bytebyte6.view.card
 
-import android.annotation.SuppressLint
-import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.bytebyte6.base_ui.BaseListAdapter
 import com.bytebyte6.data.model.Card
+import com.bytebyte6.library.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.home.randomImage
 

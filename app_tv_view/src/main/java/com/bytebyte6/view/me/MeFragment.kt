@@ -23,7 +23,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 /***
  * 导入
  */
-class MeFragment : BaseShareFragment(R.layout.fragment_me) {
+class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     companion object {
         const val TAG = "MeFragment"
@@ -50,8 +50,27 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
         setupOnBackPressedDispatcherBackToHome()
     }
 
-    override fun onViewCreated(view: View): FragmentMeBinding {
-        return FragmentMeBinding.bind(view).apply {
+    override fun initViewBinding(view: View): FragmentMeBinding {
+        return FragmentMeBinding.bind(view)
+    }
+
+    private fun showDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.tip_del_playlist))
+            .setMessage(getString(R.string.tip_beyond_retrieve))
+            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()
+                viewModel.delete(selectionTracker.selection)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
             setupToolbarMenuMode()
             toolbar.apply {
                 setOnMenuItemClickListener {
@@ -96,29 +115,11 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
                 }
             }
         }
-    }
-
-    private fun showDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.tip_del_playlist))
-            .setMessage(getString(R.string.tip_beyond_retrieve))
-            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
-                dialogInterface.dismiss()
-                viewModel.delete(selectionTracker.selection)
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
-                dialogInterface.dismiss()
-            }
-            .show()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled({
                 selectionTracker.clearSelection()
                 showSnack(view, Message(id = R.string.tip_del_success))
-                binding<FragmentMeBinding>()?.apply {
+                binding?.apply {
                     fab.hide()
                 }
             }, {
@@ -127,7 +128,7 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
         })
         viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
             playlistAdapter.replace(it)
-            binding<FragmentMeBinding>()?.apply {
+            binding?.apply {
                 lavEmpty.isVisible = it.isEmpty()
             }
         })
@@ -156,13 +157,13 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
     }
 
     private fun showProgressBar() {
-        binding<FragmentMeBinding>()?.apply {
+        binding?.apply {
             progressBar.visibility = View.VISIBLE
         }
     }
 
     private fun hideProgressBar() {
-        binding<FragmentMeBinding>()?.apply {
+        binding?.apply {
             progressBar.visibility = View.GONE
         }
     }

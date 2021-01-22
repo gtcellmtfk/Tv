@@ -37,10 +37,10 @@ class FavoriteFragment : ListFragment() {
         setupToolbarMenuMode(getString(R.string.nav_fav), "")
 
         val adapter = ImageAdapter(ButtonType.FAVORITE)
-        adapter.setOnItemClick { pos, _ ->
+        adapter.onItemClick= { pos, _: View ->
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }
-        adapter.setOnCurrentListChanged { _, currentList ->
+        adapter.onCurrentListChanged= { _, currentList ->
             emptyBox.isVisible = currentList.isEmpty()
         }
         recyclerView.adapter = adapter
@@ -60,10 +60,6 @@ class FavoriteFragment : ListFragment() {
 
     override fun onRefresh() {
 
-    }
-
-    override fun onViewCreated(view: View): ViewBinding? {
-        return null
     }
 }
 

@@ -12,9 +12,9 @@ import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base.logd
 import com.bytebyte6.base.mvi.emit
 import com.bytebyte6.base.mvi.runIfNotHandled
-import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
@@ -24,12 +24,11 @@ import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.Exception
 
 /***
  * 下载中心
  */
-class DownloadFragment : ListFragment(),DownloadManager.Listener{
+class DownloadFragment : ListFragment(), DownloadManager.Listener {
 
     companion object {
         const val TAG = "DownloadFragment"
@@ -77,16 +76,16 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(LinearSpaceDecoration())
-        recyclerView.itemAnimator=null
+        recyclerView.itemAnimator = null
 
-        adapter.setOnItemLongClick { pos, _ ->
+        adapter.onItemLongClick = { pos , _: View->
             showDialog(pos)
             true
         }
-        adapter.setOnItemClick { pos, _ ->
+        adapter.onItemClick = { pos , _: View->
             showVideoActivity("", adapter.currentList[pos].download.request)
         }
-        adapter.setOnCurrentListChanged { _, currentList ->
+        adapter.onCurrentListChanged = { _, currentList ->
             emptyBox.isVisible = currentList.isEmpty()
         }
 
@@ -119,7 +118,8 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
             .setMessage(getString(R.string.tip_beyond_retrieve))
             .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
                 DownloadServicePro.removeDownload(
-                    requireContext(), adapter.currentList[pos].download.request.id)
+                    requireContext(), adapter.currentList[pos].download.request.id
+                )
                 viewModel.deleteDownload(pos)
                 dialogInterface.dismiss()
             }
@@ -159,9 +159,5 @@ class DownloadFragment : ListFragment(),DownloadManager.Listener{
 
     override fun onRefresh() {
 
-    }
-
-    override fun onViewCreated(view: View): ViewBinding? {
-        return null
     }
 }

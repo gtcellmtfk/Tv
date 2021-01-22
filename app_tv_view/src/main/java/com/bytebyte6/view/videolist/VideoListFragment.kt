@@ -6,14 +6,15 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.bytebyte6.base.mvi.runIfNotHandled
 import com.bytebyte6.base.mvi.emit
-import com.bytebyte6.base_ui.*
+import com.bytebyte6.base.mvi.runIfNotHandled
+import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import com.bytebyte6.base_ui.Message
+import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.*
-import com.bytebyte6.view.R
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class VideoListFragment : ListFragment() {
@@ -46,20 +47,20 @@ class VideoListFragment : ListFragment() {
         val adapter = ImageAdapter(ButtonType.FAVORITE) {
             viewModel.fav(it)
         }
-        adapter.setOnItemClick { pos, _ ->
+        adapter.onItemClick = { pos, _: View->
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }
-        adapter.setDoOnBind { pos, _ ->
+        adapter.doOnBind = { pos, _: View->
             viewModel.searchLogo(pos)
         }
-        adapter.setOnCurrentListChanged { _, currentList ->
+        adapter.onCurrentListChanged = { _, currentList ->
             emptyBox.isVisible = currentList.isEmpty()
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         recyclerView.addItemDecoration(GridSpaceDecoration())
         recyclerView.setHasFixedSize(true)
-        recyclerView.itemAnimator=null
+        recyclerView.itemAnimator = null
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
             toolbar.subtitle = getString(R.string.total, it)
@@ -100,7 +101,4 @@ class VideoListFragment : ListFragment() {
         //not to do
     }
 
-    override fun onViewCreated(view: View): ViewBinding? {
-        return null
-    }
 }

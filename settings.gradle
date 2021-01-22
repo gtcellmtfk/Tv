@@ -1,3 +1,6 @@
+include ':lib_recyclerviewutils'
+include ':lib_common'
+include ':lib_dependency'
 include ':app_tv_usecase'
 include ':app_tv_view'
 include ':app_tv_model'

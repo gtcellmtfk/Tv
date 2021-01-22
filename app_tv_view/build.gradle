@@ -38,14 +38,14 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':lib_dependency')
+    implementation project(path: ':lib_recyclerviewutils')
+    implementation project(path: ':lib_common')
     debugApi 'com.squareup.leakcanary:leakcanary-android:2.6'
     debugApi 'com.balsikandar.android:crashreporter:1.1.0'
 
     implementation project(path: ':app_tv_usecase')
     implementation project(path: ':app_tv_model')
-    implementation 'com.github.bytebyte6:Base:2.0'
-    implementation 'com.github.bytebyte6:RecyclerViewUtils:5.0'
-    implementation 'com.github.bytebyte6:Dependency:2.0'
 
     def glideVersion = '4.11.0'
     kapt "com.github.bumptech.glide:compiler:$glideVersion"

@@ -27,7 +27,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class PlayerFragment :
-    BaseShareFragment/*<FragmentVideoBinding>*/(R.layout.fragment_video) {
+    BaseShareFragment<FragmentVideoBinding>(R.layout.fragment_video) {
 
     companion object {
         const val TAG: String = "PlayerFragment"
@@ -44,7 +44,7 @@ class PlayerFragment :
 
     private var player: Player? = null
 
-    override fun onViewCreated(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
 
     override fun onResume() {
         super.onResume()
@@ -71,8 +71,7 @@ class PlayerFragment :
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             requireActivity().runOnUiThread {
-                binding<FragmentVideoBinding>()?.progressBar?.isVisible =
-                    !isPlaying && !playbackStateReady
+                binding?.progressBar?.isVisible = !isPlaying && !playbackStateReady
             }
         }
 
@@ -98,7 +97,7 @@ class PlayerFragment :
     }
 
     private fun start() {
-        binding<FragmentVideoBinding>()?.apply {
+        binding?.apply {
             val request = requireArguments().getParcelable(KEY_CACHE) as DownloadRequest?
             val url = requireArguments().getString(KEY_VIDEO_URL)!!
             logd("url=$url")
@@ -133,7 +132,7 @@ class PlayerFragment :
     }
 
     private fun stop() {
-        binding<FragmentVideoBinding>()?.apply {
+        binding?.apply {
             playerView.keepScreenOn = false
             playerView.onPause()
             player?.removeListener(listener)

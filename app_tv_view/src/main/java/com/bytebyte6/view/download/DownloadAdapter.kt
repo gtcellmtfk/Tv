@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bytebyte6.base_ui.BaseListAdapter
+import com.bytebyte6.library.BaseListAdapter
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.view.GlideApp
 import com.bytebyte6.view.R
