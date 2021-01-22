@@ -19,6 +19,9 @@ import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
 
+/***
+ * 首页
+ */
 class HomeFragment : BaseShareFragment(R.layout.fragment_home) {
 
     companion object {

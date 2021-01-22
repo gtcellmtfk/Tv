@@ -43,7 +43,7 @@ class LauncherViewModel(
 
     fun start(): LiveData<Result<List<Tv>>> {
         addDisposable(
-            initDataUseCase.execute("init").onIo()
+            initDataUseCase.execute(Unit).onIo()
         )
         return initDataUseCase.result()
     }

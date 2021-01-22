@@ -34,13 +34,6 @@ class HomeViewModelTest : AutoCloseKoinTest() {
         startKoin {
             modules(roomMemoryModule, dataModule, useCaseModule, viewModule)
         }
-//        RxJavaPlugins.reset()
-//        RxJavaPlugins.setIoSchedulerHandler(object : Function<Scheduler, Scheduler> {
-//            @Throws(Exception::class)
-//            override fun apply(scheduler: Scheduler): Scheduler {
-//                return Schedulers.trampoline()
-//            }
-//        })
     }
 
     @Test

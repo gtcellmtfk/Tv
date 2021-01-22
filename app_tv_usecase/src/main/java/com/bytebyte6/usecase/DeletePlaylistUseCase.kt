@@ -7,8 +7,7 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
 
 class DeletePlaylistUseCase(
-    private val playlistDao: PlaylistDao/*,
-    private val tvDao: TvDao*/
+    private val playlistDao: PlaylistDao
 ) : RxUseCase<List<Playlist>, Boolean>() {
     override fun run(param: List<Playlist>): Boolean {
         val tvs = mutableListOf<Tv>()
@@ -17,7 +16,6 @@ class DeletePlaylistUseCase(
                 playlistDao.getPlaylistWithTvsById(it.playlistId).tvs
             )
         }
-//        tvDao.delete(tvs)
         playlistDao.delete(param)
         return true
     }

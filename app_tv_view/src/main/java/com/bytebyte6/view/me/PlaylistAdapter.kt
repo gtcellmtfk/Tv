@@ -1,20 +1,29 @@
 package com.bytebyte6.view.me
 
-import android.annotation.SuppressLint
-import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.bytebyte6.base_ui.BaseListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.data.model.Card
+import com.bytebyte6.library.AdapterHelper
 import com.bytebyte6.library.BaseAdapter
 import com.bytebyte6.view.R
-import com.bytebyte6.view.card.CardViewHolder
 import com.bytebyte6.view.home.randomImage
 
-class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>() {
+class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>(),
+    AdapterHelper<Card, PlaylistViewHolder> {
+
+    override val list: MutableList<Card> = mutableListOf()
+    override val adapter: RecyclerView.Adapter<PlaylistViewHolder> = this
+    override var itemTouchHelper: ItemTouchHelper? = null
+    override var selectionTracker: SelectionTracker<Long>? = null
+    override var onItemClick: ((pos: Int, view: View) -> Unit)? = null
+    override var onItemLongClick: ((pos: Int, view: View) -> Boolean)? = null
+    override var onBind: ((pos: Int, view: View) -> Unit)? = null
+
+    override fun getBaseAdapterHelper(): AdapterHelper<Card, PlaylistViewHolder> = this
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder.create(parent)
@@ -25,7 +34,7 @@ class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>() {
         val item = list[position]
 
         holder.apply {
-            //重建后的recyclerview Item是没有transName的 所以在onbind要重新赋值一遍 动画效果才会有~~
+            //重建后的recyclerview Item是没有transName的 所以在onBind要重新赋值一遍 动画效果才会有~~
             itemView.transitionName = item.transitionName
             tvTitle.text = item.title
             tvBody.text = item.body

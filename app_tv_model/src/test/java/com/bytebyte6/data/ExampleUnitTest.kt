@@ -1,7 +1,5 @@
 package com.bytebyte6.data
 
-import com.bytebyte6.data.entity.Tv
-import io.reactivex.rxjava3.core.Single
 import okio.internal.commonToUtf8String
 import org.junit.Test
 import java.io.File
@@ -23,37 +21,9 @@ class ExampleUnitTest {
     private val titleRegex = Regex(titlePattern)
 
     @Test
-    fun test5() {
-        val tv1=Tv(url="A")
-        val tv2=Tv(url="B")
-        val tv3=Tv(url="C")
-
-    }
-
-
-    @Test
-    fun test4() {
-        val tv=Tv()
-        tv.favorite=true
-        println(tv.favorite)
-    }
-
-    @Test
-    fun test3() {
-        Single.create<String> {
-           it.onSuccess("ssss")
-        }
-            .doOnSuccess { println("Success") }
-            .doOnError { println("Error") }
-            .doOnSubscribe { println("Sub") }
-            .subscribe({},{it.printStackTrace()})
-    }
-
-    @Test
     fun test2() {
         val path = "C:\\Users\\zacks\\Videos\\zho.m3u"
         val m3uFile = File(path)
-        m3uFile.m3uToIpTvs()
         println(m3uFile.m3uToIpTvs())
     }
 

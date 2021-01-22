@@ -2,6 +2,7 @@ package com.bytebyte6.view.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.base_ui.BaseShareFragment

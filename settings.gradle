@@ -1,5 +1,4 @@
 include ':app_tv_usecase'
-include ':lib_test'
 include ':app_tv_view'
 include ':app_tv_model'
 rootProject.name = "ByteByte"

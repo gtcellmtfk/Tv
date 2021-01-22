@@ -3,19 +3,23 @@ package com.bytebyte6.view
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.NetworkHelper
 import com.bytebyte6.base_ui.BaseActivity
 import com.bytebyte6.base_ui.NetworkErrorFragment
 import com.bytebyte6.base_ui.SimpleDrawerListener
+import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadFragment
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.setting.SettingFragment
 import org.koin.android.ext.android.inject
+import org.w3c.dom.Text
 
 class MainActivity : BaseActivity() {
 
@@ -24,6 +28,8 @@ class MainActivity : BaseActivity() {
     }
 
     private val networkHelper by inject<NetworkHelper>()
+
+    private val userDao by inject<UserDao>()
 
     private var current: MenuItem? = null
 
@@ -43,10 +49,16 @@ class MainActivity : BaseActivity() {
                         replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
                     }
                     R.id.nav_fav -> {
-                        replaceNotAddToBackStack(FavoriteFragment.newInstance(), FavoriteFragment.TAG)
+                        replaceNotAddToBackStack(
+                            FavoriteFragment.newInstance(),
+                            FavoriteFragment.TAG
+                        )
                     }
                     R.id.nav_download -> {
-                        replaceNotAddToBackStack(DownloadFragment.newInstance(), DownloadFragment.TAG)
+                        replaceNotAddToBackStack(
+                            DownloadFragment.newInstance(),
+                            DownloadFragment.TAG
+                        )
                     }
                 }
                 removeDrawerListener()
@@ -113,6 +125,11 @@ class MainActivity : BaseActivity() {
             setScrimColor(0)
             drawerElevation = 0f
         }
+
+        val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
+        userDao.user().observe(this, Observer {
+            name.text = it.name
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -128,12 +145,15 @@ class MainActivity : BaseActivity() {
         current = binding.navView.checkedItem
     }
 
-    fun lockDrawer(){
-        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,GravityCompat.START)
+    fun lockDrawer() {
+        binding.drawLayout.setDrawerLockMode(
+            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+            GravityCompat.START
+        )
     }
 
-    fun unlockDrawer(){
-        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,GravityCompat.START)
+    fun unlockDrawer() {
+        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, GravityCompat.START)
     }
 
     fun openDrawer() {

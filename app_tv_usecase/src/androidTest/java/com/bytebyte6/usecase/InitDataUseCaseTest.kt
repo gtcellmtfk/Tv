@@ -39,7 +39,7 @@ class InitDataUseCaseTest : KoinTest {
 
     @Test
     fun test() {
-        initDataUseCase.execute("").test().assertValue(emptyList())
+        initDataUseCase.execute(Unit).test().assertValue(emptyList())
         assert(db.tvDao().getCount() != 0)
         assert(db.countryDao().getCount() != 0)
     }

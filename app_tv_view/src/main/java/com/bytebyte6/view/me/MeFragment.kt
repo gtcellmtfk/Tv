@@ -13,14 +13,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.base.mvi.emitIfNotHandled
 import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
-import com.bytebyte6.library.getSelectionTracker
+import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
+/***
+ * 导入
+ */
 class MeFragment : BaseShareFragment(R.layout.fragment_me) {
 
     companion object {
@@ -58,9 +60,8 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
                 }
             }
             playlistAdapter = PlaylistAdapter()
-
             recyclerView.adapter = playlistAdapter
-            selectionTracker = getSelectionTracker(recyclerView,
+            playlistAdapter.setupSelectionTracker(recyclerView,
                 object : SelectionTracker.SelectionObserver<Long>() {
                     override fun onSelectionChanged() {
                         val hasSelection = selectionTracker.hasSelection()
@@ -71,7 +72,7 @@ class MeFragment : BaseShareFragment(R.layout.fragment_me) {
                         }
                     }
                 })
-            playlistAdapter.selectionTracker=selectionTracker
+            selectionTracker = playlistAdapter.selectionTracker!!
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
 

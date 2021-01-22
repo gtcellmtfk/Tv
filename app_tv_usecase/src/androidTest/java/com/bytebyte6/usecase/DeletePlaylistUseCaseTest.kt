@@ -61,6 +61,5 @@ class DeletePlaylistUseCaseTest : KoinTest {
                 true
             }
         assert(db.playlistDao().getPlaylists().isEmpty())
-        assert(db.tvDao().getTvs().isEmpty())
     }
 }

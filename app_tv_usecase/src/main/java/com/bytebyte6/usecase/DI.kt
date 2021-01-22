@@ -56,7 +56,7 @@ val useCaseModule: Module = module {
     single { TvLogoSearch(get(), get()) }
     factory<SearchImage> { SearchImageImpl() }
 
-    /**Video*/
+    /**ExoPlayer*/
     single<HttpDataSource.Factory> { DefaultHttpDataSourceFactory() }
     single {
         DownloadManager(
@@ -76,16 +76,3 @@ val useCaseModule: Module = module {
         )
     }
 }
-
-//private fun getDownloadManager(context: Context): DownloadManager {
-//    val exoDatabaseProvider = ExoDatabaseProvider(context)
-//    val simpleCache = SimpleCache(context.cacheDir, NoOpCacheEvictor(), exoDatabaseProvider)
-//    val defaultDataSourceFactory = DefaultHttpDataSourceFactory()
-//    return DownloadManager(
-//        context,
-//        exoDatabaseProvider,
-//        simpleCache,
-//        defaultDataSourceFactory,
-//        Executors.newFixedThreadPool(5)
-//    )
-//}

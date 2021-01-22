@@ -24,6 +24,9 @@ import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 
+/***
+ * 播放列表
+ */
 class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), DownloadManager.Listener {
 
     companion object {
@@ -136,7 +139,6 @@ class PlaylistFragment : BaseShareFragment(R.layout.fragment_play_list), Downloa
             })
         }
     }
-
 
     private val dialog by lazy {
         ProgressDialog(requireContext()).apply {

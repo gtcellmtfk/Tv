@@ -27,12 +27,12 @@ class DownloadViewModel(
 
     private fun loadDownloadList() {
         addDisposable(
-            downloadListUseCase.execute("").onIo()
+            downloadListUseCase.execute(Unit).onIo()
         )
     }
 
     fun deleteDownload(pos: Int) {
-        val data = downloadListUseCase.getData() ?: return
+        val data = downloadListUseCase.getSuccessData() ?: return
         val tv = data[pos].tv
         tv.download = false
         val resultObserver = object : ResultObserver<UpdateTvParam>() {
@@ -49,7 +49,7 @@ class DownloadViewModel(
 
     fun startInterval() {
         pauseInterval()
-        getDownloadList = downloadListUseCase.interval("").onIo()
+        getDownloadList = downloadListUseCase.interval(Unit).onIo()
         addDisposable(getDownloadList!!)
     }
 

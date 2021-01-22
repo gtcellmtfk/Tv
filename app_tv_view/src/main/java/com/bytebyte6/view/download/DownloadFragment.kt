@@ -26,6 +26,9 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
+/***
+ * 下载中心
+ */
 class DownloadFragment : ListFragment(),DownloadManager.Listener{
 
     companion object {

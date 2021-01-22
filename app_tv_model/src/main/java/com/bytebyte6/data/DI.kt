@@ -2,7 +2,6 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.bytebyte6.base.GsonConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -12,7 +11,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.Executors
 
 /**
  * 实际环境使用
@@ -25,8 +23,7 @@ val roomModule = module {
  * 测试专用
  */
 val roomMemoryModule = module {
-    single<Context> { ApplicationProvider.getApplicationContext<Context>() }
-    single { Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java).build() }
+    single { Room.inMemoryDatabaseBuilder(androidContext(), AppDatabase::class.java).build() }
 }
 
 val dataModule = module {

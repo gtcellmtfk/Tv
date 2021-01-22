@@ -19,9 +19,9 @@ class InitDataUseCase(
     private val userDao: UserDao,
     private val context: Context,
     private val gson: Gson
-) : RxUseCase<String, List<Tv>>() {
+) : RxUseCase<Unit, List<Tv>>() {
 
-    override fun run(param: String): List<Tv> {
+    override fun run(param: Unit): List<Tv> {
 
         if (tvDao.getCount() == 0) {
             val tvs = getTvs(context)
