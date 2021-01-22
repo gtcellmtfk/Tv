@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ic_drag_handle">ic_drag_handle</string>
+    <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one above it. [CHAR LIMIT=25]"
+        name="action_move_up">Move Up</string>
+    <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one below it. [CHAR LIMIT=25]"
+        name="action_move_down">Move Down</string>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="network_disconnected">网络连接断开</string>
+    <string name="network_error">网络异常</string>
+    <string name="data_parse_error">数据异常</string>
+    <string name="network_connect_error">网络或服务器异常</string>
+    <string name="network_un_connected">网络未连接</string>
+    <string name="network_timeout">网络连接超时</string>
+    <string name="unkown_error">未知异常</string>
+</resources>
