@@ -70,15 +70,26 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbarMenuMode()
+        playlistAdapter = PlaylistAdapter()
+        playlistAdapter.onItemClick = { pos, view1 ->
+            replaceWithShareElement(
+                PlaylistFragment.newInstance(
+                    viewModel.getPlaylistId(pos),
+                    playlistAdapter.list[pos].title,
+                    playlistAdapter.list[pos].transitionName
+                ),
+                PlaylistFragment.TAG,
+                view1
+            )
+        }
         binding?.apply {
-            setupToolbarMenuMode()
             toolbar.apply {
                 setOnMenuItemClickListener {
                     launcher.launch("*/m3u")
                     true
                 }
             }
-            playlistAdapter = PlaylistAdapter()
             recyclerView.adapter = playlistAdapter
             playlistAdapter.setupSelectionTracker(recyclerView,
                 object : SelectionTracker.SelectionObserver<Long>() {
@@ -94,19 +105,6 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             selectionTracker = playlistAdapter.selectionTracker!!
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
-
-            playlistAdapter.onItemClick = { pos, view1 ->
-                replaceWithShareElement(
-                    PlaylistFragment.newInstance(
-                        viewModel.getPlaylistId(pos),
-                        playlistAdapter.list[pos].title,
-                        playlistAdapter.list[pos].transitionName
-                    ),
-                    PlaylistFragment.TAG,
-                    view1
-                )
-            }
-
             fab.setOnClickListener {
                 selectionTracker.selection.apply {
                     if (!this.isEmpty) {

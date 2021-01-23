@@ -14,27 +14,14 @@ abstract class BaseListAdapter<T, V : RecyclerView.ViewHolder>(diffUtil: DiffUti
     var doOnBind: ((pos: Int, view: View) -> Unit)? = null
 
     override fun onBindViewHolder(holder: V, position: Int) {
-        holder.itemView.setOnClickListener(null)
-        holder.itemView.setOnLongClickListener(null)
         doOnBind?.invoke(position, holder.itemView)
-        onItemClick?.apply {
-            holder.itemView.setOnClickListener {
-                this.invoke(position, holder.itemView)
-            }
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(position, holder.itemView)
         }
-        onItemLongClick?.apply {
-            holder.itemView.setOnLongClickListener {
-                this.invoke(position, holder.itemView)
-            }
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick?.invoke(position, holder.itemView)
+            false
         }
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        onItemClick = null
-        onItemLongClick = null
-        doOnBind = null
-        onCurrentListChanged = null
     }
 
     override fun onCurrentListChanged(previousList: MutableList<T>, currentList: MutableList<T>) {

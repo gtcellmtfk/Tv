@@ -3,6 +3,7 @@ package com.bytebyte6.base_ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
+import androidx.transition.Transition
 import androidx.viewbinding.ViewBinding
 import com.bytebyte6.base.logd
 import com.google.android.material.transition.Hold
@@ -10,10 +11,9 @@ import com.google.android.material.transition.MaterialContainerTransform
 
 const val KEY_TRANS_NAME = "KEY_TRANS_NAME"
 
-abstract class BaseShareFragment<V:ViewBinding>(layoutId: Int) : BaseFragment<V>(layoutId) {
+abstract class BaseShareFragment<V : ViewBinding>(layoutId: Int) : BaseFragment<V>(layoutId){
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
         exitTransition = Hold()
         sharedElementEnterTransition = MaterialContainerTransform()
     }

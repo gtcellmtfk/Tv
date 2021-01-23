@@ -36,22 +36,25 @@ class LanguageFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
-
-            val cardAdapter = CardAdapter()
-
-            cardAdapter.onItemClick= { pos, view1 ->
-                val item = cardAdapter.currentList[pos]
-                showVideoListFragment(view1, item.transitionName)
+        val cardAdapter = CardAdapter()
+        cardAdapter.onItemClick= { pos, view1 ->
+            val item = cardAdapter.currentList[pos]
+            showVideoListFragment(view1, item.transitionName){
+                val homeFragment = requireActivity()
+                    .supportFragmentManager
+                    .findFragmentByTag(HomeFragment.TAG) as HomeFragment?
+                homeFragment?.destroyViewPage()
             }
+        }
 
+        binding?.apply {
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
-
-            viewModel.lang.observe(viewLifecycleOwner, Observer {
-                cardAdapter.submitList(it)
-            })
         }
+
+        viewModel.lang.observe(viewLifecycleOwner, Observer {
+            cardAdapter.submitList(it)
+        })
     }
 }

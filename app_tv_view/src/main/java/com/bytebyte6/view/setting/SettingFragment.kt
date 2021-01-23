@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
-import com.bytebyte6.base_ui.BaseFragment
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSettingBinding
@@ -35,29 +34,34 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
     }
 
     override fun initViewBinding(view: View): FragmentSettingBinding {
-        return FragmentSettingBinding.bind(view).apply {
-            setupToolbarMenuMode(getString(R.string.nav_setting),"")
+        return FragmentSettingBinding.bind(view)
+    }
 
-            viewModel.user.observe(viewLifecycleOwner, Observer {
-                swCapturePic.isChecked = it.capturePic
-                swNightMode.isChecked = it.nightMode
-                swNightMode.setOnCheckedChangeListener { _, isChecked ->
-                    AppCompatDelegate.setDefaultNightMode(
-                        if (isChecked)
-                            AppCompatDelegate.MODE_NIGHT_YES
-                        else
-                            AppCompatDelegate.MODE_NIGHT_NO
-                    )
-                    viewModel.updateNight(isChecked)
-                }
-                swCapturePic.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.updateCapturePic(isChecked)
-                }
-            })
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbarMenuMode(getString(R.string.nav_setting), "")
 
+        binding?.apply {
             tvByteByte6.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bytebyte6")))
             }
         }
+
+        viewModel.user.observe(viewLifecycleOwner, Observer {
+            binding?.swCapturePic?.isChecked = it.capturePic
+            binding?.swNightMode?.isChecked = it.nightMode
+            binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
+                AppCompatDelegate.setDefaultNightMode(
+                    if (isChecked)
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    else
+                        AppCompatDelegate.MODE_NIGHT_NO
+                )
+                viewModel.updateNight(isChecked)
+            }
+            binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateCapturePic(isChecked)
+            }
+        })
     }
 }

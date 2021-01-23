@@ -37,20 +37,26 @@ class CategoryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
-            val cardAdapter = CardAdapter()
-            cardAdapter.onItemClick= { pos , view: View->
-                val item = cardAdapter.currentList[pos]
-                showVideoListFragment(view, item.transitionName)
-            }
 
+        val cardAdapter = CardAdapter()
+        cardAdapter.onItemClick= { pos , itemView: View->
+            val item = cardAdapter.currentList[pos]
+            showVideoListFragment(itemView, item.transitionName){
+                val homeFragment = requireActivity()
+                    .supportFragmentManager
+                    .findFragmentByTag(HomeFragment.TAG) as HomeFragment?
+                homeFragment?.destroyViewPage()
+            }
+        }
+
+        binding?.apply {
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
-
-            viewModel.category.observe(viewLifecycleOwner, Observer {
-                cardAdapter.submitList(it)
-            })
         }
+
+        viewModel.category.observe(viewLifecycleOwner, Observer {
+            cardAdapter.submitList(it)
+        })
     }
 }

@@ -36,10 +36,22 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
+        val adapter = ImageAdapter(ButtonType.FAVORITE,object : ButtonClickListener{
+            override fun onClick(position: Int, view: View) {
+                viewModel.fav(position)
+            }
+        })
+        adapter.onItemClick= { pos , _: View->
+            showVideoActivity(adapter.currentList[pos].videoUrl)
+        }
+        adapter.doOnBind=  { pos, _: View ->
+            viewModel.searchLogo(pos)
+        }
+        adapter.onCurrentListChanged= { _, currentList ->
+            binding?.lavEmpty?.isVisible = currentList.isEmpty()
+        }
         binding?.apply {
-
-            setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
-
             etSearch.doOnTextChanged { text, _, _, _ ->
                 viewModel.search(text)
                 btnClear.isVisible = !text.isNullOrEmpty()
@@ -47,44 +59,27 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
             btnClear.setOnClickListener {
                 etSearch.setText("")
             }
-
-            val adapter = ImageAdapter(ButtonType.FAVORITE) {
-                viewModel.fav(it)
-            }
-            adapter.onItemClick= { pos , view: View->
-                showVideoActivity(adapter.currentList[pos].videoUrl)
-            }
-            adapter.doOnBind=  { pos, view: View ->
-                viewModel.searchLogo(pos)
-            }
-            adapter.onCurrentListChanged= { _, currentList ->
-                lavEmpty.isVisible = currentList.isEmpty()
-            }
-
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator=null
 
-            viewModel.favorite.observe(viewLifecycleOwner, Observer { result ->
-                result.emitIfNotHandled(success = {
-                    adapter.notifyItemChanged(it.data.pos)
-                })
-            })
-
-            viewModel.logoSearch.observe(viewLifecycleOwner, Observer {
-                it.emitIfNotHandled(success = {
-                    viewModel.search(etSearch.text)
-                })
-            })
-
-            viewModel.tvs.observe(viewLifecycleOwner, Observer {
-                it.isSuccess()?.apply {
-                    adapter.submitList(this)
-                }
-            })
-
             KeyboardUtils.showSoftInput(etSearch, requireContext())
         }
+        viewModel.favorite.observe(viewLifecycleOwner, Observer { result ->
+            result.emitIfNotHandled(success = {
+                adapter.notifyItemChanged(it.data.pos)
+            })
+        })
+        viewModel.logoSearch.observe(viewLifecycleOwner, Observer {
+            it.emitIfNotHandled(success = {
+                viewModel.search(binding?.etSearch?.text)
+            })
+        })
+        viewModel.tvs.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                adapter.submitList(this)
+            }
+        })
     }
 }

@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import androidx.transition.Transition
+import com.bytebyte6.base_ui.DefaultTransitionListener
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.player.PlayerActivity
 import com.bytebyte6.view.videolist.VideoListFragment
@@ -20,16 +22,15 @@ const val KEY_CACHE = "KEY_CACHE"
 
 fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     val mainActivity = requireActivity() as MainActivity
-    mainActivity.apply {
-        onBackPressedDispatcher.addCallback(
-            this@setupOnBackPressedDispatcherBackToHome, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
-                    mainActivity.selectedNavHomeMenuItem()
-                }
+    mainActivity.onBackPressedDispatcher.addCallback(
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                remove()
+                mainActivity.replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
+                mainActivity.selectedNavHomeMenuItem()
             }
-        )
-    }
+        }
+    )
 }
 
 fun Fragment.showVideoActivity(url: String, cache: DownloadRequest? = null) {
@@ -39,15 +40,31 @@ fun Fragment.showVideoActivity(url: String, cache: DownloadRequest? = null) {
     })
 }
 
-fun Fragment.showVideoListFragment(view: View, title: String) {
+fun Fragment.showVideoListFragment(
+    view: View,
+    title: String,
+    doOnTransitionEnd: (() -> Unit)? = null
+) {
     replaceWithShareElement(
         VideoListFragment.newInstance(view.transitionName, title),
         VideoListFragment.TAG,
-        view
+        view, doOnTransitionEnd
     )
 }
 
-fun Fragment.replaceWithShareElement(fragment: Fragment, tag: String?, share: View) {
+fun Fragment.replaceWithShareElement(
+    fragment: Fragment,
+    tag: String?,
+    share: View,
+    doOnTransitionEnd: (() -> Unit)? = null
+) {
+    val transition = fragment.sharedElementEnterTransition as Transition
+    transition.addListener(object : DefaultTransitionListener() {
+        override fun onTransitionEnd(transition: Transition) {
+            transition.removeListener(this)
+            doOnTransitionEnd?.invoke()
+        }
+    })
     requireActivity().supportFragmentManager.beginTransaction()
         .setReorderingAllowed(true)
         .addSharedElement(share, share.transitionName)
@@ -74,52 +91,47 @@ fun FragmentActivity.replace(fragment: Fragment, tag: String?) {
 }
 
 fun Fragment.popBackStack() {
-    this.activity?.apply {
-        supportFragmentManager.popBackStack()
-    }
+    this.activity?.supportFragmentManager?.popBackStack()
 }
 
 fun Fragment.popBackStack(tag: String?) {
-    this.activity?.apply {
-        supportFragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE)
-    }
+    this.activity?.supportFragmentManager?.popBackStack(tag, POP_BACK_STACK_INCLUSIVE)
 }
 
-fun Fragment.setupToolbarArrowBack(doSomeWorkBeforePop: (() -> Unit)? = null) {
+fun Fragment.setupToolbarArrowBack(
+    title: String? = null,
+    subTitle: String? = null,
+    doSomeWorkBeforePop: (() -> Unit)? = null
+) {
     val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
-    toolbar.apply {
-        setNavigationOnClickListener {
-            doSomeWorkBeforePop?.invoke()
-            popBackStack()
-        }
-        setNavigationIcon(R.drawable.ic_arrow_back)
+    if (title != null) {
+        toolbar.title = title
     }
+    if (subTitle != null) {
+        toolbar.subtitle = subTitle
+    }
+    toolbar.setNavigationOnClickListener {
+        doSomeWorkBeforePop?.invoke()
+        popBackStack()
+    }
+    toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
     val mainActivity = requireActivity() as MainActivity
-    mainActivity.apply {
-        lockDrawer()
-        onBackPressedDispatcher.addCallback(
-            this@setupToolbarArrowBack, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    popBackStack()
-                }
-            }
-        )
-    }
+    mainActivity.lockDrawer()
 }
 
 fun Fragment.setupToolbarMenuMode(title: String? = null, subTitle: String? = null) {
     val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
     val mainActivity = requireActivity() as MainActivity
-    toolbar.apply {
-        setNavigationOnClickListener {
+    toolbar.let {
+        it.setNavigationOnClickListener {
             mainActivity.openDrawer()
         }
-        setNavigationIcon(R.drawable.ic_menu)
-        title?.apply {
-            toolbar.title = title
+        it.setNavigationIcon(R.drawable.ic_menu)
+        title?.run {
+            it.title = this
         }
-        subTitle?.apply {
-            toolbar.subtitle = subTitle
+        subTitle?.run {
+            it.subtitle = this
         }
     }
     mainActivity.unlockDrawer()

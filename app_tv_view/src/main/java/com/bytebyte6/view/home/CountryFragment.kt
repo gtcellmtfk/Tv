@@ -12,7 +12,8 @@ import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.showVideoListFragment
 import org.koin.android.viewmodel.ext.android.getViewModel
 
-class CountryFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
+class CountryFragment :
+    BaseShareFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
 
     companion object {
         const val TAG = "CountryFragment"
@@ -35,23 +36,32 @@ class CountryFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout.
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
-            val imageAdapter = ImageAdapter()
-            recyclerView.adapter = imageAdapter
-            recyclerView.layoutManager=GridLayoutManager(view.context,2)
-            recyclerView.addItemDecoration(GridSpaceDecoration())
-            recyclerView.setHasFixedSize(true)
-            recyclerView.itemAnimator=null
-            imageAdapter.doOnBind=  { pos: Int, view: View ->
-                viewModel.searchLogo(pos)
-            }
-
-            viewModel.cs.observe(viewLifecycleOwner, Observer {
-                imageAdapter.submitList(it)
-            })
-            imageAdapter.onItemClick= { pos, view: View ->
-                showVideoListFragment(view, imageAdapter.currentList[pos].transitionName)
+        val imageAdapter = ImageAdapter()
+        imageAdapter.doOnBind = { pos: Int, _: View ->
+            viewModel.searchLogo(pos)
+        }
+        imageAdapter.onItemClick = { pos, itemView: View ->
+            showVideoListFragment(
+                itemView,
+                imageAdapter.currentList[pos].transitionName
+            ) {
+                val homeFragment = requireActivity()
+                    .supportFragmentManager
+                    .findFragmentByTag(HomeFragment.TAG) as HomeFragment?
+                homeFragment?.destroyViewPage()
             }
         }
+
+        binding?.apply {
+            recyclerView.adapter = imageAdapter
+            recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
+        }
+
+        viewModel.cs.observe(viewLifecycleOwner, Observer {
+            imageAdapter.submitList(it)
+        })
     }
 }

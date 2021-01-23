@@ -5,9 +5,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.viewbinding.ViewBinding
+import androidx.transition.Transition
 import com.bytebyte6.base.mvi.emit
 import com.bytebyte6.base.mvi.runIfNotHandled
+import com.bytebyte6.base_ui.DefaultTransitionListener
 import com.bytebyte6.base_ui.KEY_TRANS_NAME
 import com.bytebyte6.base_ui.Message
 import com.bytebyte6.base_ui.showSnack
@@ -33,6 +34,23 @@ class VideoListFragment : ListFragment() {
 
     private val viewModel: VideoListViewModel by viewModel()
 
+    private var adapter: ImageAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val transition = sharedElementReturnTransition as Transition
+        val listener = object : DefaultTransitionListener() {
+            override fun onTransitionEnd(transition: Transition) {
+                if (view == null) {
+                    transition.removeListener(this)
+                    recyclerView.adapter = null
+                    adapter = null
+                }
+            }
+        }
+        transition.addListener(listener)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,20 +58,21 @@ class VideoListFragment : ListFragment() {
         showSwipeRefresh()
 
         val title = requireArguments().getString(KEY_TITLE)!!
-        toolbar.title = title
-        setupToolbarArrowBack()
+        setupToolbarArrowBack(title)
         viewModel.setKey(title)
 
-        val adapter = ImageAdapter(ButtonType.FAVORITE) {
-            viewModel.fav(it)
+        adapter = ImageAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+            override fun onClick(position: Int, view: View) {
+                viewModel.fav(position)
+            }
+        })
+        adapter!!.onItemClick = { pos, _: View ->
+            showVideoActivity(adapter!!.currentList[pos].videoUrl)
         }
-        adapter.onItemClick = { pos, _: View->
-            showVideoActivity(adapter.currentList[pos].videoUrl)
-        }
-        adapter.doOnBind = { pos, _: View->
+        adapter!!.doOnBind = { pos, _: View ->
             viewModel.searchLogo(pos)
         }
-        adapter.onCurrentListChanged = { _, currentList ->
+        adapter!!.onCurrentListChanged = { _, currentList ->
             emptyBox.isVisible = currentList.isEmpty()
         }
         recyclerView.adapter = adapter
@@ -69,7 +88,7 @@ class VideoListFragment : ListFragment() {
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
             result.emit(
                 {
-                    adapter.submitList(TvFts.toTvs(it.data))
+                    adapter!!.submitList(TvFts.toTvs(it.data))
                     end = it.end
                     it.runIfNotHandled {
                         hideSwipeRefresh()
@@ -100,5 +119,4 @@ class VideoListFragment : ListFragment() {
     override fun onRefresh() {
         //not to do
     }
-
 }

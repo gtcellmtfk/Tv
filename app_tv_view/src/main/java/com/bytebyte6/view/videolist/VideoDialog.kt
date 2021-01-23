@@ -44,7 +44,7 @@ class VideoDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val title = requireArguments().getString(KEY_TITLE)!!
         val adapter = ImageAdapter()
-        adapter.onItemClick= { pos , view: View->
+        adapter.onItemClick= { pos , _: View->
             dismiss()
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }

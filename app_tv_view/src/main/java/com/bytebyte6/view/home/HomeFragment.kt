@@ -8,6 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
+import androidx.transition.Transition
+import androidx.viewpager2.widget.ViewPager2
+import com.bytebyte6.base.logd
 import com.bytebyte6.base_ui.BaseShareFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
@@ -26,24 +29,22 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
 
     private val viewModel: HomeViewModel by viewModel()
 
+    private var viewPager2: ViewPager2? = null
+
+    private var mediator: TabLayoutMediator? = null
+
+    fun destroyViewPage() {
+        logd("viewPage2 $viewPager2")
+        mediator?.detach()
+        mediator = null
+        viewPager2?.adapter = null
+        viewPager2 = null
+        logd("viewPage2 $viewPager2")
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    AlertDialog.Builder(context)
-                        .setTitle(getString(R.string.tip))
-                        .setMessage(getString(R.string.enter_exit))
-                        .setPositiveButton(R.string.enter) { dialog, which ->
-                            dialog.dismiss()
-                            requireActivity().finish()
-                        }
-                        .setNegativeButton(R.string.cancel) { dialog, which -> dialog.dismiss() }
-                        .create()
-                        .show()
-                }
-            }
-        )
+        setupOnBackPressedDispatcherBackToHome()
     }
 
     override fun initViewBinding(view: View): FragmentHomeBinding {
@@ -52,12 +53,9 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbarMenuMode()
         binding?.apply {
-
             toolbar.transitionName = getString(R.string.search_share)
-
-            setupToolbarMenuMode()
-
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
                     ShareCompat.IntentBuilder
@@ -74,37 +72,34 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
                 }
                 true
             }
-
+            viewPager2 = viewPager
             viewPager.isUserInputEnabled = false
-
             viewPager.adapter = TabAdapter(this@HomeFragment)
-            val mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
                     TAB_COUNTRY -> tab.setText(R.string.home_country)
                     TAB_LANGUAGE -> tab.setText(R.string.home_language)
                     TAB_CATEGORY -> tab.setText(R.string.home_category)
                 }
             }
-            mediator.attach()
+            mediator?.attach()
+        }
+        viewModel.apply {
+            category.observe(viewLifecycleOwner, Observer {
+                binding?.tabLayout?.getTabAt(TAB_CATEGORY)?.orCreateBadge?.number = it.size
+            })
 
-            viewModel.apply {
-                category.observe(viewLifecycleOwner, Observer {
-                    tabLayout.getTabAt(TAB_CATEGORY)?.orCreateBadge?.number = it.size
-                })
+            cs.observe(viewLifecycleOwner, Observer {
+                binding?.tabLayout?.getTabAt(TAB_COUNTRY)?.orCreateBadge?.number = it.size
+            })
 
-                cs.observe(viewLifecycleOwner, Observer {
-                    tabLayout.getTabAt(TAB_COUNTRY)?.orCreateBadge?.number = it.size
-                })
-
-                lang.observe(viewLifecycleOwner, Observer {
-                    tabLayout.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
-                })
-            }
-
-            //解决状态栏失效不见的问题
-            view.doOnPreDraw {
-                it.requestLayout()
-            }
+            lang.observe(viewLifecycleOwner, Observer {
+                binding?.tabLayout?.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
+            })
+        }
+        //解决状态栏失效不见的问题
+        view.doOnPreDraw {
+            it.requestLayout()
         }
     }
 }

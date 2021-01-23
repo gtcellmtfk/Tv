@@ -6,11 +6,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.mvi.ResultObserver
-import com.bytebyte6.base_ui.*
+import com.bytebyte6.base_ui.BaseShareFragment
+import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import com.bytebyte6.base_ui.Message
+import com.bytebyte6.base_ui.showSnack
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
-import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentPlayListBinding
 import com.bytebyte6.view.download.DownloadServicePro
 import com.google.android.exoplayer2.DefaultRenderersFactory
@@ -18,16 +20,15 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.material.appbar.MaterialToolbar
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 
 /***
  * 播放列表
  */
-class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fragment_play_list), DownloadManager.Listener {
+class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fragment_play_list),
+    DownloadManager.Listener {
 
     companion object {
         fun newInstance(
@@ -57,30 +58,47 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
 
     private val viewModel: PlaylistViewModel by viewModel()
 
-    override fun initViewBinding(view: View): FragmentPlayListBinding {
-        return FragmentPlayListBinding.bind(view).apply {
+    override fun initViewBinding(view: View): FragmentPlayListBinding =
+        FragmentPlayListBinding.bind(view)
 
-            setupToolbarArrowBack()
-
-            toolbar.title = requireArguments().getString(KEY_TITLE)
-
-            val adapter = ImageAdapter(ButtonType.DOWNLOAD) { pos ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbarArrowBack()
+        val adapter = ImageAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
+            override fun onClick(position: Int, view: View) {
                 if (!dialog.isShowing) {
-                    onDownloadClick(pos, view)
+                    onDownloadClick(position, view)
                 }
             }
-            adapter.onItemClick= { pos , view: View->
-                showVideoActivity(adapter.currentList[pos].videoUrl)
-            }
-            adapter.doOnBind=  { pos , view: View->
-                viewModel.searchLogo(pos)
-            }
+        })
+        adapter.onItemClick = { pos, _: View ->
+            showVideoActivity(adapter.currentList[pos].videoUrl)
+        }
+        adapter.doOnBind = { pos, _: View ->
+            viewModel.searchLogo(pos)
+        }
+        binding?.apply {
+            toolbar.title = requireArguments().getString(KEY_TITLE)
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
+        }
+        viewModel.apply {
+            tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
+                .observe(viewLifecycleOwner, Observer {
+                    adapter.submitList(it)
+                    binding?.toolbar?.subtitle = getString(R.string.total, adapter.itemCount)
+                })
+            updateTv.observe(viewLifecycleOwner, object : ResultObserver<UpdateTvParam>() {
+                override fun successOnce(data: UpdateTvParam, end: Boolean) {
+                    adapter.notifyItemChanged(data.pos)
+                }
 
-            load(adapter, toolbar)
+                override fun error(error: Throwable) {
+                    showSnack(requireView(), Message(message = error.message.toString()))
+                }
+            })
         }
     }
 
@@ -116,25 +134,6 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
                         )
                     }
                     hideProgress()
-                }
-            })
-        }
-    }
-
-    private fun load(adapter: ImageAdapter, toolbar: MaterialToolbar) {
-        viewModel.apply {
-            tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
-                .observe(viewLifecycleOwner, Observer {
-                    adapter.submitList(it)
-                    toolbar.subtitle = getString(R.string.total, adapter.itemCount)
-                })
-            updateTv.observe(viewLifecycleOwner, object : ResultObserver<UpdateTvParam>() {
-                override fun successOnce(data: UpdateTvParam, end: Boolean) {
-                    adapter.notifyItemChanged(data.pos)
-                }
-
-                override fun error(error: Throwable) {
-                    showSnack(requireView(), Message(message = error.message.toString()))
                 }
             })
         }
