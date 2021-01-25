@@ -3,4 +3,5 @@
     <string name="attach">Attach</string>
     <string name="ic_drag_handle">ic_drag_handle</string>
     <string name="delete_forever">delete_forever</string>
+    <string name="network_disconnected">网络连接中断</string>
 </resources>

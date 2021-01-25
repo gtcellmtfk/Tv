@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.mvi.emitIfNotHandled
-import com.bytebyte6.base_ui.BaseActivity
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showToast
+import com.bytebyte6.base.emitIfNotHandled
+import com.bytebyte6.base.BaseActivity
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.showToast
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LauncherActivity : BaseActivity() {

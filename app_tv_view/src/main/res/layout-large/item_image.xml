@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/ivPreview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/landscape" />
+
+    <TextView
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:id="@+id/tvName"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="#99000000"
+        android:paddingStart="16dp"
+        android:paddingEnd="48dp"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/white"
+        tools:text="@string/attach" />
+
+    <ImageButton
+        android:visibility="visible"
+        android:tint="@android:color/white"
+        android:id="@+id/button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end|bottom"
+        android:background="@null"
+        android:src="@drawable/ic_favorite_border" />
+
+</FrameLayout>

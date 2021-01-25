@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.library.BaseListAdapter
 import com.bytebyte6.view.databinding.ItemImageBinding
@@ -18,13 +16,21 @@ enum class ButtonType {
 }
 
 interface ButtonClickListener{
-    fun onClick(position: Int,view:View)
+    fun onClick(position: Int)
 }
 
 class ImageAdapter(
     private val type: ButtonType = ButtonType.NONE,
-    private val btnClickListener: ButtonClickListener? = null
+    var btnClickListener: ButtonClickListener? = null
 ) : BaseListAdapter<Image, ImageViewHolder>(ImageDIFF) {
+
+    fun reset(){
+        btnClickListener = null
+        onItemClick = null
+        doOnBind = null
+        onItemLongClick = null
+        onCurrentListChanged = null
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
@@ -46,7 +52,7 @@ class ImageAdapter(
             ivPreview.load(item.logo)
         }
         button.setOnClickListener{
-            btnClickListener?.onClick(position,it)
+            btnClickListener?.onClick(position)
         }
         when (type) {
             ButtonType.FAVORITE -> {

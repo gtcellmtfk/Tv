@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <!--要注意设置约束布局属性 设置不对会导致片段显示不全-->
-    <com.bytebyte6.base_ui.DrawerContent
+    <com.bytebyte6.base.DrawerContent
         android:id="@+id/drawContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,19 +19,15 @@
 
         </FrameLayout>
 
-    </com.bytebyte6.base_ui.DrawerContent>
+    </com.bytebyte6.base.DrawerContent>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
-        style="?attr/navigationViewStyle"
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/transparent"
+        style="@style/NavigationView.Rtmp"
         app:headerLayout="@layout/nav_header"
-        app:insetForeground="@android:color/transparent"
-        app:itemIconTint="?attr/colorOnPrimary"
-        app:itemTextColor="?attr/colorOnPrimary"
         app:menu="@menu/menu_navigetion">
 
     </com.google.android.material.navigation.NavigationView>

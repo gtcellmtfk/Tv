@@ -5,13 +5,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.KeyboardUtils
-import com.bytebyte6.base.mvi.emitIfNotHandled
-import com.bytebyte6.base.mvi.isSuccess
-import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.KEY_TRANS_NAME
+import com.bytebyte6.base.*
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.view.*
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -38,7 +35,7 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
         super.onViewCreated(view, savedInstanceState)
         setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
         val adapter = ImageAdapter(ButtonType.FAVORITE,object : ButtonClickListener{
-            override fun onClick(position: Int, view: View) {
+            override fun onClick(position: Int) {
                 viewModel.fav(position)
             }
         })

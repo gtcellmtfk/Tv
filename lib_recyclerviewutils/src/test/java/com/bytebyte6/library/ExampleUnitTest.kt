@@ -12,10 +12,5 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
-        val adapterHelper2 = AdapterHelper2Impl<String, DetailsViewHolder>()
-        adapterHelper2.onBind = { pos, view ->
-
-        }
-        assert(adapterHelper2.onBind==null)
     }
 }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="200dp">
 
-    <com.bytebyte6.base_ui.CircleImageView
-
+    <com.bytebyte6.base.CircleImageView
+        android:layout_marginTop="64dp"
         android:id="@+id/ivAvatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -13,14 +15,14 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/tvName"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="124dp"
         android:text="@string/nav_name"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
-</FrameLayout>
+</LinearLayout>

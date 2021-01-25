@@ -6,8 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.viewbinding.ViewBinding
-import com.bytebyte6.base_ui.BaseViewModel
+import com.bytebyte6.base.BaseViewModel
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
@@ -41,13 +40,15 @@ class FavoriteFragment : ListFragment() {
             showVideoActivity(adapter.currentList[pos].videoUrl)
         }
         adapter.onCurrentListChanged= { _, currentList ->
-            emptyBox.isVisible = currentList.isEmpty()
+            binding?.emptyBox?.isVisible = currentList.isEmpty()
         }
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-        recyclerView.addItemDecoration(GridSpaceDecoration())
-        recyclerView.setHasFixedSize(true)
-        recyclerView.itemAnimator = null
+        binding?.run {
+            recyclerview.adapter = adapter
+            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
+            recyclerview.addItemDecoration(GridSpaceDecoration())
+            recyclerview.setHasFixedSize(true)
+            recyclerview.itemAnimator = null
+        }
 
         viewModel.fav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)

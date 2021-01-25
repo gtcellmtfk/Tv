@@ -28,7 +28,7 @@ data class Playlist(
         get() = Random.Default.nextBoolean()
 
     override val color: Int
-        get() = randomColorByNightMode()
+        get() = com.bytebyte6.base.randomColorByNightMode()
 
     override val radius: Int
         get() = 10

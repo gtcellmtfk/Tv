@@ -2,91 +2,86 @@ package com.bytebyte6.library
 
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewbinding.ViewBinding
-import com.airbnb.lottie.LottieAnimationView
-import com.bytebyte6.base_ui.BaseShareFragment
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.library.databinding.FragmentListBinding
 
-abstract class ListFragment : BaseShareFragment<ViewBinding>(R.layout.fragment_list) {
-
-    lateinit var recyclerView: RecyclerView
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    lateinit var toolbar: MaterialToolbar
-    lateinit var statusBar: View
-    lateinit var linearProgressIndicator: LinearProgressIndicator
-    lateinit var emptyBox: LottieAnimationView
-    lateinit var appBarLayout: AppBarLayout
-    lateinit var content: FrameLayout
-    lateinit var fab: FloatingActionButton
+abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fragment_list) {
 
     //是否已经加载全部数据
     protected var end = false
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        linearProgressIndicator = view.findViewById(R.id.linearProgressIndicator)
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
-        recyclerView = view.findViewById(R.id.recyclerview)
-        appBarLayout = view.findViewById(R.id.appbar)
-        toolbar = view.findViewById(R.id.toolbar)
-        statusBar = view.findViewById(R.id.statusBar)
-        emptyBox = view.findViewById(R.id.emptyBox)
-        content = view.findViewById(R.id.content)
-        fab = view.findViewById(R.id.fab)
-
-        recyclerView.addOnScrollListener(object : BottomingListener() {
-            override fun onBottom() {
-                if (end) {
-                    return
-                }
-                if (swipeRefreshLayout.isRefreshing) {
-                    return
-                }
-                if (linearProgressIndicator.isVisible) {
-                    return
-                }
-                onLoadMore()
+    private val listener = object : BottomingListener() {
+        override fun onBottom() {
+            if (binding == null) {
+                return
             }
-        })
-
-        swipeRefreshLayout.setOnRefreshListener {
-            end = false
-            onRefresh()
+            if (end) {
+                return
+            }
+            if (binding!!.swipeRefreshLayout.isRefreshing) {
+                return
+            }
+            if (binding!!.linearProgressIndicator.isVisible) {
+                return
+            }
+            onLoadMore()
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.run {
+            recyclerview.addOnScrollListener(listener)
+
+            swipeRefreshLayout.setOnRefreshListener {
+                end = false
+                onRefresh()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        binding?.recyclerview?.removeOnScrollListener(listener)
+        binding?.swipeRefreshLayout?.setOnRefreshListener(null)
+        super.onDestroyView()
+    }
+
     fun disEnabledSwipeRefreshLayout() {
-        swipeRefreshLayout.isEnabled = false
+        binding?.run {
+            swipeRefreshLayout.isEnabled = false
+        }
     }
 
     fun showSwipeRefresh() {
-        swipeRefreshLayout.isRefreshing = true
+        binding?.run {
+            swipeRefreshLayout.isRefreshing = true
+        }
     }
 
     fun hideSwipeRefresh() {
-        swipeRefreshLayout.isRefreshing = false
+        binding?.run {
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     fun showProgress() {
-        if (!swipeRefreshLayout.isRefreshing) {
-            linearProgressIndicator.show()
+        binding?.run {
+            if (!swipeRefreshLayout.isRefreshing) {
+                linearProgressIndicator.show()
+            }
         }
     }
 
     fun hideProgress() {
-        linearProgressIndicator.hide()
+        binding?.run {
+            linearProgressIndicator.hide()
+        }
     }
 
-    override fun initViewBinding(view: View): ViewBinding? {
-        return null
+    override fun initViewBinding(view: View): FragmentListBinding? {
+        return FragmentListBinding.bind(view)
     }
 
     abstract fun onLoadMore()

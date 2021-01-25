@@ -8,12 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewbinding.ViewBinding
-import com.bytebyte6.base.logd
-import com.bytebyte6.base.mvi.emit
-import com.bytebyte6.base.mvi.runIfNotHandled
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.*
 import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.R
@@ -53,40 +48,42 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
 
         downloadManager.addListener(this)
 
-        toolbar.inflateMenu(R.menu.menu_download)
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.pause -> {
-                    DownloadServicePro.pauseDownloads(requireContext())
-                    showSnack(requireView(), Message(id = R.string.pause))
-                    viewModel.pauseInterval()
-                }
-                R.id.resume -> {
-                    DownloadServicePro.resumeDownloads(requireContext())
-                    showSnack(requireView(), Message(id = R.string.resume))
-                    viewModel.startInterval()
-                }
-            }
-            true
-        }
-        setupToolbarMenuMode(getString(R.string.nav_download), "")
-
         adapter = DownloadAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = adapter
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(LinearSpaceDecoration())
-        recyclerView.itemAnimator = null
-
-        adapter.onItemLongClick = { pos , _: View->
+        adapter.onItemLongClick = { pos, _: View ->
             showDialog(pos)
             true
         }
-        adapter.onItemClick = { pos , _: View->
+        adapter.onItemClick = { pos, _: View ->
             showVideoActivity("", adapter.currentList[pos].download.request)
         }
         adapter.onCurrentListChanged = { _, currentList ->
-            emptyBox.isVisible = currentList.isEmpty()
+            binding?.emptyBox?.isVisible = currentList.isEmpty()
+        }
+
+        setupToolbarMenuMode(getString(R.string.nav_download), "")
+
+        binding?.run {
+            appbar.toolbar.inflateMenu(R.menu.menu_download)
+            appbar.toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.pause -> {
+                        DownloadServicePro.pauseDownloads(requireContext())
+                        showSnack(requireView(), Message(id = R.string.pause))
+                        viewModel.pauseInterval()
+                    }
+                    R.id.resume -> {
+                        DownloadServicePro.resumeDownloads(requireContext())
+                        showSnack(requireView(), Message(id = R.string.resume))
+                        viewModel.startInterval()
+                    }
+                }
+                true
+            }
+            recyclerview.layoutManager = LinearLayoutManager(view.context)
+            recyclerview.adapter = adapter
+            recyclerview.setHasFixedSize(true)
+            recyclerview.addItemDecoration(LinearSpaceDecoration())
+            recyclerview.itemAnimator = null
         }
 
         viewModel.downloadList.observe(viewLifecycleOwner, Observer { result ->

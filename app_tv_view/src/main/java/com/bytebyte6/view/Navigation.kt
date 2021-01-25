@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.transition.Transition
-import com.bytebyte6.base_ui.DefaultTransitionListener
+import com.bytebyte6.base.DefaultTransitionListener
 import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.player.PlayerActivity
 import com.bytebyte6.view.videolist.VideoListFragment
@@ -25,9 +25,9 @@ fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     mainActivity.onBackPressedDispatcher.addCallback(
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                remove()
                 mainActivity.replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
                 mainActivity.selectedNavHomeMenuItem()
+                remove()
             }
         }
     )
@@ -40,16 +40,20 @@ fun Fragment.showVideoActivity(url: String, cache: DownloadRequest? = null) {
     })
 }
 
-fun Fragment.showVideoListFragment(
+fun Fragment.homeToVideoList(
     view: View,
-    title: String,
-    doOnTransitionEnd: (() -> Unit)? = null
+    title: String
 ) {
     replaceWithShareElement(
         VideoListFragment.newInstance(view.transitionName, title),
         VideoListFragment.TAG,
-        view, doOnTransitionEnd
-    )
+        view
+    ) {
+        val homeFragment = requireActivity()
+            .supportFragmentManager
+            .findFragmentByTag(HomeFragment.TAG) as HomeFragment?
+        homeFragment?.destroyViewPage()
+    }
 }
 
 fun Fragment.replaceWithShareElement(
@@ -58,13 +62,16 @@ fun Fragment.replaceWithShareElement(
     share: View,
     doOnTransitionEnd: (() -> Unit)? = null
 ) {
-    val transition = fragment.sharedElementEnterTransition as Transition
-    transition.addListener(object : DefaultTransitionListener() {
-        override fun onTransitionEnd(transition: Transition) {
-            transition.removeListener(this)
-            doOnTransitionEnd?.invoke()
-        }
-    })
+    if (doOnTransitionEnd!=null){
+        val transition = fragment.sharedElementEnterTransition as Transition
+        transition.addListener(object : DefaultTransitionListener() {
+            override fun onTransitionEnd(transition: Transition) {
+                transition.removeListener(this)
+                doOnTransitionEnd.invoke()
+            }
+        })
+    }
+
     requireActivity().supportFragmentManager.beginTransaction()
         .setReorderingAllowed(true)
         .addSharedElement(share, share.transitionName)

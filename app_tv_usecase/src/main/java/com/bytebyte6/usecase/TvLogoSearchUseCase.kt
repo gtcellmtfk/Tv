@@ -8,7 +8,7 @@ import com.bytebyte6.image.SearchImage
 class TvLogoSearchUseCase(
     private val imageSearch: SearchImage,
     private val tvDao: TvDao
-) : RxUseCase<SearchParam, SearchParam>() {
+) : com.bytebyte6.base.RxUseCase<SearchParam, SearchParam>() {
     override fun run(param: SearchParam): SearchParam {
         val tv = tvDao.getTv(param.id)
         if (tv.logo.isEmpty()) {

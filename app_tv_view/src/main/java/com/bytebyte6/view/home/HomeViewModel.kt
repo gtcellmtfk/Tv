@@ -1,8 +1,8 @@
 package com.bytebyte6.view.home
 
 import androidx.lifecycle.MutableLiveData
-import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base_ui.BaseViewModel
+import com.bytebyte6.base.Result
+import com.bytebyte6.base.BaseViewModel
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.base.onIo

@@ -1,7 +1,7 @@
 package com.bytebyte6.view.player
 
 import android.os.Bundle
-import com.bytebyte6.base_ui.BaseActivity
+import com.bytebyte6.base.BaseActivity
 import com.bytebyte6.view.R
 import com.bytebyte6.view.replaceNotAddToBackStack
 

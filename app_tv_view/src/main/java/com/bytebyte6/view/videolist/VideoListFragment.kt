@@ -5,13 +5,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.Transition
-import com.bytebyte6.base.mvi.emit
-import com.bytebyte6.base.mvi.runIfNotHandled
-import com.bytebyte6.base_ui.DefaultTransitionListener
-import com.bytebyte6.base_ui.KEY_TRANS_NAME
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.emit
+import com.bytebyte6.base.runIfNotHandled
+import com.bytebyte6.base.KEY_TRANS_NAME
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
@@ -34,21 +32,12 @@ class VideoListFragment : ListFragment() {
 
     private val viewModel: VideoListViewModel by viewModel()
 
-    private var adapter: ImageAdapter? = null
+    private lateinit var adapter: ImageAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val transition = sharedElementReturnTransition as Transition
-        val listener = object : DefaultTransitionListener() {
-            override fun onTransitionEnd(transition: Transition) {
-                if (view == null) {
-                    transition.removeListener(this)
-                    recyclerView.adapter = null
-                    adapter = null
-                }
-            }
+    private val buttonClickListener = object : ButtonClickListener {
+        override fun onClick(position: Int) {
+            viewModel.fav(position)
         }
-        transition.addListener(listener)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,34 +50,32 @@ class VideoListFragment : ListFragment() {
         setupToolbarArrowBack(title)
         viewModel.setKey(title)
 
-        adapter = ImageAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
-            override fun onClick(position: Int, view: View) {
-                viewModel.fav(position)
-            }
-        })
-        adapter!!.onItemClick = { pos, _: View ->
-            showVideoActivity(adapter!!.currentList[pos].videoUrl)
+        adapter = ImageAdapter(ButtonType.FAVORITE, buttonClickListener)
+        adapter.onItemClick = { pos, _: View ->
+            showVideoActivity(adapter.currentList[pos].videoUrl)
         }
-        adapter!!.doOnBind = { pos, _: View ->
+        adapter.doOnBind = { pos, _: View ->
             viewModel.searchLogo(pos)
         }
-        adapter!!.onCurrentListChanged = { _, currentList ->
-            emptyBox.isVisible = currentList.isEmpty()
+        adapter.onCurrentListChanged = { _, currentList ->
+            binding?.emptyBox?.isVisible = currentList.isEmpty()
         }
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-        recyclerView.addItemDecoration(GridSpaceDecoration())
-        recyclerView.setHasFixedSize(true)
-        recyclerView.itemAnimator = null
+        binding?.run {
+            recyclerview.adapter = adapter
+            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
+            recyclerview.addItemDecoration(GridSpaceDecoration())
+            recyclerview.setHasFixedSize(true)
+            recyclerview.itemAnimator = null
+        }
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
-            toolbar.subtitle = getString(R.string.total, it)
+            binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
         })
 
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
             result.emit(
                 {
-                    adapter!!.submitList(TvFts.toTvs(it.data))
+                    adapter.submitList(TvFts.toTvs(it.data))
                     end = it.end
                     it.runIfNotHandled {
                         hideSwipeRefresh()
@@ -110,6 +97,11 @@ class VideoListFragment : ListFragment() {
             )
         })
         viewModel.loadOnce()
+    }
+
+    override fun onDestroyView() {
+        adapter.reset()
+        super.onDestroyView()
     }
 
     override fun onLoadMore() {

@@ -6,15 +6,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
-import com.bytebyte6.base.mvi.emitIfNotHandled
-import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.emitIfNotHandled
+import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentMeBinding
@@ -22,6 +23,8 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 /***
  * 导入
+ * 1、本地导入ok
+ * 2、可从网络链接导入todo
  */
 class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
@@ -31,17 +34,8 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     private val viewModel: MeViewModel by viewModel()
 
-    private val getContent = ActivityResultContracts.GetContent()
 
-    private val launcher by lazy {
-        val callback = ActivityResultCallback<Uri?> { result ->
-            if (result != null) {
-                viewModel.parseM3u(result)
-            }
-        }
-        registerForActivityResult(getContent, callback)
-    }
-
+    private lateinit var launcher: ActivityResultLauncher<String>
     private lateinit var playlistAdapter: PlaylistAdapter
     private lateinit var selectionTracker: SelectionTracker<Long>
 
@@ -68,6 +62,17 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             .show()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = ActivityResultCallback<Uri?> { result ->
+            if (result != null) {
+                viewModel.parseM3u(result)
+            }
+        }
+        val getContent = ActivityResultContracts.GetContent()
+        launcher = registerForActivityResult(getContent, callback)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode()
@@ -83,10 +88,11 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 view1
             )
         }
+
         binding?.apply {
             toolbar.apply {
                 setOnMenuItemClickListener {
-                    launcher.launch("*/m3u")
+                    launcher.launch("*/*")
                     true
                 }
             }
@@ -122,6 +128,8 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 }
             }, {
                 showSnack(view, Message(id = R.string.tip_del_fail))
+            },{
+                showProgressBar()
             })
         })
         viewModel.playlistNames.observe(viewLifecycleOwner, Observer {

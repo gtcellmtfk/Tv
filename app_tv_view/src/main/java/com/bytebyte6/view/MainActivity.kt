@@ -9,9 +9,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.EventObserver
 import com.bytebyte6.base.NetworkHelper
-import com.bytebyte6.base_ui.BaseActivity
-import com.bytebyte6.base_ui.NetworkErrorFragment
-import com.bytebyte6.base_ui.SimpleDrawerListener
+import com.bytebyte6.base.BaseActivity
+import com.bytebyte6.base.NetworkErrorFragment
+import com.bytebyte6.base.SimpleDrawerListener
+import com.bytebyte6.base.navigationItemBackground
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadFragment
@@ -19,7 +20,6 @@ import com.bytebyte6.view.home.HomeFragment
 import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.setting.SettingFragment
 import org.koin.android.ext.android.inject
-import org.w3c.dom.Text
 
 class MainActivity : BaseActivity() {
 
@@ -85,20 +85,21 @@ class MainActivity : BaseActivity() {
             replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
         }
 
-        networkHelper.liveData().observe(this, EventObserver { connected ->
-            if (!connected) {
-                val fragment = NetworkErrorFragment()
-                replace(fragment, NetworkErrorFragment.TAG)
-            } else {
-                supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)?.apply {
-                    supportFragmentManager.popBackStack()
+        networkHelper.liveData().observe(this,
+            EventObserver { connected ->
+                if (!connected) {
+                    val fragment = NetworkErrorFragment()
+                    replace(fragment, NetworkErrorFragment.TAG)
+                } else {
+                    supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)?.apply {
+                        supportFragmentManager.popBackStack()
+                    }
                 }
-            }
-        })
+            })
 
         binding.navView.apply {
 
-//            itemBackground = navigationItemBackground(this@MainActivity)
+            itemBackground = navigationItemBackground(this@MainActivity)
 
             setNavigationItemSelectedListener { newItem ->
                 if (current != newItem) {

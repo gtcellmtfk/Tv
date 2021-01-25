@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken
 class TypeConverter {
 
     private val gson: Gson = GsonBuilder()
-        .registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
+        .registerTypeAdapterFactory(com.bytebyte6.base.GsonConfig.NullStringToEmptyAdapterFactory())
         .create()
 
     private val type = object : TypeToken<List<Language>>() {}.type

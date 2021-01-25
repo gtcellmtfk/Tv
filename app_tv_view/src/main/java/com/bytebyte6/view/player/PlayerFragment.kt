@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import com.bytebyte6.base.logd
-import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.view.KEY_CACHE
 import com.bytebyte6.view.KEY_VIDEO_URL
 import com.bytebyte6.view.R

@@ -6,7 +6,6 @@ import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
-import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
@@ -18,26 +17,54 @@ class ParseM3uUseCase(
     private val playlistCrossRefDao: PlaylistTvCrossRefDao,
     private val playlistDao: PlaylistDao,
     private val context: Context
-) : RxUseCase<Uri, Playlist>() {
+) : com.bytebyte6.base.RxUseCase<Uri, Playlist>() {
 
     override fun run(param: Uri): Playlist {
         val tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
 
-        val tvs: List<Tv> = tvsFromFile.map {
+        val inserts = tvsFromFile.filter {
             val tvFromDb = tvDao.getTvByUrl(it.url)
-            if (tvFromDb == null) {
-                if (it.category.isEmpty()) {
-                    it.category = "Other"
-                }
-                if (it.language.isEmpty()) {
-                    it.language = mutableListOf(Language("Other", "777"))
-                }
-                it.tvId = tvDao.insert(it)
-                it
-            } else {
-                tvFromDb
+            tvFromDb == null
+        }.map {
+            if (it.category.isEmpty()) {
+                it.category = "Other"
             }
+            if (it.language.isEmpty()) {
+                it.language = mutableListOf(Language("Other", "777"))
+            }
+            it
         }
+
+        val insertsWithIds = tvDao.insert(inserts).mapIndexed { index, id ->
+            inserts[index].tvId = id
+            inserts[index]
+        }
+
+        val tvsFromDb = tvsFromFile.filter {
+            val tvFromDb = tvDao.getTvByUrl(it.url)
+            if (tvFromDb != null) {
+                it.tvId = tvFromDb.tvId
+                true
+            } else false
+        }
+
+        val tvs = insertsWithIds.plus(tvsFromDb)
+
+//        val tvs: List<Tv> = tvsFromFile.map {
+//            val tvFromDb = tvDao.getTvByUrl(it.url)
+//            if (tvFromDb == null) {
+//                if (it.category.isEmpty()) {
+//                    it.category = "Other"
+//                }
+//                if (it.language.isEmpty()) {
+//                    it.language = mutableListOf(Language("Other", "777"))
+//                }
+//                it.tvId = tvDao.insert(it)
+//                it
+//            } else {
+//                tvFromDb
+//            }
+//        }
 
         val user = userDao.getUser()
 

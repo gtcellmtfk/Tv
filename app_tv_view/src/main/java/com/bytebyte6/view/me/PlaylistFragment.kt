@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.mvi.ResultObserver
-import com.bytebyte6.base_ui.BaseShareFragment
-import com.bytebyte6.base_ui.KEY_TRANS_NAME
-import com.bytebyte6.base_ui.Message
-import com.bytebyte6.base_ui.showSnack
+import com.bytebyte6.base.ResultObserver
+import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.base.KEY_TRANS_NAME
+import com.bytebyte6.base.Message
+import com.bytebyte6.base.showSnack
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
@@ -65,9 +65,9 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
         setupToolbarArrowBack()
         val adapter = ImageAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
-            override fun onClick(position: Int, view: View) {
+            override fun onClick(position: Int) {
                 if (!dialog.isShowing) {
-                    onDownloadClick(position, view)
+                    onDownloadClick(position)
                 }
             }
         })
@@ -102,7 +102,7 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
         }
     }
 
-    private fun onDownloadClick(pos: Int, view: View) {
+    private fun onDownloadClick(pos: Int) {
         viewModel.apply {
             showProgress()
             downloadHelper?.release()
@@ -117,19 +117,19 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
                     download(pos)
                     DownloadServicePro.addDownload(requireContext(), getTv(pos).url)
                     val tip = getString(R.string.tip_add_download_has_been)
-                    showSnack(view, Message(message = tip))
+                    showSnack(requireView(), Message(message = tip))
                     hideProgress()
                 }
 
                 override fun onPrepareError(helper: DownloadHelper, e: IOException) {
                     if (e is DownloadHelper.LiveContentUnsupportedException) {
                         showSnack(
-                            view,
+                            requireView(),
                             Message(id = R.string.tip_un_support_download_live_stream)
                         )
                     } else {
                         showSnack(
-                            view,
+                            requireView(),
                             Message(message = e.message.toString())
                         )
                     }

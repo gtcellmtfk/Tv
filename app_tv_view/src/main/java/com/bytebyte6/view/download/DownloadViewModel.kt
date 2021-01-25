@@ -1,10 +1,10 @@
 package com.bytebyte6.view.download
 
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.mvi.Result
-import com.bytebyte6.base.mvi.ResultObserver
+import com.bytebyte6.base.Result
+import com.bytebyte6.base.ResultObserver
+import com.bytebyte6.base.BaseViewModel
 import com.bytebyte6.base.onIo
-import com.bytebyte6.base_ui.BaseViewModel
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.usecase.UpdateTvParam

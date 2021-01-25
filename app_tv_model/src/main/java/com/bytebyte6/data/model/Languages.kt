@@ -12,7 +12,7 @@ import kotlin.random.Random
 data class Languages(
     var language: List<Language> = emptyList(),
     @Ignore var content: String = "",
-    @Ignore override val color: Int = randomColorByNightMode(),
+    @Ignore override val color: Int = com.bytebyte6.base.randomColorByNightMode(),
     @Ignore override val radius: Int = 0,
     @Ignore override val outline: Boolean = Random.Default.nextBoolean()
 ) : Parcelable, Card {

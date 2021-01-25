@@ -28,4 +28,11 @@
 
     </style>
 
+    <style name="NavigationView.Rtmp" parent="Widget.Design.NavigationView">
+        <item name="itemIconTint" >@color/white</item>
+        <item name="itemTextColor" >@color/white</item>
+        <item name="android:background" >@android:color/transparent</item>
+        <item name="insetForeground" >@android:color/transparent</item>
+    </style>
+
 </resources>

@@ -6,7 +6,7 @@ import com.bytebyte6.data.entity.User
 
 class CreateUserUseCase(
     private val userDao: UserDao
-) : RxUseCase<User, User>() {
+) : com.bytebyte6.base.RxUseCase<User, User>() {
 
     override fun run(param: User): User {
         if (userDao.getCount() == 0) {

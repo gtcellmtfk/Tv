@@ -8,10 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
-import androidx.transition.Transition
 import androidx.viewpager2.widget.ViewPager2
-import com.bytebyte6.base.logd
-import com.bytebyte6.base_ui.BaseShareFragment
+import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.bytebyte6.view.search.SearchFragment
@@ -34,17 +32,30 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
     private var mediator: TabLayoutMediator? = null
 
     fun destroyViewPage() {
-        logd("viewPage2 $viewPager2")
         mediator?.detach()
         mediator = null
         viewPager2?.adapter = null
         viewPager2 = null
-        logd("viewPage2 $viewPager2")
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setupOnBackPressedDispatcherBackToHome()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(context)
+                        .setTitle(getString(R.string.tip))
+                        .setMessage(getString(R.string.enter_exit))
+                        .setPositiveButton(R.string.enter) { dialog, _ ->
+                            dialog.dismiss()
+                            requireActivity().finish()
+                        }
+                        .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                        .create()
+                        .show()
+                }
+            }
+        )
     }
 
     override fun initViewBinding(view: View): FragmentHomeBinding {
@@ -77,9 +88,17 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
             viewPager.adapter = TabAdapter(this@HomeFragment)
             mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
-                    TAB_COUNTRY -> tab.setText(R.string.home_country)
-                    TAB_LANGUAGE -> tab.setText(R.string.home_language)
-                    TAB_CATEGORY -> tab.setText(R.string.home_category)
+                    TAB_COUNTRY -> tab.apply {
+                        setIcon(R.drawable.ic_flag_2)
+                        setText(R.string.home_country) }
+                    TAB_LANGUAGE -> tab.apply {
+                        setIcon(R.drawable.ic_language)
+                        setText(R.string.home_language)
+                    }
+                    TAB_CATEGORY -> tab.apply {
+                        setIcon(R.drawable.ic_category)
+                        setText(R.string.home_category)
+                    }
                 }
             }
             mediator?.attach()

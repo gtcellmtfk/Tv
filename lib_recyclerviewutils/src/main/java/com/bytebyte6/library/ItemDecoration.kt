@@ -21,8 +21,8 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
-import com.bytebyte6.base_ui.dp16
-import com.bytebyte6.base_ui.dp8
+import com.bytebyte6.base.dp16
+import com.bytebyte6.base.dp8
 
 class LinearSpaceDecoration(
     private val start: Int = dp16,

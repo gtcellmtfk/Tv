@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.base.PagingHelper
-import com.bytebyte6.base.mvi.Result
+import com.bytebyte6.base.Result
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.entity.Tv
 import org.junit.After
@@ -48,7 +48,7 @@ class TestPagingHelper : KoinTest {
 
     @Test
     fun testPaging() {
-        val pagingHelper = object : PagingHelper<Tv>() {
+        val pagingHelper = object : com.bytebyte6.base.PagingHelper<Tv>() {
             override fun count(): Int {
                 return tvDao.getCount()
             }
@@ -63,15 +63,15 @@ class TestPagingHelper : KoinTest {
         var errorCount = 0
         var loadingCount = 0
 
-        val observer = Observer<Result<List<Tv>>> {
+        val observer = Observer<com.bytebyte6.base.Result<List<Tv>>> {
             when (it) {
-                is Result.Success -> {
+                is com.bytebyte6.base.Result.Success -> {
                     successCount = successCount.plus(1)
                 }
-                is Result.Error -> {
+                is com.bytebyte6.base.Result.Error -> {
                     errorCount = errorCount.plus(1)
                 }
-                is Result.Loading -> {
+                is com.bytebyte6.base.Result.Loading -> {
                     loadingCount = loadingCount.plus(1)
                 }
             }
@@ -97,7 +97,7 @@ class TestPagingHelper : KoinTest {
 
         //判断end标志是否正确
         val peekContent0 = pagingHelper.result().value
-        assert(peekContent0 is Result.Success && peekContent0.end)
+        assert(peekContent0 is com.bytebyte6.base.Result.Success && peekContent0.end)
 
         assert(successCount == pageCount)
         assert(loadingCount == pageCount)

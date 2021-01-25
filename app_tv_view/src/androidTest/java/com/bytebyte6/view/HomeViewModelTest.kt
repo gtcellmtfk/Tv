@@ -2,7 +2,7 @@ package com.bytebyte6.view
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.base.mvi.emit
+import com.bytebyte6.base.emit
 import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
