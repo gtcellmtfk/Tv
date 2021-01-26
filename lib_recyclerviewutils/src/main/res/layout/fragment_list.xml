@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:id="@+id/linearLayoutRoot"
     android:background="@color/rootLayoutBackgroundColor"
     android:orientation="vertical">
 
@@ -49,7 +49,6 @@
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/empty_box" />
 
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:visibility="invisible"
                 style="@style/Widget.MaterialComponents.FloatingActionButton"
@@ -64,6 +63,5 @@
         </FrameLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
 </LinearLayout>

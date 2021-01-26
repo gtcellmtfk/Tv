@@ -27,6 +27,13 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
 
     private val viewModel: SearchViewModel by viewModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        doOnSharedElementReturnTransitionEnd {
+            clearRecyclerView()
+        }
+    }
+
     override fun initViewBinding(view: View): FragmentSearchBinding {
         return FragmentSearchBinding.bind(view)
     }
@@ -34,20 +41,24 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
-        val adapter = ImageAdapter(ButtonType.FAVORITE,object : ButtonClickListener{
+        val adapter = ImageAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
             override fun onClick(position: Int) {
                 viewModel.fav(position)
             }
-        })
-        adapter.onItemClick= { pos , _: View->
-            showVideoActivity(adapter.currentList[pos].videoUrl)
+        }).apply {
+            onItemClick = { pos, _: View ->
+                toPlayer(currentList[pos].videoUrl)
+            }
+            doOnBind = { pos, _: View ->
+                viewModel.searchLogo(pos)
+            }
+            onCurrentListChanged = { _, currentList ->
+                binding?.lavEmpty?.isVisible = currentList.isEmpty()
+            }
         }
-        adapter.doOnBind=  { pos, _: View ->
-            viewModel.searchLogo(pos)
-        }
-        adapter.onCurrentListChanged= { _, currentList ->
-            binding?.lavEmpty?.isVisible = currentList.isEmpty()
-        }
+        imageClearHelper = adapter
+        recyclerView = binding?.recyclerView
+
         binding?.apply {
             etSearch.doOnTextChanged { text, _, _, _ ->
                 viewModel.search(text)
@@ -59,7 +70,7 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
             recyclerView.adapter = adapter
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
-            recyclerView.itemAnimator=null
+            recyclerView.itemAnimator = null
 
             KeyboardUtils.showSoftInput(etSearch, requireContext())
         }

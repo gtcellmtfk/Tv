@@ -14,7 +14,7 @@ import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
-import com.bytebyte6.view.showVideoActivity
+import com.bytebyte6.view.toPlayer
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import org.koin.android.ext.android.inject
@@ -34,33 +34,35 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
 
     private val downloadManager by inject<DownloadManager>()
 
-    private lateinit var adapter: DownloadAdapter
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setupOnBackPressedDispatcherBackToHome()
-    }
+    private lateinit var downloadAdapter: DownloadAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupOnBackPressedDispatcherBackToHome()
 
         disEnabledSwipeRefreshLayout()
 
         downloadManager.addListener(this)
 
-        adapter = DownloadAdapter()
-        adapter.onItemLongClick = { pos, _: View ->
-            showDialog(pos)
-            true
-        }
-        adapter.onItemClick = { pos, _: View ->
-            showVideoActivity("", adapter.currentList[pos].download.request)
-        }
-        adapter.onCurrentListChanged = { _, currentList ->
-            binding?.emptyBox?.isVisible = currentList.isEmpty()
+        setupToolbarMenuMode(getString(R.string.nav_download), "")
+
+        doOnExitTransitionEndOneShot {
+            clearRecyclerView()
         }
 
-        setupToolbarMenuMode(getString(R.string.nav_download), "")
+        downloadAdapter = DownloadAdapter().apply {
+            onItemLongClick = { pos, _: View ->
+                showDialog(pos)
+                true
+            }
+            onItemClick = { pos, _: View ->
+                toPlayer("", currentList[pos].download.request)
+            }
+            onCurrentListChanged = { _, currentList ->
+                binding?.emptyBox?.isVisible = currentList.isEmpty()
+            }
+        }
+        imageClearHelper = downloadAdapter
 
         binding?.run {
             appbar.toolbar.inflateMenu(R.menu.menu_download)
@@ -80,7 +82,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
                 true
             }
             recyclerview.layoutManager = LinearLayoutManager(view.context)
-            recyclerview.adapter = adapter
+            recyclerview.adapter = downloadAdapter
             recyclerview.setHasFixedSize(true)
             recyclerview.addItemDecoration(LinearSpaceDecoration())
             recyclerview.itemAnimator = null
@@ -88,17 +90,13 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
 
         viewModel.downloadList.observe(viewLifecycleOwner, Observer { result ->
             result.emit({
-                adapter.submitList(it.data)
+                downloadAdapter.submitList(it.data)
                 hideSwipeRefresh()
             }, {
-                it.runIfNotHandled {
                     hideSwipeRefresh()
                     showSnack(view, Message(message = it.error.message.toString()))
-                }
             }, {
-                it.runIfNotHandled {
                     showSwipeRefresh()
-                }
             }
             )
         })
@@ -111,11 +109,11 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
 
     private fun showDialog(pos: Int) {
         AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.tip_del_video).plus(adapter.currentList[pos].tv.name))
+            .setTitle(getString(R.string.tip_del_video).plus(downloadAdapter.currentList[pos].tv.name))
             .setMessage(getString(R.string.tip_beyond_retrieve))
             .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
                 DownloadServicePro.removeDownload(
-                    requireContext(), adapter.currentList[pos].download.request.id
+                    requireContext(), downloadAdapter.currentList[pos].download.request.id
                 )
                 viewModel.deleteDownload(pos)
                 dialogInterface.dismiss()

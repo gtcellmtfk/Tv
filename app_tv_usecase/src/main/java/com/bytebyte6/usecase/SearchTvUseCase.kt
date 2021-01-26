@@ -5,7 +5,7 @@ import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.TvFts
 
-class SearchTvUseCase(private val tvFtsDao: TvFtsDao) : com.bytebyte6.base.RxUseCase<String, List<Tv>>() {
+class SearchTvUseCase(private val tvFtsDao: TvFtsDao) : RxUseCase<String, List<Tv>>() {
     override fun run(param: String): List<Tv> {
         val list = tvFtsDao.search(param)
         return list.map {

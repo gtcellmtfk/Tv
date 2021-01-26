@@ -55,13 +55,13 @@ abstract class BaseFragment<V : ViewBinding>(layoutId: Int) : Fragment(layoutId)
 
     override fun onDestroyView() {
         super.onDestroyView()
-        logd("onDestroyView view=${view}")
+        logd("onDestroyView view= $view")
         binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        logd("onDestroy view=${view}")
+        logd("onDestroy view= $view")
     }
 
     override fun onDetach() {

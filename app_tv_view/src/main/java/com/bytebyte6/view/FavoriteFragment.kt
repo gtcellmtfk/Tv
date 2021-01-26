@@ -1,12 +1,12 @@
 package com.bytebyte6.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.base.BaseViewModel
+import com.bytebyte6.base.doOnExitTransitionEndOneShot
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
@@ -23,25 +23,29 @@ class FavoriteFragment : ListFragment() {
 
     private val viewModel: FavoriteViewModel by viewModel()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setupOnBackPressedDispatcherBackToHome()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupOnBackPressedDispatcherBackToHome()
 
         disEnabledSwipeRefreshLayout()
 
         setupToolbarMenuMode(getString(R.string.nav_fav), "")
 
-        val adapter = ImageAdapter(ButtonType.FAVORITE)
-        adapter.onItemClick= { pos, _: View ->
-            showVideoActivity(adapter.currentList[pos].videoUrl)
+        doOnExitTransitionEndOneShot {
+            clearRecyclerView()
         }
-        adapter.onCurrentListChanged= { _, currentList ->
-            binding?.emptyBox?.isVisible = currentList.isEmpty()
+        val adapter = ImageAdapter(ButtonType.FAVORITE).apply {
+            onItemClick = { pos, _: View ->
+                toPlayer(currentList[pos].videoUrl)
+            }
+            onCurrentListChanged = { _, currentList ->
+                binding?.emptyBox?.isVisible = currentList.isEmpty()
+            }
         }
+
+        recyclerView = binding?.recyclerview
+        imageClearHelper = adapter
+
         binding?.run {
             recyclerview.adapter = adapter
             recyclerview.layoutManager = GridLayoutManager(view.context, 2)

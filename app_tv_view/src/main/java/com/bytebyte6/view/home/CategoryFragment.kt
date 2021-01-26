@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.library.LinearSpaceDecoration
-
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_CATEGORY
@@ -37,13 +36,13 @@ class CategoryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val cardAdapter = CardAdapter()
-        cardAdapter.onItemClick= { pos , itemView: View->
+        cardAdapter.onItemClick = { pos, itemView: View ->
             val item = cardAdapter.currentList[pos]
             homeToVideoList(itemView, item.transitionName)
         }
 
+        recyclerView = binding?.recyclerView
         binding?.apply {
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())

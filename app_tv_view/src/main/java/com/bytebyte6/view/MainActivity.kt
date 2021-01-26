@@ -7,18 +7,10 @@ import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.EventObserver
-import com.bytebyte6.base.NetworkHelper
-import com.bytebyte6.base.BaseActivity
-import com.bytebyte6.base.NetworkErrorFragment
-import com.bytebyte6.base.SimpleDrawerListener
-import com.bytebyte6.base.navigationItemBackground
+import com.bytebyte6.base.*
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.view.databinding.ActivityMainBinding
-import com.bytebyte6.view.download.DownloadFragment
 import com.bytebyte6.view.home.HomeFragment
-import com.bytebyte6.view.me.MeFragment
-import com.bytebyte6.view.setting.SettingFragment
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
@@ -39,27 +31,11 @@ class MainActivity : BaseActivity() {
         override fun onDrawerClosed(drawerView: View) {
             current?.apply {
                 when (itemId) {
-                    R.id.nav_home -> {
-                        replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
-                    }
-                    R.id.nav_me -> {
-                        replaceNotAddToBackStack(MeFragment(), MeFragment.TAG)
-                    }
-                    R.id.nav_setting -> {
-                        replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
-                    }
-                    R.id.nav_fav -> {
-                        replaceNotAddToBackStack(
-                            FavoriteFragment.newInstance(),
-                            FavoriteFragment.TAG
-                        )
-                    }
-                    R.id.nav_download -> {
-                        replaceNotAddToBackStack(
-                            DownloadFragment.newInstance(),
-                            DownloadFragment.TAG
-                        )
-                    }
+                    R.id.nav_home -> toHome()
+                    R.id.nav_me -> toMe()
+                    R.id.nav_setting -> toSetting()
+                    R.id.nav_fav -> toFav()
+                    R.id.nav_download -> toDownload()
                 }
                 removeDrawerListener()
             }
@@ -82,14 +58,13 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
+            toHome()
         }
 
         networkHelper.liveData().observe(this,
             EventObserver { connected ->
                 if (!connected) {
-                    val fragment = NetworkErrorFragment()
-                    replace(fragment, NetworkErrorFragment.TAG)
+                    toNetworkError()
                 } else {
                     supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)?.apply {
                         supportFragmentManager.popBackStack()

@@ -46,7 +46,7 @@ class VideoDialog : BottomSheetDialogFragment() {
         val adapter = ImageAdapter()
         adapter.onItemClick= { pos , _: View->
             dismiss()
-            showVideoActivity(adapter.currentList[pos].videoUrl)
+            toPlayer(adapter.currentList[pos].videoUrl)
         }
 
         binding?.apply {

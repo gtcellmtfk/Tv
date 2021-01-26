@@ -17,7 +17,7 @@ class ParseM3uUseCase(
     private val playlistCrossRefDao: PlaylistTvCrossRefDao,
     private val playlistDao: PlaylistDao,
     private val context: Context
-) : com.bytebyte6.base.RxUseCase<Uri, Playlist>() {
+) : RxUseCase<Uri, Playlist>() {
 
     override fun run(param: Uri): Playlist {
         val tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()

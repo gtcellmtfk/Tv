@@ -5,8 +5,6 @@
     <string name="home_language">语言</string>
     <string name="home_country">国家</string>
     <string name="home_other">Other</string>
-    <string name="home_other_language">Other Language</string>
-    <string name="home_other_category">Other Category</string>
     <string name="home_category_view">分类浏览</string>
     <string name="share">Share</string>
     <string name="search">Search</string>
@@ -23,13 +21,11 @@
     <string name="me_import_file">导入m3u文件后可展示列表</string>
     <string name="me_playlist">我的播放列表</string>
     <string name="tip_parse_file_error">文件解析失败</string>
-    <string name="tip_replace_title">替换为你的标题</string>
-    <string name="tip_video_image">Video Image</string>
     <string name="search_share">searchShare</string>
     <string name="delete_forever">delete_forever</string>
     <string name="tip_del_playlist">删除播放列表</string>
     <string name="tip_del_video">删除视频</string>
-    <string name="tip_beyond_retrieve">此操作不可恢复！</string>
+    <string name="tip_beyond_retrieve">此操作不可恢复!</string>
     <string name="enter">确定</string>
     <string name="cancel">取消</string>
     <string name="mode_night">夜间模式</string>

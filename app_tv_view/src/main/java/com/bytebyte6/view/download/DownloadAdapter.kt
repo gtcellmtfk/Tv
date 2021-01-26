@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bytebyte6.base.GlideClearHelper
+import com.bytebyte6.base.ImageClearHelper
 import com.bytebyte6.library.BaseListAdapter
 import com.bytebyte6.usecase.TvAndDownload
-import com.bytebyte6.view.GlideApp
-import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemDownloadBinding
 import com.bytebyte6.view.load
 import java.math.RoundingMode
 
-class DownloadAdapter : BaseListAdapter<TvAndDownload, DownloadViewHolder>(DownDiff) {
+class DownloadAdapter(private val imageClearHelper: ImageClearHelper = GlideClearHelper()) :
+    BaseListAdapter<TvAndDownload, DownloadViewHolder>(DownDiff),
+    ImageClearHelper by imageClearHelper {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
         return DownloadViewHolder.create(parent)
@@ -25,7 +27,9 @@ class DownloadAdapter : BaseListAdapter<TvAndDownload, DownloadViewHolder>(DownD
             tvTitle.text = item.tv.name
             tvBody.text = item.tv.category
             ivAvatar.load(item.tv.logo)
-            val progress = item.download.percentDownloaded.toBigDecimal().setScale(0,RoundingMode.HALF_UP)
+            images.add(ivAvatar)
+            val progress =
+                item.download.percentDownloaded.toBigDecimal().setScale(0, RoundingMode.HALF_UP)
             val progressInt = progress.toInt()
             progressBar.progress = progressInt
             tvProgress.text = progressInt.toString().plus("%")

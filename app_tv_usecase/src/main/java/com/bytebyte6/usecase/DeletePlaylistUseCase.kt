@@ -7,7 +7,7 @@ import com.bytebyte6.data.entity.Tv
 
 class DeletePlaylistUseCase(
     private val playlistDao: PlaylistDao
-) : com.bytebyte6.base.RxUseCase<List<Playlist>, Boolean>() {
+) : RxUseCase<List<Playlist>, Boolean>() {
     override fun run(param: List<Playlist>): Boolean {
         val tvs = mutableListOf<Tv>()
         param.forEach {

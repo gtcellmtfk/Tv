@@ -19,9 +19,7 @@ class CountryFragment :
         const val TAG = "CountryFragment"
         fun newInstance(): CountryFragment {
             return CountryFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+                arguments = Bundle()
             }
         }
     }
@@ -30,23 +28,27 @@ class CountryFragment :
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
+    private lateinit var imageAdapter: ImageAdapter
+
     override fun initViewBinding(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val imageAdapter = ImageAdapter()
-        imageAdapter.doOnBind = { pos: Int, _: View ->
-            viewModel.searchLogo(pos)
+        imageAdapter = ImageAdapter().apply {
+            doOnBind = { pos: Int, _: View ->
+                viewModel.searchLogo(pos)
+            }
+            onItemClick = { pos, itemView: View ->
+                homeToVideoList(
+                    itemView,
+                    currentList[pos].transitionName
+                )
+            }
         }
-        imageAdapter.onItemClick = { pos, itemView: View ->
-            homeToVideoList(
-                itemView,
-                imageAdapter.currentList[pos].transitionName
-            )
-        }
-
+        recyclerView = binding?.recyclerView
+        imageClearHelper = imageAdapter
         binding?.apply {
             recyclerView.adapter = imageAdapter
             recyclerView.layoutManager = GridLayoutManager(view.context, 2)

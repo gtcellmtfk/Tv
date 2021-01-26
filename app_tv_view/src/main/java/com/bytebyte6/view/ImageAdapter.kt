@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bytebyte6.base.GlideClearHelper
+import com.bytebyte6.base.ImageClearHelper
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.library.BaseListAdapter
 import com.bytebyte6.view.databinding.ItemImageBinding
@@ -15,22 +17,15 @@ enum class ButtonType {
     FAVORITE, DOWNLOAD, NONE
 }
 
-interface ButtonClickListener{
+interface ButtonClickListener {
     fun onClick(position: Int)
 }
 
 class ImageAdapter(
     private val type: ButtonType = ButtonType.NONE,
-    var btnClickListener: ButtonClickListener? = null
-) : BaseListAdapter<Image, ImageViewHolder>(ImageDIFF) {
-
-    fun reset(){
-        btnClickListener = null
-        onItemClick = null
-        doOnBind = null
-        onItemLongClick = null
-        onCurrentListChanged = null
-    }
+    private var btnClickListener: ButtonClickListener? = null,
+    private val clearHelper: ImageClearHelper = GlideClearHelper()
+) : BaseListAdapter<Image, ImageViewHolder>(ImageDIFF), ImageClearHelper by clearHelper {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
@@ -43,7 +38,7 @@ class ImageAdapter(
         val tvName = holder.binding.tvName
         val ivPreview = holder.binding.ivPreview
         val button = holder.binding.button
-
+        images.add(ivPreview)
         tvName.text = item.name
 
         if (item.logo.isEmpty()) {
@@ -51,7 +46,7 @@ class ImageAdapter(
         } else {
             ivPreview.load(item.logo)
         }
-        button.setOnClickListener{
+        button.setOnClickListener {
             btnClickListener?.onClick(position)
         }
         when (type) {

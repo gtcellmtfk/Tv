@@ -25,12 +25,8 @@ fun <T> Result<T>.emit(
         is Result.Success -> {
             success?.invoke(this)
         }
-        is Result.Error -> {
-            error?.invoke(this)
-        }
-        is Result.Loading -> {
-            loading?.invoke(this)
-        }
+        is Result.Error -> this.runIfNotHandled { error?.invoke(this) }
+        is Result.Loading -> this.runIfNotHandled { loading?.invoke(this) }
     }
 }
 

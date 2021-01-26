@@ -16,6 +16,6 @@ fun Any.logd(message: String, tag: String? = null) {
 
 fun Any.loge(message: String, tag: String? = null) {
     if (LogEx.logger) {
-        Log.d(GLOBAL_TAG + (tag ?: javaClass.simpleName), message)
+        Log.e(GLOBAL_TAG + (tag ?: javaClass.simpleName), message)
     }
 }

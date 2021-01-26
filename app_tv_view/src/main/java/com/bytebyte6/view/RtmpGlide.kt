@@ -11,13 +11,15 @@ import com.bumptech.glide.module.AppGlideModule
 class RtmpGlide : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.setLogLevel(Log.ERROR)
+            .setDefaultRequestOptions(
+                GlideOptions().dontAnimate().dontTransform().placeholder(R.drawable.landscape)
+                    .error(R.drawable.image_not_found)
+            )
     }
 }
 
 fun ImageView.load(url: String) {
     GlideApp.with(context)
         .load(url)
-        .placeholder(R.drawable.landscape)
-        .error(R.drawable.image_not_found)
         .into(this)
 }

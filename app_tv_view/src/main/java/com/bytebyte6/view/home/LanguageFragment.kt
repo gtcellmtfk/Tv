@@ -36,11 +36,11 @@ class LanguageFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val cardAdapter = CardAdapter()
-        cardAdapter.onItemClick= { pos, view1 ->
+        cardAdapter.onItemClick= { pos, itemView ->
             val item = cardAdapter.currentList[pos]
-            homeToVideoList(view1, item.transitionName)
+            homeToVideoList(itemView, item.transitionName)
         }
-
+        recyclerView=binding?.recyclerView
         binding?.apply {
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())

@@ -1,19 +1,20 @@
 package com.bytebyte6.view.me
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.ResultObserver
-import com.bytebyte6.base.BaseShareFragment
-import com.bytebyte6.base.KEY_TRANS_NAME
-import com.bytebyte6.base.Message
-import com.bytebyte6.base.showSnack
+import androidx.recyclerview.widget.GridLayoutManager
+import com.bytebyte6.base.*
 import com.bytebyte6.library.GridSpaceDecoration
+import com.bytebyte6.library.ListFragment
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
-import com.bytebyte6.view.databinding.FragmentPlayListBinding
+import com.bytebyte6.view.R
 import com.bytebyte6.view.download.DownloadServicePro
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.MediaItem
@@ -27,8 +28,7 @@ import java.io.IOException
 /***
  * 播放列表
  */
-class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fragment_play_list),
-    DownloadManager.Listener {
+class PlaylistFragment : ListFragment(), DownloadManager.Listener {
 
     companion object {
         fun newInstance(
@@ -50,49 +50,67 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
 
     private val httpDataSourceFactory by inject<HttpDataSource.Factory>()
 
-    private val defaultRenderersFactory by lazy {
-        DefaultRenderersFactory(requireContext())
-    }
+    private val defaultRenderersFactory by lazy { DefaultRenderersFactory(requireContext()) }
 
     private var downloadHelper: DownloadHelper? = null
 
     private val viewModel: PlaylistViewModel by viewModel()
 
-    override fun initViewBinding(view: View): FragmentPlayListBinding =
-        FragmentPlayListBinding.bind(view)
+    private var progressDialog: ProgressDialog? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startPostponedEnterTransition = false
+        doOnSharedElementReturnTransitionEnd {
+            clearRecyclerView()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarArrowBack()
-        val adapter = ImageAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
+        disEnabledSwipeRefreshLayout()
+        showSwipeRefresh()
+        val imageAdapter = ImageAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
             override fun onClick(position: Int) {
-                if (!dialog.isShowing) {
-                    onDownloadClick(position)
-                }
+                onDownloadClick(position)
             }
-        })
-        adapter.onItemClick = { pos, _: View ->
-            showVideoActivity(adapter.currentList[pos].videoUrl)
+        }).apply {
+            onItemClick = { pos, _: View ->
+                toPlayer(currentList[pos].videoUrl)
+            }
+            doOnBind = { pos, _: View ->
+                viewModel.searchLogo(pos)
+            }
+            onCurrentListChanged = { _, c ->
+                binding?.emptyBox?.isVisible = c.isEmpty()
+            }
         }
-        adapter.doOnBind = { pos, _: View ->
-            viewModel.searchLogo(pos)
-        }
+        recyclerView = binding?.recyclerview
+        imageClearHelper = imageAdapter
+
         binding?.apply {
-            toolbar.title = requireArguments().getString(KEY_TITLE)
-            recyclerView.adapter = adapter
-            recyclerView.addItemDecoration(GridSpaceDecoration())
-            recyclerView.setHasFixedSize(true)
-            recyclerView.itemAnimator = null
+            appbar.toolbar.title = requireArguments().getString(KEY_TITLE)
+            recyclerview.adapter = imageAdapter
+            recyclerview.addItemDecoration(GridSpaceDecoration())
+            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerview.setHasFixedSize(true)
+            recyclerview.itemAnimator = null
+            recyclerview.doOnPreDraw {
+                startPostponedEnterTransition()
+            }
         }
         viewModel.apply {
             tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
                 .observe(viewLifecycleOwner, Observer {
-                    adapter.submitList(it)
-                    binding?.toolbar?.subtitle = getString(R.string.total, adapter.itemCount)
+                    hideSwipeRefresh()
+                    imageAdapter.submitList(it)
+                    binding?.appbar?.toolbar?.subtitle =
+                        getString(R.string.total, imageAdapter.itemCount)
                 })
             updateTv.observe(viewLifecycleOwner, object : ResultObserver<UpdateTvParam>() {
                 override fun successOnce(data: UpdateTvParam, end: Boolean) {
-                    adapter.notifyItemChanged(data.pos)
+                    imageAdapter.notifyItemChanged(data.pos)
                 }
 
                 override fun error(error: Throwable) {
@@ -104,8 +122,9 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
 
     private fun onDownloadClick(pos: Int) {
         viewModel.apply {
-            showProgress()
+            showProgressDialog()
             downloadHelper?.release()
+            downloadHelper = null
             downloadHelper = DownloadHelper.forMediaItem(
                 requireContext(),
                 MediaItem.fromUri(getTv(pos).url),
@@ -118,7 +137,7 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
                     DownloadServicePro.addDownload(requireContext(), getTv(pos).url)
                     val tip = getString(R.string.tip_add_download_has_been)
                     showSnack(requireView(), Message(message = tip))
-                    hideProgress()
+                    hideProgressDialog()
                 }
 
                 override fun onPrepareError(helper: DownloadHelper, e: IOException) {
@@ -133,29 +152,44 @@ class PlaylistFragment : BaseShareFragment<FragmentPlayListBinding>(R.layout.fra
                             Message(message = e.message.toString())
                         )
                     }
-                    hideProgress()
+                    hideProgressDialog()
                 }
             })
         }
     }
 
-    private val dialog by lazy {
-        ProgressDialog(requireContext()).apply {
+    private fun showProgressDialog() {
+        progressDialog = ProgressDialog(requireContext()).apply {
+            setTitle(R.string.tip)
             setMessage(getString(R.string.tip_please_wait))
+            setCanceledOnTouchOutside(false)
+            setCancelable(false)
+            setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+                this@PlaylistFragment.progressDialog = null
+                downloadHelper?.release()
+                downloadHelper = null
+            }
         }
+        progressDialog!!.show()
     }
 
-    private fun showProgress() {
-        dialog.show()
-    }
-
-    private fun hideProgress() {
-        dialog.dismiss()
+    private fun hideProgressDialog() {
+        progressDialog?.dismiss()
+        progressDialog = null
     }
 
     override fun onDestroyView() {
         downloadHelper?.release()
         downloadHelper = null
         super.onDestroyView()
+    }
+
+    override fun onLoadMore() {
+
+    }
+
+    override fun onRefresh() {
+
     }
 }

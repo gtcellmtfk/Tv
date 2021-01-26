@@ -19,19 +19,12 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
         const val TAG = "SettingFragment"
         fun newInstance(): SettingFragment {
             return SettingFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+                arguments = Bundle()
             }
         }
     }
 
     private val viewModel: UserViewModel by viewModel()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setupOnBackPressedDispatcherBackToHome()
-    }
 
     override fun initViewBinding(view: View): FragmentSettingBinding {
         return FragmentSettingBinding.bind(view)
@@ -40,6 +33,7 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode(getString(R.string.nav_setting), "")
+        setupOnBackPressedDispatcherBackToHome()
 
         binding?.apply {
             tvByteByte6.setOnClickListener {

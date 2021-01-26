@@ -2,7 +2,10 @@ package com.bytebyte6.library
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.library.databinding.FragmentListBinding
 
@@ -29,12 +32,36 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
         }
     }
 
+    private val glideListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                val glideRequest = Glide.with(recyclerView.context)
+                if (glideRequest.isPaused){
+                    glideRequest.resumeRequests()
+                }
+            } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                val glideRequest = Glide.with(recyclerView.context)
+                if (!glideRequest.isPaused){
+                    glideRequest.pauseRequests()
+                }
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startPostponedEnterTransition = false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        this.recyclerView = binding?.recyclerview
         binding?.run {
             recyclerview.addOnScrollListener(listener)
-
+            recyclerview.addOnScrollListener(glideListener)
+            recyclerview.doOnPreDraw {
+                startPostponedEnterTransition()
+            }
             swipeRefreshLayout.setOnRefreshListener {
                 end = false
                 onRefresh()
@@ -44,6 +71,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
 
     override fun onDestroyView() {
         binding?.recyclerview?.removeOnScrollListener(listener)
+        binding?.recyclerview?.removeOnScrollListener(glideListener)
         binding?.swipeRefreshLayout?.setOnRefreshListener(null)
         super.onDestroyView()
     }

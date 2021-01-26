@@ -12,12 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
-import com.bytebyte6.base.emitIfNotHandled
-import com.bytebyte6.base.BaseShareFragment
-import com.bytebyte6.base.Message
-import com.bytebyte6.base.showSnack
+import com.bytebyte6.base.*
 import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.view.*
+import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -34,14 +32,19 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     private val viewModel: MeViewModel by viewModel()
 
-
     private lateinit var launcher: ActivityResultLauncher<String>
-    private lateinit var playlistAdapter: PlaylistAdapter
+
     private lateinit var selectionTracker: SelectionTracker<Long>
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setupOnBackPressedDispatcherBackToHome()
+    private val selectionObserver = object : SelectionTracker.SelectionObserver<Long>() {
+        override fun onSelectionChanged() {
+            val hasSelection = selectionTracker.hasSelection()
+            if (hasSelection) {
+                binding?.fab?.show()
+            } else {
+                binding?.fab?.hide()
+            }
+        }
     }
 
     override fun initViewBinding(view: View): FragmentMeBinding {
@@ -76,16 +79,17 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode()
-        playlistAdapter = PlaylistAdapter()
-        playlistAdapter.onItemClick = { pos, view1 ->
-            replaceWithShareElement(
-                PlaylistFragment.newInstance(
-                    viewModel.getPlaylistId(pos),
-                    playlistAdapter.list[pos].title,
-                    playlistAdapter.list[pos].transitionName
-                ),
-                PlaylistFragment.TAG,
-                view1
+        doOnExitTransitionEndOneShot {
+            clearRecyclerView()
+        }
+        setupOnBackPressedDispatcherBackToHome()
+        val playlistAdapter = PlaylistAdapter()
+        playlistAdapter.onItemClick = { pos, itemView ->
+            meToPlaylist(
+                viewModel.getPlaylistId(pos),
+                playlistAdapter.list[pos].title,
+                playlistAdapter.list[pos].transitionName,
+                itemView
             )
         }
 
@@ -96,18 +100,9 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                     true
                 }
             }
+            this@MeFragment.recyclerView = recyclerView
             recyclerView.adapter = playlistAdapter
-            playlistAdapter.setupSelectionTracker(recyclerView,
-                object : SelectionTracker.SelectionObserver<Long>() {
-                    override fun onSelectionChanged() {
-                        val hasSelection = selectionTracker.hasSelection()
-                        if (hasSelection) {
-                            fab.show()
-                        } else {
-                            fab.hide()
-                        }
-                    }
-                })
+            playlistAdapter.setupSelectionTracker(recyclerView, selectionObserver)
             selectionTracker = playlistAdapter.selectionTracker!!
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
@@ -121,14 +116,16 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         }
         viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled({
+                hideProgressBar()
                 selectionTracker.clearSelection()
                 showSnack(view, Message(id = R.string.tip_del_success))
                 binding?.apply {
                     fab.hide()
                 }
             }, {
+                hideProgressBar()
                 showSnack(view, Message(id = R.string.tip_del_fail))
-            },{
+            }, {
                 showProgressBar()
             })
         })
@@ -142,13 +139,10 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             result.emitIfNotHandled(
                 {
                     hideProgressBar()
-                    replace(
-                        PlaylistFragment.newInstance(
+                    meToPlaylist(
                             it.data.playlistId,
                             it.data.playlistName,
-                            it.data.transitionName
-                        ), PlaylistFragment.TAG
-                    )
+                            it.data.transitionName)
                 }, {
                     hideProgressBar()
                     showSnack(

@@ -63,21 +63,3 @@ class DownloadViewModel(
         startInterval()
     }
 }
-
-// androidx.coordinatorlayout.widget.CoordinatorLayout instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.HomeFragment received
-
-//androidx.coordinatorlayout.widget.CoordinatorLayout instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.HomeFragment received
-
-//androidx.recyclerview.widget.RecyclerView instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.LanguageFragment received
-
-//androidx.recyclerview.widget.RecyclerView instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.CategoryFragment received
-
-//androidx.recyclerview.widget.RecyclerView instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.CategoryFragment received
-
-//androidx.recyclerview.widget.RecyclerView instance
-//Leaking: YES (ObjectWatcher was watching this because com.bytebyte6.view.home.CountryFragment received

@@ -1,29 +1,24 @@
 package com.bytebyte6.view.home
 
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bytebyte6.base.logd
+import com.bytebyte6.base.BaseShareFragment
 
-class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment.childFragmentManager,fragment.viewLifecycleOwner.lifecycle) {
+class TabAdapter(fragment: Fragment) :
+    FragmentStateAdapter(fragment.childFragmentManager, fragment.viewLifecycleOwner.lifecycle) {
+
+    val fs = mutableListOf(
+        CountryFragment.newInstance(),
+        LanguageFragment.newInstance(),
+        CategoryFragment.newInstance()
+    )
 
     override fun getItemCount(): Int {
-        return 3
+        return fs.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> {
-                logd("CountryFragment")
-                CountryFragment.newInstance()
-            }
-            1 -> {
-                logd("LanguageFragment")
-                LanguageFragment.newInstance()
-            }
-            else -> {
-                logd("CategoryFragment")
-                CategoryFragment.newInstance()
-            }
-        }
+       return fs[position]
     }
 }

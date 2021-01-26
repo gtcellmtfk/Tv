@@ -19,7 +19,7 @@ class InitDataUseCase(
     private val userDao: UserDao,
     private val context: Context,
     private val gson: Gson
-) : com.bytebyte6.base.RxUseCase<Unit, List<Tv>>() {
+) : RxUseCase<Unit, List<Tv>>() {
 
     override fun run(param: Unit): List<Tv> {
 

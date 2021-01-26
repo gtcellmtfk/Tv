@@ -10,9 +10,9 @@ import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.base.doOnExitTransitionEndOneShot
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
-import com.bytebyte6.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -31,31 +31,33 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
 
     private var mediator: TabLayoutMediator? = null
 
-    fun destroyViewPage() {
+    private var tabAdapter: TabAdapter? = null
+
+    private fun destroyViewPage() {
+        tabAdapter?.fs?.forEach {
+            //清理子片段资源
+            it.clearRecyclerView()
+        }
+        tabAdapter?.fs?.clear()
+        tabAdapter = null
+        //清除ViewPage资源
         mediator?.detach()
         mediator = null
         viewPager2?.adapter = null
         viewPager2 = null
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    AlertDialog.Builder(context)
-                        .setTitle(getString(R.string.tip))
-                        .setMessage(getString(R.string.enter_exit))
-                        .setPositiveButton(R.string.enter) { dialog, _ ->
-                            dialog.dismiss()
-                            requireActivity().finish()
-                        }
-                        .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                        .create()
-                        .show()
-                }
+    private fun showDialog(context: Context) {
+        AlertDialog.Builder(context)
+            .setTitle(getString(R.string.tip))
+            .setMessage(getString(R.string.enter_exit))
+            .setPositiveButton(R.string.enter) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
             }
-        )
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
     override fun initViewBinding(view: View): FragmentHomeBinding {
@@ -65,32 +67,36 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode()
+        doOnExitTransitionEndOneShot {
+            destroyViewPage()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this.viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    showDialog(view.context)
+                }
+            }
+        )
         binding?.apply {
             toolbar.transitionName = getString(R.string.search_share)
             toolbar.setOnMenuItemClickListener {
                 if (it.itemId == R.id.app_bar_share) {
-                    ShareCompat.IntentBuilder
-                        .from(requireActivity())
-                        .setText("https://github.com/bytebyte6")
-                        .setType("text/plain")
-                        .startChooser()
+                    share()
                 } else {
-                    replaceWithShareElement(
-                        SearchFragment.newInstance(toolbar.transitionName),
-                        SearchFragment.TAG,
-                        toolbar
-                    )
+                    homeToSearch(toolbar)
                 }
                 true
             }
             viewPager2 = viewPager
             viewPager.isUserInputEnabled = false
-            viewPager.adapter = TabAdapter(this@HomeFragment)
+            tabAdapter = TabAdapter(this@HomeFragment)
+            viewPager.adapter = tabAdapter
             mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
                     TAB_COUNTRY -> tab.apply {
                         setIcon(R.drawable.ic_flag_2)
-                        setText(R.string.home_country) }
+                        setText(R.string.home_country)
+                    }
                     TAB_LANGUAGE -> tab.apply {
                         setIcon(R.drawable.ic_language)
                         setText(R.string.home_language)
@@ -120,5 +126,13 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
         view.doOnPreDraw {
             it.requestLayout()
         }
+    }
+
+    private fun share() {
+        ShareCompat.IntentBuilder
+            .from(requireActivity())
+            .setText("https://github.com/bytebyte6")
+            .setType("text/plain")
+            .startChooser()
     }
 }
