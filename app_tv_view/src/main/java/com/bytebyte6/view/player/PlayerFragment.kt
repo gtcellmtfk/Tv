@@ -78,13 +78,13 @@ class PlayerFragment :
         override fun onPlayerError(error: ExoPlaybackException) {
             val m = if (error.message != null) {
                 Message(
-                    actionId = R.string.tip_play_retry,
+                    actionStringId = R.string.tip_play_retry,
                     message = error.message!!,
                     longDuration = true
                 )
             } else {
                 Message(
-                    actionId = R.string.tip_play_retry,
+                    actionStringId = R.string.tip_play_retry,
                     message = getString(R.string.tip_play_error),
                     longDuration = true
                 )

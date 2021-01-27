@@ -28,15 +28,13 @@ class CountryFragment :
         requireParentFragment().getViewModel<HomeViewModel>()
     }
 
-    private lateinit var imageAdapter: ImageAdapter
-
     override fun initViewBinding(view: View): FragmentRecyclerViewBinding {
         return FragmentRecyclerViewBinding.bind(view)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        imageAdapter = ImageAdapter().apply {
+        val imageAdapter = ImageAdapter().apply {
             doOnBind = { pos: Int, _: View ->
                 viewModel.searchLogo(pos)
             }

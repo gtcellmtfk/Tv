@@ -43,7 +43,6 @@ class FavoriteFragment : ListFragment() {
             }
         }
 
-        recyclerView = binding?.recyclerview
         imageClearHelper = adapter
 
         binding?.run {

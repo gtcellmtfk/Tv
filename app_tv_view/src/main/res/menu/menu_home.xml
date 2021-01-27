@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:contentDescription="@string/search"
         app:showAsAction="ifRoom"
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
 
     <item
+        android:contentDescription="@string/share"
         app:showAsAction="ifRoom"
         android:id="@+id/app_bar_share"
         android:icon="@drawable/ic_share"

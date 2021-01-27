@@ -33,7 +33,7 @@ class RtmpApp : Application() {
             ).build()
         )
         RxJavaPlugins.setErrorHandler {
-            logd("Rx Global Exception Handler...")
+            logd("Rx Global Exception Handler...${it.message}")
             it.printStackTrace()
         }
         LogEx.logger=true

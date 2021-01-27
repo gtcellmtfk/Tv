@@ -1,5 +1,7 @@
 package com.bytebyte6.base
 
+import androidx.lifecycle.LiveData
+
 sealed class Result<out R> {
     var handled: Boolean = false
 
@@ -85,3 +87,5 @@ fun <T> Result<T>.isError(): Throwable? {
         else -> null
     }
 }
+
+fun <T> LiveData<Result<T>>.getSuccessData() = this.value?.isSuccess()

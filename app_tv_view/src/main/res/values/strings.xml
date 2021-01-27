@@ -9,7 +9,7 @@
     <string name="share">Share</string>
     <string name="search">Search</string>
     <string name="total">总计: %d</string>
-    <string name="tip_search">输入 例如: CCTV、China、Auto</string>
+    <string name="tip_search">CCTV、China、Auto</string>
     <string name="tip_play_error">出现错误,请重试!!!</string>
     <string name="tip_play_retry">重试</string>
     <string name="tip_del_fail">删除失败</string>
@@ -44,4 +44,6 @@
     <string name="resume">开始下载</string>
     <string name="tip_please_wait">正在检测该视频是否支持下载,请稍等片刻…</string>
     <string name="tip_working">任务进行中</string>
+    <string name="toolbar_navigation">navigation</string>
+    <string name="tabLayoutContentDescription">tabLayoutContentDescription</string>
 </resources>

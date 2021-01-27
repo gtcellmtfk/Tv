@@ -60,7 +60,6 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startPostponedEnterTransition = false
         doOnSharedElementReturnTransitionEnd {
             clearRecyclerView()
         }
@@ -86,7 +85,6 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
                 binding?.emptyBox?.isVisible = c.isEmpty()
             }
         }
-        recyclerView = binding?.recyclerview
         imageClearHelper = imageAdapter
 
         binding?.apply {
@@ -96,9 +94,6 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
             recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
             recyclerview.setHasFixedSize(true)
             recyclerview.itemAnimator = null
-            recyclerview.doOnPreDraw {
-                startPostponedEnterTransition()
-            }
         }
         viewModel.apply {
             tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))

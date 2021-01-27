@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bytebyte6.base.BaseShareFragment

@@ -1,16 +1,11 @@
 package com.bytebyte6.view
 
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.bytebyte6.base.*
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.view.databinding.ActivityMainBinding
-import com.bytebyte6.view.home.HomeFragment
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
@@ -23,32 +18,9 @@ class MainActivity : BaseActivity() {
 
     private val userDao by inject<UserDao>()
 
-    private var current: MenuItem? = null
-
     private lateinit var binding: ActivityMainBinding
 
-    private val listener = object : SimpleDrawerListener() {
-        override fun onDrawerClosed(drawerView: View) {
-            current?.apply {
-                when (itemId) {
-                    R.id.nav_home -> toHome()
-                    R.id.nav_me -> toMe()
-                    R.id.nav_setting -> toSetting()
-                    R.id.nav_fav -> toFav()
-                    R.id.nav_download -> toDownload()
-                }
-                removeDrawerListener()
-            }
-        }
-    }
-
-    private fun addDrawerListener() {
-        binding.drawLayout.addDrawerListener(listener)
-    }
-
-    private fun removeDrawerListener() {
-        binding.drawLayout.removeDrawerListener(listener)
-    }
+    private lateinit var drawerHelper: DrawerHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +28,8 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        drawerHelper = DrawerHelper.getInstance(this)!!
 
         if (savedInstanceState == null) {
             toHome()
@@ -77,29 +51,23 @@ class MainActivity : BaseActivity() {
             itemBackground = navigationItemBackground(this@MainActivity)
 
             setNavigationItemSelectedListener { newItem ->
-                if (current != newItem) {
-                    current = newItem
-                    addDrawerListener()
-                    closeDrawer()
+                if (drawerHelper.current != newItem) {
+                    drawerHelper.current = newItem
+                    drawerHelper.addDrawerListener()
+                    drawerHelper.closeDrawer()
                     true
                 } else {
                     false
                 }
             }
 
-            current = if (savedInstanceState != null) {
+            drawerHelper.current = if (savedInstanceState != null) {
                 val id = savedInstanceState.getInt(CURRENT_MENU_ITEM_ID)
                 menu.findItem(id)
             } else {
                 setCheckedItem(R.id.nav_home)
                 checkedItem
             }
-        }
-
-        binding.drawLayout.apply {
-            fitsSystemWindows
-            setScrimColor(0)
-            drawerElevation = 0f
         }
 
         val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
@@ -109,7 +77,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        current?.apply {
+        drawerHelper.current?.apply {
             outState.putInt(CURRENT_MENU_ITEM_ID, this.itemId)
         }
         super.onSaveInstanceState(outState)
@@ -118,31 +86,17 @@ class MainActivity : BaseActivity() {
 
     fun selectedNavHomeMenuItem() {
         binding.navView.setCheckedItem(R.id.nav_home)
-        current = binding.navView.checkedItem
+        drawerHelper.current = binding.navView.checkedItem
     }
 
-    fun lockDrawer() {
-        binding.drawLayout.setDrawerLockMode(
-            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-            GravityCompat.START
-        )
-    }
-
-    fun unlockDrawer() {
-        binding.drawLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, GravityCompat.START)
-    }
-
-    fun openDrawer() {
-        binding.drawLayout.openDrawer(GravityCompat.START)
-    }
-
-    fun closeDrawer() {
-        binding.drawLayout.closeDrawer(GravityCompat.START)
+    override fun onDestroy() {
+        DrawerHelper.destroy()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
-        if (binding.drawLayout.isDrawerOpen(GravityCompat.START)) {
-            closeDrawer()
+        if (drawerHelper.isDrawerOpen()) {
+            drawerHelper.closeDrawer()
         } else {
             super.onBackPressed()
         }

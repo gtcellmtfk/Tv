@@ -26,10 +26,11 @@ class DownloadAdapter(private val imageClearHelper: ImageClearHelper = GlideClea
             val item = getItem(position)
             tvTitle.text = item.tv.name
             tvBody.text = item.tv.category
-            ivAvatar.load(item.tv.logo)
+//            ivAvatar.load(item.tv.logo)
             images.add(ivAvatar)
-            val progress =
-                item.download.percentDownloaded.toBigDecimal().setScale(0, RoundingMode.HALF_UP)
+            val progress = item.download.percentDownloaded
+                .toBigDecimal()
+                .setScale(0, RoundingMode.HALF_UP)
             val progressInt = progress.toInt()
             progressBar.progress = progressInt
             tvProgress.text = progressInt.toString().plus("%")

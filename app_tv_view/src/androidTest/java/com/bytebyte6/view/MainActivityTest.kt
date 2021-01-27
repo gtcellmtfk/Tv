@@ -1,34 +1,48 @@
 package com.bytebyte6.view
 
-import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.espresso.Espresso.*
+import android.widget.TextView
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.bytebyte6.data.dataModule
-import com.bytebyte6.data.roomMemoryModule
-import com.bytebyte6.usecase.useCaseModule
-import org.junit.Before
+import org.hamcrest.CoreMatchers
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.test.AutoCloseKoinTest
-import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class MainActivityTest{
+class MainActivityTest {
     @get:Rule
     var activityScenarioRule = activityScenarioRule<MainActivity>()
 
     @Test
-    fun is_showing() {
-        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
+    fun test_title_is_display() {
+        onView(
+            CoreMatchers.allOf(
+                CoreMatchers.instanceOf(TextView::class.java),
+                withParent(withId(R.id.toolbar))
+            )
+        )
+            .check(matches(withText(R.string.home_category_view)))
+    }
+
+    @Test
+    fun test_menu_is_open() {
+        try {
+            onView(withContentDescription(R.string.toolbar_navigation)).perform(ViewActions.click())
+            onView(withId(R.id.tvName)).check(matches(isDisplayed()))
+        } catch (e: Exception) {
+            System.err.println(e.message)
+        }
+    }
+
+    @Test
+    fun test_search_is_open() {
+        onView(withContentDescription(R.string.search)).perform(ViewActions.click())
+        onView(withId(R.id.lavEmpty)).check(matches(isDisplayed()))
     }
 }

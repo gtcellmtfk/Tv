@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Message(
     var id: Int = 0,
-    var actionId: Int = 0,
+    var actionStringId: Int = 0,
     var message: String = "",
     var args: List<String> = emptyList(),
     var longDuration: Boolean = false

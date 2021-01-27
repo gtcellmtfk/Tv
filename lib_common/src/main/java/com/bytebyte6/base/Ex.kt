@@ -36,8 +36,8 @@ fun Context.showSnack(
         it.get(this),
         if (it.longDuration) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
     )
-    if (it.actionId != 0) {
-        bar.setAction(it.actionId, listener)
+    if (it.actionStringId != 0) {
+        bar.setAction(it.actionStringId, listener)
     }
     bar.show()
 }

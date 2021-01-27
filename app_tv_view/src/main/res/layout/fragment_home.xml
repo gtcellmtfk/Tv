@@ -29,6 +29,7 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
+            android:contentDescription="@string/tabLayoutContentDescription"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:tabIndicatorFullWidth="true"
             android:id="@+id/tabLayout"

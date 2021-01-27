@@ -24,7 +24,7 @@ const val KEY_PLAY_LIST_ID = "KEY_PLAY_LIST_ID"
 const val KEY_TITLE = "KEY_TITLE"
 const val KEY_CACHE = "KEY_CACHE"
 
-fun MainActivity.toNetworkError(){
+fun FragmentActivity.toNetworkError(){
     val fragment = NetworkErrorFragment()
     replace(fragment, NetworkErrorFragment.TAG)
 }
@@ -55,26 +55,26 @@ fun Fragment.toPlayer(url: String, cache: DownloadRequest? = null) {
     })
 }
 
-fun MainActivity.toHome() {
+fun FragmentActivity.toHome() {
     replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
 }
 
-fun MainActivity.toMe() {
+fun FragmentActivity.toMe() {
     replaceNotAddToBackStack(MeFragment(), MeFragment.TAG)
 }
 
-fun MainActivity.toSetting() {
+fun FragmentActivity.toSetting() {
     replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
 }
 
-fun MainActivity.toFav() {
+fun FragmentActivity.toFav() {
     replaceNotAddToBackStack(
         FavoriteFragment.newInstance(),
         FavoriteFragment.TAG
     )
 }
 
-fun MainActivity.toDownload() {
+fun FragmentActivity.toDownload() {
     replaceNotAddToBackStack(
         DownloadFragment.newInstance(),
         DownloadFragment.TAG

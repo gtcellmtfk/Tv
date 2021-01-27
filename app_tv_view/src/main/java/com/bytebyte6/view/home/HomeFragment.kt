@@ -122,7 +122,7 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
                 binding?.tabLayout?.getTabAt(TAB_LANGUAGE)?.orCreateBadge?.number = it.size
             })
         }
-        //解决状态栏失效不见的问题
+        //解决fitSystemWindow失效的问题
         view.doOnPreDraw {
             it.requestLayout()
         }

@@ -12,7 +12,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/image_404" />
 
     <TextView
         android:layout_marginTop="16dp"

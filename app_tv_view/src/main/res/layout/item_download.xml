@@ -18,7 +18,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/landscape" />
+        android:src="@drawable/image_404" />
 
     <TextView
         android:id="@+id/tvTitle"

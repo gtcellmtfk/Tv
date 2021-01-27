@@ -10,41 +10,28 @@ import java.util.concurrent.TimeUnit
 
 abstract class RxUseCase<Param, ResultType> {
 
-    private var data: ResultType? = null
-
     private val result: MutableLiveData<Result<ResultType>> = MutableLiveData()
-
-    fun postResultAgain() {
-        data?.apply {
-            result.postValue(Result.Success(this))
-        }
-    }
-
-    fun getSuccessData() = data
 
     fun result(): LiveData<Result<ResultType>> = result
 
     fun execute(param: Param): Single<ResultType> = Single.create<ResultType> {
-        val result = run(param)
-        it.onSuccess(result)
+        try {
+            result.postValue((Result.Loading()))
+            val resultType = run(param)
+            result.postValue((Result.Success(resultType)))
+            it.onSuccess(resultType)
+        } catch (e: Exception) {
+            result.postValue((Result.Error(e)))
+            it.onError(e)
+        }
     }
-        .doOnSubscribe { result.postValue((Result.Loading())) }
-        .doOnSuccess {
-            data = it
-            result.postValue((Result.Success(it)))
-        }
-        .doOnError {
-            it.printStackTrace()
-            result.postValue((Result.Error(it)))
-        }
 
     fun interval(param: Param, period: Long = 2): Observable<Long> =
         Observable.interval(period, TimeUnit.SECONDS)
             .doOnNext {
-                data = run(param)
-                result.postValue((Result.Success(data!!)))
+                val resultType = run(param)
+                result.postValue((Result.Success(resultType)))
             }.doOnError {
-                it.printStackTrace()
                 result.postValue((Result.Error(it)))
             }
 
@@ -53,10 +40,10 @@ abstract class RxUseCase<Param, ResultType> {
 
 fun <T> Single<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
-        .subscribe()
+        .subscribe({}, { it.printStackTrace() })
 }
 
 fun <T> Observable<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
-        .subscribe()
+        .subscribe({}, { it.printStackTrace() })
 }

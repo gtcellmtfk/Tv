@@ -35,6 +35,9 @@ android {
     buildFeatures {
          viewBinding true
     }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -42,8 +45,8 @@ dependencies {
     implementation project(path: ':lib_recyclerviewutils')
     implementation project(path: ':lib_common')
 
-    debugApi 'com.squareup.leakcanary:leakcanary-android:2.6'
-    debugApi 'com.balsikandar.android:crashreporter:1.1.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+    debugImplementation 'com.balsikandar.android:crashreporter:1.1.0'
 
     implementation project(path: ':app_tv_usecase')
     implementation project(path: ':app_tv_model')
@@ -57,17 +60,17 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
 
-    testImplementation 'junit:junit:4.13.1'
-
     def fragment_version = "1.2.5"
-    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation "androidx.navigation:navigation-testing:2.3.2"
-    androidTestImplementation "org.koin:koin-test:2.2.1"
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.2"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    debugImplementation 'androidx.test:core:1.3.0'
+    debugImplementation 'junit:junit:4.13.1'
+    debugImplementation 'androidx.test.ext:junit:1.1.2'
+    debugImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    debugImplementation 'androidx.test:runner:1.3.0'
+    debugImplementation 'androidx.test:rules:1.2.0'
+    debugImplementation "androidx.navigation:navigation-testing:2.3.2"
+    debugImplementation "org.koin:koin-test:2.2.1"
+    debugImplementation "androidx.arch.core:core-testing:2.1.0"
+    debugImplementation "androidx.test.ext:junit-ktx:1.1.2"
+    testImplementation 'org.robolectric:robolectric:4.4'
 }

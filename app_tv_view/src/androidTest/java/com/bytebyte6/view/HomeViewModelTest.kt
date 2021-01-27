@@ -3,7 +3,6 @@ package com.bytebyte6.view
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.base.emit
-import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.useCaseModule
@@ -17,13 +16,13 @@ import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
 class HomeViewModelTest : AutoCloseKoinTest() {
 
     private val viewModel by inject<HomeViewModel>()
-    private val db: AppDatabase by inject()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -34,25 +33,6 @@ class HomeViewModelTest : AutoCloseKoinTest() {
         startKoin {
             modules(roomMemoryModule, dataModule, useCaseModule, viewModule)
         }
-    }
-
-    @Test
-    fun test_searchLogo(){
-        viewModel.searchLogo(0)
-    }
-
-    @Test
-    fun test_category() {
-        val countDownLatch = CountDownLatch(1)
-        viewModel.category.observeForever {
-            if(it.isNotEmpty()){
-                countDownLatch.countDown()
-            }
-        }
-        viewModel.refresh()
-        countDownLatch.await()
-        assert(viewModel.category.value != null)
-        assert(viewModel.category.value!!.isNotEmpty())
     }
 
     @Test
@@ -75,7 +55,7 @@ class HomeViewModelTest : AutoCloseKoinTest() {
             )
         }
         viewModel.refresh()
-        countDownLatch.await()
+        countDownLatch.await(5, TimeUnit.SECONDS)
         assert(loadingCount == 1)
         assert(successCount == 1)
         assert(errorCount == 0)

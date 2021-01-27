@@ -12,8 +12,11 @@ class RtmpGlide : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.setLogLevel(Log.ERROR)
             .setDefaultRequestOptions(
-                GlideOptions().dontAnimate().dontTransform().placeholder(R.drawable.landscape)
-                    .error(R.drawable.image_not_found)
+                GlideOptions()
+                    .dontAnimate()
+                    .dontTransform()
+                    .placeholder(R.drawable.landscape)
+                    .error(R.drawable.image_not_found2)
             )
     }
 }

@@ -1,6 +1,7 @@
 package com.bytebyte6.view
 
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 
 
@@ -21,16 +22,17 @@ fun Fragment.setupToolbarArrowBack(
         popBackStack()
     }
     toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-    val mainActivity = requireActivity() as MainActivity
-    mainActivity.lockDrawer()
+    val drawerHelper = DrawerHelper.getInstance(requireActivity())
+    drawerHelper?.lockDrawer()
 }
 
 fun Fragment.setupToolbarMenuMode(title: String? = null, subTitle: String? = null) {
     val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
-    val mainActivity = requireActivity() as MainActivity
+    val drawerHelper = DrawerHelper.getInstance(requireActivity())
     toolbar.let {
+        it.navigationContentDescription = getString(R.string.toolbar_navigation)
         it.setNavigationOnClickListener {
-            mainActivity.openDrawer()
+            drawerHelper?.openDrawer()
         }
         it.setNavigationIcon(R.drawable.ic_menu)
         title?.run {
@@ -40,5 +42,5 @@ fun Fragment.setupToolbarMenuMode(title: String? = null, subTitle: String? = nul
             it.subtitle = this
         }
     }
-    mainActivity.unlockDrawer()
+    drawerHelper?.unlockDrawer()
 }

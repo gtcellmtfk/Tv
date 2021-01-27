@@ -58,7 +58,6 @@ class VideoListFragment : ListFragment() {
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
 
-        recyclerView = binding?.recyclerview
         imageClearHelper = adapter
 
         val title = requireArguments().getString(KEY_TITLE)!!

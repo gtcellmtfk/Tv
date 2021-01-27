@@ -2,6 +2,7 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import com.bytebyte6.base.GsonConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -23,7 +24,8 @@ val roomModule = module {
  * 测试专用
  */
 val roomMemoryModule = module {
-    single { Room.inMemoryDatabaseBuilder(androidContext(), AppDatabase::class.java).build() }
+    single { Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java).build() }
+    single { ApplicationProvider.getApplicationContext<Context>() }
 }
 
 val dataModule = module {
