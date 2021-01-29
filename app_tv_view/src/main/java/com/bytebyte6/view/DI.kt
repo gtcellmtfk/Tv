@@ -22,7 +22,7 @@ val viewModule: Module = module {
     viewModel { VideoListViewModel(get(),get(),get()) }
     viewModel { PlayerViewModel() }
     viewModel { SearchViewModel(get(),get(),get()) }
-    viewModel { MeViewModel(get(), get(), get(),get(),get()) }
+    viewModel { MeViewModel(get(), get(), get()) }
     viewModel { PlaylistViewModel(get(), get(), get()) }
     viewModel { LauncherViewModel(get(),get()) }
     viewModel { HomeViewModel(get(), get(),get(),get()) }

@@ -6,16 +6,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 
-/**
- *  override val list: MutableList<String> = mutableListOf()
- *  override val adapter: RecyclerView.Adapter<CardViewHolder> = this
- *  override var itemTouchHelper: ItemTouchHelper? = null
- *  override var selectionTracker: SelectionTracker<Long>? = null
- *  override var onItemClick: ((pos: Int, view: View) -> Unit)? = null
- *  override var onItemLongClick: ((pos: Int, view: View) -> Boolean)? = null
- *  override var onBind: ((pos: Int, view: View) -> Unit)? = null
- *  override fun getItemCount(): Int = list.size
- */
 interface AdapterHelper<T, V : DetailsViewHolder> {
 
     val adapter: RecyclerView.Adapter<V>
@@ -92,7 +82,7 @@ interface AdapterHelper<T, V : DetailsViewHolder> {
         adapter.notifyItemMoved(fromPos, toPos)
     }
 
-    fun helperOnBindViewHolder(holder: V, position: Int) {
+    fun onHelperBindViewHolder(holder: V, position: Int) {
         onBind?.invoke(position, holder.itemView)
         onItemClick?.apply {
             holder.itemView.setOnClickListener {

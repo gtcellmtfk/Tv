@@ -17,9 +17,7 @@ import com.bytebyte6.usecase.*
 class MeViewModel(
     private val userDao: UserDao,
     private val parseM3uUseCase: ParseM3uUseCase,
-    private val deletePlaylistUseCase: DeletePlaylistUseCase,
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val updateTvUseCase: UpdateTvUseCase
+    private val deletePlaylistUseCase: DeletePlaylistUseCase
 ) : BaseViewModel(){
 
     private lateinit var userWithPlaylist: UserWithPlaylists
@@ -31,17 +29,9 @@ class MeViewModel(
         }
     }
 
-    val playlist: LiveData<Result<Playlist>> = parseM3uUseCase.result()
+    val parseResult: LiveData<Result<Playlist>> = parseM3uUseCase.result()
 
-    val deletePlaylist = deletePlaylistUseCase.result()
-
-    fun searchLogo(pos: Int) {
-        addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId, pos = pos)).onIo()
-        )
-    }
-
-    private lateinit var tvs: List<Tv>
+    val deleteResult = deletePlaylistUseCase.result()
 
     fun getPlaylistId(pos: Int): Long {
         return userWithPlaylist.playlists[pos].playlistId
@@ -61,13 +51,5 @@ class MeViewModel(
             }
             addDisposable(deletePlaylistUseCase.execute(playlist).onIo())
         }
-    }
-
-    fun download(pos: Int) {
-        addDisposable(
-            updateTvUseCase.execute(UpdateTvParam(pos, tvs[pos].apply {
-                download = true
-            })).onIo()
-        )
     }
 }

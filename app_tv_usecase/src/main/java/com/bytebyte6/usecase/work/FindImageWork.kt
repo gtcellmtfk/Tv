@@ -15,16 +15,12 @@ class FindImageWork(
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        logd("work start...")
         try {
             countryImageSearch.doThatShit()
             tvLogoSearch.doThatShit()
         } catch (e: Exception) {
-            logd("work error ... ")
-            e.printStackTrace()
             return Result.failure()
         }
-        logd("work complete...")
         return Result.success()
     }
 }

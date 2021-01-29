@@ -3,7 +3,7 @@ package com.bytebyte6.usecase.work
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.image.SearchImage
 
-class CountryImageSearch(private val dao: CountryDao,private val searchImage: SearchImage)  {
+class CountryImageSearch(private val dao: CountryDao, private val searchImage: SearchImage) {
     fun doThatShit() {
         dao.getCountries()
             //只取为空的查询图片

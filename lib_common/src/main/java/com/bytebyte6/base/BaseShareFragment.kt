@@ -20,24 +20,9 @@ abstract class BaseShareFragment<V : ViewBinding>(layoutId: Int) : BaseFragment<
 
     override var imageClearHelper: ImageClearHelper? = null
 
-    private val exitTransitionListener = object : DefaultTransitionListener() {
-        override fun onTransitionEnd(transition: Transition) {
-            this@BaseShareFragment.logd("exitTransitionListener onTransitionEnd")
-        }
-    }
-    private val sharedTransitionListener = object : DefaultTransitionListener() {
-        override fun onTransitionEnd(transition: Transition) {
-            this@BaseShareFragment.logd("sharedTransitionListener onTransitionEnd")
-        }
-    }
-
     init {
-        exitTransition = Hold().apply {
-            addListener(exitTransitionListener)
-        }
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            addListener(sharedTransitionListener)
-        }
+        exitTransition = Hold()
+        sharedElementEnterTransition = MaterialContainerTransform()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,8 +36,5 @@ abstract class BaseShareFragment<V : ViewBinding>(layoutId: Int) : BaseFragment<
             }
         }
     }
-
-//    abstract fun onExitTransEnd()
-//    abstract fun onShareReturnTransEnd()
 }
 

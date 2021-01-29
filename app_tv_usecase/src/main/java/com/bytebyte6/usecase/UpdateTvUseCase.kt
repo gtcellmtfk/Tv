@@ -5,8 +5,7 @@ import com.bytebyte6.base.RxUseCase
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.entity.Tv
 
-class UpdateTvUseCase(private val tvDao: TvDao) :
-    com.bytebyte6.base.RxUseCase<UpdateTvParam, UpdateTvParam>() {
+class UpdateTvUseCase(private val tvDao: TvDao) : RxUseCase<UpdateTvParam, UpdateTvParam>() {
     override fun run(param: UpdateTvParam): UpdateTvParam {
         val tv = tvDao.getTv(param.tv.tvId)
         tv.favorite = param.tv.favorite

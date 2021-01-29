@@ -16,6 +16,9 @@ import org.junit.runner.RunWith
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 
+/**
+ * 无用测试样例
+ */
 @RunWith(AndroidJUnit4::class)
 class CountryDaoTest : KoinTest {
 

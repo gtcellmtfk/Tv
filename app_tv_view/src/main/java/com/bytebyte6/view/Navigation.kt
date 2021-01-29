@@ -110,15 +110,17 @@ fun Fragment.meToPlaylist(
 }
 
 fun Fragment.setupOnBackPressedDispatcherBackToHome() {
-    val mainActivity = requireActivity() as MainActivity
-    mainActivity.onBackPressedDispatcher.addCallback(
-        viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                mainActivity.replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
-                mainActivity.selectedNavHomeMenuItem()
+    val activity = requireActivity()
+    if (activity is MainActivity){
+        activity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity.replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
+                    activity.selectedNavHomeMenuItem()
+                }
             }
-        }
-    )
+        )
+    }
 }
 
  fun Fragment.replaceWithShareElement(

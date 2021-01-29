@@ -1,6 +1,5 @@
 package com.bytebyte6.view.me
 
-import android.content.Context
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
@@ -114,7 +113,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 }
             }
         }
-        viewModel.deletePlaylist.observe(viewLifecycleOwner, Observer {
+        viewModel.deleteResult.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled({
                 hideProgressBar()
                 selectionTracker.clearSelection()
@@ -135,7 +134,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 lavEmpty.isVisible = it.isEmpty()
             }
         })
-        viewModel.playlist.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.parseResult.observe(viewLifecycleOwner, Observer { result ->
             result.emitIfNotHandled(
                 {
                     hideProgressBar()

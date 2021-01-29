@@ -7,7 +7,7 @@ abstract class BaseAdapter<T, V : DetailsViewHolder> : RecyclerView.Adapter<V>()
     override fun getItemCount(): Int = adapterHelper().list.size
 
     override fun onBindViewHolder(holder: V, position: Int) {
-        adapterHelper().helperOnBindViewHolder(holder, position)
+        adapterHelper().onHelperBindViewHolder(holder, position)
     }
 
     abstract fun adapterHelper():AdapterHelper<T,V>

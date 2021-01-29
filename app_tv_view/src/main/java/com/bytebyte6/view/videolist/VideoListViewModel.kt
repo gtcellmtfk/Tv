@@ -32,7 +32,7 @@ class VideoListViewModel(
     private val searchObserver: (Result<SearchParam>) -> Unit
 
     init {
-        pagingHelper = object : PagingHelper<TvFts>() {
+        pagingHelper = object : PagingHelper<TvFts>(50) {
             override fun count(): Int = tvFtsDao.getCount(getKey())
 
             override fun paging(offset: Int): List<TvFts> = tvFtsDao.paging(offset, getKey())

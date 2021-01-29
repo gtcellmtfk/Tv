@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:contentDescription="@string/pause"
         app:showAsAction="never"
         android:id="@+id/pause"
         android:icon="@drawable/ic_pause"
         android:title="@string/pause" />
 
     <item
+        android:contentDescription="@string/resume"
         app:showAsAction="never"
         android:id="@+id/resume"
         android:icon="@drawable/ic_play_arrow"

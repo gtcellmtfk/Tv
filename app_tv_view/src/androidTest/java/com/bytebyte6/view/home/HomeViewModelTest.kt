@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -6,7 +6,7 @@ import com.bytebyte6.base.emit
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.useCaseModule
-import com.bytebyte6.view.home.HomeViewModel
+import com.bytebyte6.view.viewModule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +31,9 @@ class HomeViewModelTest : AutoCloseKoinTest() {
     fun start() {
         stopKoin()
         startKoin {
-            modules(roomMemoryModule, dataModule, useCaseModule, viewModule)
+            modules(roomMemoryModule, dataModule, useCaseModule,
+                viewModule
+            )
         }
     }
 

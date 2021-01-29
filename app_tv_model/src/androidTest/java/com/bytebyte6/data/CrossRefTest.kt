@@ -16,6 +16,10 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import java.io.IOException
 
+/**
+ * 有用测试样例
+ * 多对多关系测试
+ */
 @RunWith(AndroidJUnit4::class)
 class CrossRefTest : KoinTest {
 

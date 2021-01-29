@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import java.io.File
 import java.util.concurrent.Executors
 
 val useCaseModule: Module = module {
@@ -62,7 +63,7 @@ val useCaseModule: Module = module {
         DownloadManager(
             androidContext(),
             get(DatabaseProvider::class.java),
-            get(),
+            get(Cache::class.java),
             get(HttpDataSource.Factory::class.java),
             Executors.newFixedThreadPool(5)
         )
@@ -70,7 +71,7 @@ val useCaseModule: Module = module {
     single<DatabaseProvider> { ExoDatabaseProvider(androidContext()) }
     single<Cache> {
         SimpleCache(
-            androidContext().cacheDir,
+            File(androidContext().cacheDir,"video") ,
             NoOpCacheEvictor(),
             get(DatabaseProvider::class.java)
         )

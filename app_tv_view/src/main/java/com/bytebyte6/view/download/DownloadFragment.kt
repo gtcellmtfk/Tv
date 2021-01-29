@@ -1,6 +1,5 @@
 package com.bytebyte6.view.download
 
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
@@ -67,19 +66,23 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
         binding?.run {
             appbar.toolbar.inflateMenu(R.menu.menu_download)
             appbar.toolbar.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.pause -> {
-                        DownloadServicePro.pauseDownloads(requireContext())
-                        showSnack(requireView(), Message(id = R.string.pause))
-                        viewModel.pauseInterval()
+                if (viewModel.downloadList.getSuccessData().isNullOrEmpty()) {
+                    false
+                } else {
+                    when (it.itemId) {
+                        R.id.pause -> {
+                            DownloadServicePro.pauseDownloads(requireContext())
+                            showSnack(requireView(), Message(id = R.string.pause))
+                            viewModel.pauseInterval()
+                        }
+                        R.id.resume -> {
+                            DownloadServicePro.resumeDownloads(requireContext())
+                            showSnack(requireView(), Message(id = R.string.resume))
+                            viewModel.startInterval()
+                        }
                     }
-                    R.id.resume -> {
-                        DownloadServicePro.resumeDownloads(requireContext())
-                        showSnack(requireView(), Message(id = R.string.resume))
-                        viewModel.startInterval()
-                    }
+                    true
                 }
-                true
             }
             recyclerview.layoutManager = LinearLayoutManager(view.context)
             recyclerview.adapter = downloadAdapter
@@ -93,10 +96,10 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
                 downloadAdapter.submitList(it.data)
                 hideSwipeRefresh()
             }, {
-                    hideSwipeRefresh()
-                    showSnack(view, Message(message = it.error.message.toString()))
+                hideSwipeRefresh()
+                showSnack(view, Message(message = it.error.message.toString()))
             }, {
-                    showSwipeRefresh()
+                showSwipeRefresh()
             }
             )
         })
@@ -111,14 +114,14 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.tip_del_video).plus(downloadAdapter.currentList[pos].tv.name))
             .setMessage(getString(R.string.tip_beyond_retrieve))
-            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, _: Int ->
                 DownloadServicePro.removeDownload(
                     requireContext(), downloadAdapter.currentList[pos].download.request.id
                 )
                 viewModel.deleteDownload(pos)
                 dialogInterface.dismiss()
             }
-            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
             }
             .show()

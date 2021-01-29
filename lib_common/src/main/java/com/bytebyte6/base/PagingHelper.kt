@@ -33,16 +33,11 @@ abstract class NetWorkPagingHelper<T : Parcelable> : PagingHelper<T>() {
     override fun count(): Int = if (pageResponse == null) 0 else pageResponse!!.count
 }
 
-abstract class PagingHelper<T> {
+abstract class PagingHelper<T>(private val pageSize: Int = 20) {
 
     private val result = MutableLiveData<Result<List<T>>>()
     private var page = 0
     private var list = mutableListOf<T>()
-    private var pageSize = 20
-
-    fun setPageSize(pageSize: Int) {
-        this.pageSize = pageSize
-    }
 
     fun result(): LiveData<Result<List<T>>> = result
 
@@ -67,7 +62,7 @@ abstract class PagingHelper<T> {
                 page++
                 it.onSuccess(Result.Success(list, list.size >= count()))
             } else {
-                it.onSuccess((Result.Success(list, true)))
+                it.onSuccess((Result.Success(emptyList(), true)))
             }
         }
             .doOnSuccess { result.postValue(it) }

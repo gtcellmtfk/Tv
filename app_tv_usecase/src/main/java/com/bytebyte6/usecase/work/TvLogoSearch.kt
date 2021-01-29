@@ -3,7 +3,7 @@ package com.bytebyte6.usecase.work
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.image.SearchImage
 
-class TvLogoSearch(private val dao: TvDao,private val searchImage: SearchImage)  {
+class TvLogoSearch(private val dao: TvDao, private val searchImage: SearchImage) {
     fun doThatShit() {
         dao.getTvs()
             .filter {
