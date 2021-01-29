@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_add" />
+                android:src="@drawable/ic_add"
+                android:contentDescription="@string/cleartext" />
 
         </FrameLayout>
 
