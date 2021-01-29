@@ -34,7 +34,7 @@ class FavoriteFragment : ListFragment() {
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
         }
-        val adapter = ImageAdapter(ButtonType.FAVORITE).apply {
+        val adapter = ImageAdapter(ButtonType.NONE).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].videoUrl)
             }

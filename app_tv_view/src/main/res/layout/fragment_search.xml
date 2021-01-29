@@ -20,6 +20,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.MaterialToolbar
+                app:navigationContentDescription="@string/toolbar_navigation"
                 android:id="@+id/toolbar"
                 style="@style/Toolbar.Rtmp"
                 android:layout_width="match_parent"

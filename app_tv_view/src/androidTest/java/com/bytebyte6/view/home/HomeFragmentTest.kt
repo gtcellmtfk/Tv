@@ -12,16 +12,26 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.bytebyte6.data.dataModule
+import com.bytebyte6.data.roomMemoryModule
+import com.bytebyte6.usecase.exoPlayerModule
+import com.bytebyte6.usecase.useCaseModule
 import com.bytebyte6.view.R
+import com.bytebyte6.view.viewModule
 import com.google.android.material.tabs.TabLayout
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class HomeFragmentTest {
+class HomeFragmentTest  {
+
     @Test
     fun test_title_is_display() {
         setup()
@@ -35,28 +45,29 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun test_tab_is_display0(){
+    fun test_tab_is_display0() {
         setup()
         onView(withId(R.id.tabLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.tabLayout)).perform(selectTabAtPosition(0))
+        Thread.sleep(1000)
         onView(withText("Angola")).check(matches(isDisplayed()))
     }
 
     @Test
-    fun test_tab_is_display1(){
+    fun test_tab_is_display1() {
         setup()
         onView(withId(R.id.tabLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.tabLayout)).perform(selectTabAtPosition(1))
-        Thread.sleep(200)
+        Thread.sleep(1000)
         onView(withText("Akan")).check(matches(isDisplayed()))
     }
 
     @Test
-    fun test_tab_is_display2(){
+    fun test_tab_is_display2() {
         setup()
         onView(withId(R.id.tabLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.tabLayout)).perform(selectTabAtPosition(2))
-        Thread.sleep(600)
+        Thread.sleep(1000)
         onView(withText("Auto")).check(matches(isDisplayed()))
     }
 
@@ -64,7 +75,8 @@ class HomeFragmentTest {
         return object : ViewAction {
             override fun getDescription() = "tabLayoutContentDescription"
 
-            override fun getConstraints() = allOf(isDisplayed(), isAssignableFrom(TabLayout::class.java))
+            override fun getConstraints() =
+                allOf(isDisplayed(), isAssignableFrom(TabLayout::class.java))
 
             override fun perform(uiController: UiController, view: View) {
                 val tabLayout = view as TabLayout
@@ -79,19 +91,19 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun test_menu_is_open(){
+    fun test_menu_is_open() {
         setup()
         onView(withContentDescription(R.string.toolbar_navigation)).check(matches(isClickable()))
     }
 
     @Test
-    fun test_search_is_open(){
+    fun test_search_is_open() {
         setup()
         onView(withContentDescription(R.string.search)).check(matches(isClickable()))
     }
 
     @Test
-    fun test_share_is_open(){
+    fun test_share_is_open() {
         setup()
         onView(withContentDescription(R.string.share)).check(matches(isClickable()))
     }

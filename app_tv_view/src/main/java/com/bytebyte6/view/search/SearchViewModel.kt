@@ -1,7 +1,7 @@
 package com.bytebyte6.view.search
 
 import com.bytebyte6.base.BaseViewModel
-import com.bytebyte6.base.isSuccess
+import com.bytebyte6.base.getSuccessData
 import com.bytebyte6.base.onIo
 import com.bytebyte6.usecase.*
 
@@ -9,14 +9,13 @@ class SearchViewModel(
     private val searchTvUseCase: SearchTvUseCase,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
     private val updateTvUseCase: UpdateTvUseCase
-
 ) : BaseViewModel() {
 
-    val tvs = searchTvUseCase.result()
+    val searchResult = searchTvUseCase.result()
 
-    val favorite = updateTvUseCase.result()
+    val favoriteResult = updateTvUseCase.result()
 
-    val logoSearch = tvLogoSearchUseCase.result()
+    val logoUrlSearchResult = tvLogoSearchUseCase.result()
 
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
@@ -27,25 +26,21 @@ class SearchViewModel(
     }
 
     fun searchLogo(pos: Int) {
-        tvs.value?.apply {
-            this.isSuccess()?.apply {
-                val tvId = this[pos].tvId
-                addDisposable(
-                    tvLogoSearchUseCase.execute(SearchParam(id = tvId, pos = pos)).onIo()
-                )
-            }
+        searchResult.getSuccessData()?.apply {
+            val tvId = this[pos].tvId
+            addDisposable(
+                tvLogoSearchUseCase.execute(SearchParam(id = tvId, pos = pos)).onIo()
+            )
         }
     }
 
     fun fav(pos: Int) {
-        tvs.value?.apply {
-            this.isSuccess()?.apply {
-                val tv = this[pos]
-                tv.favorite = !tv.favorite
-                addDisposable(
-                    updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
-                )
-            }
+        searchResult.getSuccessData()?.apply {
+            val tv = this[pos]
+            tv.favorite = !tv.favorite
+            addDisposable(
+                updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
+            )
         }
     }
 }

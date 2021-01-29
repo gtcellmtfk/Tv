@@ -17,14 +17,23 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.bytebyte6.data.dataModule
+import com.bytebyte6.data.roomMemoryModule
+import com.bytebyte6.usecase.exoPlayerModule
+import com.bytebyte6.usecase.useCaseModule
 import com.bytebyte6.view.R
 import com.bytebyte6.view.download.DownloadViewHolder
 import com.bytebyte6.view.home.HomeFragment
+import com.bytebyte6.view.viewModule
 import com.google.android.material.tabs.TabLayout
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest

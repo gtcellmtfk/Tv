@@ -74,17 +74,17 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
 
             KeyboardUtils.showSoftInput(etSearch, requireContext())
         }
-        viewModel.favorite.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.favoriteResult.observe(viewLifecycleOwner, Observer { result ->
             result.emitIfNotHandled(success = {
                 adapter.notifyItemChanged(it.data.pos)
             })
         })
-        viewModel.logoSearch.observe(viewLifecycleOwner, Observer {
+        viewModel.logoUrlSearchResult.observe(viewLifecycleOwner, Observer {
             it.emitIfNotHandled(success = {
                 viewModel.search(binding?.etSearch?.text)
             })
         })
-        viewModel.tvs.observe(viewLifecycleOwner, Observer {
+        viewModel.searchResult.observe(viewLifecycleOwner, Observer {
             it.isSuccess()?.apply {
                 adapter.submitList(this)
             }

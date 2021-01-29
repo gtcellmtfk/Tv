@@ -1,4 +1,4 @@
-package com.bytebyte6.view.download
+package com.bytebyte6.viewmodel
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -10,7 +10,10 @@ import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.testExoPlayerModule
 import com.bytebyte6.usecase.useCaseModule
+import com.bytebyte6.view.download.DownloadServicePro
+import com.bytebyte6.view.download.DownloadViewModel
 import com.bytebyte6.view.viewModule
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.cache.Cache
@@ -42,7 +45,7 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
     fun start() {
         stopKoin()
         startKoin {
-            modules(roomMemoryModule, dataModule, useCaseModule, viewModule)
+            modules(roomMemoryModule, dataModule, useCaseModule, viewModule,testExoPlayerModule)
         }
         RxJavaPlugins.setIoSchedulerHandler {
             Schedulers.trampoline()
@@ -57,7 +60,10 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
             download = true
         }
         appDatabase.tvDao().insert(tv)
-        DownloadServicePro.addDownload(context, url)
+        DownloadServicePro.addDownload(
+            context,
+            url
+        )
         viewModel.loadDownloadList()
         val value = viewModel.downloadList.getSuccessData()
         assert(value != null)
@@ -72,7 +78,10 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
             download = true
         }
         appDatabase.tvDao().insert(tv)
-        DownloadServicePro.addDownload(context, url)
+        DownloadServicePro.addDownload(
+            context,
+            url
+        )
         viewModel.loadDownloadList()
         val value = viewModel.downloadList.getSuccessData()
         assert(value != null)
@@ -92,7 +101,10 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
             download = true
         }
         appDatabase.tvDao().insert(tv)
-        DownloadServicePro.addDownload(context, url)
+        DownloadServicePro.addDownload(
+            context,
+            url
+        )
         viewModel.loadDownloadList()
         val value1 = viewModel.downloadList.getSuccessData()
         assert(value1 != null)

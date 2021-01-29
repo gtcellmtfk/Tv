@@ -1,4 +1,4 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -6,6 +6,7 @@ import com.bytebyte6.base.emit
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.useCaseModule
+import com.bytebyte6.view.home.HomeViewModel
 import com.bytebyte6.view.viewModule
 import org.junit.Before
 import org.junit.Rule
