@@ -38,6 +38,7 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     private val result = MutableLiveData<Result<List<T>>>()
     private var page = 0
     private var list = mutableListOf<T>()
+    private var end = false
 
     fun result(): LiveData<Result<List<T>>> = result
 
@@ -51,18 +52,19 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
      * 数据已被更改,重新发出值
      */
     fun dataHasBeenChanged() {
-        result.postValue(Result.Success(list))
+        result.postValue(Result.Success(list, end))
     }
 
     fun loadData(): Single<Result<List<T>>> {
         return Single.create<Result<List<T>>> {
-            if (list.size < count()) {
+            if (!end) {
                 result.postValue((Result.Loading()))
-                list.addAll(paging(offset = page * pageSize))
+                list.addAll(paging(offset = page * pageSize,pageSize = pageSize))
                 page++
-                it.onSuccess(Result.Success(list, list.size >= count()))
+                end = list.size >= count()
+                it.onSuccess(Result.Success(list, end))
             } else {
-                it.onSuccess((Result.Success(emptyList(), true)))
+                throw Exception("No More Data")
             }
         }
             .doOnSuccess { result.postValue(it) }
@@ -70,6 +72,7 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     }
 
     fun refresh(): Single<Result<List<T>>> {
+        end=false
         page = 0
         list.clear()
         list = mutableListOf()
@@ -80,5 +83,5 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     abstract fun count(): Int
 
     @WorkerThread
-    abstract fun paging(offset: Int): List<T>
+    abstract fun paging(offset: Int, pageSize: Int = 20): List<T>
 }

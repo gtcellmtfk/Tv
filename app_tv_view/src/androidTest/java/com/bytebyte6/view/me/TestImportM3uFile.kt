@@ -2,6 +2,7 @@ package com.bytebyte6.view.me
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -53,43 +54,44 @@ class TestImportM3uFile {
     }
 
     private fun test(fileName: String) {
-        //启动活动
+        // 启动活动
         val intent = Intent(applicationContext, MainActivity::class.java)
         applicationContext.startActivity(intent)
 
-        //点击菜单
+        // 点击菜单
         val desc = applicationContext.getString(R.string.toolbar_navigation)
         val navButton = device.findObject(UiSelector().description(desc))
         navButton.click()
 
-        //点击导入
+        // 点击导入
         val importText = applicationContext.getString(R.string.nav_import)
         val menuImport = device.findObject(By.text(importText))
         menuImport.click()
 
-        //点击加号导入
+        // 点击加号导入
         val importButton =
             device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/me_import_file"))
         importButton.clickAndWaitForNewWindow()
 
-        //根据文件名找到组件并点击
+        // 根据文件名找到组件并点击
+        // 注意AndroidX
         val fileRecyclerView =
-            UiScrollable(
-                UiSelector().className("android.support.v7.widget.RecyclerView")
-                    ?: UiSelector().className("androidx.recyclerview.widget.RecyclerView")
-            )
-        val aqy = fileRecyclerView.getChildByText(
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
+                UiScrollable(UiSelector().className("android.support.v7.widget.RecyclerView"))
+            else
+                UiScrollable(UiSelector().className("androidx.recyclerview.widget.RecyclerView"))
+        val child = fileRecyclerView.getChildByText(
             UiSelector().className("android.widget.RelativeLayout"),
             fileName
         )
-        aqy.clickAndWaitForNewWindow()
+        child.clickAndWaitForNewWindow()
 
-        //等待loading消失
+        // 等待loading消失
         val progressBar =
             device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/progressBar"))
-        progressBar.waitUntilGone(60000)
+        progressBar.waitUntilGone(30000)
 
-        //断言
+        // 断言
         val toolbar = device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/toolbar"))
         val title = toolbar.getChild(UiSelector().index(1))
         assert(title.text.contains(fileName))

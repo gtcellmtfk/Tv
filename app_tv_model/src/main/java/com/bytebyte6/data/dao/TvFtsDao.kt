@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.TvFts
-import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface TvFtsDao {
@@ -15,8 +14,8 @@ interface TvFtsDao {
     @Query("SELECT COUNT(*) FROM TvFts WHERE TvFts MATCH :key ")
     fun getCount(key: String): Int
 
-    @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key LIMIT $PAGE_SIZE OFFSET :offset")
-    fun paging(offset: Int, key: String): List<TvFts>
+    @Query("SELECT * FROM TvFts WHERE TvFts MATCH :key LIMIT :pageSize OFFSET :offset")
+    fun paging(offset: Int, key: String, pageSize: Int = PAGE_SIZE): List<TvFts>
 
     /**
      * LiveData

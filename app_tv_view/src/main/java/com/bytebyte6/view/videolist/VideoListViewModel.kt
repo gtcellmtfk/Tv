@@ -1,17 +1,13 @@
 package com.bytebyte6.view.videolist
 
 import androidx.lifecycle.LiveData
-import com.bytebyte6.base.PagingHelper
-import com.bytebyte6.base.Result
-import com.bytebyte6.base.emitIfNotHandled
-import com.bytebyte6.base.onIo
-import com.bytebyte6.base.BaseViewModel
+import com.bytebyte6.base.*
 import com.bytebyte6.data.dao.TvFtsDao
 import com.bytebyte6.data.entity.TvFts
-import com.bytebyte6.usecase.UpdateTvParam
-import com.bytebyte6.usecase.UpdateTvUseCase
 import com.bytebyte6.usecase.SearchParam
 import com.bytebyte6.usecase.TvLogoSearchUseCase
+import com.bytebyte6.usecase.UpdateTvParam
+import com.bytebyte6.usecase.UpdateTvUseCase
 
 class VideoListViewModel(
     private val tvFtsDao: TvFtsDao,
@@ -34,8 +30,8 @@ class VideoListViewModel(
     init {
         pagingHelper = object : PagingHelper<TvFts>(50) {
             override fun count(): Int = tvFtsDao.getCount(getKey())
-
-            override fun paging(offset: Int): List<TvFts> = tvFtsDao.paging(offset, getKey())
+            override fun paging(offset: Int, pageSize: Int): List<TvFts> =
+                tvFtsDao.paging(offset, getKey(), pageSize)
         }
         tvs = pagingHelper.result()
         favoriteObserver = { result ->
@@ -88,7 +84,7 @@ class VideoListViewModel(
     fun searchLogo(pos: Int) {
         val tvId = pagingHelper.getList()[pos].tvId
         addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvId,pos=pos)).onIo()
+            tvLogoSearchUseCase.execute(SearchParam(id = tvId, pos = pos)).onIo()
         )
     }
 
@@ -96,7 +92,7 @@ class VideoListViewModel(
         addDisposable(
             updateTvUseCase.execute(
                 UpdateTvParam(pos, TvFts.toTv(pagingHelper.getList()[pos]).apply {
-                    favorite=!favorite
+                    favorite = !favorite
                 })
             ).onIo()
         )

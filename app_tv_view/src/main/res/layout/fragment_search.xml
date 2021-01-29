@@ -39,9 +39,10 @@
                 android:hint="@string/tip_search"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:textColor="@color/white"
-                android:textColorHint="?attr/colorOnPrimary"
-                android:textSize="14sp" />
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="@color/hint"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <ImageButton
                 android:id="@+id/btnClear"

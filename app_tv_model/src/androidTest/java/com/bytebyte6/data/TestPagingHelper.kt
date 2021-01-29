@@ -53,7 +53,7 @@ class TestPagingHelper : KoinTest {
                 return tvDao.getCount()
             }
 
-            override fun paging(offset: Int): List<Tv> {
+            override fun paging(offset: Int, pageSize:Int): List<Tv> {
                 return tvDao.paging(offset)
             }
         }
