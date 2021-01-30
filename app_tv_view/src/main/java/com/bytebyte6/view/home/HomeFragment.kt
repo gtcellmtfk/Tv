@@ -9,6 +9,7 @@ import androidx.core.app.ShareCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
+import com.bytebyte6.app_tv_viewmodel.HomeViewModel
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.base.doOnExitTransitionEndOneShot
 import com.bytebyte6.view.*

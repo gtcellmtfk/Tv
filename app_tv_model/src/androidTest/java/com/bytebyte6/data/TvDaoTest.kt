@@ -46,6 +46,12 @@ class TvDaoTest : KoinTest {
     }
 
     @Test
+    fun testDeleteNotExist() {
+        val tv = Tv(url = "6666666666666666666666666666")
+        tvDao.delete(tv)
+    }
+
+    @Test
     fun testInsertExist() {
         val tv = Tv(url = "https://y5w8j4a09.ssl.hwcdn.net/andprivehd/tracks-v1a1/a.m3u8")
         val id = tvDao.insert(tv)

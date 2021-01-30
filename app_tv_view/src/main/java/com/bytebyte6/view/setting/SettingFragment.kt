@@ -1,12 +1,12 @@
 package com.bytebyte6.view.setting
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
+import com.bytebyte6.app_tv_viewmodel.UserViewModel
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSettingBinding

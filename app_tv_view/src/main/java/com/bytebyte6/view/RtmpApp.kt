@@ -3,6 +3,7 @@ package com.bytebyte6.view
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.bytebyte6.app_tv_viewmodel.viewModule
 import com.bytebyte6.base.LogEx
 import com.bytebyte6.base.baseModule
 import com.bytebyte6.base.logd
@@ -26,7 +27,8 @@ class RtmpApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RtmpApp)
-            modules(baseModule, roomModule, dataModule, viewModule, useCaseModule, exoPlayerModule)
+            modules(baseModule, roomModule, dataModule,
+                viewModule, useCaseModule, exoPlayerModule)
         }
         WorkManager.initialize(
             this, Configuration.Builder().setWorkerFactory(

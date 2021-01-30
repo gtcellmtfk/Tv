@@ -11,7 +11,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
-import com.bytebyte6.view.MainActivity
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.view.R
 import org.junit.Before
 import org.junit.Test

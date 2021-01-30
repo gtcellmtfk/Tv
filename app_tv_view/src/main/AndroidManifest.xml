@@ -38,12 +38,12 @@
 
         <activity
             android:launchMode="singleTop"
-            android:name="com.bytebyte6.view.MainActivity"
+            android:name="com.bytebyte6.view.main.MainActivity"
             android:screenOrientation="portrait"/>
 
         <activity
             android:theme="@style/Theme.Launcher"
-            android:name=".LauncherActivity" >
+            android:name=".launcher.LauncherActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

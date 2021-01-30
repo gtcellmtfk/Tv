@@ -15,9 +15,11 @@
             <option value="$PROJECT_DIR$/app_tv_model" />
             <option value="$PROJECT_DIR$/app_tv_usecase" />
             <option value="$PROJECT_DIR$/app_tv_view" />
+            <option value="$PROJECT_DIR$/app_tv_viewmodel" />
             <option value="$PROJECT_DIR$/lib_common" />
             <option value="$PROJECT_DIR$/lib_dependency" />
             <option value="$PROJECT_DIR$/lib_recyclerviewutils" />
+            <option value="$PROJECT_DIR$/ui_factory" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

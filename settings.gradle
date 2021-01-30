@@ -1,7 +1,9 @@
+include ':app_tv_viewmodel'
+include ':ui_factory'
 include ':lib_recyclerviewutils'
 include ':lib_common'
 include ':lib_dependency'
 include ':app_tv_usecase'
 include ':app_tv_view'
 include ':app_tv_model'
-rootProject.name = "ByteByte"
+rootProject.name = "Tv"

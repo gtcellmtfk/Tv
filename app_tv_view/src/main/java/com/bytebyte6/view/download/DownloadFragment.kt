@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bytebyte6.app_tv_viewmodel.DownloadViewModel
 import com.bytebyte6.base.*
 import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.library.ListFragment

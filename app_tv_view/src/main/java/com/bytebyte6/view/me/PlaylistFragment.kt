@@ -4,17 +4,20 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bytebyte6.app_tv_viewmodel.PlaylistViewModel
 import com.bytebyte6.base.*
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.ButtonClickListener
+import com.bytebyte6.view.adapter.ButtonType
+import com.bytebyte6.view.adapter.ImageAdapter
 import com.bytebyte6.view.download.DownloadServicePro
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.MediaItem
@@ -70,11 +73,13 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
         setupToolbarArrowBack()
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
-        val imageAdapter = ImageAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
-            override fun onClick(position: Int) {
-                onDownloadClick(position)
-            }
-        }).apply {
+        val imageAdapter = ImageAdapter(
+            ButtonType.DOWNLOAD,
+            object : ButtonClickListener {
+                override fun onClick(position: Int) {
+                    onDownloadClick(position)
+                }
+            }).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].videoUrl)
             }

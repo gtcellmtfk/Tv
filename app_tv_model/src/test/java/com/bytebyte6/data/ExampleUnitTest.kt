@@ -1,5 +1,7 @@
 package com.bytebyte6.data
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okio.internal.commonToUtf8String
 import org.junit.Test
 import java.io.File
@@ -46,5 +48,8 @@ class ExampleUnitTest {
         val urlResult = urlRegex.findAll(m3uString).count()
         val countryResult = countryRegex.findAll(m3uString).count()
         val titleResult = titleRegex.findAll(m3uString).count()
+
+        val gson= Gson().fromJson<Any>("",Any::class.java)
+        val obj=JsonObject()
     }
 }

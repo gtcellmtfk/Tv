@@ -8,6 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.bytebyte6.view.main.MainActivity
 import org.hamcrest.CoreMatchers
 import org.junit.Rule
 import org.junit.Test

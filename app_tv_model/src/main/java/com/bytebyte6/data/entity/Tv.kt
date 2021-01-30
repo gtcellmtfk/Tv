@@ -3,7 +3,6 @@ package com.bytebyte6.data.entity
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.*
-import com.bytebyte6.data.model.Card
 import com.bytebyte6.data.model.Image
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize

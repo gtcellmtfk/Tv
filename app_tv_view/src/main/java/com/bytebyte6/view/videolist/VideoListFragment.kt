@@ -5,12 +5,16 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bytebyte6.app_tv_viewmodel.VideoListViewModel
 import com.bytebyte6.base.*
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.library.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.ButtonClickListener
+import com.bytebyte6.view.adapter.ButtonType
+import com.bytebyte6.view.adapter.ImageAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class VideoListFragment : ListFragment() {
@@ -29,7 +33,8 @@ class VideoListFragment : ListFragment() {
 
     private val viewModel: VideoListViewModel by viewModel()
 
-    private val buttonClickListener = object : ButtonClickListener {
+    private val buttonClickListener = object :
+        ButtonClickListener {
         override fun onClick(position: Int) {
             viewModel.fav(position)
         }
@@ -44,7 +49,10 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ImageAdapter(ButtonType.FAVORITE, buttonClickListener).apply {
+        val adapter = ImageAdapter(
+            ButtonType.FAVORITE,
+            buttonClickListener
+        ).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].videoUrl)
             }

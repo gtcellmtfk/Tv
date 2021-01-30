@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bytebyte6.app_tv_viewmodel.HomeViewModel
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.library.GridSpaceDecoration
-import com.bytebyte6.view.ImageAdapter
+import com.bytebyte6.view.adapter.ImageAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList

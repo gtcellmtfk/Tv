@@ -5,14 +5,19 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import com.bytebyte6.app_tv_viewmodel.SearchViewModel
 import com.bytebyte6.base.*
 import com.bytebyte6.library.GridSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.ButtonClickListener
+import com.bytebyte6.view.adapter.ButtonType
+import com.bytebyte6.view.adapter.ImageAdapter
 import com.bytebyte6.view.databinding.FragmentSearchBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragment_search) {
+class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragment_search),
+    Observer<Result<*>> {
 
     companion object {
         const val TAG = "SearchFragment"
@@ -41,11 +46,13 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
-        val adapter = ImageAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
-            override fun onClick(position: Int) {
-                viewModel.fav(position)
-            }
-        }).apply {
+        val adapter = ImageAdapter(
+            ButtonType.FAVORITE,
+            object : ButtonClickListener {
+                override fun onClick(position: Int) {
+                    viewModel.fav(position)
+                }
+            }).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].videoUrl)
             }
@@ -89,5 +96,20 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
                 adapter.submitList(this)
             }
         })
+        viewModel.searchResult.observe(viewLifecycleOwner, this)
+        viewModel.logoUrlSearchResult.observe(viewLifecycleOwner, this)
+        viewModel.favoriteResult.observe(viewLifecycleOwner, this)
+    }
+
+    override fun onChanged(t: Result<*>) {
+        t.emitIfNotHandled(
+            {
+                logd("Hide Loading")
+            }, {
+                logd("Hide Loading And show Error")
+            }, {
+                logd("Show Loading")
+            }
+        )
     }
 }

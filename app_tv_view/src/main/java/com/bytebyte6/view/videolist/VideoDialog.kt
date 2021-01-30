@@ -9,6 +9,7 @@ import com.bytebyte6.base.ResultObserver
 import com.bytebyte6.base.KEY_TRANS_NAME
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.view.*
+import com.bytebyte6.view.adapter.ImageAdapter
 
 import com.bytebyte6.view.databinding.DialogVideoBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -29,7 +30,7 @@ class VideoDialog : BottomSheetDialogFragment() {
 
     private var binding: DialogVideoBinding? = null
 
-    private val viewModel by viewModel<VideoListViewModel>()
+    private val viewModel by viewModel<com.bytebyte6.app_tv_viewmodel.VideoListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

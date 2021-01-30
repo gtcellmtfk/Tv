@@ -3,12 +3,13 @@ package com.bytebyte6.view.home
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import com.bytebyte6.app_tv_viewmodel.HomeViewModel
 import com.bytebyte6.base.BaseShareFragment
 import com.bytebyte6.library.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_LANGUAGE
-import com.bytebyte6.view.card.CardAdapter
+import com.bytebyte6.view.adapter.CardAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList
 import org.koin.android.viewmodel.ext.android.getViewModel
