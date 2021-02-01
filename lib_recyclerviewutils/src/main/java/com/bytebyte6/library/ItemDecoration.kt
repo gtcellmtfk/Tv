@@ -2,6 +2,7 @@ package com.bytebyte6.library
 
 import android.graphics.Rect
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
@@ -17,10 +18,17 @@ class LinearSpaceDecoration(
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
         val count: Int? = parent.adapter?.itemCount
+        val layoutManager = parent.layoutManager as LinearLayoutManager
+        val orientation = layoutManager.orientation
         if (count != null) {
             val pos = parent.getChildLayoutPosition(view)
-            val bottom2 = if (pos == count - 1) bottom else 0
-            outRect.set(start, top, end, bottom2)
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                val end2 = if (pos == count - 1) end else 0
+                outRect.set(start, top, end2, bottom)
+            } else {
+                val bottom2 = if (pos == count - 1) bottom else 0
+                outRect.set(start, top, end, bottom2)
+            }
         }
     }
 }

@@ -2,13 +2,14 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
-      <module name="Tv.app_tv_model" target="1.8" />
-      <module name="Tv.app_tv_usecase" target="1.8" />
-      <module name="Tv.app_tv_view" target="1.8" />
-      <module name="Tv.app_tv_viewmodel" target="1.8" />
       <module name="Tv.lib_common" target="1.8" />
       <module name="Tv.lib_dependency" target="1.8" />
       <module name="Tv.lib_recyclerviewutils" target="1.8" />
+      <module name="Tv.tv" target="1.8" />
+      <module name="Tv.tv_model" target="1.8" />
+      <module name="Tv.tv_usecase" target="1.8" />
+      <module name="Tv.tv_viewmodel" target="1.8" />
+      <module name="Tv.weather" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

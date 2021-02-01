@@ -5,18 +5,16 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.core.Single
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-data class PageResponse<T : Parcelable>(
+data class PageResponse<T>(
     var page: Int = 0,
     var pageCount: Int = 0,
     var count: Int = 0,
     var pageSize: Int = 0,
     var list: List<T> = emptyList()
-) : Parcelable
+)
 
-abstract class NetWorkPagingHelper<T : Parcelable> : PagingHelper<T>() {
+abstract class NetWorkPagingHelper<T> : PagingHelper<T>() {
 
     private var pageResponse: PageResponse<T>? = null
 
@@ -26,12 +24,12 @@ abstract class NetWorkPagingHelper<T : Parcelable> : PagingHelper<T>() {
         }
     }
 
-    private fun loadNetWorkData(): PageResponse<T> {
-        return PageResponse()
-    }
+    abstract fun loadNetWorkData(): PageResponse<T>
 
     override fun count(): Int = if (pageResponse == null) 0 else pageResponse!!.count
 }
+
+object NoMoreData : Throwable("No More Data!!!")
 
 abstract class PagingHelper<T>(private val pageSize: Int = 20) {
 
@@ -55,16 +53,16 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
         result.postValue(Result.Success(list, end))
     }
 
-    fun loadData(): Single<Result<List<T>>> {
+    fun loadResult(): Single<Result<List<T>>> {
         return Single.create<Result<List<T>>> {
-            if (!end) {
+            if (end) {
+                throw NoMoreData
+            } else {
                 result.postValue((Result.Loading()))
-                list.addAll(paging(offset = page * pageSize,pageSize = pageSize))
+                list.addAll(paging(offset = page * pageSize, pageSize = pageSize))
                 page++
                 end = list.size >= count()
                 it.onSuccess(Result.Success(list, end))
-            } else {
-                throw Exception("No More Data")
             }
         }
             .doOnSuccess { result.postValue(it) }
@@ -72,11 +70,11 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     }
 
     fun refresh(): Single<Result<List<T>>> {
-        end=false
+        end = false
         page = 0
         list.clear()
         list = mutableListOf()
-        return loadData()
+        return loadResult()
     }
 
     @WorkerThread

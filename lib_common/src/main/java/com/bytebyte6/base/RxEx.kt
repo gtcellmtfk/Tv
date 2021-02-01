@@ -8,25 +8,25 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-abstract class RxUseCase<Param, ResultType> {
+abstract class RxUseCase<I, O> {
 
-    private val result: MutableLiveData<Result<ResultType>> = MutableLiveData()
+    private val result: MutableLiveData<Result<O>> = MutableLiveData()
 
-    fun result(): LiveData<Result<ResultType>> = result
+    fun result(): LiveData<Result<O>> = result
 
-    fun execute(param: Param): Single<ResultType> = Single.create<ResultType> {
+    fun execute(param: I): Single<O> = Single.create<O> {
         try {
             result.postValue((Result.Loading()))
-            val resultType = run(param)
-            result.postValue((Result.Success(resultType)))
-            it.onSuccess(resultType)
+            val o = run(param)
+            result.postValue((Result.Success(o)))
+            it.onSuccess(o)
         } catch (e: Exception) {
             result.postValue((Result.Error(e)))
             it.onError(e)
         }
     }
 
-    fun interval(param: Param, period: Long = 2): Observable<Long> =
+    fun interval(param: I, period: Long = 2): Observable<Long> =
         Observable.interval(period, TimeUnit.SECONDS)
             .doOnNext {
                 val resultType = run(param)
@@ -35,15 +35,23 @@ abstract class RxUseCase<Param, ResultType> {
                 result.postValue((Result.Error(it)))
             }
 
-    abstract fun run(param: Param): ResultType
+    abstract fun run(param: I): O
 }
 
 fun <T> Single<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
-        .subscribe({}, { it.printStackTrace() })
+        .subscribe({
+
+        }, {
+            it.printStackTrace()
+        })
 }
 
 fun <T> Observable<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
-        .subscribe({}, { it.printStackTrace() })
+        .subscribe({
+
+        }, {
+            it.printStackTrace()
+        })
 }
