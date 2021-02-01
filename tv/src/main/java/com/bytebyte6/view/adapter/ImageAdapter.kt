@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bytebyte6.base.GlideClearHelper
-import com.bytebyte6.base.ImageClearHelper
+import com.bytebyte6.common.GlideClearHelper
+import com.bytebyte6.common.ImageClearHelper
 import com.bytebyte6.data.model.Image
-import com.bytebyte6.library.BaseListAdapter
+import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemImageBinding
 import com.bytebyte6.view.load

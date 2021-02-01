@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.viewmodel.PlaylistViewModel
-import com.bytebyte6.base.*
-import com.bytebyte6.library.GridSpaceDecoration
-import com.bytebyte6.library.ListFragment
+import com.bytebyte6.common.*
+import com.bytebyte6.utils.GridSpaceDecoration
+import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R

@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.viewmodel.HomeViewModel
-import com.bytebyte6.base.BaseShareFragment
-import com.bytebyte6.library.LinearSpaceDecoration
+import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_CATEGORY

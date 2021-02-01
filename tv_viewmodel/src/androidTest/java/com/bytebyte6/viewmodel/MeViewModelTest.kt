@@ -8,7 +8,7 @@ import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.useCaseModule
-import com.bytebyte6.base.isError
+import com.bytebyte6.dependency.isError
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.Before

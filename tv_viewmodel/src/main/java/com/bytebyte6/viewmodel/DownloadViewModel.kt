@@ -1,7 +1,8 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.*
+import com.bytebyte6.common.BaseViewModel
+import com.bytebyte6.common.*
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.usecase.UpdateTvParam

@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.base.Result
+import com.bytebyte6.dependency.Result
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.entity.Tv
 import org.junit.After
@@ -47,7 +47,7 @@ class TestPagingHelper : KoinTest {
 
     @Test
     fun testPaging() {
-        val pagingHelper = object : com.bytebyte6.base.PagingHelper<Tv>() {
+        val pagingHelper = object : com.bytebyte6.dependency.PagingHelper<Tv>() {
             override fun count(): Int {
                 return tvDao.getCount()
             }

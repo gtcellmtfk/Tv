@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.useCaseModule
-import com.bytebyte6.base.emit
+import com.bytebyte6.dependency.emit
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

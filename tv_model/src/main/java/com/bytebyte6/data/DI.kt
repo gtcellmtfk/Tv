@@ -2,8 +2,7 @@ package com.bytebyte6.data
 
 import android.content.Context
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.bytebyte6.base.GsonConfig
+import com.bytebyte6.common.GsonConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,14 +19,6 @@ val roomModule = module {
     single { createDb(androidContext()) }
 }
 
-/**
- * 测试专用
- */
-val roomMemoryModule = module {
-    single { Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java).build() }
-    single { ApplicationProvider.getApplicationContext<Context>() }
-}
-
 val dataModule = module {
     single { createRetrofit(get()) }
     single<TvApi> { get(Retrofit::class.java).create(TvApi::class.java) }
@@ -36,7 +27,6 @@ val dataModule = module {
     single { get(AppDatabase::class.java).userDao() }
     single { get(AppDatabase::class.java).playlistDao() }
     single { get(AppDatabase::class.java).countryDao() }
-
     single { get(AppDatabase::class.java).playlistTvCrossRefDao() }
     single { get(AppDatabase::class.java).userPlaylistCrossRefDao() }
     factory {

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bytebyte6.base.randomColorByNightMode
+import com.bytebyte6.common.randomColorByNightMode
 import com.bytebyte6.data.model.Card
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
@@ -28,7 +28,7 @@ data class Playlist(
         get() = Random.Default.nextBoolean()
 
     override val color: Int
-        get() = com.bytebyte6.base.randomColorByNightMode()
+        get() = randomColorByNightMode()
 
     override val radius: Int
         get() = 10

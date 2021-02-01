@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import com.bytebyte6.viewmodel.PlayerViewModel
-import com.bytebyte6.base.logd
-import com.bytebyte6.base.BaseShareFragment
-import com.bytebyte6.base.Message
-import com.bytebyte6.base.showSnack
+import com.bytebyte6.common.logd
+import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.Message
+import com.bytebyte6.common.showSnack
 import com.bytebyte6.view.KEY_CACHE
 import com.bytebyte6.view.KEY_VIDEO_URL
 import com.bytebyte6.view.R

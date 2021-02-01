@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import com.bytebyte6.viewmodel.UserViewModel
-import com.bytebyte6.base.BaseShareFragment
+import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSettingBinding
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome

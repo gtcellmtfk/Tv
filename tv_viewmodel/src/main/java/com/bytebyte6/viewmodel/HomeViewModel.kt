@@ -1,11 +1,11 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.bytebyte6.base.Result
-import com.bytebyte6.base.BaseViewModel
+import com.bytebyte6.common.Result
+import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.base.onIo
+import com.bytebyte6.common.onIo
 import com.bytebyte6.usecase.CountryImageSearchUseCase
 import com.bytebyte6.usecase.TvRefreshUseCase
 

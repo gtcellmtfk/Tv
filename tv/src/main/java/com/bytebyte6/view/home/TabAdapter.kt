@@ -1,9 +1,7 @@
 package com.bytebyte6.view.home
 
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bytebyte6.base.BaseShareFragment
 
 class TabAdapter(fragment: Fragment) :
     FragmentStateAdapter(fragment.childFragmentManager, fragment.viewLifecycleOwner.lifecycle) {

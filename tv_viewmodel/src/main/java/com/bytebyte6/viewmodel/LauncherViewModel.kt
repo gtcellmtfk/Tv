@@ -3,10 +3,10 @@ package com.bytebyte6.viewmodel
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.Result
-import com.bytebyte6.base.isSuccess
-import com.bytebyte6.base.BaseViewModel
-import com.bytebyte6.base.onIo
+import com.bytebyte6.common.Result
+import com.bytebyte6.common.isSuccess
+import com.bytebyte6.common.BaseViewModel
+import com.bytebyte6.common.onIo
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
 import com.bytebyte6.usecase.CreateUserUseCase

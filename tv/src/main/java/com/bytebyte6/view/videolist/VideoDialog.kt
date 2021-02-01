@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.ResultObserver
-import com.bytebyte6.base.KEY_TRANS_NAME
+import com.bytebyte6.common.ResultObserver
+import com.bytebyte6.common.KEY_TRANS_NAME
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.ImageAdapter

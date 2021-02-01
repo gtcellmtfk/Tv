@@ -3,7 +3,7 @@ package com.bytebyte6.view.adapter
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.bytebyte6.data.model.Card
-import com.bytebyte6.library.BaseListAdapter
+import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.home.randomImage
 

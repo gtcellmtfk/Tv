@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
-import com.bytebyte6.base.SimpleDrawerListener
+import com.bytebyte6.common.SimpleDrawerListener
 
 class DrawerHelper private constructor(
     private val drawerLayout: DrawerLayout,

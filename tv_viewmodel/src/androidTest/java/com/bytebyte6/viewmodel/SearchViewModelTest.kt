@@ -8,8 +8,8 @@ import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.testExoPlayerModule
 import com.bytebyte6.usecase.useCaseModule
-import com.bytebyte6.base.getSuccessData
-import com.bytebyte6.base.isLoading
+import com.bytebyte6.dependency.getSuccessData
+import com.bytebyte6.dependency.isLoading
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.Before

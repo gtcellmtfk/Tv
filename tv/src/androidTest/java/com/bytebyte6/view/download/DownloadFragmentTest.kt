@@ -1,10 +1,8 @@
 package com.bytebyte6.view.download
 
-import android.content.Context
 import android.widget.TextView
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
@@ -12,13 +10,10 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.bytebyte6.base.logd
 import com.bytebyte6.view.R
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.ext.koin.androidContext
-import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest

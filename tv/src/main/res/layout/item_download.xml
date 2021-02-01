@@ -10,7 +10,7 @@
     android:focusable="true"
     app:cardElevation="0dp">
 
-    <com.bytebyte6.base.CircleImageView
+    <com.bytebyte6.common.CircleImageView
         android:id="@+id/ivAvatar"
         android:layout_width="56dp"
         android:layout_height="56dp"

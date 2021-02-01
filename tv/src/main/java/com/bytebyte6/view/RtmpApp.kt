@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.bytebyte6.viewmodel.viewModule
-import com.bytebyte6.base.LogEx
-import com.bytebyte6.base.baseModule
-import com.bytebyte6.base.logd
+import com.bytebyte6.common.LogEx
+import com.bytebyte6.common.baseModule
+import com.bytebyte6.common.logd
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomModule
 import com.bytebyte6.usecase.exoPlayerModule

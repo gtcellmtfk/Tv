@@ -2,8 +2,8 @@ package com.bytebyte6.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.base.getSuccessData
-import com.bytebyte6.base.isLoading
+import com.bytebyte6.dependency.getSuccessData
+import com.bytebyte6.dependency.isLoading
 import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.roomMemoryModule

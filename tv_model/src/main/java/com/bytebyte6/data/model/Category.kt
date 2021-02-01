@@ -3,7 +3,7 @@ package com.bytebyte6.data.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.Ignore
-import com.bytebyte6.base.randomColorByNightMode
+import com.bytebyte6.common.randomColorByNightMode
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 
@@ -12,7 +12,7 @@ import kotlin.random.Random
 data class Category(
     var category: String = "",
     @Ignore var content: String = Nausea[Random.Default.nextInt(22)],
-    @Ignore override val color: Int = com.bytebyte6.base.randomColorByNightMode(),
+    @Ignore override val color: Int = randomColorByNightMode(),
     @Ignore override val radius: Int = 10,
     @Ignore override val outline: Boolean = Random.Default.nextBoolean()
 ) : Parcelable, Card {

@@ -1,6 +1,6 @@
 package com.bytebyte6.usecase
 
-import com.bytebyte6.base.RxUseCase
+import com.bytebyte6.common.RxUseCase
 import com.bytebyte6.data.dao.PlaylistDao
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv

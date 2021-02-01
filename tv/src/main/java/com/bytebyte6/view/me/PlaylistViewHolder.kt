@@ -5,8 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.bytebyte6.library.DetailsViewHolder
+import com.bytebyte6.utils.DetailsViewHolder
 import com.bytebyte6.view.R
 import com.google.android.material.card.MaterialCardView
 

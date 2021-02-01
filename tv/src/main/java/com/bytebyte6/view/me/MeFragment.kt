@@ -12,8 +12,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.viewmodel.MeViewModel
-import com.bytebyte6.base.*
-import com.bytebyte6.library.LinearSpaceDecoration
+import com.bytebyte6.common.*
+import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentMeBinding

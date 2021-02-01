@@ -2,7 +2,7 @@ package com.bytebyte6.usecase
 
 import android.content.Context
 import androidx.work.*
-import com.bytebyte6.base.RxUseCase
+import com.bytebyte6.common.RxUseCase
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dao.UserDao

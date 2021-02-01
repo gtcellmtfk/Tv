@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <!--要注意设置约束布局属性 设置不对会导致片段显示不全-->
-    <com.bytebyte6.base.DrawerContent
+    <com.bytebyte6.common.DrawerContent
         android:id="@+id/drawContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +19,7 @@
 
         </FrameLayout>
 
-    </com.bytebyte6.base.DrawerContent>
+    </com.bytebyte6.common.DrawerContent>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"

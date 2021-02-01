@@ -6,8 +6,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.bytebyte6.viewmodel.SearchViewModel
-import com.bytebyte6.base.*
-import com.bytebyte6.library.GridSpaceDecoration
+import com.bytebyte6.common.*
+import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener

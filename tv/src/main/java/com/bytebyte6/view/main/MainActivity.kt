@@ -3,7 +3,7 @@ package com.bytebyte6.view.main
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import com.bytebyte6.base.*
+import com.bytebyte6.common.*
 import com.bytebyte6.data.dao.UserDao
 import com.bytebyte6.view.DrawerHelper
 import com.bytebyte6.view.R

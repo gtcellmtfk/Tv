@@ -2,7 +2,7 @@ package com.bytebyte6.usecase
 
 import android.content.Context
 import android.net.Uri
-import com.bytebyte6.base.RxUseCase
+import com.bytebyte6.common.RxUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef

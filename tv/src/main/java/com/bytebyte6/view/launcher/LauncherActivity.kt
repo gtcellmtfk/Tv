@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.lifecycle.Observer
 import com.bytebyte6.viewmodel.LauncherViewModel
-import com.bytebyte6.base.emitIfNotHandled
-import com.bytebyte6.base.BaseActivity
-import com.bytebyte6.base.Message
-import com.bytebyte6.base.showToast
+import com.bytebyte6.common.emitIfNotHandled
+import com.bytebyte6.common.BaseActivity
+import com.bytebyte6.common.Message
+import com.bytebyte6.common.showToast
 import com.bytebyte6.view.main.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 

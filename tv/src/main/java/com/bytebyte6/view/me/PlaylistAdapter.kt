@@ -7,8 +7,8 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.data.model.Card
-import com.bytebyte6.library.AdapterHelper
-import com.bytebyte6.library.BaseAdapter
+import com.bytebyte6.utils.AdapterHelper
+import com.bytebyte6.utils.BaseAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.home.randomImage
 

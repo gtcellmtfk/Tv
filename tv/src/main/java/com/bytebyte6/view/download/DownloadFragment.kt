@@ -8,9 +8,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bytebyte6.viewmodel.DownloadViewModel
-import com.bytebyte6.base.*
-import com.bytebyte6.library.LinearSpaceDecoration
-import com.bytebyte6.library.ListFragment
+import com.bytebyte6.common.*
+import com.bytebyte6.utils.LinearSpaceDecoration
+import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode

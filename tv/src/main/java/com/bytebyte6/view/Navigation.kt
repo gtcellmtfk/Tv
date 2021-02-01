@@ -6,7 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-import com.bytebyte6.base.NetworkErrorFragment
+import com.bytebyte6.common.NetworkErrorFragment
 import com.bytebyte6.view.download.DownloadFragment
 import com.bytebyte6.view.favorite.FavoriteFragment
 import com.bytebyte6.view.home.HomeFragment

@@ -10,8 +10,8 @@ import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.bytebyte6.viewmodel.HomeViewModel
-import com.bytebyte6.base.BaseShareFragment
-import com.bytebyte6.base.doOnExitTransitionEndOneShot
+import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.doOnExitTransitionEndOneShot
 import com.bytebyte6.view.*
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
