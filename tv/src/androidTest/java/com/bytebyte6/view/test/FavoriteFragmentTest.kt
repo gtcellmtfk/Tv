@@ -1,4 +1,4 @@
-package com.bytebyte6.view
+package com.bytebyte6.view.test
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -9,6 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ImageViewHolder
 import com.bytebyte6.view.favorite.FavoriteFragment
 import org.junit.Test

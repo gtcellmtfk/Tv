@@ -38,11 +38,10 @@ dependencies {
     implementation project(path: ':tv_usecase')
     implementation project(path: ':tv_model')
     androidTestImplementation 'androidx.test:core:'+rootProject.ext.core
-    androidTestImplementation "org.koin:koin-test:2.2.1"
+    androidTestImplementation "org.koin:koin-test:"+rootProject.ext.koin
     androidTestImplementation 'androidx.test.ext:junit:'+rootProject.ext.extJunit
     androidTestImplementation 'androidx.test.ext:junit-ktx:'+rootProject.ext.extJunit
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.arch.core:core-testing:"+rootProject.ext.testing
     androidTestImplementation 'androidx.test:runner:'+rootProject.ext.runner
-    def exoplayer="2.12.2"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-core:"+rootProject.ext.exoplayer
 }

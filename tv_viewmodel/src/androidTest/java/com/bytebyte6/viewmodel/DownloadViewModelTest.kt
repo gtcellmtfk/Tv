@@ -2,11 +2,10 @@ package com.bytebyte6.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.dependency.getSuccessData
-import com.bytebyte6.dependency.isLoading
+import com.bytebyte6.common.getSuccessData
+import com.bytebyte6.common.isLoading
 import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
-import com.bytebyte6.data.roomMemoryModule
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.UpdateTvUseCase
 import com.bytebyte6.usecase.testExoPlayerModule

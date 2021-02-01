@@ -11,7 +11,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 
-final class NotDisplayed extends TypeSafeMatcher<View> {
+public class NotDisplayed extends TypeSafeMatcher<View> {
     @Override
     public void describeTo(Description description) {
         description.appendText("is displayed on the screen to the user");

@@ -37,19 +37,18 @@ dependencies {
     implementation project(path: ':tv_model')
     implementation project(path: ':lib_dependency')
     implementation project(path: ':lib_common')
-    implementation 'com.github.bytebyte6:GetImage:4.0'
+    implementation 'com.github.bytebyte6:GetImage:5.0'
 
-    def exoplayer="2.12.2"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    implementation "com.google.android.exoplayer:exoplayer-core:"+rootProject.ext.exoplayer
 
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:'+rootProject.ext.junit
 
     androidTestImplementation 'androidx.test:core:'+rootProject.ext.core
 
     androidTestImplementation 'androidx.test:runner:'+rootProject.ext.runner
     androidTestImplementation 'androidx.test:rules:'+rootProject.ext.rules
-    androidTestImplementation "org.koin:koin-test:2.2.1"
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "org.koin:koin-test:"+rootProject.ext.koin
+    androidTestImplementation "androidx.arch.core:core-testing:"+rootProject.ext.testing
     androidTestImplementation 'androidx.test.ext:junit:'+rootProject.ext.extJunit
     androidTestImplementation 'androidx.test.ext:junit-ktx:'+rootProject.ext.extJunit
 }

@@ -1,8 +1,9 @@
-package com.bytebyte6.data
+package com.bytebyte6.viewmodel
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.bytebyte6.data.AppDatabase
 import org.koin.dsl.module
 
 /**

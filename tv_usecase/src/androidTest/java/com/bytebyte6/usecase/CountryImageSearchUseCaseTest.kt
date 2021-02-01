@@ -6,7 +6,6 @@ import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.entity.Country
-import com.bytebyte6.data.roomMemoryModule
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

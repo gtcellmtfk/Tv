@@ -65,19 +65,16 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:$retrofit"
     api("com.squareup.okhttp3:logging-interceptor:4.7.2")
 
-    def koin = '2.2.1'
-    api "org.koin:koin-android:$koin"
-    api "org.koin:koin-android-scope:$koin"
-    api "org.koin:koin-android-viewmodel:$koin"
+    api "org.koin:koin-android:"+rootProject.ext.koin
+    api "org.koin:koin-android-scope:"+rootProject.ext.koin
+    api "org.koin:koin-android-viewmodel:"+rootProject.ext.koin
 
-    def glideVersion = '4.11.0'
-    api "com.github.bumptech.glide:glide:$glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+    api "com.github.bumptech.glide:glide:"+rootProject.ext.glideVersion
+    kapt "com.github.bumptech.glide:compiler:"+rootProject.ext.glideVersion
 
-    def room_version = "2.2.6"
-    api "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    api "androidx.room:room-ktx:$room_version"
+    api "androidx.room:room-runtime:"+rootProject.ext.room_version
+    kapt "androidx.room:room-compiler:"+rootProject.ext.room_version
+    api "androidx.room:room-ktx:"+rootProject.ext.room_version
 
     def lifecycle_version = "2.2.0"
     api "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"

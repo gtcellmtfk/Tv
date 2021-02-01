@@ -1,4 +1,4 @@
-package com.bytebyte6.view.download
+package com.bytebyte6.view.test
 
 import android.widget.TextView
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -11,6 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.bytebyte6.view.R
+import com.bytebyte6.view.download.DownloadFragment
+import com.bytebyte6.view.download.DownloadViewHolder
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.junit.runner.RunWith

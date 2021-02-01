@@ -145,7 +145,7 @@ class Ui(
             provideAdapter(split[0])
             builder.append("data class ${split[0]}(").append(ENTER)
             builder.append(ENTER).append(") : Parcelable").append(ENTER)
-            this.println(builder.toString(), split[0].plus(".kt"), entryDir)
+            this.createFile(builder.toString(), split[0].plus(".kt"), entryDir)
             return
         }
         split.forEachIndexed { index, str ->
@@ -211,7 +211,7 @@ class Ui(
                 }
             }
         }
-        this.println(builder.toString(), split[0].plus(".kt"), entryDir)
+        this.createFile(builder.toString(), split[0].plus(".kt"), entryDir)
     }
 
     override fun provideDao(entryName: String) {
@@ -258,7 +258,7 @@ class Ui(
                 "    @Update\n" +
                 "    fun update(list: List<${entryName}>)\n" +
                 "}"
-        this.println(dao, "${entryName}Dao.kt", daoDir)
+        this.createFile(dao, "${entryName}Dao.kt", daoDir)
     }
 
     override fun provideRetrofit(entryName: String) {
@@ -281,7 +281,7 @@ class Ui(
                 "    @POST\n" +
                 "    fun insert()\n" +
                 "}"
-        this.println(service, "${entryName}Service.kt", serviceDir)
+        this.createFile(service, "${entryName}Service.kt", serviceDir)
     }
 
     override fun provideUseCase(entryName: String) {
@@ -317,7 +317,7 @@ class Ui(
                 "        return param\n" +
                 "    }\n" +
                 "}"
-        this.println(useCase, "${entryName}UseCase.kt", usecaseDir)
+        this.createFile(useCase, "${entryName}UseCase.kt", usecaseDir)
     }
 
     override fun provideViewModel(entryName: String) {
@@ -366,7 +366,7 @@ class Ui(
                 "        )\n" +
                 "    }\n" +
                 "}"
-        this.println(viewModel, "${entryName}ViewModel.kt", viewModelDir)
+        this.createFile(viewModel, "${entryName}ViewModel.kt", viewModelDir)
     }
 
     override fun provideFragment(entryName: String) {
@@ -404,7 +404,7 @@ class Ui(
                 "\n" +
                 "    }\n" +
                 "}"
-        this.println(list, "${entryName}ListFragment.kt", fragmentDir)
+        this.createFile(list, "${entryName}ListFragment.kt", fragmentDir)
 
         val detailXmlName = "R.layout.fragment_${entryName.toLowerCase(Locale.ROOT)}_detail"
         val detail = "package $fragmentPackageName\n" +
@@ -445,12 +445,12 @@ class Ui(
                 "    android:id=\"@+id/frameLayout\">\n" +
                 "\n" +
                 "</FrameLayout>"
-        this.println(
+        this.createFile(
             detailXml,
             "fragment_${entryName.toLowerCase(Locale.ROOT)}_detail.xml",
             layoutDir
         )
-        this.println(detail, "${entryName}DetailFragment.kt", fragmentDir)
+        this.createFile(detail, "${entryName}DetailFragment.kt", fragmentDir)
 
         val insertXmlName = "R.layout.fragment_${entryName.toLowerCase(Locale.ROOT)}_insert"
         val insert = "package $fragmentPackageName\n" +
@@ -490,8 +490,8 @@ class Ui(
                 "    android:id=\"@+id/frameLayout\">\n" +
                 "\n" +
                 "</FrameLayout>"
-        this.println(insert, "${entryName}InsertFragment.kt", fragmentDir)
-        this.println(
+        this.createFile(insert, "${entryName}InsertFragment.kt", fragmentDir)
+        this.createFile(
             insertXml,
             "fragment_${entryName.toLowerCase(Locale.ROOT)}_insert.xml",
             layoutDir
@@ -548,11 +548,11 @@ class Ui(
                 "    android:id=\"@+id/frameLayout\">\n" +
                 "\n" +
                 "</FrameLayout>"
-        this.println(adapter, "${entryName}Adapter.kt", fragmentDir)
-        this.println(xml, "item_$entryName.xml", layoutDir)
+        this.createFile(adapter, "${entryName}Adapter.kt", fragmentDir)
+        this.createFile(xml, "item_$entryName.xml", layoutDir)
     }
 
-    private fun println(content: String, fileName: String, dir: File) {
+    private fun createFile(content: String, fileName: String, dir: File) {
         val file = File(dir, fileName)
         file.writeText(content)
     }

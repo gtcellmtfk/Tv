@@ -1,4 +1,4 @@
-package com.bytebyte6.view.me
+package com.bytebyte6.view.test
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.bytebyte6.view.R
 import com.bytebyte6.view.download.DownloadViewHolder
+import com.bytebyte6.view.me.MeFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 

@@ -1,4 +1,4 @@
-package com.bytebyte6.view.me
+package com.bytebyte6.view
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,6 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
 import com.bytebyte6.view.main.MainActivity
-import com.bytebyte6.view.R
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

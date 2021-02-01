@@ -1,4 +1,4 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.view.test
 
 import android.view.View
 import android.widget.TextView
@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.bytebyte6.view.R
+import com.bytebyte6.view.home.HomeFragment
 import com.google.android.material.tabs.TabLayout
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
