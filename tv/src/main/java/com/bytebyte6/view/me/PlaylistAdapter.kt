@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.data.model.Card
 import com.bytebyte6.utils.AdapterHelper
-import com.bytebyte6.utils.BaseAdapter
+import com.bytebyte6.utils.BaseDetailAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.home.randomImage
 
-class PlaylistAdapter : BaseAdapter<Card, PlaylistViewHolder>(),
+class PlaylistAdapter : BaseDetailAdapter<Card, PlaylistViewHolder>(),
     AdapterHelper<Card, PlaylistViewHolder> {
 
     override val list: MutableList<Card> = mutableListOf()

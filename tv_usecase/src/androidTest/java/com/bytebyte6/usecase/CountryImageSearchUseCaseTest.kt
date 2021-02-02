@@ -56,10 +56,10 @@ class CountryImageSearchUseCaseTest : KoinTest {
      */
     @Test
     fun test_countryNameEmpty() {
-        val china = Country(name = "")
+        val china = Country(name = "",image = "")
         val id = countryDao.insert(china)
-        val newChina = Country(id, china.name, image = china.image)
-        countryImageSearchUseCase.execute(newChina).test().assertValue(false)
+        china.countryId=id
+        countryImageSearchUseCase.execute(china).test().assertValue(false)
     }
 
     /**
@@ -67,9 +67,9 @@ class CountryImageSearchUseCaseTest : KoinTest {
      */
     @Test
     fun test_countryNameNotEmpty() {
-        val china = Country(name = "CHINA")
+        val china = Country(name = "CHINA",image = "")
         val id = countryDao.insert(china)
-        val newChina = Country(id, china.name, image = china.image)
-        countryImageSearchUseCase.execute(newChina).test().assertValue(true)
+        china.countryId=id
+        countryImageSearchUseCase.execute(china).test().assertValue(true)
     }
 }

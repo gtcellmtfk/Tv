@@ -5,29 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.core.Single
 
-data class PageResponse<T>(
-    var page: Int = 0,
-    var pageCount: Int = 0,
-    var count: Int = 0,
-    var pageSize: Int = 0,
-    var list: List<T> = emptyList()
-)
-
-abstract class NetWorkPagingHelper<T> : PagingHelper<T>() {
-
-    private var pageResponse: PageResponse<T>? = null
-
-    fun init() {
-        if (pageResponse == null) {
-            pageResponse = loadNetWorkData()
-        }
-    }
-
-    abstract fun loadNetWorkData(): PageResponse<T>
-
-    override fun count(): Int = if (pageResponse == null) 0 else pageResponse!!.count
-}
-
 object NoMoreData : Throwable("No More Data!!!")
 
 abstract class PagingHelper<T>(private val pageSize: Int = 20) {

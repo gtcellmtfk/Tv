@@ -5,11 +5,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("SimpleDateFormat")
-fun Int.dateString(): String {
+fun Int.yyyyMMdd(): String {
     return SimpleDateFormat("yyyy-MM-dd").format(Date(this*1000L))
 }
 
 @SuppressLint("SimpleDateFormat")
-fun Int.dateStringhhmm(): String {
+fun Int.hhmm(): String {
     return SimpleDateFormat("hh:mm").format(Date(this*1000L))
 }

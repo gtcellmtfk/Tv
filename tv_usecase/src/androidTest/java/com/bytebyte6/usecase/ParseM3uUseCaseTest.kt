@@ -5,6 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.User
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -39,8 +41,18 @@ class ParseM3uUseCaseTest : KoinTest {
 
     @Test
     fun test() {
-        //无权访问
-        val uri = "content://com.android.fileexplorer.myprovider/external_files/kor.m3u"
-        parseM3uUseCase.execute(Uri.parse(uri)).test().assertNotComplete()
+        db.userDao().insert(User(name = "Admin"))
+        val tv1 = Tv(name = "A", url = "A.url")
+        val tv2 = Tv(name = "B", url = "B.url")
+        val tv3 = Tv(name = "C", url = "C.url")
+        val tv4 = Tv(name = "D", url = "D.url")
+        val tv5 = Tv(name = "E", url = "E.url")
+        val list = mutableListOf(tv1, tv3, tv4)
+        db.tvDao().insert(list)
+        val all = mutableListOf(tv1, tv2, tv3, tv4, tv5)
+        parseM3uUseCase.tvsFromFile = all
+        val playlistId = parseM3uUseCase.run(Uri.parse("")).playlistId
+        val playlistWithTvsById = db.playlistDao().getPlaylistWithTvsById(playlistId)
+        assert(playlistWithTvsById.tvs.size == 5)
     }
 }

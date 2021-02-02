@@ -15,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 @Keep
 data class Country(
     @PrimaryKey(autoGenerate = true)
-    val countryId: Long = 0,
+    var countryId: Long = 0,
     override var name: String = "",
     var image: String = ""
 ) : Parcelable, Image {

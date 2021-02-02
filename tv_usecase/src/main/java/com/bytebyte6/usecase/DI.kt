@@ -43,28 +43,6 @@ val exoPlayerModule= module {
     }
 }
 
-val testExoPlayerModule= module {
-    /**ExoPlayer*/
-    factory <HttpDataSource.Factory> { DefaultHttpDataSourceFactory() }
-    factory {
-        DownloadManager(
-            androidContext(),
-            get(DatabaseProvider::class.java),
-            get(Cache::class.java),
-            get(HttpDataSource.Factory::class.java),
-            Executors.newFixedThreadPool(5)
-        )
-    }
-    factory<DatabaseProvider> { ExoDatabaseProvider(androidContext()) }
-    factory<Cache> {
-        SimpleCache(
-            File(androidContext().cacheDir, UUID.randomUUID().toString()) ,
-            NoOpCacheEvictor(),
-            get(DatabaseProvider::class.java)
-        )
-    }
-}
-
 val useCaseModule: Module = module {
     factory { CreateUserUseCase(get(UserDao::class)) }
     factory { UpdateTvUseCase(get()) }

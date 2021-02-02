@@ -1,6 +1,5 @@
 package com.bytebyte6.view.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +26,7 @@ class ImageAdapter(
     private val type: ButtonType = ButtonType.NONE,
     private var btnClickListener: ButtonClickListener? = null,
     private val clearHelper: ImageClearHelper = GlideClearHelper()
-) : BaseListAdapter<Image, ImageViewHolder>(
-    ImageDIFF
-), ImageClearHelper by clearHelper {
+) : BaseListAdapter<Image, ImageViewHolder>(ImageDIFF), ImageClearHelper by clearHelper {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
@@ -93,15 +90,14 @@ object ImageDIFF : DiffUtil.ItemCallback<Image>() {
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem.videoUrl == newItem.videoUrl
+        return oldItem.transitionName == newItem.transitionName
     }
 
-    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem == newItem
+        return oldItem.transitionName == newItem.transitionName
     }
 }
 

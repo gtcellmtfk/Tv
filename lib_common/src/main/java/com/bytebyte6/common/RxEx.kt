@@ -41,7 +41,7 @@ abstract class RxUseCase<I, O> {
 fun <T> Single<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
         .subscribe({
-
+            logd(it.toString())
         }, {
             it.printStackTrace()
         })
@@ -50,7 +50,7 @@ fun <T> Single<T>.onIo(): Disposable {
 fun <T> Observable<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
         .subscribe({
-
+            logd(it.toString())
         }, {
             it.printStackTrace()
         })

@@ -6,9 +6,11 @@ import com.bytebyte6.common.RxUseCase
 import com.bytebyte6.data.dao.*
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
+import org.jetbrains.annotations.TestOnly
 
 class ParseM3uUseCase(
     private val tvDao: TvDao,
@@ -19,12 +21,25 @@ class ParseM3uUseCase(
     private val context: Context
 ) : RxUseCase<Uri, Playlist>() {
 
-    override fun run(param: Uri): Playlist {
-        val tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
+    //TestOnly
+    var tvsFromFile: List<Tv>? = null
 
-        val inserts = tvsFromFile.filter {
+    override fun run(param: Uri): Playlist {
+
+        if (tvsFromFile == null) {
+            tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
+        }
+
+        val tvsFromDb = mutableListOf<Tv>()
+
+        val inserts = tvsFromFile!!.filter {
             val tvFromDb = tvDao.getTvByUrl(it.url)
-            tvFromDb == null
+            if (tvFromDb == null) {
+                true
+            } else {
+                tvsFromDb.add(tvFromDb)
+                false
+            }
         }.map {
             if (it.category.isEmpty()) {
                 it.category = "Other"
@@ -40,13 +55,13 @@ class ParseM3uUseCase(
             inserts[index]
         }
 
-        val tvsFromDb = tvsFromFile.filter {
-            val tvFromDb = tvDao.getTvByUrl(it.url)
-            if (tvFromDb != null) {
-                it.tvId = tvFromDb.tvId
-                true
-            } else false
-        }
+//        val tvsFromDb = tvsFromFile.filter {
+//            val tvFromDb = tvDao.getTvByUrl(it.url)
+//            if (tvFromDb != null) {
+//                it.tvId = tvFromDb.tvId
+//                true
+//            } else false
+//        }
 
         val tvs = insertsWithIds.plus(tvsFromDb)
 

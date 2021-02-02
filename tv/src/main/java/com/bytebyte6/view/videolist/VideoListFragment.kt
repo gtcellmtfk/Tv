@@ -5,16 +5,18 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.viewmodel.VideoListViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
-import com.bytebyte6.view.*
+import com.bytebyte6.view.KEY_TITLE
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.view.setupToolbarArrowBack
+import com.bytebyte6.view.toPlayer
+import com.bytebyte6.viewmodel.VideoListViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class VideoListFragment : ListFragment() {
@@ -95,12 +97,12 @@ class VideoListFragment : ListFragment() {
                     }
                 },
                 {
-                        showSnack(view, Message(message = it.error.message.toString()))
-                        hideSwipeRefresh()
-                        hideProgress()
+                    showSnack(view, Message(message = it.error.message.toString()))
+                    hideSwipeRefresh()
+                    hideProgress()
                 },
                 {
-                        showProgress()
+                    showProgress()
                 }
             )
         })

@@ -2,7 +2,7 @@ package com.bytebyte6.utils
 
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, V : DetailsViewHolder> : RecyclerView.Adapter<V>() {
+abstract class BaseDetailAdapter<T, V : DetailsViewHolder> : RecyclerView.Adapter<V>() {
 
     override fun getItemCount(): Int = adapterHelper().list.size
 

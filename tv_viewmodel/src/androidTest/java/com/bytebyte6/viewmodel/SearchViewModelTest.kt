@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.testExoPlayerModule
+
 import com.bytebyte6.usecase.useCaseModule
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading

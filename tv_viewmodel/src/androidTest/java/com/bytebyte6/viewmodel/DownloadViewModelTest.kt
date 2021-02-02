@@ -8,7 +8,7 @@ import com.bytebyte6.data.AppDatabase
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.UpdateTvUseCase
-import com.bytebyte6.usecase.testExoPlayerModule
+
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
