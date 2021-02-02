@@ -4,6 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 interface Image {
+    val id:Long
     var logo: String
     var name: String
     var videoUrl: String

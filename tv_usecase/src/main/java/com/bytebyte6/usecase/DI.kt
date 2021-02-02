@@ -1,6 +1,7 @@
 package com.bytebyte6.usecase
 
 import com.bytebyte6.data.dao.UserDao
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImage
 import com.bytebyte6.image.SearchImageImpl
 import com.bytebyte6.usecase.work.AppDelegatingWorkerFactory
@@ -52,9 +53,9 @@ val useCaseModule: Module = module {
     factory { DownloadListUseCase(get(), get()) }
     factory { CountryImageSearchUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
-    factory { TvLogoSearchUseCase(get(), get()) }
-    factory {
-        InitDataUseCase(
+    factory<TvLogoSearchUseCase> { TvLogoSearchUseCaseImpl(get(), get()) }
+    factory<InitDataUseCase> {
+        InitDataUseCaseImpl(
             get(),
             get(),
             get(),

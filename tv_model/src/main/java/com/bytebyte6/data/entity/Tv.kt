@@ -37,4 +37,6 @@ data class Tv(
 
     override val transitionName: String
         get() = url
+    override val id: Long
+        get() = tvId
 }

@@ -19,6 +19,8 @@ data class Country(
     override var name: String = "",
     var image: String = ""
 ) : Parcelable, Image {
+    override val id: Long
+        get() = countryId
     override var logo: String
         get() = image
         set(value) {}

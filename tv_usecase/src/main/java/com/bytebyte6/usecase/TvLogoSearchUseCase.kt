@@ -1,14 +1,22 @@
 package com.bytebyte6.usecase
 
 import androidx.annotation.Keep
+import androidx.lifecycle.MutableLiveData
+import com.bytebyte6.common.Result
 import com.bytebyte6.common.RxUseCase
+import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.image.SearchImage
 
-class TvLogoSearchUseCase(
+interface TvLogoSearchUseCase : RxUseCase2<SearchParam, SearchParam>
+
+class TvLogoSearchUseCaseImpl(
     private val imageSearch: SearchImage,
     private val tvDao: TvDao
-) : RxUseCase<SearchParam, SearchParam>() {
+) : TvLogoSearchUseCase {
+
+    override val result: MutableLiveData<Result<SearchParam>> = MutableLiveData()
+
     override fun run(param: SearchParam): SearchParam {
         val tv = tvDao.getTv(param.id)
         if (tv.logo.isEmpty()) {

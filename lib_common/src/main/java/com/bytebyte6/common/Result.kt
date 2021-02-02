@@ -89,3 +89,4 @@ fun <T> Result<T>.isError(): Throwable? {
 }
 
 fun <T> LiveData<Result<T>>.getSuccessData() = this.value?.isSuccess()
+fun <T> LiveData<Result<T>>.getError() = this.value?.isError()

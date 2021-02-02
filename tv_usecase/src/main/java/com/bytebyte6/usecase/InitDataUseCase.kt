@@ -1,8 +1,10 @@
 package com.bytebyte6.usecase
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.work.*
-import com.bytebyte6.common.RxUseCase
+import com.bytebyte6.common.Result
+import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.data.dao.CountryDao
 import com.bytebyte6.data.dao.TvDao
 import com.bytebyte6.data.dao.UserDao
@@ -13,13 +15,17 @@ import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class InitDataUseCase(
+interface InitDataUseCase : RxUseCase2<Unit, List<Tv>>
+
+class InitDataUseCaseImpl(
     private val tvDao: TvDao,
     private val countryDao: CountryDao,
     private val userDao: UserDao,
     private val context: Context,
     private val gson: Gson
-) : RxUseCase<Unit, List<Tv>>() {
+) : InitDataUseCase {
+
+    override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()
 
     override fun run(param: Unit): List<Tv> {
 

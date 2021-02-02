@@ -90,14 +90,19 @@ object ImageDIFF : DiffUtil.ItemCallback<Image>() {
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem.transitionName == newItem.transitionName
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
         oldItem: Image,
         newItem: Image
     ): Boolean {
-        return oldItem.transitionName == newItem.transitionName
+        return oldItem.transitionName == newItem.transitionName &&
+                oldItem.download == newItem.download &&
+                oldItem.name == newItem.name &&
+                oldItem.videoUrl == newItem.videoUrl &&
+                oldItem.logo == newItem.logo &&
+                oldItem.favorite == newItem.favorite
     }
 }
 

@@ -58,7 +58,7 @@ class DownloadViewModel(
     fun startInterval() {
         downloadListResult.getSuccessData()?.apply {
             if (size > 0) {
-                getDownloadList = downloadListUseCase.interval(Unit).onIo()
+                getDownloadList = downloadListUseCase.interval(Unit,2).onIo()
                 addDisposable(getDownloadList!!)
             }
         }

@@ -12,8 +12,7 @@ object CardDiff : DiffUtil.ItemCallback<Card>() {
     override fun areContentsTheSame(
         oldItem: Card,
         newItem: Card
-    ): Boolean = oldItem.title == oldItem.title
-            && oldItem.body == oldItem.body
+    ): Boolean = oldItem.body == oldItem.body
             && oldItem.outline == oldItem.outline
             && oldItem.color == oldItem.color
             && oldItem.radius == oldItem.radius
