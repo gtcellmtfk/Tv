@@ -55,11 +55,11 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.tip_del_playlist))
             .setMessage(getString(R.string.tip_beyond_retrieve))
-            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
                 viewModel.delete(selectionTracker.selection)
             }
-            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
             }
             .show()

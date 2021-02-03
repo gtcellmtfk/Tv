@@ -8,6 +8,7 @@ plugins {
 android {
     compileSdkVersion(Versions.compile_sdk)
     buildToolsVersion(Versions.buildToolsVersion)
+
     defaultConfig {
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
@@ -35,10 +36,12 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }

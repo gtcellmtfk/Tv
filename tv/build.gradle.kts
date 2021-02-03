@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.loadProperties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,9 +7,21 @@ plugins {
     id("kotlin-kapt")
 }
 
+val key = loadProperties(projectDir.absolutePath+"/keystore.properties")
+
 android {
     compileSdkVersion(Versions.compile_sdk)
     buildToolsVersion(Versions.buildToolsVersion)
+
+    signingConfigs {
+        create("bytebyte") {
+            storeFile = file(key["storeFile"] as String)
+            storePassword = key["storePassword"] as String
+            keyAlias = key["keyAlias"] as String
+            keyPassword = key["keyPassword"] as String
+        }
+    }
+
     defaultConfig {
         applicationId = "com.bytebyte6.rtmp"
         minSdkVersion(Versions.min_sdk)
@@ -17,6 +31,7 @@ android {
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-proguard-rules.pro")
+        signingConfig = signingConfigs.getByName("bytebyte")
     }
 
     buildTypes {
@@ -28,13 +43,16 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         viewBinding = true
     }
@@ -55,8 +73,8 @@ dependencies {
     implementation(Libs.EXOPLAYER_DASH)
     implementation(Libs.EXOPLAYER_UI)
 
-    debugImplementation(Libs.TEST_FRAGMENT_TESTING){
-        exclude("androidx.test","core")
+    debugImplementation(Libs.TEST_FRAGMENT_TESTING) {
+        exclude("androidx.test", "core")
     }
     debugImplementation(Libs.LEAK_CANARY)
     debugImplementation(Libs.CRASH_REPORTER)
