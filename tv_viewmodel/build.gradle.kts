@@ -53,8 +53,4 @@ dependencies {
 
     testImplementation(Libs.TEST_JUNIT)
     testImplementation(Libs.TEST_ARCH_TESTING)
-    testImplementation(Libs.TEST_KOIN)
-    testImplementation(Libs.TEST_CORE)
-    testImplementation(Libs.TEST_RUNNER)
-    testImplementation(Libs.TEST_ROBOLECTRIC)
 }
