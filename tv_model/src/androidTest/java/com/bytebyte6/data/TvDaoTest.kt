@@ -17,16 +17,11 @@ import org.koin.test.KoinTestRule
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class TvDaoTest : KoinTest {
+class TvDaoTest  {
 
     private lateinit var db: AppDatabase
     private lateinit var tvDao: TvDao
     private lateinit var context: Context
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(dataModule)
-    }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

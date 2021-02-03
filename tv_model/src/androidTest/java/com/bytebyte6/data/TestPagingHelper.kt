@@ -18,16 +18,11 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 
 @RunWith(AndroidJUnit4::class)
-class TestPagingHelper : KoinTest {
+class TestPagingHelper  {
 
     private lateinit var db: AppDatabase
     private lateinit var tvDao: TvDao
     private lateinit var context: Context
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(dataModule)
-    }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

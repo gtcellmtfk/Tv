@@ -20,7 +20,7 @@ import org.koin.test.KoinTestRule
  * 无用测试样例
  */
 @RunWith(AndroidJUnit4::class)
-class CountryDaoTest : KoinTest {
+class CountryDaoTest  {
 
     companion object {
         const val CHINA = "China"
@@ -32,11 +32,6 @@ class CountryDaoTest : KoinTest {
     private lateinit var context: Context
     private val china = Country(name = CHINA)
     private val us = Country(name = US)
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(dataModule)
-    }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

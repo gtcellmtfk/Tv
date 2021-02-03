@@ -21,7 +21,7 @@ import java.io.IOException
  * 多对多关系测试
  */
 @RunWith(AndroidJUnit4::class)
-class CrossRefTest : KoinTest {
+class CrossRefTest  {
 
     private lateinit var db: AppDatabase
     private lateinit var userDao: UserDao
@@ -44,11 +44,6 @@ class CrossRefTest : KoinTest {
         add(Playlist(playlistName = "PLAY 1"))
         add(Playlist(playlistName = "PLAY 2"))
         add(Playlist(playlistName = "PLAY 3"))
-    }
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(dataModule)
     }
 
     @get:Rule

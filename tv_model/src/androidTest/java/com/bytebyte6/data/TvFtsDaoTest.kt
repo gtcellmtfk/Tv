@@ -20,7 +20,7 @@ import org.koin.test.KoinTestRule
 import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
-class TvFtsDaoTest : KoinTest {
+class TvFtsDaoTest  {
 
     private lateinit var db: AppDatabase
     private lateinit var tvFtsDao: TvFtsDao
@@ -32,11 +32,6 @@ class TvFtsDaoTest : KoinTest {
     private lateinit var countries: List<String>
 
     private lateinit var tvList: List<Tv>
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(dataModule)
-    }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
