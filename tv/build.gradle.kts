@@ -7,14 +7,14 @@ plugins {
     id("kotlin-kapt")
 }
 
-val key = loadProperties(projectDir.absolutePath+"/keystore.properties")
+val key = loadProperties(projectDir.absolutePath + "/keystore.properties")
 
 android {
     compileSdkVersion(Versions.compile_sdk)
     buildToolsVersion(Versions.buildToolsVersion)
 
     signingConfigs {
-        create("bytebyte") {
+        create("tv_release") {
             storeFile = file(key["storeFile"] as String)
             storePassword = key["storePassword"] as String
             keyAlias = key["keyAlias"] as String
@@ -28,10 +28,11 @@ android {
         targetSdkVersion(Versions.target_sdk)
         versionCode = Versions.versionCode
         versionName = Versions.versionName
+        setProperty("archivesBaseName", "tv-$versionName-$versionCode-${Versions.date()}")
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-proguard-rules.pro")
-        signingConfig = signingConfigs.getByName("bytebyte")
+        signingConfig = signingConfigs.getByName("tv_release")
     }
 
     buildTypes {
