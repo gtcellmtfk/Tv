@@ -30,7 +30,6 @@ val dataModule = module {
     factory { GsonConverterFactory.create(get()) }
 }
 
-
 private fun createDb(context: Context): AppDatabase {
     return Room.databaseBuilder(context, AppDatabase::class.java, "rtmp.db").build()
 }

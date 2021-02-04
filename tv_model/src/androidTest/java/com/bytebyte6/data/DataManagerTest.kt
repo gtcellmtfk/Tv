@@ -5,13 +5,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bytebyte6.common.getAwaitValue
+import com.bytebyte6.common.observeForTesting
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
-import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Language
-import com.bytebyte6.data.model.Languages
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -114,14 +114,11 @@ class DataManagerTest {
 
     @Test
     fun user() {
-        val user = dataManager.user()
-        var user2: User? = null
-        user.observeForever {
-            user2 = it
-        }
         dataManager.insertUser(this.user)
-        assert(user2 != null)
-        assert(user2!!.name == this.user.name)
+        val user = dataManager.user()
+        user.observeForTesting {
+            assert(user.getAwaitValue()!!.name == this.user.name)
+        }
     }
 
     //Country
@@ -151,13 +148,10 @@ class DataManagerTest {
     @Test
     fun countries() {
         val liveData = dataManager.countries()
-        assert(liveData.value == null)
-        var list: List<Country>? = null
-        liveData.observeForever {
-            list = it
-        }
         dataManager.insertCountry(china)
-        assert(list!![0].name == china.name)
+        liveData.observeForTesting {
+            assert(liveData.getAwaitValue()!![0].name == china.name)
+        }
     }
 
     @Test
@@ -275,13 +269,11 @@ class DataManagerTest {
 
     @Test
     fun ftsTvCount() {
-        val liveData = dataManager.ftsTvCount(tv1.countryName)
-        var count = 0
-        liveData.observeForever {
-            count = it
-        }
         dataManager.insertTv(mutableListOf(tv1, tv2, tv3))
-        assert(count == 1)
+        val liveData = dataManager.ftsTvCount(tv1.countryName)
+        liveData.observeForTesting {
+            assert(liveData.getAwaitValue() == 1)
+        }
     }
 
     @Test
@@ -347,32 +339,28 @@ class DataManagerTest {
 
     @Test
     fun allFavoriteTv() {
-        val v = dataManager.allFavoriteTv()
-        var list: List<Tv>? = null
-        v.observeForever {
-            list = it
-        }
         dataManager.insertTv(tv1.apply { favorite = true })
-        assert(list!!.size == 1)
+        val v = dataManager.allFavoriteTv()
+        v.observeForTesting {
+            assert(v.getAwaitValue()!!.size == 1)
+        }
     }
 
     @Test
     fun allLanguage() {
         dataManager.insertTv(mutableListOf(tv1, tv2, tv3))
-        var langs: List<Languages>? = null
-        dataManager.allLanguage().observeForever {
-            langs = it
+        val allLanguage = dataManager.allLanguage()
+        allLanguage.observeForTesting {
+            assert(allLanguage.getAwaitValue()!!.size == 3)
         }
-        assert(langs!!.isNotEmpty())
     }
 
     @Test
     fun allCategory() {
         dataManager.insertTv(mutableListOf(tv1, tv2, tv3))
-        var cs: List<Category>? = null
-        dataManager.allCategory().observeForever {
-            cs = it
+        val allCategory = dataManager.allCategory()
+        allCategory.observeForTesting {
+            assert(allCategory.getAwaitValue()!!.size == 3)
         }
-        assert(cs!!.isNotEmpty())
     }
 }
