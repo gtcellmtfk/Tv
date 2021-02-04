@@ -2,15 +2,15 @@ package com.bytebyte6.usecase
 
 import androidx.annotation.Keep
 import com.bytebyte6.common.RxUseCase
-import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 
-class UpdateTvUseCase(private val tvDao: TvDao) : RxUseCase<UpdateTvParam, UpdateTvParam>() {
+class UpdateTvUseCase(private val dataManager: DataManager) : RxUseCase<UpdateTvParam, UpdateTvParam>() {
     override fun run(param: UpdateTvParam): UpdateTvParam {
-        val tv = tvDao.getTv(param.tv.tvId)
+        val tv = dataManager.getTvById(param.tv.tvId)
         tv.favorite = param.tv.favorite
         tv.download = param.tv.download
-        tvDao.update(tv)
+        dataManager.updateTv(tv)
         param.tv = tv
         return param
     }

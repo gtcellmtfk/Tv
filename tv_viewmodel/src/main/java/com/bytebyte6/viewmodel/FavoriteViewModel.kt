@@ -1,8 +1,8 @@
 package com.bytebyte6.viewmodel
 
 import com.bytebyte6.common.BaseViewModel
-import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.data.DataManager
 
-class FavoriteViewModel(tvDao: TvDao) : BaseViewModel() {
-    val fav = tvDao.allFavorite()
+class FavoriteViewModel(dataManager: DataManager) : BaseViewModel() {
+    val allFav = dataManager.allFavoriteTv()
 }

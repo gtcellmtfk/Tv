@@ -1,11 +1,11 @@
 package com.bytebyte6.usecase.work
 
-import com.bytebyte6.data.dao.CountryDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.image.SearchImage
 
-class CountryImageSearch(private val dao: CountryDao, private val searchImage: SearchImage) {
+class CountryImageSearch(private val dataManager: DataManager, private val searchImage: SearchImage) {
     fun doThatShit() {
-        dao.getCountries()
+        dataManager.getCountries()
             //只取为空的查询图片
             .filter {
                 it.image.isEmpty()
@@ -14,7 +14,7 @@ class CountryImageSearch(private val dao: CountryDao, private val searchImage: S
             .forEach { country ->
                 if (country.name.isNotEmpty()) {
                     country.image = searchImage.search(country.name.plus("+flag"))
-                    dao.insert(country)
+                    dataManager.insertCountry(country)
                 }
             }
     }

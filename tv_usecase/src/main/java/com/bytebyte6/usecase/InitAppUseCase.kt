@@ -5,31 +5,32 @@ import androidx.lifecycle.MutableLiveData
 import androidx.work.*
 import com.bytebyte6.common.Result
 import com.bytebyte6.common.RxUseCase2
-import com.bytebyte6.data.dao.CountryDao
-import com.bytebyte6.data.dao.TvDao
-import com.bytebyte6.data.dao.UserDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.User
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-interface InitDataUseCase : RxUseCase2<Unit, List<Tv>>
+interface InitAppUseCase : RxUseCase2<Unit, List<Tv>>
 
-class InitDataUseCaseImpl(
-    private val tvDao: TvDao,
-    private val countryDao: CountryDao,
-    private val userDao: UserDao,
+class InitAppUseCaseImpl(
+    private val dataManager: DataManager,
     private val context: Context,
     private val gson: Gson
-) : InitDataUseCase {
+) : InitAppUseCase {
 
     override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()
 
     override fun run(param: Unit): List<Tv> {
 
-        if (tvDao.getCount() == 0) {
+        if (!dataManager.hasUser()) {
+            dataManager.insertUser(User(name = "Admin"))
+        }
+
+        if (dataManager.getTvCount() == 0) {
             val tvs = getTvs(context)
             val cs = mutableSetOf<Country>()
             tvs.forEach {
@@ -42,18 +43,19 @@ class InitDataUseCaseImpl(
                 it.countryName = it.country.name
                 cs.add(it.country)
             }
-            countryDao.insert(cs.toList())
+            dataManager.insertCountry(cs.toList())
             val newTvs = tvs.map {
                 val name = it.country.name
                 if (name.isNotEmpty()) {
-                    it.countryId = countryDao.getIdByName(name)
+                    //实体关联
+                    it.countryId = dataManager.getCountryIdByName(name)
                 }
                 it
             }
-            tvDao.insert(newTvs)
+            dataManager.insertTv(newTvs)
         }
 
-        if (userDao.getCount() != 0 && userDao.getUser().capturePic) {
+        if (dataManager.getTvCount() != 0 && dataManager.getUser().capturePic) {
             findImageLink()
         }
 

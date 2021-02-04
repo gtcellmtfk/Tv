@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.*
-import com.bytebyte6.data.dao.UserDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.view.DrawerHelper
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
@@ -20,7 +20,7 @@ class MainActivity : BaseActivity() {
 
     private val networkHelper by inject<NetworkHelper>()
 
-    private val userDao by inject<UserDao>()
+    private val dataManager by inject<DataManager>()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -75,8 +75,10 @@ class MainActivity : BaseActivity() {
         }
 
         val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
-        userDao.user().observe(this, Observer {
-            name.text = it.name
+        dataManager.user().observe(this, Observer {
+            it?.let {
+                name.text = it.name
+            }
         })
     }
 

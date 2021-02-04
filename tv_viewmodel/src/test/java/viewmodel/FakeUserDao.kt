@@ -29,7 +29,7 @@ object FakeUserDao : UserDao {
         return 0
     }
 
-    override fun user(): LiveData<User> {
+    override fun user(): LiveData<User?> {
         return MutableLiveData(defaultUser)
     }
 

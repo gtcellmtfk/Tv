@@ -3,14 +3,14 @@ package com.bytebyte6.viewmodel
 import androidx.lifecycle.map
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.onIo
-import com.bytebyte6.data.dao.PlaylistDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.usecase.*
 
 class PlaylistViewModel(
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
     private val updateTvUseCase: UpdateTvUseCase,
-    private val playlistDao: PlaylistDao
+    private val dataManager: DataManager
 ) : BaseViewModel(){
 
     val updateTv = updateTvUseCase.result()
@@ -25,7 +25,7 @@ class PlaylistViewModel(
 
     fun getTv(pos: Int) = tvs[pos]
 
-    fun tvs(playlistId: Long) = playlistDao.playlistWithTvs(playlistId).map {
+    fun tvs(playlistId: Long) = dataManager.playlistWithTvs(playlistId).map {
         tvs = it.tvs
         tvs
     }

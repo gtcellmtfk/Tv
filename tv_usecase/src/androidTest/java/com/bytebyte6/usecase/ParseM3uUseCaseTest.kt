@@ -50,7 +50,7 @@ class ParseM3uUseCaseTest : KoinTest {
         val list = mutableListOf(tv1, tv3, tv4)
         db.tvDao().insert(list)
         val all = mutableListOf(tv1, tv2, tv3, tv4, tv5)
-        parseM3uUseCase.tvsFromFile = all
+        parseM3uUseCase.setTvs(all)
         val playlistId = parseM3uUseCase.run(Uri.parse("")).playlistId
         val playlistWithTvsById = db.playlistDao().getPlaylistWithTvsById(playlistId)
         assert(playlistWithTvsById.tvs.size == 5)

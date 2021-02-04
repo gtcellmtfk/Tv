@@ -1,11 +1,11 @@
 package com.bytebyte6.usecase.work
 
-import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.image.SearchImage
 
-class TvLogoSearch(private val dao: TvDao, private val searchImage: SearchImage) {
+class TvLogoSearch(private val dataManager: DataManager, private val searchImage: SearchImage) {
     fun doThatShit() {
-        dao.getTvs()
+        dataManager.getTvs()
             .filter {
                 it.logo.isEmpty()
             }
@@ -14,7 +14,7 @@ class TvLogoSearch(private val dao: TvDao, private val searchImage: SearchImage)
                     val logo = searchImage.search(it.name)
                     if (logo.isNotEmpty()) {
                         it.logo = logo
-                        dao.insert(it)
+                        dataManager.insertTv(it)
                     }
                 }
             }

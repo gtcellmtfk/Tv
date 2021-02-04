@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
-import com.bytebyte6.viewmodel.UserViewModel
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSettingBinding
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
+import com.bytebyte6.viewmodel.UserViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
@@ -42,20 +42,23 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
         }
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
-            binding?.swCapturePic?.isChecked = it.capturePic
-            binding?.swNightMode?.isChecked = it.nightMode
-            binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
-                AppCompatDelegate.setDefaultNightMode(
-                    if (isChecked)
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    else
-                        AppCompatDelegate.MODE_NIGHT_NO
-                )
-                viewModel.updateNight(isChecked)
+            if (it != null) {
+                binding?.swCapturePic?.isChecked = it.capturePic
+                binding?.swNightMode?.isChecked = it.nightMode
+                binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
+                    AppCompatDelegate.setDefaultNightMode(
+                        if (isChecked)
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        else
+                            AppCompatDelegate.MODE_NIGHT_NO
+                    )
+                    viewModel.updateNight(isChecked)
+                }
+                binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.updateCapturePic(isChecked)
+                }
             }
-            binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateCapturePic(isChecked)
-            }
+
         })
     }
 }

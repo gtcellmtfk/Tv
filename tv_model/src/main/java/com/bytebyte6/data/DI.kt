@@ -22,13 +22,7 @@ val roomModule = module {
 val dataModule = module {
     single { createRetrofit(get()) }
     single<TvApi> { get(Retrofit::class.java).create(TvApi::class.java) }
-    single { get(AppDatabase::class.java).tvDao() }
-    single { get(AppDatabase::class.java).tvFtsDao() }
-    single { get(AppDatabase::class.java).userDao() }
-    single { get(AppDatabase::class.java).playlistDao() }
-    single { get(AppDatabase::class.java).countryDao() }
-    single { get(AppDatabase::class.java).playlistTvCrossRefDao() }
-    single { get(AppDatabase::class.java).userPlaylistCrossRefDao() }
+    single<DataManager> { DataManagerImpl(get(AppDatabase::class)) }
     factory {
         GsonBuilder().registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
             .create()

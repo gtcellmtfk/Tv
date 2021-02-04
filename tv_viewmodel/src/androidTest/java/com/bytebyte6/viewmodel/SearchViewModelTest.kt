@@ -9,6 +9,7 @@ import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.usecase.useCaseModule
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading
+import com.bytebyte6.data.DataManager
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.Before
@@ -24,7 +25,7 @@ import org.koin.test.inject
 class SearchViewModelTest : AutoCloseKoinTest() {
 
     private val viewModel by inject<SearchViewModel>()
-    private val tvDao by inject<TvDao>()
+    private val dataManager by inject<DataManager>()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -45,8 +46,8 @@ class SearchViewModelTest : AutoCloseKoinTest() {
         cctvs.add(Tv(name = "CCTV 3", url = "CCTV 3"))
         cctvs.add(Tv(name = "CCTV 4", url = "CCTV 4"))
         cctvs.add(Tv(name = "CCTV 5", url = "CCTV 5"))
-        tvDao.insert(cctvs)
-        assert(tvDao.getTvs().size == 5)
+        dataManager.insertTv(cctvs)
+        assert(dataManager.getTvs().size == 5)
     }
 
     @Test

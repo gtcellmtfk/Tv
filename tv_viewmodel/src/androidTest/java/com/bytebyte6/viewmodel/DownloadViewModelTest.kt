@@ -92,8 +92,8 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
 
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
-            DownloadListUseCase(appDatabase.tvDao(), get()),
-            UpdateTvUseCase(appDatabase.tvDao())
+            DownloadListUseCase(get(), get()),
+            UpdateTvUseCase(get())
         )
     }
 }

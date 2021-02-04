@@ -14,7 +14,7 @@ import kotlin.random.Random
 @Keep
 data class Playlist(
     @PrimaryKey(autoGenerate = true)
-    val playlistId: Long = 0,
+    var playlistId: Long = 0,
     var playlistName: String
 ) : Parcelable, Card {
 

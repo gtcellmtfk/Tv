@@ -1,7 +1,5 @@
 package com.bytebyte6.usecase
 
-import com.bytebyte6.data.dao.UserDao
-import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImage
 import com.bytebyte6.image.SearchImageImpl
 import com.bytebyte6.usecase.work.AppDelegatingWorkerFactory
@@ -19,11 +17,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.io.File
-import java.util.*
 import java.util.concurrent.Executors
 
 val exoPlayerModule= module {
-    /**ExoPlayer*/
     single<HttpDataSource.Factory> { DefaultHttpDataSourceFactory() }
     single {
         DownloadManager(
@@ -45,7 +41,6 @@ val exoPlayerModule= module {
 }
 
 val useCaseModule: Module = module {
-    factory { CreateUserUseCase(get(UserDao::class)) }
     factory { UpdateTvUseCase(get()) }
     factory { SearchTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
@@ -54,25 +49,8 @@ val useCaseModule: Module = module {
     factory { CountryImageSearchUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
     factory<TvLogoSearchUseCase> { TvLogoSearchUseCaseImpl(get(), get()) }
-    factory<InitDataUseCase> {
-        InitDataUseCaseImpl(
-            get(),
-            get(),
-            get(),
-            androidContext(),
-            get()
-        )
-    }
-    factory {
-        ParseM3uUseCase(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
+    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext(), get()) }
+    factory { ParseM3uUseCase(get(), get()) }
 
     /**图片搜索*/
     single { AppDelegatingWorkerFactory(get(), get()) }

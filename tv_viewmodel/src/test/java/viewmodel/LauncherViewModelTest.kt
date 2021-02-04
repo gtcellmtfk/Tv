@@ -6,8 +6,7 @@ import com.bytebyte6.common.Result
 import com.bytebyte6.common.getError
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.CreateUserUseCase
-import com.bytebyte6.usecase.InitDataUseCase
+import com.bytebyte6.usecase.InitAppUseCase
 import com.bytebyte6.viewmodel.LauncherViewModel
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -29,19 +28,16 @@ class LauncherViewModelTest {
 
     @Test
     fun test() {
-        val createUserUseCase = CreateUserUseCase(FakeUserDao)
-        val viewModel = LauncherViewModel(FakeInitDataUseCase, createUserUseCase)
-        val user = createUserUseCase.result().getSuccessData()
-        assert(user == FakeUserDao.defaultUser)
+        val viewModel = LauncherViewModel(FakeDataManager,FakeInitAppUseCase)
         val successData = viewModel.start().getSuccessData()
         assert(successData != null && successData[0] == FakeTvDao.defaultTv)
-        FakeInitDataUseCase.error = true
+        FakeInitAppUseCase.error = true
         val error = viewModel.start().getError()
         assert(error != null && error.message == "Error")
-        FakeInitDataUseCase.error = false
+        FakeInitAppUseCase.error = false
     }
 
-    object FakeInitDataUseCase : InitDataUseCase {
+    object FakeInitAppUseCase : InitAppUseCase {
         var error = false
 
         override fun run(param: Unit): List<Tv> {

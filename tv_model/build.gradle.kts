@@ -53,8 +53,6 @@ dependencies {
 
     kapt(Libs.KAPT_ROOM)
 
-    testImplementation(Libs.TEST_JUNIT)
-
     androidTestImplementation(Libs.TEST_CORE)
     androidTestImplementation(Libs.TEST_RUNNER)
     androidTestImplementation(Libs.TEST_RULES)

@@ -29,7 +29,7 @@ class PlaylistViewModelTest {
     @Test
     fun test() {
         val viewModel = PlaylistViewModel(
-            FakeTvLogoSearchUseCase, UpdateTvUseCase(FakeTvDao), FakePlaylistDao
+            FakeTvLogoSearchUseCase, UpdateTvUseCase(FakeDataManager), FakeDataManager
         )
         var tvs: List<Tv>? = null
         viewModel.tvs(FakePlaylistDao.playlist.playlistId).observeForever {

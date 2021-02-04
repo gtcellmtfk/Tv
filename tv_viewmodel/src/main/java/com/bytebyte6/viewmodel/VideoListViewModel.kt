@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.PagingHelper
 import com.bytebyte6.common.*
-import com.bytebyte6.data.dao.TvFtsDao
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.usecase.SearchParam
 import com.bytebyte6.usecase.TvLogoSearchUseCase
@@ -12,7 +12,7 @@ import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.usecase.UpdateTvUseCase
 
 class VideoListViewModel(
-    private val tvFtsDao: TvFtsDao,
+    private val dataManager: DataManager,
     private val tvLogoSearchUseCase: TvLogoSearchUseCase,
     private val updateTvUseCase: UpdateTvUseCase
 ) : BaseViewModel() {
@@ -31,9 +31,9 @@ class VideoListViewModel(
 
     init {
         pagingHelper = object : PagingHelper<TvFts>(50) {
-            override fun count(): Int = tvFtsDao.getCount(getKey())
+            override fun count(): Int = dataManager.getFtsTvCount(getKey())
             override fun paging(offset: Int, pageSize: Int): List<TvFts> =
-                tvFtsDao.paging(offset, getKey(), pageSize)
+                dataManager.ftsTvPaging(offset, getKey(), pageSize)
         }
         tvs = pagingHelper.result()
         favoriteObserver = { result ->
@@ -66,7 +66,7 @@ class VideoListViewModel(
 
     fun getKey() = key
 
-    fun count(item: String): LiveData<Int> = tvFtsDao.count(item)
+    fun count(item: String): LiveData<Int> = dataManager.ftsTvCount(item)
 
     fun loadMore() {
         addDisposable(

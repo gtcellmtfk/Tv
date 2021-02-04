@@ -20,7 +20,7 @@ import org.koin.test.inject
 class CountryImageSearchUseCaseTest : KoinTest {
 
     private val db: AppDatabase by inject()
-    private val countryDao: CountryDao by inject()
+    private lateinit var countryDao: CountryDao
     private val countryImageSearchUseCase: CountryImageSearchUseCase by inject()
 
     @get:Rule
@@ -31,6 +31,7 @@ class CountryImageSearchUseCaseTest : KoinTest {
         startKoin {
             modules(roomMemoryModule, dataModule, useCaseModule)
         }
+        countryDao = db.countryDao()
     }
 
     @After
@@ -56,9 +57,9 @@ class CountryImageSearchUseCaseTest : KoinTest {
      */
     @Test
     fun test_countryNameEmpty() {
-        val china = Country(name = "",image = "")
+        val china = Country(name = "", image = "")
         val id = countryDao.insert(china)
-        china.countryId=id
+        china.countryId = id
         countryImageSearchUseCase.execute(china).test().assertValue(false)
     }
 
@@ -67,9 +68,9 @@ class CountryImageSearchUseCaseTest : KoinTest {
      */
     @Test
     fun test_countryNameNotEmpty() {
-        val china = Country(name = "CHINA",image = "")
+        val china = Country(name = "CHINA", image = "")
         val id = countryDao.insert(china)
-        china.countryId=id
+        china.countryId = id
         countryImageSearchUseCase.execute(china).test().assertValue(true)
     }
 }

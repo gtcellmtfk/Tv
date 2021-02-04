@@ -34,6 +34,10 @@ object FakePlaylistDao : PlaylistDao {
         return listOf(playlist)
     }
 
+    override fun getPlaylist(id: Long): Playlist {
+        return Playlist(playlistName = "")
+    }
+
     val playlistWithTvsL = MutableLiveData(playlistWithTvs)
     
     override fun playlistWithTvs(playlistId: Long): LiveData<PlaylistWithTvs> {

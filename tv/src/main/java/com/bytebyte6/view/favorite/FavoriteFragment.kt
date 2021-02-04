@@ -56,7 +56,7 @@ class FavoriteFragment : ListFragment() {
             recyclerview.itemAnimator = null
         }
 
-        viewModel.fav.observe(viewLifecycleOwner, Observer {
+        viewModel.allFav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }
