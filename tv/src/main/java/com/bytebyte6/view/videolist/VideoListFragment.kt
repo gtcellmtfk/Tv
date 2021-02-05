@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.*
 import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.utils.GridSpaceDecoration
@@ -59,7 +60,9 @@ class VideoListFragment : ListFragment() {
                 toPlayer(currentList[pos].videoUrl)
             }
             doOnBind = { pos, _: View ->
-                viewModel.searchLogo(pos)
+                if (recyclerView!!.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.searchLogo(pos)
+                }
             }
             onCurrentListChanged = { _, currentList ->
                 binding?.emptyBox?.isVisible = currentList.isEmpty()

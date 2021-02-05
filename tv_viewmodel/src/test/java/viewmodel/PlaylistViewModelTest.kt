@@ -32,10 +32,10 @@ class PlaylistViewModelTest {
             FakeTvLogoSearchUseCase, UpdateTvUseCase(FakeDataManager), FakeDataManager
         )
         var tvs: List<Tv>? = null
-        viewModel.tvs(FakePlaylistDao.playlist.playlistId).observeForever {
+        viewModel.tvs(FakeDataManager.playlist.playlistId).observeForever {
             tvs = it
         }
-        assert(tvs == FakePlaylistDao.tvs)
+        assert(tvs == FakeDataManager.tvs2)
         viewModel.download(0)
         val result = viewModel.updateTv.getSuccessData()
         assert(result!!.tv.download)

@@ -17,6 +17,10 @@ data class Category(
     @Ignore override val outline: Boolean = Random.Default.nextBoolean()
 ) : Parcelable, Card {
 
+    companion object{
+        const val OTHER="OTHER"
+    }
+
     override val title: String
         get() = category
 

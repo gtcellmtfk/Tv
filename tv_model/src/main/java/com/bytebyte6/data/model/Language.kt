@@ -12,4 +12,10 @@ data class Language(
     var languageName: String = "",
     @SerializedName("code")
     var languageCode: String = ""
-) : Parcelable
+) : Parcelable {
+    companion object {
+        const val NAME = "UNKOWN"
+        const val CODE = "UNKOWN"
+        val DEFAULT = Language(NAME, CODE)
+    }
+}

@@ -9,12 +9,6 @@ class DeletePlaylistUseCase(
     private val dataManager: DataManager
 ) : RxUseCase<List<Playlist>, Boolean>() {
     override fun run(param: List<Playlist>): Boolean {
-        val tvs = mutableListOf<Tv>()
-        param.forEach {
-            tvs.addAll(
-                dataManager.getPlaylistWithTvs(it.playlistId).tvs
-            )
-        }
         dataManager.deletePlaylist(param)
         return true
     }

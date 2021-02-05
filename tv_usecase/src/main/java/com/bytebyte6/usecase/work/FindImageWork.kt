@@ -27,8 +27,7 @@ class FindImageWork(
 class AppDelegatingWorkerFactory(
     countryImageSearch: CountryImageSearch,
     tvLogoSearch: TvLogoSearch
-) :
-    DelegatingWorkerFactory() {
+) : DelegatingWorkerFactory() {
     init {
         addFactory(GetCountryFactor(countryImageSearch, tvLogoSearch))
     }

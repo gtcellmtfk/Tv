@@ -11,25 +11,27 @@ interface DataManager {
     fun insertUser(users: List<User>): List<Long>
     fun deleteUser(user: User)
     fun updateUser(user: User)
-    fun getUser(): User
+    fun getCurrentUserIfNotExistCreate(): User
     fun hasUser(): Boolean
     fun user(): LiveData<User?>
-    fun getUsers():List<User>
+    fun getUsers(): List<User>
 
     //Country
     fun insertCountry(countries: List<Country>): List<Long>
     fun insertCountry(country: Country): Long
     fun updateCountry(country: Country)
+    fun updateCountry(countries: List<Country>)
     fun countries(): LiveData<List<Country>>
     fun getCountries(): List<Country>
     fun getCountryIdByName(name: String): Long
-    fun getCountryCount():Int
+    fun getCountryCount(): Int
 
     //Tv
     fun insertTv(tvs: List<Tv>): List<Long>
     fun insertTv(tv: Tv): Long
     fun deleteTv(tv: Tv)
     fun updateTv(tv: Tv)
+    fun updateTv(tvs: List<Tv>)
     fun getTvByUrl(url: String): Tv?
     fun getTvById(id: Long): Tv
     fun getTvs(): List<Tv>
@@ -49,22 +51,22 @@ interface DataManager {
     fun deletePlaylist(playlists: List<Playlist>)
     fun updatePlaylist(playlist: Playlist)
     fun getPlaylist(id: Long): Playlist
-    fun getPlaylists():  List<Playlist>
-    fun getPlaylistCount():Int
+    fun getPlaylists(): List<Playlist>
+    fun getPlaylistCount(): Int
 
     //User With Playlist
-    fun userWithPlaylist(userId:Long): LiveData<UserWithPlaylists>
+    fun userWithPlaylist(userId: Long): LiveData<UserWithPlaylists>
     fun getUserWithPlaylist(): UserWithPlaylists
     fun getUserWithPlaylists(): List<UserWithPlaylists>
-    fun getPlaylistsWithUsers():List<PlaylistWithUsers>
+    fun getPlaylistsWithUsers(): List<PlaylistWithUsers>
 
     //Tv With Playlist
-    fun getTvWithPlaylistss():List<TvWithPlaylists>
+    fun getTvWithPlaylistss(): List<TvWithPlaylists>
 
     //Playlist With Tvs
     fun playlistWithTvs(playlistId: Long): LiveData<PlaylistWithTvs>
     fun getPlaylistWithTvs(playlistId: Long): PlaylistWithTvs
-    fun getPlaylistsWithTvss():List<PlaylistWithTvs>
+    fun getPlaylistsWithTvss(): List<PlaylistWithTvs>
 
     //CrossRef
     fun crossRefUserWithPlaylist(userPlaylistCrossRef: UserPlaylistCrossRef): Long

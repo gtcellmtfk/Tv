@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.viewmodel.PlaylistViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.GridSpaceDecoration
@@ -84,7 +85,9 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
                 toPlayer(currentList[pos].videoUrl)
             }
             doOnBind = { pos, _: View ->
+                if (recyclerView!!.scrollState== RecyclerView.SCROLL_STATE_IDLE){
                 viewModel.searchLogo(pos)
+                }
             }
             onCurrentListChanged = { _, c ->
                 binding?.emptyBox?.isVisible = c.isEmpty()

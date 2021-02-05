@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.common.isError
-import com.bytebyte6.data.AppDatabase
+
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins

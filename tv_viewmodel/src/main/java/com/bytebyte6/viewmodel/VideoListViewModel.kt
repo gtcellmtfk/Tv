@@ -23,7 +23,9 @@ class VideoListViewModel(
 
     val tvs: LiveData<Result<List<TvFts>>>
 
-    private val favorite = updateTvUseCase.result()
+    val favorite = updateTvUseCase.result()
+
+    val tvLogoSearchResult = tvLogoSearchUseCase.result()
 
     private val favoriteObserver: (Result<UpdateTvParam>) -> Unit
 
@@ -51,12 +53,12 @@ class VideoListViewModel(
                 pagingHelper.dataHasBeenChanged()
             })
         }
-        tvLogoSearchUseCase.result().observeForever(searchObserver)
+        tvLogoSearchResult.observeForever(searchObserver)
     }
 
     override fun onCleared() {
         favorite.removeObserver(favoriteObserver)
-        tvLogoSearchUseCase.result().removeObserver(searchObserver)
+        tvLogoSearchResult.removeObserver(searchObserver)
         super.onCleared()
     }
 

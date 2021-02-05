@@ -8,13 +8,14 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
+import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
 import org.jetbrains.annotations.TestOnly
 
 class ParseM3uUseCase(
     private val dataManager: DataManager,
-    private val context: Context
+    private val context: Context?=null
 ) : RxUseCase<Uri, Playlist>() {
 
     private var tvsFromFile: List<Tv>? = null
@@ -27,7 +28,7 @@ class ParseM3uUseCase(
     override fun run(param: Uri): Playlist {
 
         if (tvsFromFile == null) {
-            tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
+            tvsFromFile = context!!.contentResolver.openInputStream(param)!!.toTvs()
         }
 
         val tvsFromDb = mutableListOf<Tv>()
@@ -42,10 +43,10 @@ class ParseM3uUseCase(
             }
         }.map {
             if (it.category.isEmpty()) {
-                it.category = "Other"
+                it.category = Category.OTHER
             }
             if (it.language.isEmpty()) {
-                it.language = mutableListOf(Language("Other", "777"))
+                it.language = mutableListOf(Language.DEFAULT)
             }
             it
         }
@@ -57,7 +58,7 @@ class ParseM3uUseCase(
 
         val tvs = insertsWithIds.plus(tvsFromDb)
 
-        val user = dataManager.getUser()
+        val user = dataManager.getCurrentUserIfNotExistCreate()
 
         //1、创建播放列表 然后获取播放列表id 然后关联用户id
         val fileUri = param.toString()

@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading
-import com.bytebyte6.data.AppDatabase
+
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.UpdateTvUseCase
@@ -25,8 +25,6 @@ import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
 class DownloadViewModelTest : AutoCloseKoinTest() {
-
-    private val appDatabase by inject<AppDatabase>()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

@@ -8,43 +8,49 @@ import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.data.entity.User
+import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Language
 import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.jetbrains.annotations.TestOnly
 
 interface InitAppUseCase : RxUseCase2<Unit, List<Tv>>
 
 class InitAppUseCaseImpl(
     private val dataManager: DataManager,
-    private val context: Context,
+    private val context: Context? = null,
     private val gson: Gson
 ) : InitAppUseCase {
 
     override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()
 
+    private var tvs: List<Tv>? = null
+
+    @TestOnly
+    fun setTvs(tvs: List<Tv>) {
+        this.tvs = tvs
+    }
+
     override fun run(param: Unit): List<Tv> {
 
-        if (!dataManager.hasUser()) {
-            dataManager.insertUser(User(name = "Admin"))
-        }
-
         if (dataManager.getTvCount() == 0) {
-            val tvs = getTvs(context)
+            if (tvs == null) {
+                tvs = getTvs(context!!)
+            }
             val cs = mutableSetOf<Country>()
-            tvs.forEach {
+            tvs!!.forEach {
                 if (it.language.isEmpty()) {
-                    it.language = mutableListOf(Language("Other", "777"))
+                    it.language = mutableListOf(Language.DEFAULT)
                 }
                 if (it.category.isEmpty()) {
-                    it.category = "Other"
+                    it.category = Category.OTHER
                 }
                 it.countryName = it.country.name
                 cs.add(it.country)
             }
             dataManager.insertCountry(cs.toList())
-            val newTvs = tvs.map {
+            val newTvs = tvs!!.map {
                 val name = it.country.name
                 if (name.isNotEmpty()) {
                     //实体关联
@@ -55,7 +61,7 @@ class InitAppUseCaseImpl(
             dataManager.insertTv(newTvs)
         }
 
-        if (dataManager.getTvCount() != 0 && dataManager.getUser().capturePic) {
+        if (dataManager.getTvCount() != 0 && dataManager.getCurrentUserIfNotExistCreate().capturePic) {
             findImageLink()
         }
 
@@ -68,9 +74,11 @@ class InitAppUseCaseImpl(
                 Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
             )
             .build()
-        WorkManager.getInstance(context)
-            .beginUniqueWork("findImageLink", ExistingWorkPolicy.KEEP, workRequest)
-            .enqueue()
+        context?.let {
+            WorkManager.getInstance(it)
+                .beginUniqueWork("findImageLink", ExistingWorkPolicy.KEEP, workRequest)
+                .enqueue()
+        }
     }
 
     private fun getTvs(context: Context): List<Tv> {

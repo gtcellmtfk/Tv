@@ -6,6 +6,7 @@ import com.bytebyte6.common.Result
 import com.bytebyte6.common.getError
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.testdata.tv1
 import com.bytebyte6.usecase.InitAppUseCase
 import com.bytebyte6.viewmodel.LauncherViewModel
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
@@ -30,7 +31,7 @@ class LauncherViewModelTest {
     fun test() {
         val viewModel = LauncherViewModel(FakeDataManager,FakeInitAppUseCase)
         val successData = viewModel.start().getSuccessData()
-        assert(successData != null && successData[0] == FakeTvDao.defaultTv)
+        assert(successData != null && successData[0] == tv1)
         FakeInitAppUseCase.error = true
         val error = viewModel.start().getError()
         assert(error != null && error.message == "Error")
@@ -44,7 +45,7 @@ class LauncherViewModelTest {
             return if (error)
                 throw Exception("Error")
             else
-                listOf(FakeTvDao.defaultTv)
+                listOf(tv1)
         }
 
         override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()

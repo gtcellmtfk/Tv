@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.viewmodel.SearchViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.GridSpaceDecoration
@@ -57,7 +58,9 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
                 toPlayer(currentList[pos].videoUrl)
             }
             doOnBind = { pos, _: View ->
+                if (recyclerView!!.scrollState== RecyclerView.SCROLL_STATE_IDLE){
                 viewModel.searchLogo(pos)
+                }
             }
             onCurrentListChanged = { _, currentList ->
                 binding?.lavEmpty?.isVisible = currentList.isEmpty()

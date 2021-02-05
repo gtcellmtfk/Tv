@@ -47,6 +47,8 @@ dependencies {
     implementation(Libs.EXOPLAYER_CORE)
 
     testImplementation(Libs.TEST_JUNIT)
+    testImplementation(project(":tv_test"))
+    testImplementation(Libs.TEST_ARCH_TESTING)
 
     androidTestImplementation(Libs.TEST_CORE)
     androidTestImplementation(Libs.TEST_RUNNER)
@@ -55,4 +57,5 @@ dependencies {
     androidTestImplementation(Libs.TEST_ARCH_TESTING)
     androidTestImplementation(Libs.TEST_JUNIT_EXT)
     androidTestImplementation(Libs.TEST_JUNIT_KTX)
+    androidTestImplementation(project(":tv_test"))
 }

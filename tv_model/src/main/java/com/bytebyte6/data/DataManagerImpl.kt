@@ -34,7 +34,7 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
         userDao.update(user)
     }
 
-    override fun getUser(): User {
+    override fun getCurrentUserIfNotExistCreate(): User {
         if (!hasUser()) {
             insertUser(User(name = "Admin"))
         }
@@ -63,6 +63,10 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
 
     override fun updateCountry(country: Country) {
         countryDao.update(country)
+    }
+
+    override fun updateCountry(countries: List<Country>) {
+        countryDao.update(countries)
     }
 
     override fun countries(): LiveData<List<Country>> {
@@ -95,6 +99,10 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
 
     override fun updateTv(tv: Tv) {
         tvDao.update(tv)
+    }
+
+    override fun updateTv(tvs: List<Tv>) {
+        tvDao.update(tvs)
     }
 
     override fun getTvByUrl(url: String): Tv? {

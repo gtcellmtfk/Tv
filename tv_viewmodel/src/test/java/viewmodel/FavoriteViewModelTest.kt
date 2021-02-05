@@ -7,6 +7,6 @@ class FavoriteViewModelTest {
     @Test
     fun test(){
         val favoriteViewModel=FavoriteViewModel(FakeDataManager)
-        assert(favoriteViewModel.allFav.value!!.isNullOrEmpty())
+        assert(favoriteViewModel.allFav.value==null)
     }
 }

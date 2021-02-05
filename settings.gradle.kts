@@ -1,3 +1,4 @@
+include(":tv_test")
 include(
     ":weather",
     ":tv_viewmodel",

@@ -18,7 +18,7 @@ class TvLogoSearchUseCaseImpl(
 
     override fun run(param: SearchParam): SearchParam {
         val tv = dataManager.getTvById(param.id)
-        if (tv.logo.isEmpty()) {
+        if (tv.logo.isEmpty() && tv.name.isNotEmpty()) {
             val logo = imageSearch.search(tv.name)
             if (logo.isNotEmpty()) {
                 tv.logo = logo

@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/lib_recyclerviewutils" />
             <option value="$PROJECT_DIR$/tv" />
             <option value="$PROJECT_DIR$/tv_model" />
+            <option value="$PROJECT_DIR$/tv_test" />
             <option value="$PROJECT_DIR$/tv_usecase" />
             <option value="$PROJECT_DIR$/tv_viewmodel" />
             <option value="$PROJECT_DIR$/ui_factory" />

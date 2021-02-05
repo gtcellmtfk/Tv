@@ -2,7 +2,7 @@ package com.bytebyte6.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.data.AppDatabase
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.entity.User
 import org.junit.After
@@ -18,7 +18,7 @@ import org.koin.test.inject
 @RunWith(AndroidJUnit4::class)
 class UpdateUserUseCaseTest : KoinTest {
 
-    private val db: AppDatabase by inject()
+    private val dataManager:DataManager by inject()
     private val updateUserUseCase: UpdateUserUseCase by inject()
 
     @get:Rule
@@ -33,16 +33,15 @@ class UpdateUserUseCaseTest : KoinTest {
 
     @After
     fun closeDb() {
-        db.close()
         stopKoin()
     }
 
     @Test
     fun test() {
-        db.userDao().insert(User(name = "A"))
-        val user = db.userDao().getUser()
+        dataManager.insertUser(User(name = "A"))
+        val user = dataManager.getCurrentUserIfNotExistCreate()
         user.name="B"
         updateUserUseCase.execute(user).test().assertComplete()
-        assert(db.userDao().getUser().name == "B")
+        assert(dataManager.getCurrentUserIfNotExistCreate().name == "B")
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.viewmodel.HomeViewModel
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.utils.GridSpaceDecoration
@@ -37,7 +38,9 @@ class CountryFragment :
         super.onViewCreated(view, savedInstanceState)
         val imageAdapter = ImageAdapter().apply {
             doOnBind = { pos: Int, _: View ->
-                viewModel.searchLogo(pos)
+                if (recyclerView!!.scrollState==RecyclerView.SCROLL_STATE_IDLE){
+                    viewModel.searchLogo(pos)
+                }
             }
             onItemClick = { pos, itemView: View ->
                 homeToVideoList(
