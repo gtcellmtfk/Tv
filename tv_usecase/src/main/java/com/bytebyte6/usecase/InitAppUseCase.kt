@@ -34,6 +34,8 @@ class InitAppUseCaseImpl(
 
     override fun run(param: Unit): List<Tv> {
 
+        dataManager.getCurrentUserIfNotExistCreate()
+
         if (dataManager.getTvCount() == 0) {
             if (tvs == null) {
                 tvs = getTvs(context!!)
@@ -69,12 +71,12 @@ class InitAppUseCaseImpl(
     }
 
     private fun findImageLink() {
-        val workRequest = OneTimeWorkRequestBuilder<FindImageWork>()
-            .setConstraints(
-                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-            )
-            .build()
         context?.let {
+            val workRequest = OneTimeWorkRequestBuilder<FindImageWork>()
+                .setConstraints(
+                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                )
+                .build()
             WorkManager.getInstance(it)
                 .beginUniqueWork("findImageLink", ExistingWorkPolicy.KEEP, workRequest)
                 .enqueue()

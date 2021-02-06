@@ -9,7 +9,6 @@ import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_CATEGORY
-import com.bytebyte6.view.adapter.CardAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList
 import org.koin.android.viewmodel.ext.android.getViewModel
@@ -37,10 +36,10 @@ class CategoryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cardAdapter = CardAdapter()
+        val cardAdapter = CategoryAdapter()
         cardAdapter.onItemClick = { pos, itemView: View ->
             val item = cardAdapter.currentList[pos]
-            homeToVideoList(itemView, item.transitionName)
+            homeToVideoList(itemView, item.category)
         }
 
         recyclerView = binding?.recyclerView
@@ -48,6 +47,7 @@ class CategoryFragment :
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.category.observe(viewLifecycleOwner, Observer {

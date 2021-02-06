@@ -23,7 +23,7 @@ class MeViewModel(
     private lateinit var userWithPlaylist: UserWithPlaylists
 
     val playlistNames = dataManager.user().switchMap { user ->
-        dataManager.userWithPlaylist(user!!.userId).map { userWithPlaylists ->
+        dataManager.userWithPlaylist(user.userId).map { userWithPlaylists ->
             userWithPlaylist = userWithPlaylists
             userWithPlaylist.playlists
         }

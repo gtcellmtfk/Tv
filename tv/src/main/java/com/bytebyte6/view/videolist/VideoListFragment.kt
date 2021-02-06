@@ -5,16 +5,15 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.*
-import com.bytebyte6.data.entity.TvFts
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.KEY_TITLE
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
-import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.VideoListViewModel
@@ -38,7 +37,7 @@ class VideoListFragment : ListFragment() {
 
     private val buttonClickListener = object :
         ButtonClickListener {
-        override fun onClick(position: Int) {
+        override fun onClick(position: Int, tv: Tv) {
             viewModel.fav(position)
         }
     }
@@ -52,17 +51,12 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ImageAdapter(
+        val adapter = TvAdapter(
             ButtonType.FAVORITE,
             buttonClickListener
         ).apply {
             onItemClick = { pos, _: View ->
-                toPlayer(currentList[pos].videoUrl)
-            }
-            doOnBind = { pos, _: View ->
-                if (recyclerView!!.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.searchLogo(pos)
-                }
+                toPlayer(currentList[pos].url)
             }
             onCurrentListChanged = { _, currentList ->
                 binding?.emptyBox?.isVisible = currentList.isEmpty()
@@ -79,7 +73,8 @@ class VideoListFragment : ListFragment() {
 
         binding?.run {
             recyclerview.adapter = adapter
-            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
+            val gridLayoutManager = GridLayoutManager(view.context, 2)
+            recyclerview.layoutManager = gridLayoutManager
             recyclerview.addItemDecoration(GridSpaceDecoration())
             recyclerview.setHasFixedSize(true)
             recyclerview.itemAnimator = null
@@ -89,10 +84,31 @@ class VideoListFragment : ListFragment() {
             binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
         })
 
+        viewModel.favoriteResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                adapter.currentList[pos].favorite = tv.favorite
+                adapter.notifyItemChanged(pos)
+            }
+        })
+
+        viewModel.logoSearchResult.observe(viewLifecycleOwner, Observer { result ->
+            result.emitIfNotHandled(success = {
+                it.data.tvs.forEach { newTv ->
+                    adapter.currentList.find { oldTv ->
+                        newTv.tvId == oldTv.tvId
+                    }?.apply {
+                        this.logo = newTv.logo
+                        adapter.notifyItemChanged(adapter.currentList.indexOf(this))
+                        logd("${this.name} ${this.logo}",TAG)
+                    }
+                }
+            })
+        })
+
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
             result.emit(
                 {
-                    adapter.submitList(TvFts.toTvs(it.data))
+                    adapter.submitList(it.data)
                     end = it.end
                     it.runIfNotHandled {
                         hideSwipeRefresh()

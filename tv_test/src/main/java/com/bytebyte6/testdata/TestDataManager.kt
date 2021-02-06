@@ -7,56 +7,59 @@ import com.bytebyte6.data.entity.*
 import com.bytebyte6.data.model.*
 import java.util.*
 
-val china = Country(countryId = 1, name = "CHINA")
-val usa = Country(countryId = 2, name = "US")
-val kor = Country(countryId = 3, name = "KOR")
+val china get() = Country(countryId = 1, name = "CHINA")
+val usa get() = Country(countryId = 2, name = "US")
+val kor get() = Country(countryId = 3, name = "KOR")
 val countries
     get() = mutableListOf(
         china,
         usa,
         kor
     )
-val lang1 = Language("CHINESE", "CN")
-val lang2 = Language("ENGLISH", "EN")
-val tv1 =
-    Tv(
-        country = china,
-        name = "A",
-        url = "A.url",
-        countryName = china.name,
-        language = mutableListOf(lang1),
-        category = "A"
+val lang1 get() = Language("CHINESE", "CN")
+val lang2 get() = Language("ENGLISH", "EN")
+val tv1
+    get() =
+        Tv(
+            country = china,
+            name = "A",
+            url = "A.url",
+            countryName = china.name,
+            language = mutableListOf(lang1),
+            category = "A"
+        )
+val tv2
+    get() =
+        Tv(
+            country = usa,
+            name = "B",
+            url = "B.url",
+            countryName = usa.name,
+            language = mutableListOf(lang2),
+            category = "B"
+        )
+val tv3
+    get() = Tv(
+        country = kor,
+        category = "C",
+        name = "C",
+        url = "C.url",
+        countryName = kor.name,
+        language = mutableListOf(
+            lang1,
+            lang2
+        )
     )
-val tv2 =
-    Tv(
-        country = usa,
-        name = "B",
-        url = "B.url",
-        countryName = usa.name,
-        language = mutableListOf(lang2),
-        category = "B"
-    )
-val tv3 = Tv(
-    country = kor,
-    category = "C",
-    name = "C",
-    url = "C.url",
-    countryName = kor.name,
-    language = mutableListOf(
-        lang1,
-        lang2
-    )
-)
 val tvs
     get() = mutableListOf(
         tv1,
         tv2,
         tv3
     )
-val defaultUser = User(name = "admin")
-val playlist1 = Playlist(playlistName = "P1")
-val playlist2 = Playlist(playlistName = "P2")
-val playlist3 = Playlist(playlistName = "P3")
+val defaultUser get() = User(name = "admin")
+val playlist1 get() = Playlist(playlistName = "P1")
+val playlist2 get() = Playlist(playlistName = "P2")
+val playlist3 get() = Playlist(playlistName = "P3")
 
 abstract class TestDataManager : DataManager {
 
@@ -117,11 +120,11 @@ abstract class TestDataManager : DataManager {
     }
 
     override fun updateCountry(country: Country) {
-
+        testCountries.add(country)
     }
 
     override fun updateCountry(countries: List<Country>) {
-
+        testCountries.addAll(countries)
     }
 
     override fun countries(): LiveData<List<Country>> {
@@ -159,7 +162,7 @@ abstract class TestDataManager : DataManager {
     }
 
     override fun updateTv(tv: Tv) {
-
+        testTvs.add(tv)
     }
 
     override fun updateTv(tvs: List<Tv>) {
@@ -193,6 +196,10 @@ abstract class TestDataManager : DataManager {
         return emptyList()
     }
 
+    override fun tvsByKeyword(key: String): LiveData<List<Tv>> {
+        return MutableLiveData(testTvs)
+    }
+
     override fun getFtsTvCount(key: String): Int {
         return 1
     }
@@ -201,7 +208,7 @@ abstract class TestDataManager : DataManager {
         return MutableLiveData()
     }
 
-    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<TvFts> {
+    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<Tv> {
         return emptyList()
     }
 

@@ -17,10 +17,10 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class TvLogoSearchUseCaseTest : KoinTest {
+class SearchTvLogoUseCaseTest : KoinTest {
 
     private val dataManager:DataManager by inject()
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase by inject()
+    private val searchTvLogoUseCase: SearchTvLogoUseCase by inject()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -38,9 +38,18 @@ class TvLogoSearchUseCaseTest : KoinTest {
     }
 
     @Test
-    fun test() {
-        val id = dataManager.insertTv(Tv(url = "A"))
-        val tv = Tv(id, url = "A")
-        tvLogoSearchUseCase.execute(SearchParam(tv.tvId,0)).test().assertValue(SearchParam(tv.tvId,0))
+    fun test_name_not_empty_logo_empty() {
+        dataManager.insertTv(Tv(url = "A",name = "A"))
+        val param = SearchTvLogoParam(dataManager.getTvs())
+        searchTvLogoUseCase.execute(param).test().assertValue(param)
+        assert(param.tvs[0].logo.isNotEmpty())
+    }
+
+    @Test
+    fun test_name_empty_logo_empty() {
+        dataManager.insertTv(Tv(url = "A",name = ""))
+        val param = SearchTvLogoParam(dataManager.getTvs())
+        searchTvLogoUseCase.execute(param).test().assertValue(param)
+        assert(param.tvs[0].logo.isEmpty())
     }
 }

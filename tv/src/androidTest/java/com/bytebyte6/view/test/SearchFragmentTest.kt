@@ -23,6 +23,7 @@ class SearchFragmentTest {
         setup()
         onView(withId(R.id.lavEmpty)).check(matches(isDisplayed()))
         onView(withId(R.id.etSearch)).perform(ViewActions.replaceText("CCTV"))
+        Thread.sleep(1000)
         onView(withId(R.id.lavEmpty)).check(matches(
             NotDisplayed()
         ))

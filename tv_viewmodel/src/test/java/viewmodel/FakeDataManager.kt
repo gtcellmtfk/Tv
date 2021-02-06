@@ -17,7 +17,7 @@ object FakeDataManager : TestDataManager() {
         Tv(3, url = "C.Url", name = "C")
     )
 
-    val playlistWithTvs = PlaylistWithTvs(playlist, tvs2)
+    private val playlistWithTvs = PlaylistWithTvs(playlist, tvs2)
 
     override fun playlistWithTvs(playlistId: Long): LiveData<PlaylistWithTvs> {
         return MutableLiveData(playlistWithTvs)
@@ -33,7 +33,7 @@ object FakeDataManager : TestDataManager() {
         return 101
     }
 
-    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<TvFts> {
+    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<Tv> {
         if (offset > ftss.size) {
             throw IllegalArgumentException("offset error!")
         }
@@ -49,13 +49,9 @@ object FakeDataManager : TestDataManager() {
         return temp
     }
 
-    lateinit var ftss: List<TvFts>
+    lateinit var ftss: List<Tv>
 
-    private fun getFts(): MutableList<TvFts> {
-        val list = mutableListOf<TvFts>()
-        for (testTv in testTvs) {
-            list.add(TvFts(1, testTv.url, name = testTv.name))
-        }
-        return list
+    private fun getFts(): MutableList<Tv> {
+        return testTvs
     }
 }

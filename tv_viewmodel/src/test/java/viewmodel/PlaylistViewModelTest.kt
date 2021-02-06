@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.common.Result
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.SearchParam
-import com.bytebyte6.usecase.TvLogoSearchUseCase
-import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
+import com.bytebyte6.usecase.SearchTvLogoParam
+import com.bytebyte6.usecase.SearchTvLogoUseCase
 import com.bytebyte6.viewmodel.PlaylistViewModel
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -29,23 +29,24 @@ class PlaylistViewModelTest {
     @Test
     fun test() {
         val viewModel = PlaylistViewModel(
-            FakeTvLogoSearchUseCase, UpdateTvUseCase(FakeDataManager), FakeDataManager
+            FakeSearchTvLogoUseCase, DownloadTvUseCase(FakeDataManager), FakeDataManager
         )
         var tvs: List<Tv>? = null
-        viewModel.tvs(FakeDataManager.playlist.playlistId).observeForever {
-            tvs = it
+        viewModel.setPlaylistId(FakeDataManager.playlist.playlistId)
+        viewModel.playlistWithTvs.observeForever {
+            tvs = it.tvs
         }
         assert(tvs == FakeDataManager.tvs2)
-        viewModel.download(0)
+        viewModel.download(0,tvs!![0])
         val result = viewModel.updateTv.getSuccessData()
         assert(result!!.tv.download)
     }
 
-    object FakeTvLogoSearchUseCase : TvLogoSearchUseCase {
-        override val result: MutableLiveData<Result<SearchParam>> = MutableLiveData()
+    object FakeSearchTvLogoUseCase : SearchTvLogoUseCase {
+        val RESULT: MutableLiveData<Result<SearchTvLogoParam>> = MutableLiveData()
 
-        override fun run(param: SearchParam): SearchParam {
-            return SearchParam(1, 0)
+        override fun run(tvLogoParam: SearchTvLogoParam): SearchTvLogoParam {
+            return SearchTvLogoParam(FakeDataManager.tvs2)
         }
     }
 }

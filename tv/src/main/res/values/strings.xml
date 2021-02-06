@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Rtmp</string>
+    <string name="app_name">TV</string>
     <string name="home_category">类型</string>
     <string name="home_language">语言</string>
     <string name="home_country">国家</string>
@@ -47,4 +47,6 @@
     <string name="toolbar_navigation">navigation</string>
     <string name="tabLayoutContentDescription">tabLayoutContentDescription</string>
     <string name="cleartext">clearText</string>
+    <string name="revocation">撤销</string>
+    <string name="unbookmarked">已取消收藏</string>
 </resources>

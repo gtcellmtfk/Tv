@@ -5,8 +5,8 @@ import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImageImpl
-import com.bytebyte6.usecase.TvLogoSearchUseCaseImpl
-import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.SearchTvLogoUseCaseImpl
+import com.bytebyte6.usecase.FavoriteTvUseCase
 import com.bytebyte6.viewmodel.VideoListViewModel
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -37,8 +37,8 @@ class VideoListViewModelTest {
     fun test() {
         val viewModel = VideoListViewModel(
             FakeDataManager,
-            TvLogoSearchUseCaseImpl(SearchImageImpl(), FakeDataManager),
-            UpdateTvUseCase(FakeDataManager)
+            SearchTvLogoUseCaseImpl(SearchImageImpl(), FakeDataManager),
+            FavoriteTvUseCase(FakeDataManager)
         )
 
         //测试加载
@@ -64,13 +64,7 @@ class VideoListViewModelTest {
 
         //测试收藏
         viewModel.fav(0)
-        assert(
-            viewModel.favorite.getSuccessData()!!.tv.favorite
-        )
-
-        //测试搜索
-        viewModel.searchLogo(1)
-        assert(viewModel.tvLogoSearchResult.getSuccessData()!!.logo.contains("http"))
+        assert(viewModel.favoriteResult.getSuccessData()!!.tv.favorite)
     }
 
 }

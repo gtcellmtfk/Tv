@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
-import com.bytebyte6.data.model.Image
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.TvDiff
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemImageBinding
@@ -19,14 +20,14 @@ enum class ButtonType {
 }
 
 interface ButtonClickListener {
-    fun onClick(position: Int)
+    fun onClick(position: Int,tv:Tv)
 }
 
-class ImageAdapter(
+class TvAdapter(
     private val type: ButtonType = ButtonType.NONE,
     private var btnClickListener: ButtonClickListener? = null,
     private val clearHelper: ImageClearHelper = GlideClearHelper()
-) : BaseListAdapter<Image, ImageViewHolder>(ImageDIFF), ImageClearHelper by clearHelper {
+) : BaseListAdapter<Tv, ImageViewHolder>(TvDiff), ImageClearHelper by clearHelper {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent)
@@ -34,7 +35,7 @@ class ImageAdapter(
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         //重建后的recyclerview Item是没有transName的 所以在onBind要重新赋值一遍 动画效果才会有~~
-        holder.itemView.transitionName = currentList[position].transitionName
+        holder.itemView.transitionName = currentList[position].name
         val item = getItem(position)
         val tvName = holder.binding.tvName
         val ivPreview = holder.binding.ivPreview
@@ -48,7 +49,7 @@ class ImageAdapter(
             ivPreview.load(item.logo)
         }
         button.setOnClickListener {
-            btnClickListener?.onClick(position)
+            btnClickListener?.onClick(position,item)
         }
         when (type) {
             ButtonType.FAVORITE -> {
@@ -82,27 +83,6 @@ class ImageViewHolder(val binding: ItemImageBinding) :
                 )
             )
         }
-    }
-}
-
-object ImageDIFF : DiffUtil.ItemCallback<Image>() {
-    override fun areItemsTheSame(
-        oldItem: Image,
-        newItem: Image
-    ): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(
-        oldItem: Image,
-        newItem: Image
-    ): Boolean {
-        return oldItem.transitionName == newItem.transitionName &&
-                oldItem.download == newItem.download &&
-                oldItem.name == newItem.name &&
-                oldItem.videoUrl == newItem.videoUrl &&
-                oldItem.logo == newItem.logo &&
-                oldItem.favorite == newItem.favorite
     }
 }
 

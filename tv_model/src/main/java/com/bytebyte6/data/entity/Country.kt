@@ -2,10 +2,10 @@ package com.bytebyte6.data.entity
 
 import android.os.Parcelable
 import androidx.annotation.Keep
+import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.bytebyte6.data.model.Image
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -16,23 +16,16 @@ import kotlinx.android.parcel.Parcelize
 data class Country(
     @PrimaryKey(autoGenerate = true)
     var countryId: Long = 0,
-    override var name: String = "",
+    var name: String = "",
     var image: String = ""
-) : Parcelable, Image {
-    override val id: Long
-        get() = countryId
-    override var logo: String
-        get() = image
-        set(value) {}
-    override var videoUrl: String
-        get() = ""
-        set(value) {}
-    override var favorite: Boolean
-        get() = false
-        set(value) {}
-    override val transitionName: String
-        get() = this.name
-    override var download: Boolean
-        get() = false
-        set(value) {}
+) : Parcelable
+
+object CountryDiff : DiffUtil.ItemCallback<Country>(){
+    override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
+        return oldItem.countryId==newItem.countryId
+    }
+
+    override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
+        return oldItem == newItem
+    }
 }

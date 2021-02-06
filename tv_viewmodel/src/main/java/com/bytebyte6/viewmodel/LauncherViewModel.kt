@@ -16,9 +16,9 @@ class LauncherViewModel(
     private val initAppUseCase: InitAppUseCase
 ) : BaseViewModel() {
 
-    private val observer = object : Observer<User?> {
-        override fun onChanged(user1: User?) {
-            user1?.let {
+    private val observer = object : Observer<User> {
+        override fun onChanged(user1: User) {
+            user1.let {
                 AppCompatDelegate.setDefaultNightMode(
                     if (it.nightMode) AppCompatDelegate.MODE_NIGHT_YES
                     else AppCompatDelegate.MODE_NIGHT_NO
@@ -30,7 +30,7 @@ class LauncherViewModel(
 
     private val user = dataManager.user()
 
-    init {
+    fun obs() {
         user.observeForever(observer)
     }
 

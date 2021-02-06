@@ -13,7 +13,7 @@ interface DataManager {
     fun updateUser(user: User)
     fun getCurrentUserIfNotExistCreate(): User
     fun hasUser(): Boolean
-    fun user(): LiveData<User?>
+    fun user(): LiveData<User>
     fun getUsers(): List<User>
 
     //Country
@@ -40,9 +40,10 @@ interface DataManager {
 
     //TvFts
     fun getTvsByKeyword(key: String): List<Tv>
+    fun tvsByKeyword(key: String): LiveData<List<Tv>>
     fun getFtsTvCount(key: String): Int
     fun ftsTvCount(key: String): LiveData<Int>
-    fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<TvFts>
+    fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<Tv>
 
     //Playlist
     fun insertPlaylist(playlist: Playlist): Long

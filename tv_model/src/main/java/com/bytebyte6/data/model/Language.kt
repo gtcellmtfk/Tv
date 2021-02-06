@@ -14,8 +14,8 @@ data class Language(
     var languageCode: String = ""
 ) : Parcelable {
     companion object {
-        const val NAME = "UNKOWN"
-        const val CODE = "UNKOWN"
+        private const val NAME = "Unkown"
+        private const val CODE = "Unkown"
         val DEFAULT = Language(NAME, CODE)
     }
 }

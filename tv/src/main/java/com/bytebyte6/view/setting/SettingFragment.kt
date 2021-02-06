@@ -42,23 +42,20 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
         }
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                binding?.swCapturePic?.isChecked = it.capturePic
-                binding?.swNightMode?.isChecked = it.nightMode
-                binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
-                    AppCompatDelegate.setDefaultNightMode(
-                        if (isChecked)
-                            AppCompatDelegate.MODE_NIGHT_YES
-                        else
-                            AppCompatDelegate.MODE_NIGHT_NO
-                    )
-                    viewModel.updateNight(isChecked)
-                }
-                binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.updateCapturePic(isChecked)
-                }
+            binding?.swCapturePic?.isChecked = it.capturePic
+            binding?.swNightMode?.isChecked = it.nightMode
+            binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
+                AppCompatDelegate.setDefaultNightMode(
+                    if (isChecked)
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    else
+                        AppCompatDelegate.MODE_NIGHT_NO
+                )
+                viewModel.updateNight(isChecked)
             }
-
+            binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateCapturePic(isChecked)
+            }
         })
     }
 }

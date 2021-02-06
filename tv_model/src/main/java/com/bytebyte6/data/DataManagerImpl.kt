@@ -1,7 +1,6 @@
 package com.bytebyte6.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.bytebyte6.data.entity.*
 import com.bytebyte6.data.model.*
 
@@ -45,7 +44,7 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
         return userDao.getCount() > 0
     }
 
-    override fun user(): LiveData<User?> {
+    override fun user(): LiveData<User> {
         return userDao.user()
     }
 
@@ -126,7 +125,11 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
     }
 
     override fun getTvsByKeyword(key: String): List<Tv> {
-        return TvFts.toTvs(tvFtsDao.search(key))
+        return tvFtsDao.search(key)
+    }
+
+    override fun tvsByKeyword(key: String): LiveData<List<Tv>> {
+        return tvFtsDao.tvs(key)
     }
 
     override fun getFtsTvCount(key: String): Int {
@@ -137,7 +140,7 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
         return tvFtsDao.count(key)
     }
 
-    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<TvFts> {
+    override fun ftsTvPaging(offset: Int, key: String, pageSize: Int): List<Tv> {
         return tvFtsDao.paging(offset, key, pageSize)
     }
 

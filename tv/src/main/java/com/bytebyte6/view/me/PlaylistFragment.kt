@@ -8,9 +8,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.viewmodel.PlaylistViewModel
 import com.bytebyte6.common.*
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.usecase.UpdateTvParam
@@ -18,7 +18,7 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
-import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.download.DownloadServicePro
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.MediaItem
@@ -74,20 +74,15 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
         setupToolbarArrowBack()
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
-        val imageAdapter = ImageAdapter(
+        val imageAdapter = TvAdapter(
             ButtonType.DOWNLOAD,
             object : ButtonClickListener {
-                override fun onClick(position: Int) {
-                    onDownloadClick(position)
+                override fun onClick(position: Int,tv: Tv) {
+                    onDownloadClick(position,tv)
                 }
             }).apply {
             onItemClick = { pos, _: View ->
-                toPlayer(currentList[pos].videoUrl)
-            }
-            doOnBind = { pos, _: View ->
-                if (recyclerView!!.scrollState== RecyclerView.SCROLL_STATE_IDLE){
-                viewModel.searchLogo(pos)
-                }
+                toPlayer(currentList[pos].url)
             }
             onCurrentListChanged = { _, c ->
                 binding?.emptyBox?.isVisible = c.isEmpty()
@@ -99,15 +94,17 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
             appbar.toolbar.title = requireArguments().getString(KEY_TITLE)
             recyclerview.adapter = imageAdapter
             recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
+            val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerview.layoutManager = gridLayoutManager
             recyclerview.setHasFixedSize(true)
             recyclerview.itemAnimator = null
         }
         viewModel.apply {
-            tvs(requireArguments().getLong(KEY_PLAY_LIST_ID))
-                .observe(viewLifecycleOwner, Observer {
+            val id=requireArguments().getLong(KEY_PLAY_LIST_ID)
+            setPlaylistId(id)
+            playlistWithTvs.observe(viewLifecycleOwner, Observer {
                     hideSwipeRefresh()
-                    imageAdapter.submitList(it)
+                    imageAdapter.submitList(it.tvs)
                     binding?.appbar?.toolbar?.subtitle =
                         getString(R.string.total, imageAdapter.itemCount)
                 })
@@ -123,21 +120,21 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
         }
     }
 
-    private fun onDownloadClick(pos: Int) {
+    private fun onDownloadClick(pos:Int,tv: Tv) {
         viewModel.apply {
             showProgressDialog()
             downloadHelper?.release()
             downloadHelper = null
             downloadHelper = DownloadHelper.forMediaItem(
                 requireContext(),
-                MediaItem.fromUri(getTv(pos).url),
+                MediaItem.fromUri(tv.url),
                 defaultRenderersFactory,
                 httpDataSourceFactory
             )
             downloadHelper!!.prepare(object : DownloadHelper.Callback {
                 override fun onPrepared(helper: DownloadHelper) {
-                    download(pos)
-                    DownloadServicePro.addDownload(requireContext(), getTv(pos).url)
+                    download(pos,tv)
+                    DownloadServicePro.addDownload(requireContext(), tv.url)
                     val tip = getString(R.string.tip_add_download_has_been)
                     showSnack(requireView(), Message(message = tip))
                     hideProgressDialog()

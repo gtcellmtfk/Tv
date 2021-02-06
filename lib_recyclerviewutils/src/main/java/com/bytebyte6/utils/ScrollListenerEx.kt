@@ -22,3 +22,17 @@ abstract class BottomingListener : RecyclerView.OnScrollListener() {
 
     abstract fun onBottom()
 }
+
+fun RecyclerView.doSomethingOnIdle(onIdle: (first: Int, last: Int) -> Unit) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                onIdle.invoke(
+                    layoutManager.findFirstVisibleItemPosition(),
+                    layoutManager.findLastVisibleItemPosition()
+                )
+            }
+        }
+    })
+}

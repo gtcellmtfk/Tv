@@ -31,7 +31,7 @@ interface UserDao : BaseDao<User> {
      */
 
     @Query("SELECT * FROM User")
-    fun user(): LiveData<User?>
+    fun user(): LiveData<User>
 
     @Transaction
     @Query("SELECT * FROM User WHERE userId=:userId")

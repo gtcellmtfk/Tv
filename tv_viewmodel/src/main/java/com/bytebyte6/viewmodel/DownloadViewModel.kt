@@ -6,12 +6,12 @@ import com.bytebyte6.common.*
 import com.bytebyte6.usecase.DownloadListUseCase
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.usecase.UpdateTvParam
-import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
 import io.reactivex.rxjava3.disposables.Disposable
 
 class DownloadViewModel(
     private val downloadListUseCase: DownloadListUseCase,
-    private val updateTvUseCase: UpdateTvUseCase
+    private val downloadTvUseCase: DownloadTvUseCase
 ) : BaseViewModel(), Observer<Result<List<TvAndDownload>>> {
 
     private var getDownloadList: Disposable? = null
@@ -20,7 +20,7 @@ class DownloadViewModel(
 
     val downloadListResult = downloadListUseCase.result()
 
-    val deleteResult = updateTvUseCase.result()
+    val deleteResult = downloadTvUseCase.result()
 
     init {
         downloadListUseCase.result().observeForever(this)
@@ -51,7 +51,7 @@ class DownloadViewModel(
         tv.download = false
         deleteResult.observeForever(resultObserver)
         addDisposable(
-            updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
+            downloadTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
         )
     }
 

@@ -7,7 +7,7 @@ import com.bytebyte6.common.isLoading
 
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.DownloadListUseCase
-import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
 
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
@@ -20,7 +20,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
-import org.koin.test.inject
 
 
 @RunWith(AndroidJUnit4::class)
@@ -91,7 +90,7 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
             DownloadListUseCase(get(), get()),
-            UpdateTvUseCase(get())
+            DownloadTvUseCase(get())
         )
     }
 }

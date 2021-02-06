@@ -1,40 +1,52 @@
 package com.bytebyte6.viewmodel
 
-import androidx.lifecycle.map
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.switchMap
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.onIo
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.*
+import com.bytebyte6.data.model.PlaylistWithTvs
+import com.bytebyte6.usecase.DownloadTvUseCase
+import com.bytebyte6.usecase.SearchTvLogoParam
+import com.bytebyte6.usecase.SearchTvLogoUseCase
+import com.bytebyte6.usecase.UpdateTvParam
 
 class PlaylistViewModel(
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val updateTvUseCase: UpdateTvUseCase,
+    private val searchTvLogoUseCase: SearchTvLogoUseCase,
+    private val downloadTvUseCase: DownloadTvUseCase,
     private val dataManager: DataManager
-) : BaseViewModel(){
+) : BaseViewModel(), Observer<PlaylistWithTvs> {
 
-    val updateTv = updateTvUseCase.result()
+    private val playlistId = MutableLiveData<Long>()
 
-    fun searchLogo(pos: Int) {
-        addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId, pos = pos)).onIo()
-        )
+    fun setPlaylistId(id: Long) {
+        playlistId.value = id
     }
 
-    private lateinit var tvs: List<Tv>
-
-    fun getTv(pos: Int) = tvs[pos]
-
-    fun tvs(playlistId: Long) = dataManager.playlistWithTvs(playlistId).map {
-        tvs = it.tvs
-        tvs
+    val playlistWithTvs: LiveData<PlaylistWithTvs> = playlistId.switchMap {
+        dataManager.playlistWithTvs(it)
     }
 
-    fun download(pos: Int) {
+    val updateTv = downloadTvUseCase.result()
+
+    init {
+        playlistWithTvs.observeForever(this)
+    }
+
+    override fun onChanged(t: PlaylistWithTvs) {
+        val tvs = t.tvs
+        if (tvs.isNotEmpty()) {
+            playlistWithTvs.removeObserver(this)
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onIo())
+        }
+    }
+
+    fun download(pos: Int, tv: Tv) {
         addDisposable(
-            updateTvUseCase.execute(UpdateTvParam(pos, tvs[pos].apply {
-                download = true
-            })).onIo()
+            downloadTvUseCase.execute(UpdateTvParam(pos, tv.apply { download = true })).onIo()
         )
     }
 }

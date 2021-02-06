@@ -9,7 +9,6 @@ import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_LANGUAGE
-import com.bytebyte6.view.adapter.CardAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList
 import org.koin.android.viewmodel.ext.android.getViewModel
@@ -36,16 +35,17 @@ class LanguageFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cardAdapter = CardAdapter()
+        val cardAdapter = LanguageAdapter()
         cardAdapter.onItemClick= { pos, itemView ->
             val item = cardAdapter.currentList[pos]
-            homeToVideoList(itemView, item.transitionName)
+            homeToVideoList(itemView, item.langName)
         }
         recyclerView=binding?.recyclerView
         binding?.apply {
             recyclerView.adapter = cardAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.lang.observe(viewLifecycleOwner, Observer {

@@ -76,9 +76,7 @@ class MainActivity : BaseActivity() {
 
         val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
         dataManager.user().observe(this, Observer {
-            it?.let {
-                name.text = it.name
-            }
+            name.text = it.name
         })
     }
 

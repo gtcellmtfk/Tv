@@ -2,8 +2,7 @@ package com.bytebyte6.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -68,10 +67,19 @@ abstract class RxUseCase<I, O> {
     abstract fun run(param: I): O
 }
 
+fun <T> Single<T>.onSingle(): Disposable {
+    return subscribeOn(Schedulers.single())
+        .subscribe({
+
+        }, {
+            it.printStackTrace()
+        })
+}
+
 fun <T> Single<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
         .subscribe({
-            logd(it.toString())
+
         }, {
             it.printStackTrace()
         })
@@ -80,7 +88,7 @@ fun <T> Single<T>.onIo(): Disposable {
 fun <T> Observable<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
         .subscribe({
-            logd(it.toString())
+
         }, {
             it.printStackTrace()
         })

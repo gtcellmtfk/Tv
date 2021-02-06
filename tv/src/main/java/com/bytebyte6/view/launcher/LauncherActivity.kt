@@ -21,6 +21,7 @@ class LauncherActivity : BaseActivity() {
         viewModel.start().observe(this, Observer { result ->
             result.emitIfNotHandled(
                 success = {
+                    viewModel.obs()
                     Handler().postDelayed({
                         val intent = Intent(
                             this@LauncherActivity,
