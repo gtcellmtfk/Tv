@@ -67,6 +67,8 @@ class InitAppUseCaseImpl(
             findImageLink()
         }
 
+        tvs = null
+
         return emptyList()
     }
 

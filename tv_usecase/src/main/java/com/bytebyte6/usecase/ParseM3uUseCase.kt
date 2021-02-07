@@ -15,14 +15,14 @@ import org.jetbrains.annotations.TestOnly
 
 class ParseM3uUseCase(
     private val dataManager: DataManager,
-    private val context: Context?=null
+    private val context: Context? = null
 ) : RxUseCase<Uri, Playlist>() {
 
     private var tvsFromFile: List<Tv>? = null
 
     @TestOnly
-    fun setTvs(list:List<Tv>){
-        tvsFromFile=list
+    fun setTvs(list: List<Tv>) {
+        tvsFromFile = list
     }
 
     override fun run(param: Uri): Playlist {
@@ -74,6 +74,8 @@ class ParseM3uUseCase(
             playlistTvCrossRefs.add(playlistTvCrossRef)
         }
         dataManager.crossRefPlaylistWithTv(playlistTvCrossRefs)
+
+        tvsFromFile = null
 
         //3、返回结果
         return Playlist(playlistId, playlistName)
