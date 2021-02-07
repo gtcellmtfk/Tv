@@ -96,6 +96,10 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
         tvDao.delete(tv)
     }
 
+    override fun deleteTv(tvs: List<Tv>) {
+        tvDao.delete(tvs)
+    }
+
     override fun updateTv(tv: Tv) {
         tvDao.update(tv)
     }

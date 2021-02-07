@@ -30,6 +30,7 @@ interface DataManager {
     fun insertTv(tvs: List<Tv>): List<Long>
     fun insertTv(tv: Tv): Long
     fun deleteTv(tv: Tv)
+    fun deleteTv(tvs: List<Tv>)
     fun updateTv(tv: Tv)
     fun updateTv(tvs: List<Tv>)
     fun getTvByUrl(url: String): Tv?
