@@ -9,6 +9,7 @@ import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
 import com.bytebyte6.view.TAB_CATEGORY
+import com.bytebyte6.view.adapter.CategoryAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList
 import org.koin.android.viewmodel.ext.android.getViewModel

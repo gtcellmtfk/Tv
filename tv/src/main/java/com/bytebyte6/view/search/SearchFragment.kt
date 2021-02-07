@@ -86,6 +86,7 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
         })
         viewModel.searchResult.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            viewModel.search(it)
         })
     }
 }

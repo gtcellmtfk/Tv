@@ -15,27 +15,22 @@ class VideoListViewModel(
     private val favoriteTvUseCase: FavoriteTvUseCase
 ) : BaseViewModel() {
 
-    private val pagingHelper: PagingHelper<Tv>
+    private val pagingHelper: PagingHelper<Tv>  = object : PagingHelper<Tv>() {
+        override fun count(): Int = dataManager.getFtsTvCount(getKey())
+        override fun paging(offset: Int, pageSize: Int): List<Tv> {
+            val tvs = dataManager.ftsTvPaging(offset, getKey(), pageSize)
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onSingle())
+            return tvs
+        }
+    }
 
     private var key: String = ""
 
-    val tvs: LiveData<Result<List<Tv>>>
+    val tvs: LiveData<Result<List<Tv>>>  = pagingHelper.result()
 
     val favoriteResult = favoriteTvUseCase.result()
 
     val logoSearchResult = searchTvLogoUseCase.result()
-
-    init {
-        pagingHelper = object : PagingHelper<Tv>() {
-            override fun count(): Int = dataManager.getFtsTvCount(getKey())
-            override fun paging(offset: Int, pageSize: Int): List<Tv> {
-                val tvs = dataManager.ftsTvPaging(offset, getKey(), pageSize)
-                addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onSingle())
-                return tvs
-            }
-        }
-        tvs = pagingHelper.result()
-    }
 
     fun setKey(key: String) {
         this.key = key
@@ -46,9 +41,7 @@ class VideoListViewModel(
     fun count(item: String): LiveData<Int> = dataManager.ftsTvCount(item)
 
     fun loadMore() {
-        addDisposable(
-            pagingHelper.loadResult().onIo()
-        )
+        addDisposable(pagingHelper.loadResult().onIo())
     }
 
     private var first = true
@@ -62,10 +55,13 @@ class VideoListViewModel(
 
     fun fav(pos: Int) {
         addDisposable(
-            favoriteTvUseCase.execute(
-                UpdateTvParam(pos, pagingHelper.getList()[pos])
-            ).onIo()
+            favoriteTvUseCase.execute(UpdateTvParam(pos, pagingHelper.getList()[pos])).onIo()
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchTvLogoUseCase.stop()
     }
 }
 

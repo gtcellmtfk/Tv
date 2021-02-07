@@ -16,6 +16,7 @@ import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 

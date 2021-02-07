@@ -1,13 +1,12 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.bytebyte6.common.randomColorByNightMode
 import com.bytebyte6.data.model.LangDiff
 import com.bytebyte6.data.model.Languages
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
-import com.bytebyte6.view.adapter.CardViewHolder
+import com.bytebyte6.view.randomImage
 
 class LanguageAdapter : BaseListAdapter<Languages, CardViewHolder>(LangDiff) {
 

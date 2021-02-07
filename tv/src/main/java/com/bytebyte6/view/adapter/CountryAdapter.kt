@@ -1,19 +1,12 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.view.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.CountryDiff
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
-import com.bytebyte6.view.adapter.ImageViewHolder
-import com.bytebyte6.view.databinding.ItemImageBinding
 import com.bytebyte6.view.load
 
 

@@ -1,4 +1,4 @@
-package com.bytebyte6.view.me
+package com.bytebyte6.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View

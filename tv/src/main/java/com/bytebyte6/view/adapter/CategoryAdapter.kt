@@ -1,11 +1,10 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
-import com.bytebyte6.common.randomColorByNightMode
 import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.CategoryDiff
 import com.bytebyte6.utils.BaseListAdapter
-import com.bytebyte6.view.adapter.CardViewHolder
+import com.bytebyte6.view.randomImage
 
 class CategoryAdapter : BaseListAdapter<Category, CardViewHolder>(CategoryDiff) {
 

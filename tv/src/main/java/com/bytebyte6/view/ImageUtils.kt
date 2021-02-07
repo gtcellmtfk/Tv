@@ -1,4 +1,4 @@
-package com.bytebyte6.view.home
+package com.bytebyte6.view
 
 import com.bytebyte6.view.R
 import kotlin.random.Random

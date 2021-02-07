@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.switchMap
 import com.bytebyte6.common.BaseViewModel
+import com.bytebyte6.common.logd
 import com.bytebyte6.common.onIo
+import com.bytebyte6.common.onSingle
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.usecase.FavoriteTvUseCase
@@ -16,7 +18,7 @@ class SearchViewModel(
     private val dataManager: DataManager,
     private val searchTvLogoUseCase: SearchTvLogoUseCase,
     private val favoriteTvUseCase: FavoriteTvUseCase
-) : BaseViewModel(), Observer<List<Tv>> {
+) : BaseViewModel() {
 
     private val keyword = MutableLiveData<String>()
 
@@ -25,17 +27,6 @@ class SearchViewModel(
     }
 
     val favoriteResult = favoriteTvUseCase.result()
-
-    val logoUrlSearchResult = searchTvLogoUseCase.result()
-
-    init {
-        searchResult.observeForever(this)
-    }
-
-    override fun onCleared() {
-        searchResult.removeObserver(this)
-        super.onCleared()
-    }
 
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
@@ -52,12 +43,15 @@ class SearchViewModel(
         }
     }
 
-    override fun onChanged(list: List<Tv>) {
-        if (list.isNotEmpty()) {
-            addDisposable(
-                searchTvLogoUseCase.execute(SearchTvLogoParam(list)).onIo()
-            )
+    fun search(list: List<Tv>) {
+        if (list.isNotEmpty()){
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(list)).onSingle())
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchTvLogoUseCase.stop()
     }
 }
 

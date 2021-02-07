@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.switchMap
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.onIo
+import com.bytebyte6.common.onSingle
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.model.PlaylistWithTvs
@@ -24,6 +25,7 @@ class PlaylistViewModel(
 
     fun setPlaylistId(id: Long) {
         playlistId.value = id
+        playlistWithTvs.observeForever(this)
     }
 
     val playlistWithTvs: LiveData<PlaylistWithTvs> = playlistId.switchMap {
@@ -32,15 +34,11 @@ class PlaylistViewModel(
 
     val updateTv = downloadTvUseCase.result()
 
-    init {
-        playlistWithTvs.observeForever(this)
-    }
-
-    override fun onChanged(t: PlaylistWithTvs) {
-        val tvs = t.tvs
+    override fun onChanged(playlistWithTvs1: PlaylistWithTvs) {
+        playlistWithTvs.removeObserver(this)
+        val tvs = playlistWithTvs1.tvs
         if (tvs.isNotEmpty()) {
-            playlistWithTvs.removeObserver(this)
-            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onIo())
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onSingle())
         }
     }
 
@@ -48,5 +46,10 @@ class PlaylistViewModel(
         addDisposable(
             downloadTvUseCase.execute(UpdateTvParam(pos, tv.apply { download = true })).onIo()
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchTvLogoUseCase.stop()
     }
 }

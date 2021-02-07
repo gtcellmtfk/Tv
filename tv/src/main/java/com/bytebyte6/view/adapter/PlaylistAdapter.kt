@@ -1,4 +1,4 @@
-package com.bytebyte6.view.me
+package com.bytebyte6.view.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +11,7 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.utils.AdapterHelper
 import com.bytebyte6.utils.BaseDetailAdapter
 import com.bytebyte6.view.R
-import com.bytebyte6.view.home.randomImage
+import com.bytebyte6.view.randomImage
 
 class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
     AdapterHelper<Playlist, PlaylistViewHolder> {
