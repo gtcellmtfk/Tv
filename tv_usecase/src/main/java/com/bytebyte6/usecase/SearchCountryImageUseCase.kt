@@ -11,13 +11,13 @@ class SearchCountryImageUseCase(
     private val searchImage: SearchImage,
     private val dataManager: DataManager
 ) : RxUseCase<SearchCountryImageParam, Boolean>() {
-    override fun run(countryImageParam: SearchCountryImageParam): Boolean {
-        val first = countryImageParam.first
-        val last = countryImageParam.last
+    override fun run(param: SearchCountryImageParam): Boolean {
+        val first = param.first
+        val last = param.last
         if (first == 0 && last == 0) return false
-        if (first > last) throw IllegalArgumentException("first > last!!!")
-        if (last > countryImageParam.cs.size) throw IllegalStateException("last > size!!!")
-        val cs2 = countryImageParam.cs.subList(first, last + 1)
+        if (first > last) return false
+        if (last >= param.cs.size) return false
+        val cs2 = param.cs.subList(first, last + 1)
         var result = false
         cs2.forEach {
             if (it.image.isEmpty() && it.name.isNotEmpty()) {

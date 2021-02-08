@@ -1,10 +1,12 @@
 package com.bytebyte6.data
 
 import android.content.Context
+import android.util.LruCache
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bytebyte6.common.test.assertError
 import com.bytebyte6.data.entity.*
 import org.junit.After
 import org.junit.Before
@@ -114,5 +116,35 @@ class CrossRefTest {
         val playlistsWithUsers = dataManager.getPlaylistsWithUsers()
         assert(playlistsWithUsers[0].playlist.playlistId == playlists[0].playlistId)
         assert(playlistsWithUsers[0].users.size == 3)
+    }
+
+    @Test
+    fun testPlaylistWithTvsCache() {
+        playlistOneToMany()
+
+        val playlists = dataManager.getPlaylists()
+        assert(playlists.size == 3)
+
+        val playlistId = playlists[0].playlistId
+        val tvsByPlaylistId = dataManager.getTvsByPlaylistId(playlistId, 0)
+        assert(tvsByPlaylistId.size == 3)
+
+        assertError {
+            dataManager.getTvsByPlaylistId(playlistId, 1)
+        }
+
+        tvsByPlaylistId[0].name = "996"
+        dataManager.updatePlaylistCache(playlistId, tvsByPlaylistId, 0)
+        assert(dataManager.getTvsByPlaylistId(playlistId, 0)[0].name == "996")
+
+        assertError {
+            dataManager.updatePlaylistCache(playlistId, emptyList(), 0)
+        }
+
+        assertError {
+            dataManager.updatePlaylistCache(playlistId, tvsByPlaylistId, 1)
+        }
+
+        assert(dataManager.getTvCountByPlaylistId(playlistId) == 3)
     }
 }

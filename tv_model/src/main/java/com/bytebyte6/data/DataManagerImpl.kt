@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import com.bytebyte6.data.entity.*
 import com.bytebyte6.data.model.*
 
-class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
+class DataManagerImpl(
+    appDatabase: AppDatabase
+) : DataManager {
 
     private val tvDao = appDatabase.tvDao()
     private val tvFtsDao = appDatabase.tvFtsDao()
@@ -13,6 +15,7 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
     private val userPlaylistCrossRefDao = appDatabase.userPlaylistCrossRefDao()
     private val playlistTvCrossRefDao = appDatabase.playlistTvCrossRefDao()
     private val countryDao = appDatabase.countryDao()
+    private val playlistWithTvsCache = PlaylistWithTvsCache(this)
 
     override fun insertUser(user: User): Long {
         if (hasUser()) {
@@ -76,6 +79,10 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
         return countryDao.getCountries()
     }
 
+    override fun getImageEmptyCountries(): List<Country> {
+        return countryDao.getCountriesByImage("")
+    }
+
     override fun getCountryIdByName(name: String): Long {
         return countryDao.getIdByName(name)
     }
@@ -118,6 +125,10 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
 
     override fun getTvs(): List<Tv> {
         return tvDao.getTvs()
+    }
+
+    override fun getLogoEmptyTvs(): List<Tv> {
+        return tvDao.getTvsByLogo("")
     }
 
     override fun getTvCount(): Int {
@@ -202,6 +213,18 @@ class DataManagerImpl(appDatabase: AppDatabase) : DataManager {
 
     override fun getPlaylistsWithTvss(): List<PlaylistWithTvs> {
         return playlistDao.getPlaylistsWithTvss()
+    }
+
+    override fun getTvsByPlaylistId(playlistId: Long, page: Int): List<Tv> {
+        return playlistWithTvsCache.getTvsByPlaylistId(playlistId, page)
+    }
+
+    override fun updatePlaylistCache(playlistId: Long, newList: List<Tv>, page: Int) {
+        playlistWithTvsCache.updateTvsByPlaylistId(playlistId, newList, page)
+    }
+
+    override fun getTvCountByPlaylistId(playlistId: Long): Int {
+        return playlistWithTvsCache.getTvCountByPlaylistId(playlistId)
     }
 
     override fun getUserWithPlaylists(): List<UserWithPlaylists> {

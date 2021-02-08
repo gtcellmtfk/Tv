@@ -10,7 +10,7 @@ import com.bumptech.glide.module.AppGlideModule
 @GlideModule
 class RtmpGlide : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
-        builder.setLogLevel(Log.ERROR)
+        builder/*.setLogLevel(Log.ERROR)*/
             .setDefaultRequestOptions(
                 GlideOptions()
                     .dontAnimate()

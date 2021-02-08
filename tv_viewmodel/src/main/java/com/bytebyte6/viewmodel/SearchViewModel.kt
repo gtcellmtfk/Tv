@@ -43,15 +43,12 @@ class SearchViewModel(
         }
     }
 
-    fun search(list: List<Tv>) {
-        if (list.isNotEmpty()){
-            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(list)).onSingle())
+    fun searchLogo(first: Int, last: Int) {
+        if (!searchResult.value.isNullOrEmpty()) {
+            addDisposable(
+                searchTvLogoUseCase.execute(SearchTvLogoParam(searchResult.value!!)).onIo()
+            )
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        searchTvLogoUseCase.stop()
     }
 }
 

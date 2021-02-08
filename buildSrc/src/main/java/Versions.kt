@@ -1,6 +1,3 @@
-import java.text.SimpleDateFormat
-import java.util.*
-
 object Versions {
     const val versionName = "1.0"
     const val versionCode = 1
@@ -25,9 +22,4 @@ object Versions {
     const val exoplayer = "2.12.2"
     const val glide = "4.11.0"
     const val fragment_test = "1.2.5"
-
-    @Suppress("SimpleDateFormat")
-    fun date(): String {
-        return SimpleDateFormat("yyyy-MM-dd").format(Date())
-    }
 }

@@ -20,6 +20,13 @@ val viewModule: Module = module {
             get()
         )
     }
+    viewModel {
+        SearchViewModel2(
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { MeViewModel(get(), get(), get()) }
     viewModel {
         PlaylistViewModel(

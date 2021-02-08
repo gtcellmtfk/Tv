@@ -57,12 +57,6 @@ class CountryFragment :
             recyclerView.doSomethingOnIdle { first, last ->
                 viewModel.searchLogo(first, last)
             }
-            recyclerView.doOnPreDraw {
-                viewModel.searchLogo(
-                    gridLayoutManager.findFirstVisibleItemPosition(),
-                    gridLayoutManager.findLastVisibleItemPosition()
-                )
-            }
         }
 
         viewModel.cs.observe(viewLifecycleOwner, Observer {

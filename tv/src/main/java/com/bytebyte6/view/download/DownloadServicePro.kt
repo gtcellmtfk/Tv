@@ -13,46 +13,53 @@ import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import org.koin.android.ext.android.inject
 
-class DownloadServicePro : DownloadService(ID) {
+class DownloadServicePro : DownloadService(
+    ID,
+    DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
+    CHANNEL_ID,
+    R.string.download,
+    0
+) {
     companion object {
         const val ID = 1
         const val JOB_ID = 1
         const val CHANNEL_ID = "CHANNEL_ID"
+        const val FOREGROUND = true
 
         /**
          * 添加单个
          */
         fun addDownload(context: Context, url: String) {
             val downloadRequest = DownloadRequest.Builder(url, Uri.parse(url)).build()
-            sendAddDownload(context, DownloadServicePro::class.java, downloadRequest, true)
+            sendAddDownload(context, DownloadServicePro::class.java, downloadRequest, FOREGROUND)
         }
 
         /**
          * 删除单个
          */
         fun removeDownload(context: Context, url: String) {
-            sendRemoveDownload(context, DownloadServicePro::class.java, url, true)
+            sendRemoveDownload(context, DownloadServicePro::class.java, url, FOREGROUND)
         }
 
         /**
          * 开始下载全部
          */
         fun resumeDownloads(context: Context){
-            sendResumeDownloads(context,DownloadServicePro::class.java,true)
+            sendResumeDownloads(context, DownloadServicePro::class.java, FOREGROUND)
         }
 
         /**
          * 暂停下载全部
          */
         fun pauseDownloads(context: Context){
-            sendPauseDownloads(context,DownloadServicePro::class.java,true)
+            sendPauseDownloads(context, DownloadServicePro::class.java, FOREGROUND)
         }
 
         /**
          * 删除所有
          */
         fun removeAllDownload(context: Context) {
-            sendRemoveAllDownloads(context, DownloadServicePro::class.java, true)
+            sendRemoveAllDownloads(context, DownloadServicePro::class.java, FOREGROUND)
         }
     }
 

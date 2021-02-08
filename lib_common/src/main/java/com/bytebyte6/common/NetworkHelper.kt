@@ -41,7 +41,7 @@ class NetworkHelper(context: Context) {
 
             override fun onLost(network: Network) {
                 this@NetworkHelper.logd("onLost network=$network")
-                networkConnected.postValue(Event(false))
+                networkConnected.postValue(Event(isConnected()))
             }
 
             override fun onUnavailable() {

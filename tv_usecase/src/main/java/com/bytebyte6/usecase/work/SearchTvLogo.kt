@@ -7,16 +7,15 @@ import com.bytebyte6.image.SearchImage
 
 class SearchTvLogo(private val dataManager: DataManager, private val searchImage: SearchImage) {
     fun searchLogo(list: List<Tv>? = null) {
-        (list ?: dataManager.getTvs()).filter {
-            it.logo.isEmpty() && it.name.isNotEmpty()
-        }
-            .forEach {
-                val logo = searchImage.search(it.name)
-                if (logo.isNotEmpty()) {
-                    it.logo = logo
-                    dataManager.updateTv(it)
-                    logd("${it.name} ${it.logo}")
-                }
+        val real = list ?: dataManager.getLogoEmptyTvs()
+        logd("real size=${real.size}")
+        real.forEach {
+            val logo = searchImage.search(it.name)
+            if (logo.isNotEmpty()) {
+                it.logo = logo
+                dataManager.updateTv(it)
+                logd("${it.name} ${it.logo}")
             }
+        }
     }
 }

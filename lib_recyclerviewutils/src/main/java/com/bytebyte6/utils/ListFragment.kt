@@ -7,18 +7,18 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.logd
 import com.bytebyte6.recyclerviewutils.R
 
 import com.bytebyte6.recyclerviewutils.databinding.FragmentListBinding
 
-abstract class ListFragment : BaseShareFragment<FragmentListBinding>(
-    R.layout.fragment_list) {
+abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fragment_list) {
 
     //是否已经加载全部数据
     protected var end = false
 
-    private val listener = object : BottomingListener() {
-        override fun onBottom() {
+    private val listener = object : LoadMoreListener(20) {
+        override fun onLoadMore() {
             if (binding == null) {
                 return
             }
@@ -31,7 +31,8 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(
             if (binding!!.linearProgressIndicator.isVisible) {
                 return
             }
-            onLoadMore()
+            this@ListFragment.onLoadMore()
+            this@ListFragment.logd("onLoadMore")
         }
     }
 
@@ -39,12 +40,12 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 val glideRequest = Glide.with(recyclerView.context)
-                if (glideRequest.isPaused){
+                if (glideRequest.isPaused) {
                     glideRequest.resumeRequests()
                 }
             } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 val glideRequest = Glide.with(recyclerView.context)
-                if (!glideRequest.isPaused){
+                if (!glideRequest.isPaused) {
                     glideRequest.pauseRequests()
                 }
             }
@@ -73,8 +74,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(
     }
 
     override fun onDestroyView() {
-        binding?.recyclerview?.removeOnScrollListener(listener)
-        binding?.recyclerview?.removeOnScrollListener(glideListener)
+        binding?.recyclerview?.clearOnScrollListeners()
         binding?.swipeRefreshLayout?.setOnRefreshListener(null)
         super.onDestroyView()
     }
@@ -88,6 +88,14 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(
     fun showSwipeRefresh() {
         binding?.run {
             swipeRefreshLayout.isRefreshing = true
+        }
+    }
+
+    fun hideSwipeRefreshDelay(delay: Long = 1000) {
+        binding?.run {
+            swipeRefreshLayout.postDelayed({
+                swipeRefreshLayout.isRefreshing = false
+            }, delay)
         }
     }
 

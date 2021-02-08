@@ -2,13 +2,16 @@ package com.bytebyte6.view.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.viewmodel.SearchViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.utils.GridSpaceDecoration
+import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
@@ -75,7 +78,16 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
-
+            recyclerView.doSomethingOnIdle { first, last ->
+                viewModel.searchLogo(first, last)
+            }
+            recyclerView.doOnPreDraw {
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                viewModel.searchLogo(
+                    layoutManager.findFirstVisibleItemPosition(),
+                    layoutManager.findLastVisibleItemPosition()
+                )
+            }
             KeyboardUtils.showSoftInput(etSearch, requireContext())
         }
         viewModel.favoriteResult.observe(viewLifecycleOwner, Observer { result ->
@@ -86,7 +98,6 @@ class SearchFragment : BaseShareFragment<FragmentSearchBinding>(R.layout.fragmen
         })
         viewModel.searchResult.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            viewModel.search(it)
         })
     }
 }

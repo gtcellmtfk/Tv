@@ -3,7 +3,8 @@ package com.bytebyte6.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.common.*
-import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.common.test.getAwaitValue
+import com.bytebyte6.common.test.observeForTesting
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.entity.Tv
 

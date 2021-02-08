@@ -10,6 +10,7 @@ import com.bytebyte6.common.ImageClearHelper
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.TvDiff
 import com.bytebyte6.utils.BaseListAdapter
+import com.bytebyte6.view.BuildConfig
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ItemImageBinding
 import com.bytebyte6.view.load
@@ -38,11 +39,13 @@ class TvAdapter(
         holder.itemView.transitionName = currentList[position].name
         val item = getItem(position)
         val tvName = holder.binding.tvName
+        val tvPos = holder.binding.tvPosition
         val ivPreview = holder.binding.ivPreview
         val flButton = holder.binding.flButton
         val button: MaterialCheckBox = holder.binding.button
         images.add(ivPreview)
         tvName.text = item.name
+        tvPos.text = position.toString()
 
         if (item.logo.isEmpty()) {
             ivPreview.setImageResource(R.drawable.landscape)

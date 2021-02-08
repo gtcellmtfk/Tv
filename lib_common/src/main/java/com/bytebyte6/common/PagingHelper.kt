@@ -57,5 +57,5 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     abstract fun count(): Int
 
     @WorkerThread
-    abstract fun paging(offset: Int, pageSize: Int = 20): List<T>
+    abstract fun paging(offset: Int, pageSize: Int): List<T>
 }

@@ -8,18 +8,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.viewmodel.PlaylistViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
-import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.download.DownloadServicePro
+import com.bytebyte6.viewmodel.PlaylistViewModel
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.offline.DownloadHelper
@@ -77,15 +77,12 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
         val imageAdapter = TvAdapter(
             ButtonType.DOWNLOAD,
             object : ButtonClickListener {
-                override fun onClick(position: Int,tv: Tv) {
-                    onDownloadClick(position,tv)
+                override fun onClick(position: Int, tv: Tv) {
+                    onDownloadClick(position, tv)
                 }
             }).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].url)
-            }
-            onCurrentListChanged = { _, c ->
-                binding?.emptyBox?.isVisible = c.isEmpty()
             }
         }
         imageClearHelper = imageAdapter
@@ -100,14 +97,25 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
             recyclerview.itemAnimator = null
         }
         viewModel.apply {
-            val id=requireArguments().getLong(KEY_PLAY_LIST_ID)
-            setPlaylistId(id)
-            playlistWithTvs.observe(viewLifecycleOwner, Observer {
+            playlistId = requireArguments().getLong(KEY_PLAY_LIST_ID)
+            tvs.observe(viewLifecycleOwner, Observer { result ->
+                result.emit({
+                    imageAdapter.submitList(it.data.toList())
+                    end = it.end
                     hideSwipeRefresh()
-                    imageAdapter.submitList(it.tvs)
-                    binding?.appbar?.toolbar?.subtitle =
-                        getString(R.string.total, imageAdapter.itemCount)
+                    hideProgress()
+                }, {
+                    hideSwipeRefresh()
+                    hideProgress()
+                }, {
+                    showProgress()
                 })
+
+            })
+            count.observe(viewLifecycleOwner, Observer {
+                binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
+                binding?.emptyBox?.isVisible = it == 0
+            })
             updateTv.observe(viewLifecycleOwner, object : ResultObserver<UpdateTvParam>() {
                 override fun successOnce(data: UpdateTvParam, end: Boolean) {
                     imageAdapter.notifyItemChanged(data.pos)
@@ -117,10 +125,11 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
                     showSnack(requireView(), Message(message = error.message.toString()))
                 }
             })
+            loadMore()
         }
     }
 
-    private fun onDownloadClick(pos:Int,tv: Tv) {
+    private fun onDownloadClick(pos: Int, tv: Tv) {
         viewModel.apply {
             showProgressDialog()
             downloadHelper?.release()
@@ -133,7 +142,7 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
             )
             downloadHelper!!.prepare(object : DownloadHelper.Callback {
                 override fun onPrepared(helper: DownloadHelper) {
-                    download(pos,tv)
+                    download(pos, tv)
                     DownloadServicePro.addDownload(requireContext(), tv.url)
                     val tip = getString(R.string.tip_add_download_has_been)
                     showSnack(requireView(), Message(message = tip))
@@ -186,7 +195,7 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
     }
 
     override fun onLoadMore() {
-
+        viewModel.loadMore()
     }
 
     override fun onRefresh() {

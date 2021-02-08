@@ -35,8 +35,7 @@ class VideoListFragment : ListFragment() {
 
     private val viewModel: VideoListViewModel by viewModel()
 
-    private val buttonClickListener = object :
-        ButtonClickListener {
+    private val buttonClickListener = object : ButtonClickListener {
         override fun onClick(position: Int, tv: Tv) {
             viewModel.fav(position)
         }
@@ -51,15 +50,9 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = TvAdapter(
-            ButtonType.FAVORITE,
-            buttonClickListener
-        ).apply {
+        val adapter = TvAdapter(ButtonType.FAVORITE, buttonClickListener).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].url)
-            }
-            onCurrentListChanged = { _, currentList ->
-                binding?.emptyBox?.isVisible = currentList.isEmpty()
             }
         }
         disEnabledSwipeRefreshLayout()
@@ -82,6 +75,7 @@ class VideoListFragment : ListFragment() {
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
             binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
+            binding?.emptyBox?.isVisible = it == 0
         })
 
         viewModel.favoriteResult.observe(viewLifecycleOwner, Observer {
@@ -91,48 +85,27 @@ class VideoListFragment : ListFragment() {
             }
         })
 
-        viewModel.logoSearchResult.observe(viewLifecycleOwner, Observer { result ->
-            result.emitIfNotHandled(success = {
-                it.data.tvs.forEach { newTv ->
-                    adapter.currentList.find { oldTv ->
-                        newTv.tvId == oldTv.tvId
-                    }?.apply {
-                        this.logo = newTv.logo
-                        adapter.notifyItemChanged(adapter.currentList.indexOf(this))
-                        logd("${this.name} ${this.logo}",TAG)
-                    }
-                }
-            })
-        })
-
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
-            result.emit(
-                {
-                    adapter.submitList(it.data)
-                    end = it.end
-                    it.runIfNotHandled {
-                        hideSwipeRefresh()
-                        hideProgress()
-                    }
-                },
-                {
-                    showSnack(view, Message(message = it.error.message.toString()))
-                    hideSwipeRefresh()
-                    hideProgress()
-                },
-                {
-                    showProgress()
-                }
+            result.emit({
+                adapter.submitList(it.data.toList())
+                end = it.end
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showSnack(view, Message(message = it.error.message.toString()))
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showProgress()
+            }
             )
         })
-        viewModel.loadOnce()
+        onLoadMore()
     }
 
     override fun onLoadMore() {
         viewModel.loadMore()
     }
 
-    override fun onRefresh() {
-        //not to do
-    }
+    override fun onRefresh() = Unit
 }

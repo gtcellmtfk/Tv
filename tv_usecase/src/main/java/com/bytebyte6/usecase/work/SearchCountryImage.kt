@@ -1,5 +1,6 @@
 package com.bytebyte6.usecase.work
 
+import com.bytebyte6.common.logd
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.image.SearchImage
 
@@ -8,18 +9,15 @@ class SearchCountryImage(
     private val searchImage: SearchImage
 ) {
     fun searchCountryImage() {
-        dataManager.getCountries()
-            //只取为空的查询图片
-            .filter {
-                it.image.isEmpty() && it.name.isNotEmpty()
+        val countries = dataManager.getImageEmptyCountries()
+        logd("cs size=${countries.size}")
+        countries.forEach { country ->
+            val image = searchImage.search(country.name.plus("+flag"))
+            if (image.isNotEmpty()) {
+                country.image = image
+                dataManager.updateCountry(country)
+                logd("${country.name} ${country.image}")
             }
-            //查询到图片后直接插入数据库
-            .forEach { country ->
-                val image = searchImage.search(country.name.plus("+flag"))
-                if (image.isNotEmpty()) {
-                    country.image = image
-                    dataManager.updateCountry(country)
-                }
-            }
+        }
     }
 }

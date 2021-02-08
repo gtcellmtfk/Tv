@@ -5,8 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.common.getAwaitValue
-import com.bytebyte6.common.observeForTesting
+import com.bytebyte6.common.test.getAwaitValue
+import com.bytebyte6.common.test.observeForTesting
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User

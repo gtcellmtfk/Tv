@@ -1,4 +1,4 @@
-package com.bytebyte6.common
+package com.bytebyte6.common.test
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

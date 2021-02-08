@@ -99,7 +99,7 @@ abstract class TestDataManager : DataManager {
         return testUsers.isNotEmpty()
     }
 
-    override fun user(): LiveData<User?> {
+    override fun user(): LiveData<User> {
         if (hasUser()) {
             return MutableLiveData(testUsers[0])
         }

@@ -23,6 +23,7 @@ interface DataManager {
     fun updateCountry(countries: List<Country>)
     fun countries(): LiveData<List<Country>>
     fun getCountries(): List<Country>
+    fun getImageEmptyCountries(): List<Country>
     fun getCountryIdByName(name: String): Long
     fun getCountryCount(): Int
 
@@ -36,6 +37,7 @@ interface DataManager {
     fun getTvByUrl(url: String): Tv?
     fun getTvById(id: Long): Tv
     fun getTvs(): List<Tv>
+    fun getLogoEmptyTvs(): List<Tv>
     fun getTvCount(): Int
     fun tvPaging(offset: Int, pageSize: Int): List<Tv>
 
@@ -69,6 +71,9 @@ interface DataManager {
     fun playlistWithTvs(playlistId: Long): LiveData<PlaylistWithTvs>
     fun getPlaylistWithTvs(playlistId: Long): PlaylistWithTvs
     fun getPlaylistsWithTvss(): List<PlaylistWithTvs>
+    fun getTvsByPlaylistId(playlistId: Long, page: Int): List<Tv>
+    fun updatePlaylistCache(playlistId: Long, newList: List<Tv>, page: Int)
+    fun getTvCountByPlaylistId(playlistId: Long): Int
 
     //CrossRef
     fun crossRefUserWithPlaylist(userPlaylistCrossRef: UserPlaylistCrossRef): Long

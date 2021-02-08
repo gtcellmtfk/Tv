@@ -25,15 +25,6 @@ interface RxUseCase2<I, O> {
         }
     }
 
-    fun interval(param: I, period: Long = 2): Observable<Long> =
-        Observable.interval(period, TimeUnit.SECONDS)
-            .doOnNext {
-                val resultType = run(param)
-                result.postValue((Result.Success(resultType)))
-            }.doOnError {
-                result.postValue((Result.Error(it)))
-            }
-
     fun run(param: I): O
 }
 
@@ -76,6 +67,13 @@ fun <T> Single<T>.onSingle(): Disposable {
 
 fun <T> Single<T>.onIo(): Disposable {
     return subscribeOn(Schedulers.io())
+        .subscribe({}, {
+            it.printStackTrace()
+        })
+}
+
+fun <T> Single<T>.onComputation(): Disposable {
+    return subscribeOn(Schedulers.computation())
         .subscribe({}, {
             it.printStackTrace()
         })

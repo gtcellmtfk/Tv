@@ -15,6 +15,7 @@ import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.me.PlaylistFragment
 import com.bytebyte6.view.player.PlayerActivity
 import com.bytebyte6.view.search.SearchFragment
+import com.bytebyte6.view.search.SearchFragment2
 import com.bytebyte6.view.setting.SettingFragment
 import com.bytebyte6.view.videolist.VideoListFragment
 import com.google.android.exoplayer2.offline.DownloadRequest
@@ -44,7 +45,7 @@ fun Fragment.homeToVideoList(
 
 fun Fragment.homeToSearch(toolbar: MaterialToolbar) {
     replaceWithShareElement(
-        SearchFragment.newInstance(toolbar.transitionName),
+        SearchFragment2.newInstance(toolbar.transitionName),
         SearchFragment.TAG,
         toolbar
     )

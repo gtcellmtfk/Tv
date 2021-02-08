@@ -62,4 +62,6 @@ dependencies {
     androidTestImplementation(Libs.TEST_JUNIT_KTX)
     androidTestImplementation(project(":tv_test"))
 
+    testImplementation(Libs.TEST_JUNIT)
+
 }

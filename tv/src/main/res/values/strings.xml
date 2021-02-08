@@ -50,4 +50,6 @@
     <string name="cleartext">clearText</string>
     <string name="revocation">撤销</string>
     <string name="unbookmarked">已取消收藏</string>
+    <string name="download">Downloads</string>
+    <string name="fab">fab</string>
 </resources>

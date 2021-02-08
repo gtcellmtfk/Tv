@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="56dp"
+        android:backgroundTint="@android:color/transparent"
+        android:hint="@string/tip_search"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textColor="?colorOnPrimary"
+        android:textColorHint="@color/hint"
+        android:textSize="14sp"
+        android:importantForAutofill="no" />
+
+    <ImageButton
+        android:id="@+id/btnClear"
+        android:visibility="visible"
+        android:padding="16dp"
+        android:tint="?attr/colorOnPrimary"
+        android:rotation="45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/cleartext" />
+
+</FrameLayout>

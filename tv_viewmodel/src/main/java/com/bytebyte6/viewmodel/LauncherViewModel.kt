@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.Result
+import com.bytebyte6.common.onComputation
 import com.bytebyte6.common.onIo
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
@@ -36,7 +37,7 @@ class LauncherViewModel(
 
     fun start(): LiveData<Result<List<Tv>>> {
         addDisposable(
-            initAppUseCase.execute(Unit).onIo()
+            initAppUseCase.execute(Unit).onComputation()
         )
         return initAppUseCase.result()
     }
