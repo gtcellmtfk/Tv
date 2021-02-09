@@ -26,9 +26,12 @@ class VideoListViewModelTest {
         RxJavaPlugins.setIoSchedulerHandler {
             Schedulers.trampoline()
         }
+        RxJavaPlugins.setSingleSchedulerHandler {
+            Schedulers.trampoline()
+        }
         tvs = mutableListOf()
         for (i in 0..100) {
-            tvs.add(Tv(name = "CCTV $i", url = "CCTV URL.$i"))
+            tvs.add(Tv(name = "CCTV $i", url = "CCTV URL.$i", logo = "CCTV"))
         }
         FakeDataManager.insertTv(tvs)
     }

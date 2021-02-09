@@ -1,8 +1,8 @@
 package viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.bytebyte6.common.test.getAwaitValue
-import com.bytebyte6.common.test.observeForTesting
+import com.bytebyte6.lib_test.getAwaitValue
+import com.bytebyte6.lib_test.observeForTesting
 import com.bytebyte6.usecase.UpdateUserUseCase
 import com.bytebyte6.viewmodel.UserViewModel
 import io.reactivex.rxjava3.plugins.RxJavaPlugins

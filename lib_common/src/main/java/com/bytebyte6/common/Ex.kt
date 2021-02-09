@@ -68,7 +68,7 @@ fun Context.showSnack(
     view: View,
     messageId: Int,
     listener: View.OnClickListener? = null,
-    longDuration: Boolean = false,
+    longDuration: Boolean = true,
     actionStringId: Int = 0
 ) {
     showSnack(view, getString(messageId), listener, longDuration, actionStringId)
@@ -102,7 +102,7 @@ fun Context.showSnack(
     view: View,
     message: String,
     listener: View.OnClickListener? = null,
-    longDuration: Boolean = false,
+    longDuration: Boolean = true,
     actionStringId: Int = 0
 ) {
     val bar = Snackbar.make(

@@ -3,15 +3,14 @@ package com.bytebyte6.view.player
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import com.bytebyte6.viewmodel.PlayerViewModel
-import com.bytebyte6.common.logd
 import com.bytebyte6.common.BaseShareFragment
-import com.bytebyte6.common.Message
+import com.bytebyte6.common.logd
 import com.bytebyte6.common.showSnack
 import com.bytebyte6.view.KEY_CACHE
 import com.bytebyte6.view.KEY_VIDEO_URL
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoBinding
+import com.bytebyte6.viewmodel.PlayerViewModel
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -77,23 +76,18 @@ class PlayerFragment :
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            val m = if (error.message != null) {
-                Message(
-                    actionStringId = R.string.tip_play_retry,
-                    message = error.message!!,
-                    longDuration = true
-                )
-            } else {
-                Message(
-                    actionStringId = R.string.tip_play_retry,
-                    message = getString(R.string.tip_play_error),
-                    longDuration = true
-                )
+            val tip = when (error.type) {
+                ExoPlaybackException.TYPE_OUT_OF_MEMORY ->
+                    getString(R.string.out_of_memory)
+                ExoPlaybackException.TYPE_SOURCE ->
+                    getString(R.string.source_error)
+                ExoPlaybackException.TYPE_TIMEOUT ->
+                    getString(R.string.timeout)
+                else -> error.message.toString()
             }
-            requireActivity()
-                .runOnUiThread {
-                    showSnack(requireView(), m)
-                }
+            requireActivity().runOnUiThread {
+                showSnack(requireView(), tip)
+            }
         }
     }
 

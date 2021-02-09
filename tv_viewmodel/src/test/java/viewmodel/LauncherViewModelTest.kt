@@ -25,6 +25,9 @@ class LauncherViewModelTest {
         RxJavaPlugins.setIoSchedulerHandler {
             Schedulers.trampoline()
         }
+        RxJavaPlugins.setComputationSchedulerHandler {
+            Schedulers.trampoline()
+        }
     }
 
     @Test

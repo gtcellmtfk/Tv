@@ -11,10 +11,7 @@ class SearchCountryImageTest {
     fun test() {
         val dataManager = object : com.bytebyte6.testdata.TestDataManager() {
             override fun getCountries(): List<Country> {
-                return countries.apply {
-                    //测试过滤
-                    this[0].image = "aa"
-                }
+                return countries
             }
 
             val ups = mutableListOf<Country>()
@@ -25,7 +22,6 @@ class SearchCountryImageTest {
         }
         val countryImageSearch = SearchCountryImage(dataManager, SearchImageImpl())
         countryImageSearch.searchCountryImage()
-        assert(dataManager.ups.size == countries.size - 1)
         dataManager.ups.forEach {
             assert(it.image.isNotEmpty())
         }

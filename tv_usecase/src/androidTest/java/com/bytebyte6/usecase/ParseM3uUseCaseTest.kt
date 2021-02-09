@@ -7,6 +7,7 @@ import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
+import com.bytebyte6.lib_test.assertError
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -50,10 +51,14 @@ class ParseM3uUseCaseTest : KoinTest {
         dataManager.insertTv(list)
         val all = mutableListOf(tv1, tv2, tv3, tv4, tv5)
         parseM3uUseCase.setTvs(all)
-        val playlistId = parseM3uUseCase.run(Uri.parse("")).playlistId
+        val playlistId = parseM3uUseCase.run(Uri.parse("test.m3u")).playlistId
         val playlistWithTvsById = dataManager.getPlaylistWithTvs(playlistId)
         val userWithPlaylist = dataManager.getUserWithPlaylist()
         assert(userWithPlaylist.playlists.size == 1)
         assert(playlistWithTvsById.tvs.size == 5)
+
+        assertError {
+            parseM3uUseCase.run(Uri.EMPTY)
+        }
     }
 }

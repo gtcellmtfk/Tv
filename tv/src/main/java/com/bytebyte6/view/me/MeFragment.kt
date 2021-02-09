@@ -11,13 +11,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
-import com.bytebyte6.viewmodel.MeViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
-import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
+import com.bytebyte6.view.meToPlaylist
+import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
+import com.bytebyte6.view.setupToolbarMenuMode
+import com.bytebyte6.viewmodel.MeViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /***
@@ -141,15 +143,20 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 {
                     hideProgressBar()
                     meToPlaylist(
-                            it.data.playlistId,
-                            it.data.playlistName,
-                            it.data.playlistName)
+                        it.data.playlistId,
+                        it.data.playlistName,
+                        it.data.playlistName
+                    )
                 }, {
                     hideProgressBar()
-                    showSnack(
-                        view,
-                        Message(id = (R.string.tip_parse_file_error))
-                    )
+                    if (it.error is UnsupportedOperationException) {
+                        showSnack(view, R.string.tip_not_m3u_m3u8_file)
+                    } else {
+                        showSnack(
+                            view,
+                            getString(R.string.tip_parse_file_error, it.error.message.toString())
+                        )
+                    }
                 }, {
                     showProgressBar()
                 }

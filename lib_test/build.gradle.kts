@@ -2,8 +2,10 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("kotlin-kapt")
+    id("com.github.dcendents.android-maven")
 }
+
+group = "com.github.bytebyte6"
 
 android {
     compileSdkVersion(Versions.compile_sdk)
@@ -17,14 +19,6 @@ android {
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-proguard-rules.pro")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments["room.incremental"] = "true"
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
-                arguments["room.expandProjection"] = "false"
-            }
-        }
     }
 
     buildTypes {
@@ -49,20 +43,4 @@ android {
 
 dependencies {
     implementation(project(":lib_dependency"))
-    implementation(project(":lib_common"))
-
-    kapt(Libs.KAPT_ROOM)
-
-    androidTestImplementation(Libs.TEST_CORE)
-    androidTestImplementation(Libs.TEST_RUNNER)
-    androidTestImplementation(Libs.TEST_RULES)
-    androidTestImplementation(Libs.TEST_KOIN)
-    androidTestImplementation(Libs.TEST_ARCH_TESTING)
-    androidTestImplementation(Libs.TEST_JUNIT_EXT)
-    androidTestImplementation(Libs.TEST_JUNIT_KTX)
-    androidTestImplementation(project(":tv_test"))
-    androidTestImplementation(project(":lib_test"))
-    testImplementation(project(":lib_test"))
-    testImplementation(Libs.TEST_JUNIT)
-
 }

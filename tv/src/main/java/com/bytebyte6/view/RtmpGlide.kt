@@ -1,28 +1,29 @@
 package com.bytebyte6.view
 
 import android.content.Context
-import android.util.Log
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 
 @GlideModule
 class RtmpGlide : AppGlideModule() {
-    override fun applyOptions(context: Context, builder: GlideBuilder) {
-        builder/*.setLogLevel(Log.ERROR)*/
-            .setDefaultRequestOptions(
-                GlideOptions()
-                    .dontAnimate()
-                    .dontTransform()
-                    .placeholder(R.drawable.landscape)
-                    .error(R.drawable.image_not_found2)
-            )
-    }
+    override fun applyOptions(context: Context, builder: GlideBuilder) = Unit
 }
 
 fun ImageView.load(url: String) {
     GlideApp.with(context)
         .load(url)
+        .placeholder(R.drawable.landscape)
+        .error(R.drawable.image_not_found2)
+        .into(this)
+}
+
+fun ImageView.load(fragment: Fragment, url: String) {
+    GlideApp.with(fragment)
+        .load(url)
+        .placeholder(R.drawable.landscape)
+        .error(R.drawable.image_not_found2)
         .into(this)
 }

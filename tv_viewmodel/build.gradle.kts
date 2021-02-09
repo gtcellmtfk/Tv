@@ -54,7 +54,9 @@ dependencies {
     androidTestImplementation(Libs.TEST_ARCH_TESTING)
     androidTestImplementation(Libs.TEST_JUNIT_EXT)
     androidTestImplementation(Libs.TEST_JUNIT_KTX)
+    androidTestImplementation(project(":lib_test"))
 
+    testImplementation(project(":lib_test"))
     testImplementation(Libs.TEST_JUNIT)
     testImplementation(Libs.TEST_ARCH_TESTING)
     testImplementation(Libs.GETIMAGE)

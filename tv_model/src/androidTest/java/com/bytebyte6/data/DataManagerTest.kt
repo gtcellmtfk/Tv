@@ -5,8 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bytebyte6.common.test.getAwaitValue
-import com.bytebyte6.common.test.observeForTesting
+import com.bytebyte6.lib_test.getAwaitValue
+import com.bytebyte6.lib_test.observeForTesting
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.User
@@ -348,18 +348,11 @@ class DataManagerTest {
 
     @Test
     fun deletePlaylists() {
-        val id1 = dataManager.insertPlaylist(com.bytebyte6.testdata.playlist1)
-        val id2 = dataManager.insertPlaylist(com.bytebyte6.testdata.playlist2)
-        val id3 = dataManager.insertPlaylist(com.bytebyte6.testdata.playlist3)
+        dataManager.insertPlaylist(com.bytebyte6.testdata.playlist1)
+        dataManager.insertPlaylist(com.bytebyte6.testdata.playlist2)
+        dataManager.insertPlaylist(com.bytebyte6.testdata.playlist3)
         assert(dataManager.getPlaylistCount() == 3)
-        com.bytebyte6.testdata.playlist1.playlistId = id1
-        com.bytebyte6.testdata.playlist2.playlistId = id2
-        com.bytebyte6.testdata.playlist3.playlistId = id3
-        dataManager.deletePlaylist(mutableListOf(
-            com.bytebyte6.testdata.playlist1,
-            com.bytebyte6.testdata.playlist2,
-            com.bytebyte6.testdata.playlist3
-        ))
+        dataManager.deletePlaylist(dataManager.getPlaylists())
         assert(dataManager.getPlaylistCount() == 0)
     }
 

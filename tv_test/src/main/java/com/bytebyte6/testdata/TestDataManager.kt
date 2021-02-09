@@ -135,6 +135,10 @@ abstract class TestDataManager : DataManager {
         return emptyList()
     }
 
+    override fun getImageEmptyCountries(): List<Country> {
+        return emptyList()
+    }
+
     override fun getCountryIdByName(name: String): Long {
         for (testCountry in testCountries) {
             if (testCountry.name == name) {
@@ -161,6 +165,10 @@ abstract class TestDataManager : DataManager {
 
     }
 
+    override fun deleteTv(tvs: List<Tv>) {
+
+    }
+
     override fun updateTv(tv: Tv) {
         testTvs.add(tv)
     }
@@ -181,6 +189,10 @@ abstract class TestDataManager : DataManager {
     }
 
     override fun getTvs(): List<Tv> {
+        return emptyList()
+    }
+
+    override fun getLogoEmptyTvs(): List<Tv> {
         return emptyList()
     }
 
@@ -274,6 +286,18 @@ abstract class TestDataManager : DataManager {
 
     override fun getPlaylistsWithTvss(): List<PlaylistWithTvs> {
         return emptyList()
+    }
+
+    override fun getTvsByPlaylistId(playlistId: Long, page: Int): List<Tv> {
+        return emptyList()
+    }
+
+    override fun updatePlaylistCache(playlistId: Long, newList: List<Tv>, page: Int) {
+
+    }
+
+    override fun getTvCountByPlaylistId(playlistId: Long): Int {
+        return 1
     }
 
     override fun crossRefUserWithPlaylist(userPlaylistCrossRef: UserPlaylistCrossRef): Long {

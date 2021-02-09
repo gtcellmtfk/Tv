@@ -4,26 +4,19 @@
     <string name="home_category">类型</string>
     <string name="home_language">语言</string>
     <string name="home_country">国家</string>
-    <string name="home_other" translatable="false">Other</string>
     <string name="home_category_view">分类浏览</string>
-    <string name="share" translatable="false">Share</string>
-    <string name="search" translatable="false">Search</string>
     <string name="total">总计: %d</string>
-    <string name="tip_search" translatable="false">CCTV、China、Auto</string>
     <string name="tip_play_error">出现错误,请重试!!!</string>
     <string name="tip_play_retry">重试</string>
     <string name="tip_del_fail">删除失败</string>
     <string name="tip_del_success">删除成功</string>
     <string name="nav_import">导入</string>
     <string name="nav_home">首页</string>
-    <string name="nav_name" translatable="false">Cloud</string>
     <string name="m3u">导入m3u文件</string>
     <string name="me_import_file">导入m3u文件后可展示列表</string>
     <string name="me_playlist">我的播放列表</string>
     <string name="tip_parse_file_error">文件解析失败%s</string>
     <string name="tip_not_m3u_m3u8_file">只支持导入m3u或m3u8文件</string>
-    <string name="search_share" translatable="false">searchShare</string>
-    <string name="delete_forever" translatable="false">delete_forever</string>
     <string name="tip_del_playlist">删除播放列表</string>
     <string name="tip_del_video">删除视频</string>
     <string name="tip_beyond_retrieve">此操作不可恢复!</string>
@@ -33,7 +26,6 @@
     <string name="setting_pic_download">自动抓取图片</string>
     <string name="setting_user">用户设置</string>
     <string name="setting_intro">简介</string>
-    <string name="bytebyte6" translatable="false">ByteByte6</string>
     <string name="nav_setting">设置</string>
     <string name="tip">提示</string>
     <string name="enter_exit">是否要退出应用!</string>
@@ -45,14 +37,8 @@
     <string name="resume">开始下载</string>
     <string name="tip_please_wait">正在检测该视频是否支持下载,请稍等片刻…</string>
     <string name="tip_working">任务进行中</string>
-    <string name="toolbar_navigation" translatable="false">navigation</string>
-    <string name="tabLayoutContentDescription" translatable="false">tabLayoutContentDescription</string>
-    <string name="toolbarContentDescription" translatable="false">toolbarContentDescription</string>
-    <string name="cleartext" translatable="false">clearText</string>
     <string name="revocation">撤销</string>
     <string name="unbookmarked">已取消收藏</string>
-    <string name="download" translatable="false">Downloads</string>
-    <string name="fab" translatable="false">fab</string>
     <string name="out_of_memory">内存溢出,请向开发者反馈!</string>
     <string name="source_error">资源失效！</string>
     <string name="timeout">请求超时！</string>

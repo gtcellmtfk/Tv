@@ -49,6 +49,7 @@ dependencies {
     testImplementation(Libs.TEST_JUNIT)
     testImplementation(project(":tv_test"))
     testImplementation(Libs.TEST_ARCH_TESTING)
+    testImplementation(project(":lib_test"))
 
     androidTestImplementation(Libs.TEST_CORE)
     androidTestImplementation(Libs.TEST_RUNNER)
@@ -58,4 +59,5 @@ dependencies {
     androidTestImplementation(Libs.TEST_JUNIT_EXT)
     androidTestImplementation(Libs.TEST_JUNIT_KTX)
     androidTestImplementation(project(":tv_test"))
+    androidTestImplementation(project(":lib_test"))
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TV</string>
+    <string name="home_category">Category</string>
+    <string name="home_language">Language</string>
+    <string name="home_country">Country</string>
+    <string name="home_category_view">View</string>
+    <string name="total">Total:%d</string>
+    <string name="tip_play_error">Error,please retry!!!</string>
+    <string name="tip_play_retry">Retry</string>
+    <string name="tip_del_fail">Delete fail</string>
+    <string name="tip_del_success">Delete success</string>
+    <string name="nav_import">Import</string>
+    <string name="nav_home">Home</string>
+    <string name="m3u">Import m3u file</string>
+    <string name="me_import_file">m3u list</string>
+    <string name="me_playlist">Playlist</string>
+    <string name="tip_parse_file_error">File parsing failed%s</string>
+    <string name="tip_not_m3u_m3u8_file">Only importing M3U or M3U8 files is supported</string>
+    <string name="tip_del_playlist">Delete playlists</string>
+    <string name="tip_del_video">Delete the video</string>
+    <string name="tip_beyond_retrieve">This operation is unrecoverable!</string>
+    <string name="enter">Enter</string>
+    <string name="cancel">Cancel</string>
+    <string name="mode_night">Night mode</string>
+    <string name="setting_pic_download">Automatic capture of images</string>
+    <string name="setting_user">Options</string>
+    <string name="setting_intro">Intro</string>
+    <string name="nav_setting">Setting</string>
+    <string name="tip">Tip</string>
+    <string name="enter_exit">Do you want to quit the app?</string>
+    <string name="nav_fav">My favorite</string>
+    <string name="nav_download">Download</string>
+    <string name="tip_add_download_has_been">Has been added to download list, if you want to cancel, please go to download page!</string>
+    <string name="tip_un_support_download_live_stream">Downloading live streams is not supported!</string>
+    <string name="pause">Pause to download</string>
+    <string name="resume">Download Start</string>
+    <string name="tip_please_wait">Please wait for a moment while checking whether the video supports downloading.</string>
+    <string name="tip_working">On task</string>
+    <string name="revocation">Revocation</string>
+    <string name="unbookmarked">Unbookmarked</string>
+    <string name="out_of_memory">Memory overflow, please report to developer!</string>
+    <string name="source_error">Resource failure!</string>
+    <string name="timeout">Request timed out</string>
+</resources>

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/lib_common" />
             <option value="$PROJECT_DIR$/lib_dependency" />
             <option value="$PROJECT_DIR$/lib_recyclerviewutils" />
+            <option value="$PROJECT_DIR$/lib_test" />
             <option value="$PROJECT_DIR$/tv" />
             <option value="$PROJECT_DIR$/tv_model" />
             <option value="$PROJECT_DIR$/tv_test" />

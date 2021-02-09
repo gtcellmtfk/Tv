@@ -18,19 +18,16 @@ class SearchCountryImageUseCase(
         if (first > last) return false
         if (last >= param.cs.size) return false
         val cs2 = param.cs.subList(first, last + 1)
-        var result = false
         cs2.forEach {
             if (it.image.isEmpty() && it.name.isNotEmpty()) {
                 val search = searchImage.search(it.name.plus("+flag"))
                 if (search.isNotEmpty()) {
                     it.image = search
-                    result = true
                     dataManager.updateCountry(it)
-                    logd("${it.name} ${it.image}")
                 }
             }
         }
-        return result
+        return true
     }
 }
 

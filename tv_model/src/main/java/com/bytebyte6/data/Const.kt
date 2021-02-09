@@ -1,3 +1,3 @@
 package com.bytebyte6.data
 
-const val PAGE_SIZE = 50
+var PAGE_SIZE = 50

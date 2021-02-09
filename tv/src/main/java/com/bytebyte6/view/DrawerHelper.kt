@@ -33,6 +33,7 @@ class DrawerHelper private constructor(
     }
 
     var current: MenuItem? = null
+
     private val listener = object : SimpleDrawerListener() {
         override fun onDrawerClosed(drawerView: View) {
             current?.apply {

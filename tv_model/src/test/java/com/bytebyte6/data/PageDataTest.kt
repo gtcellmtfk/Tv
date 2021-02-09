@@ -11,10 +11,14 @@ class PageDataTest {
         for (i in 0..100) {
             cs.add(Country(name = "A $i"))
         }
-        val pageData = PageData(all = cs)
+        val pageData = PageData(all = cs, pageSize = 20)
         assert(pageData.count == 101)
-        assert(pageData.paging(0).size == PAGE_SIZE)
-        assert(pageData.pageCount == 6)
+        assert(pageData.paging(0).size == 20)
+        assert(pageData.paging(1).size == 20)
+        assert(pageData.paging(2).size == 20)
+        assert(pageData.paging(3).size == 20)
+        assert(pageData.paging(4).size == 20)
         assert(pageData.paging(5).size == 1)
+        assert(pageData.pageCount == 6)
     }
 }

@@ -34,13 +34,13 @@ class SearchCountryImageUseCaseTest2 {
             SearchCountryImageParam(
                 1, 0, emptyList()
             )
-        ).test().assertError(IllegalArgumentException::class.java)
+        ).test().assertValue(false)
 
         searchCountryImageUseCase.execute(
             SearchCountryImageParam(
                 0, 11, countries
             )
-        ).test().assertError(IllegalStateException::class.java)
+        ).test().assertValue(false)
 
         searchCountryImageUseCase.execute(
             SearchCountryImageParam(

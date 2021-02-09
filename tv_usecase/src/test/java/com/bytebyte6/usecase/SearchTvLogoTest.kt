@@ -11,21 +11,18 @@ class SearchTvLogoTest {
     @Test
     fun test() {
         val dataManager = object : TestDataManager() {
-            override fun getTvs(): List<Tv> {
-                return tvs.apply {
-                    this[0].logo = "aa"
-                }
+            override fun getLogoEmptyTvs(): List<Tv> {
+                return tvs
             }
 
             val ups = mutableListOf<Tv>()
 
-            override fun updateTv(tv:Tv) {
+            override fun updateTv(tv: Tv) {
                 ups.add(tv)
             }
         }
         val search = SearchTvLogo(dataManager, SearchImageImpl())
         search.searchLogo()
-        assert(dataManager.ups.size == tvs.size - 1)
         dataManager.ups.forEach {
             assert(it.logo.isNotEmpty())
         }

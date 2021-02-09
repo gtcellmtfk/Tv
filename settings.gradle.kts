@@ -1,3 +1,4 @@
+include(":lib_test")
 include(":tv_test")
 include(
     ":weather",
