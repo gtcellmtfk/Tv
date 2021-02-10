@@ -2,8 +2,7 @@ package com.bytebyte6.usecase
 
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.TvApi
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.Language
+import com.bytebyte6.data.entity.Tv
 import io.reactivex.rxjava3.core.Single
 
 /**
@@ -12,16 +11,7 @@ import io.reactivex.rxjava3.core.Single
 class TvRefreshUseCase(private val api: TvApi, private val dataManager: DataManager) {
     fun getSingle(): Single<Boolean> {
         return api.getTvs().map { list ->
-            dataManager.insertTv(list.map {
-                if (it.category.isEmpty()) {
-                    it.category = Category.OTHER
-                }
-                if (it.language.isEmpty()) {
-                    it.language = mutableListOf(Language.DEFAULT)
-                }
-                it.countryName = it.country.name
-                it
-            })
+            dataManager.insertTv(Tv.inits(list))
             true
         }
     }

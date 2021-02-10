@@ -1,12 +1,11 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.Observer
-import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.usecase.DownloadListUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.usecase.UpdateTvParam
-import com.bytebyte6.usecase.DownloadTvUseCase
 import io.reactivex.rxjava3.disposables.Disposable
 
 class DownloadViewModel(
@@ -33,12 +32,10 @@ class DownloadViewModel(
         )
     }
 
-    private val resultObserver by lazy {
-        object : ResultObserver<UpdateTvParam>() {
-            override fun successOnce(data: UpdateTvParam, end: Boolean) {
-                loadDownloadList()
-                deleteResult.removeObserver(this)
-            }
+    private val resultObserver = object : Observer<Result<UpdateTvParam>> {
+        override fun onChanged(t: Result<UpdateTvParam>?) {
+            loadDownloadList()
+            deleteResult.removeObserver(this)
         }
     }
 
@@ -58,7 +55,7 @@ class DownloadViewModel(
     fun startInterval() {
         downloadListResult.getSuccessData()?.apply {
             if (size > 0) {
-                getDownloadList = downloadListUseCase.interval(Unit,2).onIo()
+                getDownloadList = downloadListUseCase.interval(Unit, 2).onIo()
                 addDisposable(getDownloadList!!)
             }
         }

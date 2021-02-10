@@ -1,6 +1,5 @@
 package com.bytebyte6.usecase.work
 
-import com.bytebyte6.common.logd
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.image.SearchImage
 

@@ -1,10 +1,9 @@
-package viewmodel
+package com.bytebyte.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.data.entity.TvFts
 import com.bytebyte6.data.model.PlaylistWithTvs
 import com.bytebyte6.testdata.TestDataManager
 

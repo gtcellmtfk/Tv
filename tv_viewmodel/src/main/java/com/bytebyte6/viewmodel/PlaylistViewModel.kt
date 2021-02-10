@@ -44,7 +44,7 @@ class PlaylistViewModel(
 
     var playlistId: Long = 0
 
-    val updateTv = downloadTvUseCase.result()
+    val downloadResult = downloadTvUseCase.result()
 
     fun download(pos: Int, tv: Tv) {
         addDisposable(

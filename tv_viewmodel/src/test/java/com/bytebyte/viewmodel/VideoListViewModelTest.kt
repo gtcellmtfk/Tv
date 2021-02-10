@@ -1,4 +1,4 @@
-package viewmodel
+package com.bytebyte.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bytebyte6.common.getSuccessData

@@ -74,9 +74,6 @@ class SearchFragment2 : ListFragment() {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].url)
             }
-            onCurrentListChanged = { _, currentList ->
-                binding?.emptyBox?.isVisible = currentList.isEmpty()
-            }
         }
         imageClearHelper = adapter
         recyclerView = binding?.recyclerview
@@ -115,6 +112,11 @@ class SearchFragment2 : ListFragment() {
             }, {
                 showProgress()
             })
+        })
+        viewModel.resultCount.observe(viewLifecycleOwner, Observer {
+            val empty = it == 0
+            binding?.emptyBox?.isVisible = empty
+            recyclerView?.isVisible = !empty
         })
     }
 

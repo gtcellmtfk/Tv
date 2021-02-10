@@ -2,7 +2,6 @@ package com.bytebyte6.view.test
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -13,7 +12,7 @@ import androidx.test.filters.LargeTest
 import com.bytebyte6.view.NotDisplayed
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ImageViewHolder
-import com.bytebyte6.view.search.SearchFragment
+import com.bytebyte6.view.search.SearchFragment2
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -24,14 +23,16 @@ class SearchFragmentTest {
     @Test
     fun test_fav_is_not_display() {
         setup()
-        onView(withId(R.id.lavEmpty)).check(matches(isDisplayed()))
+        onView(withId(R.id.emptyBox)).check(matches(isDisplayed()))
         onView(withId(R.id.etSearch)).perform(ViewActions.replaceText("CCTV"))
         Thread.sleep(1000)
-        onView(withId(R.id.lavEmpty)).check(matches(
-            NotDisplayed()
-        ))
-        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerView)).perform(
+        onView(withId(R.id.emptyBox)).check(
+            matches(
+                NotDisplayed()
+            )
+        )
+        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerview)).perform(
             RecyclerViewActions.actionOnItemAtPosition<ImageViewHolder>(0, ClickFavorite)
         )
     }
@@ -43,7 +44,7 @@ class SearchFragmentTest {
     }
 
     private fun setup() {
-        val scenario = launchFragmentInContainer<SearchFragment>(themeResId = R.style.Theme_Rtmp)
+        val scenario = launchFragmentInContainer<SearchFragment2>(themeResId = R.style.Theme_Rtmp)
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
 }

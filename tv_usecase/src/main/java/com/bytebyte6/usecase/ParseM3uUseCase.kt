@@ -9,8 +9,6 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
 import org.jetbrains.annotations.TestOnly
 
@@ -64,13 +62,7 @@ class ParseM3uUseCase(
                 false
             }
         }.map {
-            if (it.category.isEmpty()) {
-                it.category = Category.OTHER
-            }
-            if (it.language.isEmpty()) {
-                it.language = mutableListOf(Language.DEFAULT)
-            }
-            it
+            Tv.init(it)
         }
 
         val insertsWithIds = dataManager.insertTv(needInserts).mapIndexed { index, id ->

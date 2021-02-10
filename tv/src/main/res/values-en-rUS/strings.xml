@@ -42,4 +42,8 @@
     <string name="out_of_memory">Memory overflow, please report to developer!</string>
     <string name="source_error">Resource failure!</string>
     <string name="timeout">Request timed out</string>
+    <string name="network_changed">Network changes</string>
+    <string name="tip_pause_play">The current network for data has been suspended playback</string>
+    <string name="tip_confirm_the_download">The current network is data traffic, are you sure you want to download?</string>
+    <string name="tip_play_confirm">Data network, do you want to continue playing?</string>
 </resources>

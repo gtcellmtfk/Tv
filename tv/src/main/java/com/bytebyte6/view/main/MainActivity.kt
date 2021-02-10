@@ -1,15 +1,15 @@
 package com.bytebyte6.view.main
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.*
 import com.bytebyte6.data.DataManager
-import com.bytebyte6.view.DrawerHelper
+import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
-import com.bytebyte6.view.toHome
-import com.bytebyte6.view.toNetworkError
+import com.bytebyte6.view.download.DownloadServicePro
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
@@ -26,8 +26,25 @@ class MainActivity : BaseActivity() {
 
     private lateinit var drawerHelper: DrawerHelper
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            drawerHelper.current?.let {
+                when (it.itemId) {
+                    R.id.nav_home -> toHome()
+                    R.id.nav_me -> toMe()
+                    R.id.nav_setting -> toSetting()
+                    R.id.nav_fav -> toFav()
+                    R.id.nav_download -> toDownload()
+                }
+                drawerHelper.removeDrawerListener(this)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        networkHelper.registerNetworkCallback()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -39,8 +56,8 @@ class MainActivity : BaseActivity() {
             toHome()
         }
 
-        networkHelper.liveData().observe(this,
-            EventObserver { connected ->
+        networkHelper.networkConnected.observe(this,
+            Observer { connected ->
                 if (!connected) {
                     toNetworkError()
                 } else {
@@ -57,7 +74,7 @@ class MainActivity : BaseActivity() {
             setNavigationItemSelectedListener { newItem ->
                 if (drawerHelper.current != newItem) {
                     drawerHelper.current = newItem
-                    drawerHelper.addDrawerListener()
+                    drawerHelper.addDrawerListener(listener)
                     drawerHelper.closeDrawer()
                     true
                 } else {
@@ -78,6 +95,18 @@ class MainActivity : BaseActivity() {
         dataManager.user().observe(this, Observer {
             name.text = it.name
         })
+
+        networkHelper.networkIsCellular.observe(this, Observer {
+            if (it) {
+                DownloadServicePro.pauseDownloads(this)
+            }
+        })
+
+        networkHelper.networkIsWifi.observe(this, Observer {
+            if (it) {
+                DownloadServicePro.resumeDownloads(this)
+            }
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -95,6 +124,7 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         DrawerHelper.destroy()
+        networkHelper.unregisterNetworkCallback()
         super.onDestroy()
     }
 

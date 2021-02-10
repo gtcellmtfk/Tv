@@ -14,7 +14,6 @@ import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.me.PlaylistFragment
 import com.bytebyte6.view.player.PlayerActivity
-import com.bytebyte6.view.search.SearchFragment
 import com.bytebyte6.view.search.SearchFragment2
 import com.bytebyte6.view.setting.SettingFragment
 import com.bytebyte6.view.videolist.VideoListFragment
@@ -46,7 +45,7 @@ fun Fragment.homeToVideoList(
 fun Fragment.homeToSearch(toolbar: MaterialToolbar) {
     replaceWithShareElement(
         SearchFragment2.newInstance(toolbar.transitionName),
-        SearchFragment.TAG,
+        SearchFragment2.TAG,
         toolbar
     )
 }

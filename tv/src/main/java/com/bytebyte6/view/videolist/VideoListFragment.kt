@@ -64,7 +64,7 @@ class VideoListFragment : ListFragment() {
         setupToolbarArrowBack(title)
         viewModel.setKey(title)
 
-        binding?.run {
+        binding?.apply {
             recyclerview.adapter = adapter
             val gridLayoutManager = GridLayoutManager(view.context, 2)
             recyclerview.layoutManager = gridLayoutManager
@@ -97,8 +97,7 @@ class VideoListFragment : ListFragment() {
                 hideProgress()
             }, {
                 showProgress()
-            }
-            )
+            })
         })
         onLoadMore()
     }

@@ -5,10 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.common.Message
-import com.bytebyte6.common.ResultObserver
-import com.bytebyte6.common.doOnExitTransitionEndOneShot
-import com.bytebyte6.common.showSnack
+import com.bytebyte6.common.*
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.utils.GridSpaceDecoration
@@ -71,22 +68,20 @@ class FavoriteFragment : ListFragment() {
         viewModel.allFav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
-
-        viewModel.cancelResult.observe(viewLifecycleOwner,
-            object : ResultObserver<UpdateTvParam>() {
-                override fun successOnce(data: UpdateTvParam, end: Boolean) {
-                    if (data.pos != -1) {
-                        showSnack(
-                            view,
-                            Message(
-                                id = R.string.unbookmarked,
-                                actionStringId = R.string.revocation
-                            ),
-                            View.OnClickListener { viewModel.restoreFavorite(data.tv) }
-                        )
-                    }
+        viewModel.cancelResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                if (pos != -1) {
+                    showSnack(
+                        view,
+                        Message(
+                            id = R.string.unbookmarked,
+                            actionStringId = R.string.revocation
+                        ),
+                        View.OnClickListener { viewModel.restoreFavorite(tv) }
+                    )
                 }
-            })
+            }
+        })
     }
 
     override fun onLoadMore() {

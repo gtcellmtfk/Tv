@@ -2,9 +2,11 @@ package com.bytebyte6.view.player
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.bytebyte6.common.BaseShareFragment
-import com.bytebyte6.common.logd
+import com.bytebyte6.common.NetworkHelper
 import com.bytebyte6.common.showSnack
 import com.bytebyte6.view.KEY_CACHE
 import com.bytebyte6.view.KEY_VIDEO_URL
@@ -40,33 +42,22 @@ class PlayerFragment :
 
     private val downloadCache by inject<Cache>()
 
+    private val networkHelper by inject<NetworkHelper>()
+
     private val httpDataSourceFactory by inject<HttpDataSource.Factory>()
 
     private var player: Player? = null
 
-    override fun initViewBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
+    private var request: DownloadRequest? = null
 
-    override fun onResume() {
-        super.onResume()
-        start()
-    }
+    private lateinit var url: String
 
-    override fun onStop() {
-        super.onStop()
-        stop()
-    }
-
-    private val listener: Player.EventListener = object : Player.EventListener {
+    private val eventListener: Player.EventListener = object : Player.EventListener {
 
         private var playbackStateReady = false
 
         override fun onPlaybackStateChanged(state: Int) {
             playbackStateReady = state == Player.STATE_READY
-        }
-
-        override fun onIsLoadingChanged(isLoading: Boolean) {
-            super.onIsLoadingChanged(isLoading)
-            logd("onIsLoadingChanged $isLoading")
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -87,32 +78,94 @@ class PlayerFragment :
             }
             requireActivity().runOnUiThread {
                 showSnack(requireView(), tip)
+                binding?.progressBar?.isVisible = false
             }
         }
     }
 
-    private fun start() {
-        binding?.apply {
-            val request = requireArguments().getParcelable(KEY_CACHE) as DownloadRequest?
-            val url = requireArguments().getString(KEY_VIDEO_URL)!!
-            logd("url=$url")
-            if (url.isNotEmpty()) {
-                player = SimpleExoPlayer.Builder(requireContext()).build()
-                val mediaItem = MediaItem.Builder()
-                    .setUri(url)
-                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                    .build()
-                player!!.setMediaItem(mediaItem)
-            } else {
-                player = getLocalPlayer()
-                player!!.setMediaItem(request!!.toMediaItem())
+    override fun initViewBinding(view: View): FragmentVideoBinding = FragmentVideoBinding.bind(view)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        request = requireArguments().getParcelable(KEY_CACHE) as DownloadRequest?
+        url = requireArguments().getString(KEY_VIDEO_URL)!!
+        networkHelper.networkIsCellular.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it) {
+                    showDialog()
+                }
+            })
+        networkHelper.networkIsWifi.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it) {
+                    play()
+                }
+            })
+    }
+
+    private fun showDialog() {
+        pause()
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.tip)
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
             }
-            player!!.playWhenReady = true
-            player!!.prepare()
-            player!!.addListener(listener)
+            .setPositiveButton(R.string.enter) { dialog, _ ->
+                dialog.dismiss()
+                play()
+            }
+            .setMessage(R.string.tip_play_confirm)
+            .setCancelable(false)
+            .create()
+            .show()
+    }
+
+    private fun pause() {
+        player?.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (networkHelper.networkIsWifi()) {
+            play()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopPlay()
+    }
+
+    private fun play() {
+        if (player != null) {
+            player!!.play()
+            return
+        }
+        player = if (url.isNotEmpty()) {
+            getPlayer()
+        } else {
+            getLocalPlayer()
+        }
+        player!!.playWhenReady = true
+        player!!.prepare()
+        player!!.addListener(eventListener)
+        binding?.apply {
             playerView.player = player
             playerView.keepScreenOn = true
             playerView.onResume()
+        }
+    }
+
+    private fun getPlayer(): SimpleExoPlayer {
+        val mediaItem = MediaItem.Builder()
+            .setUri(url)
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .build()
+        return SimpleExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(mediaItem)
         }
     }
 
@@ -123,16 +176,18 @@ class PlayerFragment :
             .setCacheWriteDataSinkFactory(null)
         return SimpleExoPlayer.Builder(requireContext())
             .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
-            .build()
+            .build().apply {
+                setMediaItem(request!!.toMediaItem())
+            }
     }
 
-    private fun stop() {
+    private fun stopPlay() {
         binding?.apply {
             playerView.keepScreenOn = false
             playerView.onPause()
-            player?.removeListener(listener)
-            player?.release()
             playerView.player = null
+            player?.removeListener(eventListener)
+            player?.release()
             player = null
         }
     }

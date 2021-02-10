@@ -8,7 +8,7 @@ import kotlin.collections.LinkedHashMap
 class Ui(
     private val entryPackageName: String = "com.bytebyte6.entry",
     private val servicePackageName: String = "com.bytebyte6.service",
-    private val viewModelPackageName: String = "com.bytebyte6.app_tv_viewmodel.viewmodel",
+    private val viewModelPackageName: String = "com.bytebyte6.app_tv_viewmodel.com.bytebyte.viewmodel",
     private val fragmentPackageName: String = "com.bytebyte6.fragment",
     private val useCasePackageName: String = "com.bytebyte6.usecase",
     private val daoPackageName: String = "com.bytebyte6.dao"
@@ -376,7 +376,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.library.ListFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}ListFragment : ListFragment(){\n" +
                 "\n" +
@@ -413,7 +413,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.base.BaseFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}DetailFragment : BaseFragment<Fragment${entryName}DetailBinding>($detailXmlName){\n" +
                 "\n" +
@@ -459,7 +459,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.base.BaseFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}InsertFragment : BaseFragment<Fragment${entryName}DetailBinding>($insertXmlName){\n" +
                 "\n" +

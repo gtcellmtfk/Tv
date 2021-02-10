@@ -30,12 +30,13 @@ class TvAdapter(
     private val clearHelper: ImageClearHelper = GlideClearHelper()
 ) : BaseListAdapter<Tv, ImageViewHolder>(TvDiff), ImageClearHelper by clearHelper {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ImageViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        //重建后的recyclerview Item是没有transName的 所以在onBind要重新赋值一遍 动画效果才会有~~
+        // 重建后的recyclerview Item是没有transName的
+        // 所以在onBind要重新赋值一遍 动画效果才会有~~
         holder.itemView.transitionName = currentList[position].name
         val item = getItem(position)
         val tvName = holder.binding.tvName
@@ -45,7 +46,12 @@ class TvAdapter(
         val button: MaterialCheckBox = holder.binding.button
         images.add(ivPreview)
         tvName.text = item.name
-        tvPos.text = position.toString()
+
+        if (BuildConfig.DEBUG) {
+            tvPos.text = position.toString()
+        } else {
+            tvPos.visibility = View.GONE
+        }
 
         if (item.logo.isEmpty()) {
             ivPreview.setImageResource(R.drawable.landscape)

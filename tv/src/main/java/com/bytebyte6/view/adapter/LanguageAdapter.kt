@@ -19,24 +19,21 @@ class LanguageAdapter : BaseListAdapter<Languages, CardViewHolder>(LangDiff) {
         val item = getItem(position)
 
         holder.apply {
-            //重建后的recyclerview Item是没有transName的 所以在onBind要重新赋值一遍 动画效果才会有~~
+            // 重建后的recyclerview Item是没有transName的
+            // 所以在onBind要重新赋值一遍 动画效果才会有~~
             itemView.transitionName = item.langName
             tvTitle.text = item.langName
             tvBody.text = item.langCode
             ivIcon.setImageResource(randomImage())
-
-            cardView.apply {
-                strokeWidth = 4
-                strokeColor = item.color
-                radius = 10f
-                setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        holder.itemView.context,
-                        R.color.itemRootLayoutBackgroundColor
-                    )
+            cardView.strokeWidth = 4
+            cardView.strokeColor = item.color
+            cardView.radius = 10f
+            cardView.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.itemRootLayoutBackgroundColor
                 )
-            }
-
+            )
         }
     }
 }

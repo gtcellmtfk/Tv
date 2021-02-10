@@ -4,7 +4,6 @@ import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.common.Result
 import com.bytebyte6.common.RxUseCase2
-import com.bytebyte6.common.logd
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImage
@@ -25,7 +24,6 @@ class SearchTvLogoUseCaseImpl(
             if (result.isNotEmpty()) {
                 it.logo = result
                 dataManager.updateTv(it)
-                logd("${it.name} ${it.logo}")
             }
         }
         return param

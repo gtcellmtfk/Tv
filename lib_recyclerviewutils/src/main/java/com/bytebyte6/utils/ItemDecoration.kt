@@ -11,9 +11,9 @@ import com.bytebyte6.common.dp8
 
 class LinearSpaceDecoration(
     private val start: Int = dp16,
-    private val top: Int = dp8,
+    private val top: Int = start,
     private val end: Int = start,
-    private val bottom: Int = top
+    private val bottom: Int = start
 ) : ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
@@ -33,6 +33,10 @@ class LinearSpaceDecoration(
     }
 }
 
+/**
+ * 没有处理横向情况
+ * {@link GridSpaceDecoration2}
+ */
 class GridSpaceDecoration(
     private val start: Int = dp8,
     private val top: Int = start,
@@ -76,4 +80,46 @@ class GridSpaceDecoration(
         }
     }
 }
+
+class GridSpaceDecoration2(
+    private val start: Int = dp8,
+    private val top: Int = start,
+    private val end: Int = start,
+    private val bottom: Int = start,
+    private val span: Int = 4
+) : ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
+        val itemCount: Int? = parent.adapter?.itemCount
+        if (itemCount != null) {
+            val pos = parent.getChildLayoutPosition(view)
+
+            if (itemCount <= span) {
+                if (pos == 0) {
+                    outRect.set(start, top, end, bottom)
+                } else {
+                    outRect.set(start, 0, end, bottom)
+                }
+                return
+            }
+
+            val start: Int
+            val top: Int
+
+            start = if (pos < span) {
+                this.top
+            } else {
+                0
+            }
+
+            top = if (pos % span == 0) {
+                this.start
+            } else {
+                0
+            }
+
+            outRect.set(start, top, end, bottom)
+        }
+    }
+}
+
 

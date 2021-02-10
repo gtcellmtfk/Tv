@@ -1,4 +1,4 @@
-package viewmodel
+package com.bytebyte.viewmodel
 
 import com.bytebyte6.usecase.FavoriteTvUseCase
 import com.bytebyte6.viewmodel.FavoriteViewModel

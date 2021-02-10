@@ -1,60 +1,118 @@
 package com.bytebyte6.common
 
 import android.content.Context
-import android.net.*
-import androidx.core.net.ConnectivityManagerCompat
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+/**
+ * 先打开Wifi然后打开数据，不会有数据Network的回调
+ * 先打开数据然后打开Wifi，数据和Wifi的Network都会回调
+ */
 class NetworkHelper(context: Context) {
 
-    private val networkConnected = MutableLiveData<Event<Boolean>>()
+    /**
+     * 网络是否连接
+     */
+    private val _networkConnected = MutableLiveData<Boolean>()
+    val networkConnected: LiveData<Boolean> = _networkConnected
+
+    /**
+     * Wifi
+     */
+    private val _networkIsWifi = MutableLiveData<Boolean>()
+    val networkIsWifi: LiveData<Boolean> = _networkIsWifi
+
+    /**
+     *蜂窝网络
+     */
+    private val _networkIsCellular = MutableLiveData<Boolean>()
+    val networkIsCellular: LiveData<Boolean> = _networkIsCellular
 
     private val connectivityManager: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    init {
-        val networkRequest = NetworkRequest.Builder()
-            .build()
+    private val networks = mutableSetOf<Network>()
 
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+    private val networkRequest = NetworkRequest.Builder().build()
 
-            override fun onAvailable(network: Network) {
-                this@NetworkHelper.logd("onAvailable network=$network")
-                networkConnected.postValue(Event(true))
-            }
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onCapabilitiesChanged(
+            network: Network,
+            networkCapabilities: NetworkCapabilities
+        ) {
+            this@NetworkHelper.logd(
+                "onCapabilitiesChanged network=$network" +
+                        " networkCapabilities$networkCapabilities"
+            )
+            networks.add(network)
+            postNetworkIsConnected()
+            postState(networkCapabilities)
+        }
 
-            override fun onCapabilitiesChanged(
-                network: Network,
-                networkCapabilities: NetworkCapabilities
-            ) {
-                this@NetworkHelper.logd("onCapabilitiesChanged network=$network networkCapabilities$networkCapabilities")
-            }
-
-            override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
-                this@NetworkHelper.logd("onLinkPropertiesChanged network=$network linkProperties=$linkProperties")
-            }
-
-            override fun onLosing(network: Network, maxMsToLive: Int) {
-                this@NetworkHelper.logd("onLosing network=$network maxMsToLive=$maxMsToLive")
-            }
-
-            override fun onLost(network: Network) {
-                this@NetworkHelper.logd("onLost network=$network")
-                networkConnected.postValue(Event(isConnected()))
-            }
-
-            override fun onUnavailable() {
-                this@NetworkHelper.logd("onUnavailable")
+        override fun onLost(network: Network) {
+            this@NetworkHelper.logd("onLost network=$network")
+            networks.remove(network)
+            postNetworkIsConnected()
+            if (networkIsConnected()) {
+                postState(connectivityManager.getNetworkCapabilities(networks.last()))
             }
         }
 
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-
+        override fun onUnavailable() {
+            this@NetworkHelper.logd("onUnavailable")
+            postNetworkIsConnected()
+        }
     }
 
-    fun liveData(): LiveData<Event<Boolean>> = networkConnected
+    private fun postState(networkCapabilities: NetworkCapabilities?) {
+        if (networkCapabilities == null)
+            return
 
-    fun isConnected(): Boolean =
-        ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager)
+        val hasWifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        _networkIsWifi.postValue(hasWifi)
+
+        val hasCellular = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        _networkIsCellular.postValue(hasCellular)
+    }
+
+    private fun postNetworkIsConnected() {
+        val connected = networkIsConnected()
+        _networkConnected.postValue(connected)
+    }
+
+    fun registerNetworkCallback() {
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    fun unregisterNetworkCallback() {
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
+
+    fun networkIsCellular(): Boolean {
+        if (networkIsConnected()) {
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(networks.last())
+                ?: return false
+            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        } else {
+            return false
+        }
+    }
+
+    fun networkIsWifi(): Boolean {
+        if (networkIsConnected()) {
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(networks.last())
+                ?: return false
+            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        } else {
+            return false
+        }
+    }
+
+    fun networkIsConnected(): Boolean {
+        return networks.isNotEmpty()
+    }
 }

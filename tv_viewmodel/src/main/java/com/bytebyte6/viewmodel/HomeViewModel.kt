@@ -45,5 +45,24 @@ class HomeViewModel(
             ).onIo()
         )
     }
+
+    private var first = true
+
+    fun searchLogoOnce() {
+        if (cs.value == null)
+            return
+        if (first) {
+            addDisposable(
+                searchCountryImageUseCase.execute(
+                    SearchCountryImageParam(
+                        0,
+                        10,
+                        cs.value!!
+                    )
+                ).onIo()
+            )
+            first = false
+        }
+    }
 }
 

@@ -43,4 +43,12 @@ android {
 
 dependencies {
     implementation(project(":lib_dependency"))
+    androidTestImplementation(Libs.TEST_CORE)
+    androidTestImplementation(Libs.TEST_RUNNER)
+    androidTestImplementation(Libs.TEST_RULES)
+    androidTestImplementation(Libs.TEST_KOIN)
+    androidTestImplementation(Libs.TEST_ARCH_TESTING)
+    androidTestImplementation(Libs.TEST_JUNIT_EXT)
+    androidTestImplementation(Libs.TEST_JUNIT_KTX)
+    testImplementation(Libs.TEST_JUNIT)
 }

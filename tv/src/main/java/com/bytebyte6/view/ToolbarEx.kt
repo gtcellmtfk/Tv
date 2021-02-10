@@ -11,6 +11,7 @@ fun Fragment.setupToolbarArrowBack(
 ) {
     val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
     toolbar.contentDescription = getString(R.string.toolbarContentDescription)
+    toolbar.navigationContentDescription = getString(R.string.toolbar_navigation)
     if (title != null) {
         toolbar.title = title
     }

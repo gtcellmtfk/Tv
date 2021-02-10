@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.utils.GridSpaceDecoration
+import com.bytebyte6.utils.GridSpaceDecoration2
 import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.CountryAdapter
@@ -62,5 +63,7 @@ class CountryFragment :
         viewModel.cs.observe(viewLifecycleOwner, Observer {
             imageAdapter.submitList(it)
         })
+
+        viewModel.searchLogoOnce()
     }
 }

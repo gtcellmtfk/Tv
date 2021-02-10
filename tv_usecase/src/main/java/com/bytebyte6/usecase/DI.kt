@@ -19,7 +19,7 @@ import org.koin.dsl.module
 import java.io.File
 import java.util.concurrent.Executors
 
-val exoPlayerModule= module {
+val exoPlayerModule = module {
     single<HttpDataSource.Factory> { DefaultHttpDataSourceFactory() }
     single {
         DownloadManager(
@@ -33,7 +33,7 @@ val exoPlayerModule= module {
     single<DatabaseProvider> { ExoDatabaseProvider(androidContext()) }
     single<Cache> {
         SimpleCache(
-            File(androidContext().cacheDir,"video") ,
+            File(androidContext().cacheDir, "video"),
             NoOpCacheEvictor(),
             get(DatabaseProvider::class.java)
         )

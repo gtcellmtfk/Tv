@@ -1,6 +1,7 @@
 package com.bytebyte6.viewmodel
 
-import androidx.lifecycle.map
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.common.*
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.PAGE_SIZE
@@ -16,9 +17,13 @@ class SearchViewModel2(
     private val favoriteTvUseCase: FavoriteTvUseCase
 ) : BaseViewModel() {
 
+    private val count = MutableLiveData(0)
+
     private val pagingHelper: PagingHelper<Tv> = object : PagingHelper<Tv>(PAGE_SIZE) {
         override fun count(): Int {
-            return dataManager.getFtsTvCount(getKey())
+            val tvCount = dataManager.getFtsTvCount(getKey())
+            count.postValue(tvCount)
+            return tvCount
         }
 
         override fun paging(offset: Int, pageSize: Int): List<Tv> {
@@ -31,6 +36,8 @@ class SearchViewModel2(
 
     private var keyword = ""
 
+    val resultCount: LiveData<Int> = count
+
     val searchResult = pagingHelper.result()
 
     val favoriteResult = favoriteTvUseCase.result()
@@ -41,6 +48,8 @@ class SearchViewModel2(
         if (!key.isNullOrEmpty()) {
             keyword = key.toString()
             addDisposable(pagingHelper.refresh().onSingle())
+        } else {
+            count.postValue(0)
         }
     }
 

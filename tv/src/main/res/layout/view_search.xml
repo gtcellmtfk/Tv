@@ -14,8 +14,8 @@
         android:imeOptions="actionDone"
         android:inputType="text"
         android:textColor="?colorOnPrimary"
-        android:textColorHint="@color/hint"
-        android:textSize="14sp"
+        android:textColorHint="@color/edit_text_hint"
+        android:textSize="16sp"
         android:importantForAutofill="no" />
 
     <ImageButton

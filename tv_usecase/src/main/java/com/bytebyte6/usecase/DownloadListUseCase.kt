@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.offline.DownloadManager
 class DownloadListUseCase(
     private val dataManager: DataManager,
     private val downloadManager: DownloadManager
-) : RxUseCase<Unit, List<TvAndDownload>>(){
+) : RxUseCase<Unit, List<TvAndDownload>>() {
     override fun run(param: Unit): List<TvAndDownload> {
         val list = mutableListOf<TvAndDownload>()
 

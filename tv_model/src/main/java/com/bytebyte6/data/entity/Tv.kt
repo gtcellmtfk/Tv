@@ -7,6 +7,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
 
@@ -32,7 +33,26 @@ data class Tv(
     // 此处为一对多关系的关键，把Tv对象插入到数据库时，须将此id设置为相对应国家id
     var countryId: Long = 0,
     var countryName: String = country.name
-) : Parcelable
+) : Parcelable {
+    companion object {
+        fun inits(tvs: List<Tv>): List<Tv> {
+            return tvs.map {
+                init(it)
+            }
+        }
+
+        fun init(tv: Tv): Tv {
+            if (tv.category.isEmpty()) {
+                tv.category = Category.OTHER
+            }
+            if (tv.language.isEmpty()) {
+                tv.language = mutableListOf(Language.DEFAULT)
+            }
+            tv.countryName = tv.country.name
+            return tv
+        }
+    }
+}
 
 object TvDiff : DiffUtil.ItemCallback<Tv>() {
     override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {

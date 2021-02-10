@@ -17,17 +17,16 @@ class CategoryAdapter : BaseListAdapter<Category, CardViewHolder>(CategoryDiff) 
         val item = getItem(position)
 
         holder.apply {
-            //重建后的recyclerview Item是没有transName的 所以在onBind要重新赋值一遍 动画效果才会有~~
+            // 重建后的recyclerview Item是没有transName的
+            // 所以在onBind要重新赋值一遍 动画效果才会有~~
             itemView.transitionName = item.category
             tvTitle.text = item.category
             tvBody.text = item.color.toString()
             ivIcon.setImageResource(randomImage())
-            cardView.apply {
-                strokeWidth = 0
-                strokeColor = 0
-                radius = 10f
-                setCardBackgroundColor(item.color)
-            }
+            cardView.strokeWidth = 0
+            cardView.strokeColor = 0
+            cardView.radius = 10f
+            cardView.setCardBackgroundColor(item.color)
         }
     }
 }

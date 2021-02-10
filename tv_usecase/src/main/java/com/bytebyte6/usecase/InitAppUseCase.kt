@@ -8,8 +8,6 @@ import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.Language
 import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -42,13 +40,7 @@ class InitAppUseCaseImpl(
             }
             val cs = mutableSetOf<Country>()
             tvs!!.forEach {
-                if (it.language.isEmpty()) {
-                    it.language = mutableListOf(Language.DEFAULT)
-                }
-                if (it.category.isEmpty()) {
-                    it.category = Category.OTHER
-                }
-                it.countryName = it.country.name
+                Tv.init(it)
                 cs.add(it.country)
             }
             dataManager.insertCountry(cs.toList())

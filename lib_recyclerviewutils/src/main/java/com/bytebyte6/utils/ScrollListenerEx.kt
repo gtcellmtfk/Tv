@@ -2,8 +2,6 @@ package com.bytebyte6.utils
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bytebyte6.common.logd
-import kotlin.math.log
 
 /**
  * @param where 距离底部还有多少时加载
@@ -15,29 +13,18 @@ abstract class LoadMoreListener(
 ) : RecyclerView.OnScrollListener() {
 
     private var last: Long = 0L
+    private var vertical = false
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        val adapter = recyclerView.adapter ?: return
-
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-
-        val lastCompletelyVisibleItemPosition =
-            layoutManager.findLastCompletelyVisibleItemPosition()
-
-        val itemCount = adapter.itemCount
-
-        val threshold = itemCount - 1
-
-        if (lastCompletelyVisibleItemPosition == threshold) {
-            if (System.currentTimeMillis() - last >= millis) {
-                load()
-            }
-        }
+        load2(recyclerView)
     }
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        val vertical = dy > 0
+        vertical = dy > 0
+        load2(recyclerView)
+    }
 
+    private fun load2(recyclerView: RecyclerView) {
         val adapter = recyclerView.adapter ?: return
 
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager

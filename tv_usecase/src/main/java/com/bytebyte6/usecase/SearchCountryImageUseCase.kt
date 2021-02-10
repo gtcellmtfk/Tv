@@ -2,7 +2,6 @@ package com.bytebyte6.usecase
 
 import androidx.annotation.Keep
 import com.bytebyte6.common.RxUseCase
-import com.bytebyte6.common.logd
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.image.SearchImage

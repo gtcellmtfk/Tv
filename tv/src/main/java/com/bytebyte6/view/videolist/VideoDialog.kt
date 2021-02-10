@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.bytebyte6.common.ResultObserver
 import com.bytebyte6.common.KEY_TRANS_NAME
-import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.common.isSuccess
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.TvAdapter
 
@@ -60,10 +59,9 @@ class VideoDialog : BottomSheetDialogFragment() {
                 text = getString(R.string.total, it)
             }
         })
-
-        viewModel.tvs.observe(viewLifecycleOwner, object : ResultObserver<List<Tv>>() {
-            override fun success(data: List<Tv>, end: Boolean) {
-                adapter.submitList((data))
+        viewModel.tvs.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                adapter.submitList(this)
             }
         })
     }
