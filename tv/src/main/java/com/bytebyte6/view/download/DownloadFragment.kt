@@ -84,7 +84,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
                 hideSwipeRefresh()
             }, {
                 hideSwipeRefresh()
-                showSnack(view, Message(message = it.error.message.toString()))
+                showSnack(view, it.error.message.toString())
             }, {
                 showSwipeRefresh()
             })
@@ -110,7 +110,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
     private fun startDownload() {
         DownloadServicePro.resumeDownloads(requireContext())
-        showSnack(requireView(), Message(id = R.string.resume))
+        showSnack(requireView(), R.string.resume)
         viewModel.startInterval()
     }
 
@@ -154,16 +154,15 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
             when (item.itemId) {
                 R.id.pause -> {
                     DownloadServicePro.pauseDownloads(requireContext())
-                    showSnack(requireView(), Message(id = R.string.pause))
+                    showSnack(requireView(), R.string.pause)
                     viewModel.pauseInterval()
                 }
                 R.id.resume -> {
-                    if (networkHelper.networkIsWifi()) {
+                    val networkType = networkHelper.getNetworkType()
+                    if (networkType == NetworkHelper.NetworkType.WIFI) {
                         startDownload()
-                    } else {
-                        if (networkHelper.networkIsCellular()) {
-                            showTipDialog()
-                        }
+                    } else if (networkType == NetworkHelper.NetworkType.MOBILE) {
+                        showTipDialog()
                     }
                 }
             }

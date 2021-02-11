@@ -1,9 +1,8 @@
 package com.bytebyte6.view.me
 
-import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,19 +30,15 @@ import java.io.IOException
 /***
  * 播放列表
  */
-class PlaylistFragment : ListFragment(), DownloadManager.Listener {
+class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickListener {
 
     companion object {
-        fun newInstance(
-            playlistId: Long,
-            title: String,
-            transitionName: String
-        ): Fragment {
+        fun newInstance(playlistId: Long, title: String): Fragment {
             return PlaylistFragment().apply {
                 arguments = Bundle().apply {
                     putLong(KEY_PLAY_LIST_ID, playlistId)
                     putString(KEY_TITLE, title)
-                    putString(KEY_TRANS_NAME, transitionName)
+                    putString(KEY_TRANS_NAME, playlistId.toString())
                 }
             }
         }
@@ -59,7 +54,9 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
 
     private val viewModel: PlaylistViewModel by viewModel()
 
-    private var progressDialog: ProgressDialog? = null
+    private var progressDialog: ProgressDialog2? = null
+
+    private val networkHelper by inject<NetworkHelper>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,54 +70,67 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
         setupToolbarArrowBack()
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
-        val tvAdapter = TvAdapter(ButtonType.DOWNLOAD, object : ButtonClickListener {
-            override fun onClick(position: Int, tv: Tv) {
-                onDownloadClick(position, tv)
-            }
-        }).apply {
-            onItemClick = { pos, _: View ->
-                toPlayer(currentList[pos].url)
-            }
+
+        val tvAdapter = TvAdapter(ButtonType.DOWNLOAD, this)
+
+        tvAdapter.onItemClick = { pos, _: View ->
+            toPlayer(tvAdapter.currentList[pos].url)
         }
+
         imageClearHelper = tvAdapter
 
         binding?.apply {
             appbar.toolbar.title = requireArguments().getString(KEY_TITLE)
             recyclerview.adapter = tvAdapter
             recyclerview.addItemDecoration(GridSpaceDecoration())
-            val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-            recyclerview.layoutManager = gridLayoutManager
+            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
             recyclerview.setHasFixedSize(true)
             recyclerview.itemAnimator = null
         }
-        viewModel.apply {
-            playlistId = requireArguments().getLong(KEY_PLAY_LIST_ID)
-            tvs.observe(viewLifecycleOwner, Observer { result ->
-                result.emit({
-                    tvAdapter.submitList(it.data.toList())
-                    end = it.end
-                    hideSwipeRefresh()
-                    hideProgress()
-                }, {
-                    hideSwipeRefresh()
-                    hideProgress()
-                }, {
-                    showProgress()
-                })
+
+        viewModel.playlistId = requireArguments().getLong(KEY_PLAY_LIST_ID)
+        viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
+            result.emit({
+                tvAdapter.submitList(it.data.toList())
+                end = it.end
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showSnack(view, it.error.message.toString())
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showProgress()
             })
-            count.observe(viewLifecycleOwner, Observer {
-                binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
-                binding?.emptyBox?.isVisible = it == 0
+        })
+        viewModel.count.observe(viewLifecycleOwner, Observer {
+            binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
+            binding?.emptyBox?.isVisible = it == 0
+        })
+        viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
+            result.emitIfNotHandled(success = {
+                tvAdapter.notifyItemChanged(it.data.pos)
+            }, error = {
+                showSnack(requireView(), it.error.message.toString())
             })
-            downloadResult.observe(viewLifecycleOwner, Observer { result ->
-                result.emitIfNotHandled(success = {
-                    tvAdapter.notifyItemChanged(it.data.pos)
-                }, error = {
-                    showSnack(requireView(), Message(message = it.error.message.toString()))
-                })
-            })
-            loadMore()
-        }
+        })
+        viewModel.first()
+    }
+
+    private fun showTipDialog(position: Int, tv: Tv) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.tip)
+            .setMessage(getString(R.string.tip_confirm_the_download))
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(R.string.enter) { dialog, _ ->
+                dialog.dismiss()
+                onDownloadClick(position, tv)
+            }
+            .setCancelable(false)
+            .create()
+            .show()
     }
 
     private fun onDownloadClick(pos: Int, tv: Tv) {
@@ -142,21 +152,15 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
                 viewModel.download(pos, tv)
                 DownloadServicePro.addDownload(requireContext(), tv.url)
                 val tip = getString(R.string.tip_add_download_has_been)
-                showSnack(requireView(), Message(message = tip))
+                showSnack(requireView(), tip)
                 hideProgressDialog()
             }
 
             override fun onPrepareError(helper: DownloadHelper, e: IOException) {
                 if (e is DownloadHelper.LiveContentUnsupportedException) {
-                    showSnack(
-                        requireView(),
-                        Message(id = R.string.tip_un_support_download_live_stream)
-                    )
+                    showSnack(requireView(), R.string.tip_un_support_download_live_stream)
                 } else {
-                    showSnack(
-                        requireView(),
-                        Message(message = e.message.toString())
-                    )
+                    showSnack(requireView(), Message(message = e.message.toString()))
                 }
                 hideProgressDialog()
             }
@@ -164,9 +168,9 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
     }
 
     private fun showProgressDialog() {
-        progressDialog = ProgressDialog(requireContext()).apply {
+        progressDialog = ProgressDialog2(requireContext()).apply {
             setTitle(R.string.tip)
-            setMessage(getString(R.string.tip_please_wait))
+            setMessage2(getString(R.string.tip_please_wait))
             setCanceledOnTouchOutside(false)
             setCancelable(false)
             setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel)) { dialog, _ ->
@@ -195,4 +199,18 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener {
     }
 
     override fun onRefresh() = Unit
+
+    override fun onClick(position: Int, tv: Tv) {
+        when (networkHelper.getNetworkType()) {
+            NetworkHelper.NetworkType.MOBILE -> {
+                showTipDialog(position, tv)
+            }
+            NetworkHelper.NetworkType.WIFI -> {
+                onDownloadClick(position, tv)
+            }
+            else -> {
+                showSnack(requireView(), R.string.network_disconnected)
+            }
+        }
+    }
 }

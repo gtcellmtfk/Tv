@@ -20,7 +20,7 @@
 
     <ImageButton
         android:id="@+id/btnClear"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:padding="16dp"
         android:tint="?attr/colorOnPrimary"
         android:rotation="45"

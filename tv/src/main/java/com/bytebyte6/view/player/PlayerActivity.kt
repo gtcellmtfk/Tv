@@ -12,7 +12,7 @@ class PlayerActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             replaceNotAddToBackStack(
-                PlayerFragment.newInstance(intent.extras!!), PlayerFragment.TAG
+                PlayerFragment2.newInstance(intent.extras!!), PlayerFragment2.TAG
             )
         }
     }

@@ -66,8 +66,7 @@ class VideoListFragment : ListFragment() {
 
         binding?.apply {
             recyclerview.adapter = adapter
-            val gridLayoutManager = GridLayoutManager(view.context, 2)
-            recyclerview.layoutManager = gridLayoutManager
+            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
             recyclerview.addItemDecoration(GridSpaceDecoration())
             recyclerview.setHasFixedSize(true)
             recyclerview.itemAnimator = null
@@ -99,7 +98,7 @@ class VideoListFragment : ListFragment() {
                 showProgress()
             })
         })
-        onLoadMore()
+        viewModel.first()
     }
 
     override fun onLoadMore() {

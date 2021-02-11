@@ -55,4 +55,13 @@ class PlaylistViewModel(
     fun loadMore() {
         addDisposable(pagingHelper.loadResult().onSingle())
     }
+
+    private var first = true
+
+    fun first() {
+        if (first) {
+            loadMore()
+            first = false
+        }
+    }
 }

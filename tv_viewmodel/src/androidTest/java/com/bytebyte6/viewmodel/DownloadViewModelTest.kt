@@ -2,6 +2,7 @@ package com.bytebyte6.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bytebyte6.common.baseModule
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading
 
@@ -34,7 +35,7 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
         startKoin {
             modules(
                 roomMemoryModule, dataModule, useCaseModule,
-                viewModule, testExoPlayerModule
+                viewModule, testExoPlayerModule, baseModule
             )
         }
         RxJavaPlugins.setIoSchedulerHandler {
@@ -89,6 +90,7 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
 
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
+            get(),
             DownloadListUseCase(get(), get()),
             DownloadTvUseCase(get())
         )

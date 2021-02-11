@@ -1,18 +1,21 @@
 package com.bytebyte6.view.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.*
 import com.bytebyte6.data.DataManager
+import com.bytebyte6.data.entity.User
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadServicePro
+import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         const val CURRENT_MENU_ITEM_ID = "CURRENT_MENU_ITEM_ID"
@@ -56,31 +59,21 @@ class MainActivity : BaseActivity() {
             toHome()
         }
 
-        networkHelper.networkConnected.observe(this,
-            Observer { connected ->
-                if (!connected) {
-                    toNetworkError()
-                } else {
-                    supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)?.apply {
-                        supportFragmentManager.popBackStack()
-                    }
-                }
-            })
+        networkHelper.networkConnected.observe(this, Observer { connected ->
+            if (!connected) {
+                toNetworkError()
+            } else {
+                val fragment =
+                    supportFragmentManager.findFragmentByTag(NetworkErrorFragment.TAG)
+                fragment?.requireActivity()?.supportFragmentManager?.popBackStack()
+            }
+        })
 
         binding.navView.apply {
 
             itemBackground = navigationItemBackground(this@MainActivity)
 
-            setNavigationItemSelectedListener { newItem ->
-                if (drawerHelper.current != newItem) {
-                    drawerHelper.current = newItem
-                    drawerHelper.addDrawerListener(listener)
-                    drawerHelper.closeDrawer()
-                    true
-                } else {
-                    false
-                }
-            }
+            setNavigationItemSelectedListener(this@MainActivity)
 
             drawerHelper.current = if (savedInstanceState != null) {
                 val id = savedInstanceState.getInt(CURRENT_MENU_ITEM_ID)
@@ -92,21 +85,26 @@ class MainActivity : BaseActivity() {
         }
 
         val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
-        dataManager.user().observe(this, Observer {
-            name.text = it.name
+        dataManager.user().observe(this, Observer { user1 ->
+            name.text = user1.name
+            networkHelper.networkType.observe(this, getNetworkTypeObs(user1))
         })
+    }
 
-        networkHelper.networkIsCellular.observe(this, Observer {
-            if (it) {
-                DownloadServicePro.pauseDownloads(this)
+    private fun getNetworkTypeObs(user: User): Observer<NetworkHelper.NetworkType> {
+        return Observer { type ->
+            when (type) {
+                NetworkHelper.NetworkType.WIFI -> {
+                    DownloadServicePro.resumeDownloads(this)
+                }
+                NetworkHelper.NetworkType.MOBILE -> {
+                    if (user.downloadOnlyOnWifi) {
+                        DownloadServicePro.pauseDownloads(this)
+                    }
+                }
+                else -> Unit
             }
-        })
-
-        networkHelper.networkIsWifi.observe(this, Observer {
-            if (it) {
-                DownloadServicePro.resumeDownloads(this)
-            }
-        })
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -133,6 +131,17 @@ class MainActivity : BaseActivity() {
             drawerHelper.closeDrawer()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return if (drawerHelper.current != item) {
+            drawerHelper.current = item
+            drawerHelper.addDrawerListener(listener)
+            drawerHelper.closeDrawer()
+            true
+        } else {
+            false
         }
     }
 }

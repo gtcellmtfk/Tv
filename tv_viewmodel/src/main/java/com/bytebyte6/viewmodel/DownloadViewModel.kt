@@ -9,6 +9,7 @@ import com.bytebyte6.usecase.UpdateTvParam
 import io.reactivex.rxjava3.disposables.Disposable
 
 class DownloadViewModel(
+    private val networkHelper: NetworkHelper,
     private val downloadListUseCase: DownloadListUseCase,
     private val downloadTvUseCase: DownloadTvUseCase
 ) : BaseViewModel(), Observer<Result<List<TvAndDownload>>> {
@@ -21,19 +22,30 @@ class DownloadViewModel(
 
     val deleteResult = downloadTvUseCase.result()
 
+    private val netObs = Observer<NetworkHelper.NetworkType> {
+        when (it) {
+            NetworkHelper.NetworkType.WIFI -> startInterval()
+            else -> Unit
+        }
+    }
+
     init {
         downloadListUseCase.result().observeForever(this)
         loadDownloadList()
+        networkHelper.networkType.observeForever(netObs)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        networkHelper.networkType.removeObserver(netObs)
     }
 
     fun loadDownloadList() {
-        addDisposable(
-            downloadListUseCase.execute(Unit).onIo()
-        )
+        addDisposable(downloadListUseCase.execute(Unit).onIo())
     }
 
     private val resultObserver = object : Observer<Result<UpdateTvParam>> {
-        override fun onChanged(t: Result<UpdateTvParam>?) {
+        override fun onChanged(result: Result<UpdateTvParam>?) {
             loadDownloadList()
             deleteResult.removeObserver(this)
         }
@@ -47,14 +59,13 @@ class DownloadViewModel(
         val tv = data[pos].tv
         tv.download = false
         deleteResult.observeForever(resultObserver)
-        addDisposable(
-            downloadTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
-        )
+        addDisposable(downloadTvUseCase.execute(UpdateTvParam(pos, tv)).onIo())
     }
 
     fun startInterval() {
         downloadListResult.getSuccessData()?.apply {
             if (size > 0) {
+                getDownloadList?.dispose()
                 getDownloadList = downloadListUseCase.interval(Unit, 2).onIo()
                 addDisposable(getDownloadList!!)
             }

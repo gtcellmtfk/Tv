@@ -40,10 +40,12 @@
     <string name="revocation">撤销</string>
     <string name="unbookmarked">已取消收藏</string>
     <string name="out_of_memory">内存溢出,请向开发者反馈!</string>
-    <string name="source_error">资源失效！</string>
-    <string name="timeout">请求超时！</string>
+    <string name="source_error">来源错误,请重试!</string>
+    <string name="timeout">请求超时!</string>
     <string name="network_changed">网络更改</string>
     <string name="tip_pause_play">当前网络为数据已暂停播放</string>
     <string name="tip_confirm_the_download">当前网络为数据流量,你确定要下载吗?</string>
     <string name="tip_play_confirm">当前为数据网络,是否继续播放?</string>
+    <string name="setting_only_wifi_download">只在Wifi状态下进行下载</string>
+    <string name="setting_only_wifi_play">只在Wifi状态下播放</string>
 </resources>

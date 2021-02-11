@@ -47,5 +47,16 @@ android {
 
 dependencies {
     implementation(project(":lib_dependency"))
+    androidTestImplementation(Libs.TEST_ESPRESSO_CORE)
+    androidTestImplementation(Libs.TEST_ESPRESSO_CONTRIB)
+    androidTestImplementation(Libs.TEST_ESPRESSO_UI_AUTOMATOR)
+    androidTestImplementation(Libs.TEST_ESPRESSO_INTEGRATION)
+    androidTestImplementation(Libs.TEST_CORE)
+    androidTestImplementation(Libs.TEST_RUNNER)
+    androidTestImplementation(Libs.TEST_RULES)
+    androidTestImplementation(Libs.TEST_KOIN)
+    androidTestImplementation(Libs.TEST_ARCH_TESTING)
+    androidTestImplementation(Libs.TEST_JUNIT)
+    androidTestImplementation(Libs.TEST_JUNIT_KTX)
 }
 

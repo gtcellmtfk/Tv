@@ -15,6 +15,7 @@ import com.bytebyte6.viewmodel.UserViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
+
     companion object {
         const val TAG = "SettingFragment"
         fun newInstance(): SettingFragment {
@@ -35,15 +36,17 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
         setupToolbarMenuMode(getString(R.string.nav_setting), "")
         setupOnBackPressedDispatcherBackToHome()
 
-        binding?.apply {
-            tvByteByte6.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bytebyte6")))
-            }
+        binding?.tvByteByte6?.setOnClickListener {
+            val parse = Uri.parse("https://github.com/bytebyte6")
+            val intent = Intent(Intent.ACTION_VIEW, parse)
+            startActivity(intent)
         }
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
             binding?.swCapturePic?.isChecked = it.capturePic
             binding?.swNightMode?.isChecked = it.nightMode
+            binding?.swOnlyWifiDownload?.isChecked = it.downloadOnlyOnWifi
+            binding?.swOnlyWifiPlay?.isChecked = it.playOnlyOnWifi
             binding?.swNightMode?.setOnCheckedChangeListener { _, isChecked ->
                 AppCompatDelegate.setDefaultNightMode(
                     if (isChecked)
@@ -55,6 +58,12 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
             }
             binding?.swCapturePic?.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.updateCapturePic(isChecked)
+            }
+            binding?.swOnlyWifiDownload?.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateOnlyWifiDownload(isChecked)
+            }
+            binding?.swOnlyWifiPlay?.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateOnlyWifiPlay(isChecked)
             }
         })
     }

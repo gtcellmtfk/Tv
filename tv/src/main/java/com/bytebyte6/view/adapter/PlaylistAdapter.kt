@@ -35,7 +35,7 @@ class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
         holder.apply {
             // 重建后的recyclerview Item是没有transName的
             // 所以在onBind要重新赋值一遍 动画效果才会有~~
-            itemView.transitionName = item.playlistName
+            itemView.transitionName = item.playlistId.toString()
             tvTitle.text = item.playlistName
             tvBody.text = item.playlistId.toString()
             ivIcon.setImageResource(randomImage())

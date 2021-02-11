@@ -48,5 +48,14 @@ class VideoListViewModel(
             favoriteTvUseCase.execute(UpdateTvParam(pos, pagingHelper.getList()[pos])).onIo()
         )
     }
+
+    private var first = true
+
+    fun first() {
+        if (first) {
+            loadMore()
+            first = false
+        }
+    }
 }
 

@@ -91,7 +91,6 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             meToPlaylist(
                 viewModel.getPlaylistId(pos),
                 playlistAdapter.list[pos].playlistName,
-                playlistAdapter.list[pos].playlistName,
                 itemView
             )
         }
@@ -144,7 +143,6 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                     hideProgressBar()
                     meToPlaylist(
                         it.data.playlistId,
-                        it.data.playlistName,
                         it.data.playlistName
                     )
                 }, {

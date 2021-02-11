@@ -12,6 +12,24 @@ class UserViewModel(
 
     val user = dataManager.user()
 
+    fun updateOnlyWifiPlay(onlyWifiPlay: Boolean) {
+        user.value?.apply {
+            this.playOnlyOnWifi = onlyWifiPlay
+            addDisposable(
+                updateUserUseCase.execute(this).onIo()
+            )
+        }
+    }
+
+    fun updateOnlyWifiDownload(onlyWifiDownload: Boolean) {
+        user.value?.apply {
+            this.downloadOnlyOnWifi = onlyWifiDownload
+            addDisposable(
+                updateUserUseCase.execute(this).onIo()
+            )
+        }
+    }
+
     fun updateNight(nightMode: Boolean) {
         user.value?.apply {
             this.nightMode = nightMode

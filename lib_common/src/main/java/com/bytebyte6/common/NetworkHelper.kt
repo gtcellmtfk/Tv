@@ -1,10 +1,7 @@
 package com.bytebyte6.common
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
+import android.net.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -14,69 +11,67 @@ import androidx.lifecycle.MutableLiveData
  */
 class NetworkHelper(context: Context) {
 
+    enum class NetworkType {
+        WIFI, MOBILE, NONE
+    }
+
+    private val _networkType = MutableLiveData<NetworkType>()
+    val networkType: LiveData<NetworkType> = _networkType
+
     /**
      * 网络是否连接
      */
     private val _networkConnected = MutableLiveData<Boolean>()
     val networkConnected: LiveData<Boolean> = _networkConnected
 
-    /**
-     * Wifi
-     */
-    private val _networkIsWifi = MutableLiveData<Boolean>()
-    val networkIsWifi: LiveData<Boolean> = _networkIsWifi
-
-    /**
-     *蜂窝网络
-     */
-    private val _networkIsCellular = MutableLiveData<Boolean>()
-    val networkIsCellular: LiveData<Boolean> = _networkIsCellular
-
-    private val connectivityManager: ConnectivityManager =
+    private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    private val networks = mutableSetOf<Network>()
 
     private val networkRequest = NetworkRequest.Builder().build()
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+
+        override fun onAvailable(network: Network) {
+            this@NetworkHelper.logd("onAvailable network=$network")
+        }
+
+        override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+            this@NetworkHelper.logd("onBlockedStatusChanged network=$network")
+        }
+
+        override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
+            this@NetworkHelper.logd("onLinkPropertiesChanged network=$network")
+        }
+
+        override fun onLosing(network: Network, maxMsToLive: Int) {
+            this@NetworkHelper.logd("onLosing network=$network")
+        }
+
+        override fun onUnavailable() {
+            this@NetworkHelper.logd("onUnavailable")
+        }
+
         override fun onCapabilitiesChanged(
             network: Network,
             networkCapabilities: NetworkCapabilities
         ) {
             this@NetworkHelper.logd(
                 "onCapabilitiesChanged network=$network" +
-                        " networkCapabilities$networkCapabilities"
+                        " networkCapabilities=$networkCapabilities"
             )
-            networks.add(network)
             postNetworkIsConnected()
-            postState(networkCapabilities)
+            postNetworkType()
         }
 
         override fun onLost(network: Network) {
             this@NetworkHelper.logd("onLost network=$network")
-            networks.remove(network)
             postNetworkIsConnected()
-            if (networkIsConnected()) {
-                postState(connectivityManager.getNetworkCapabilities(networks.last()))
-            }
-        }
-
-        override fun onUnavailable() {
-            this@NetworkHelper.logd("onUnavailable")
-            postNetworkIsConnected()
+            postNetworkType()
         }
     }
 
-    private fun postState(networkCapabilities: NetworkCapabilities?) {
-        if (networkCapabilities == null)
-            return
-
-        val hasWifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-        _networkIsWifi.postValue(hasWifi)
-
-        val hasCellular = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-        _networkIsCellular.postValue(hasCellular)
+    private fun postNetworkType() {
+        _networkType.postValue(getNetworkType())
     }
 
     private fun postNetworkIsConnected() {
@@ -92,27 +87,31 @@ class NetworkHelper(context: Context) {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 
-    fun networkIsCellular(): Boolean {
+    fun getNetworkType(): NetworkType {
         if (networkIsConnected()) {
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(networks.last())
-                ?: return false
-            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            connectivityManager.allNetworks.forEach {
+                val networkCapabilities = connectivityManager.getNetworkCapabilities(it)
+                if (networkCapabilities != null) {
+                    val hasWifi =
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    if (hasWifi) {
+                        return NetworkType.WIFI
+                    }
+                }
+            }
+            return NetworkType.MOBILE
         } else {
-            return false
-        }
-    }
-
-    fun networkIsWifi(): Boolean {
-        if (networkIsConnected()) {
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(networks.last())
-                ?: return false
-            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-        } else {
-            return false
+            return NetworkType.NONE
         }
     }
 
     fun networkIsConnected(): Boolean {
-        return networks.isNotEmpty()
+        return connectivityManager.allNetworks.isNotEmpty()
     }
+
+    fun isMobile() = getNetworkType() == NetworkType.MOBILE
+
+    fun isWifi() = getNetworkType() == NetworkType.WIFI
+
+    fun isNone() = getNetworkType() == NetworkType.NONE
 }

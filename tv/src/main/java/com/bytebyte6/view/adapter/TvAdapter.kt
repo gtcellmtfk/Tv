@@ -37,7 +37,7 @@ class TvAdapter(
         super.onBindViewHolder(holder, position)
         // 重建后的recyclerview Item是没有transName的
         // 所以在onBind要重新赋值一遍 动画效果才会有~~
-        holder.itemView.transitionName = currentList[position].name
+        holder.itemView.transitionName = currentList[position].tvId.toString()
         val item = getItem(position)
         val tvName = holder.binding.tvName
         val tvPos = holder.binding.tvPosition
