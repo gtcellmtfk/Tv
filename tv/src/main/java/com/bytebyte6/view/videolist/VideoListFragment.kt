@@ -6,14 +6,14 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.*
-import com.bytebyte6.data.entity.TvFts
+import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.KEY_TITLE
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
-import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.VideoListViewModel
@@ -35,9 +35,8 @@ class VideoListFragment : ListFragment() {
 
     private val viewModel: VideoListViewModel by viewModel()
 
-    private val buttonClickListener = object :
-        ButtonClickListener {
-        override fun onClick(position: Int) {
+    private val buttonClickListener = object : ButtonClickListener {
+        override fun onClick(position: Int, tv: Tv) {
             viewModel.fav(position)
         }
     }
@@ -51,18 +50,9 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ImageAdapter(
-            ButtonType.FAVORITE,
-            buttonClickListener
-        ).apply {
+        val adapter = TvAdapter(ButtonType.FAVORITE, buttonClickListener).apply {
             onItemClick = { pos, _: View ->
-                toPlayer(currentList[pos].videoUrl)
-            }
-            doOnBind = { pos, _: View ->
-                viewModel.searchLogo(pos)
-            }
-            onCurrentListChanged = { _, currentList ->
-                binding?.emptyBox?.isVisible = currentList.isEmpty()
+                toPlayer(currentList[pos].url)
             }
         }
         disEnabledSwipeRefreshLayout()
@@ -74,7 +64,7 @@ class VideoListFragment : ListFragment() {
         setupToolbarArrowBack(title)
         viewModel.setKey(title)
 
-        binding?.run {
+        binding?.apply {
             recyclerview.adapter = adapter
             recyclerview.layoutManager = GridLayoutManager(view.context, 2)
             recyclerview.addItemDecoration(GridSpaceDecoration())
@@ -84,36 +74,36 @@ class VideoListFragment : ListFragment() {
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
             binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
+            binding?.emptyBox?.isVisible = it == 0
+        })
+
+        viewModel.favoriteResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                adapter.currentList[pos].favorite = tv.favorite
+                adapter.notifyItemChanged(pos)
+            }
         })
 
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
-            result.emit(
-                {
-                    adapter.submitList(TvFts.toTvs(it.data))
-                    end = it.end
-                    it.runIfNotHandled {
-                        hideSwipeRefresh()
-                        hideProgress()
-                    }
-                },
-                {
-                    showSnack(view, Message(message = it.error.message.toString()))
-                    hideSwipeRefresh()
-                    hideProgress()
-                },
-                {
-                    showProgress()
-                }
-            )
+            result.emit({
+                adapter.submitList(it.data.toList())
+                end = it.end
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showSnack(view, Message(message = it.error.message.toString()))
+                hideSwipeRefresh()
+                hideProgress()
+            }, {
+                showProgress()
+            })
         })
-        viewModel.loadOnce()
+        viewModel.first()
     }
 
     override fun onLoadMore() {
         viewModel.loadMore()
     }
 
-    override fun onRefresh() {
-        //not to do
-    }
+    override fun onRefresh() = Unit
 }

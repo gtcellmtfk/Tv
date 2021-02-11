@@ -14,7 +14,7 @@ import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.view.me.MeFragment
 import com.bytebyte6.view.me.PlaylistFragment
 import com.bytebyte6.view.player.PlayerActivity
-import com.bytebyte6.view.search.SearchFragment
+import com.bytebyte6.view.search.SearchFragment2
 import com.bytebyte6.view.setting.SettingFragment
 import com.bytebyte6.view.videolist.VideoListFragment
 import com.google.android.exoplayer2.offline.DownloadRequest
@@ -26,7 +26,7 @@ const val KEY_PLAY_LIST_ID = "KEY_PLAY_LIST_ID"
 const val KEY_TITLE = "KEY_TITLE"
 const val KEY_CACHE = "KEY_CACHE"
 
-fun FragmentActivity.toNetworkError(){
+fun FragmentActivity.toNetworkError() {
     val fragment = NetworkErrorFragment()
     replace(fragment, NetworkErrorFragment.TAG)
 }
@@ -44,8 +44,8 @@ fun Fragment.homeToVideoList(
 
 fun Fragment.homeToSearch(toolbar: MaterialToolbar) {
     replaceWithShareElement(
-        SearchFragment.newInstance(toolbar.transitionName),
-        SearchFragment.TAG,
+        SearchFragment2.newInstance(toolbar.transitionName),
+        SearchFragment2.TAG,
         toolbar
     )
 }
@@ -86,12 +86,11 @@ fun FragmentActivity.toDownload() {
 fun Fragment.meToPlaylist(
     playlistId: Long,
     title: String,
-    transitionName: String,
     itemView: View
 ) {
     replaceWithShareElement(
         PlaylistFragment.newInstance(
-            playlistId, title, transitionName
+            playlistId, title
         ),
         PlaylistFragment.TAG,
         itemView
@@ -100,12 +99,11 @@ fun Fragment.meToPlaylist(
 
 fun Fragment.meToPlaylist(
     playlistId: Long,
-    title: String,
-    transitionName: String
+    title: String
 ) {
     replace(
         PlaylistFragment.newInstance(
-            playlistId, title, transitionName
+            playlistId, title
         ),
         PlaylistFragment.TAG
     )
@@ -113,9 +111,9 @@ fun Fragment.meToPlaylist(
 
 fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     val activity = requireActivity()
-    if (activity is MainActivity){
+    if (activity is MainActivity) {
         activity.onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,object : OnBackPressedCallback(true) {
+            viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     activity.replaceNotAddToBackStack(HomeFragment(), HomeFragment.TAG)
                     activity.selectedNavHomeMenuItem()
@@ -125,7 +123,7 @@ fun Fragment.setupOnBackPressedDispatcherBackToHome() {
     }
 }
 
- fun Fragment.replaceWithShareElement(
+fun Fragment.replaceWithShareElement(
     fragment: Fragment,
     tag: String?,
     share: View
@@ -138,17 +136,17 @@ fun Fragment.setupOnBackPressedDispatcherBackToHome() {
         .commit()
 }
 
- fun Fragment.replace(fragment: Fragment, tag: String?) {
+fun Fragment.replace(fragment: Fragment, tag: String?) {
     requireActivity().replace(fragment, tag)
 }
 
- fun FragmentActivity.replaceNotAddToBackStack(fragment: Fragment, tag: String?) {
+fun FragmentActivity.replaceNotAddToBackStack(fragment: Fragment, tag: String?) {
     supportFragmentManager.beginTransaction()
         .replace(R.id.main_container, fragment, tag)
         .commit()
 }
 
- fun FragmentActivity.replace(fragment: Fragment, tag: String?) {
+fun FragmentActivity.replace(fragment: Fragment, tag: String?) {
     supportFragmentManager.beginTransaction()
         .replace(R.id.main_container, fragment, tag)
         .addToBackStack(tag)

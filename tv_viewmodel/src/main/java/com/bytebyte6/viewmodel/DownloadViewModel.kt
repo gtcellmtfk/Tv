@@ -1,17 +1,17 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.Observer
-import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.*
 import com.bytebyte6.usecase.DownloadListUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
 import com.bytebyte6.usecase.TvAndDownload
 import com.bytebyte6.usecase.UpdateTvParam
-import com.bytebyte6.usecase.UpdateTvUseCase
 import io.reactivex.rxjava3.disposables.Disposable
 
 class DownloadViewModel(
+    private val networkHelper: NetworkHelper,
     private val downloadListUseCase: DownloadListUseCase,
-    private val updateTvUseCase: UpdateTvUseCase
+    private val downloadTvUseCase: DownloadTvUseCase
 ) : BaseViewModel(), Observer<Result<List<TvAndDownload>>> {
 
     private var getDownloadList: Disposable? = null
@@ -20,25 +20,34 @@ class DownloadViewModel(
 
     val downloadListResult = downloadListUseCase.result()
 
-    val deleteResult = updateTvUseCase.result()
+    val deleteResult = downloadTvUseCase.result()
+
+    private val netObs = Observer<NetworkHelper.NetworkType> {
+        when (it) {
+            NetworkHelper.NetworkType.WIFI -> startInterval()
+            else -> Unit
+        }
+    }
 
     init {
         downloadListUseCase.result().observeForever(this)
         loadDownloadList()
+        networkHelper.networkType.observeForever(netObs)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        networkHelper.networkType.removeObserver(netObs)
     }
 
     fun loadDownloadList() {
-        addDisposable(
-            downloadListUseCase.execute(Unit).onIo()
-        )
+        addDisposable(downloadListUseCase.execute(Unit).onIo())
     }
 
-    private val resultObserver by lazy {
-        object : ResultObserver<UpdateTvParam>() {
-            override fun successOnce(data: UpdateTvParam, end: Boolean) {
-                loadDownloadList()
-                deleteResult.removeObserver(this)
-            }
+    private val resultObserver = object : Observer<Result<UpdateTvParam>> {
+        override fun onChanged(result: Result<UpdateTvParam>?) {
+            loadDownloadList()
+            deleteResult.removeObserver(this)
         }
     }
 
@@ -50,15 +59,14 @@ class DownloadViewModel(
         val tv = data[pos].tv
         tv.download = false
         deleteResult.observeForever(resultObserver)
-        addDisposable(
-            updateTvUseCase.execute(UpdateTvParam(pos, tv)).onIo()
-        )
+        addDisposable(downloadTvUseCase.execute(UpdateTvParam(pos, tv)).onIo())
     }
 
     fun startInterval() {
         downloadListResult.getSuccessData()?.apply {
             if (size > 0) {
-                getDownloadList = downloadListUseCase.interval(Unit,2).onIo()
+                getDownloadList?.dispose()
+                getDownloadList = downloadListUseCase.interval(Unit, 2).onIo()
                 addDisposable(getDownloadList!!)
             }
         }

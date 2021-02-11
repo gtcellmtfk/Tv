@@ -1,12 +1,10 @@
 package com.bytebyte6.usecase
 
-import com.bytebyte6.data.dao.UserDao
-import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImage
 import com.bytebyte6.image.SearchImageImpl
 import com.bytebyte6.usecase.work.AppDelegatingWorkerFactory
-import com.bytebyte6.usecase.work.CountryImageSearch
-import com.bytebyte6.usecase.work.TvLogoSearch
+import com.bytebyte6.usecase.work.SearchCountryImage
+import com.bytebyte6.usecase.work.SearchTvLogo
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -19,11 +17,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.io.File
-import java.util.*
 import java.util.concurrent.Executors
 
-val exoPlayerModule= module {
-    /**ExoPlayer*/
+val exoPlayerModule = module {
     single<HttpDataSource.Factory> { DefaultHttpDataSourceFactory() }
     single {
         DownloadManager(
@@ -37,7 +33,7 @@ val exoPlayerModule= module {
     single<DatabaseProvider> { ExoDatabaseProvider(androidContext()) }
     single<Cache> {
         SimpleCache(
-            File(androidContext().cacheDir,"video") ,
+            File(androidContext().cacheDir, "video"),
             NoOpCacheEvictor(),
             get(DatabaseProvider::class.java)
         )
@@ -45,38 +41,20 @@ val exoPlayerModule= module {
 }
 
 val useCaseModule: Module = module {
-    factory { CreateUserUseCase(get(UserDao::class)) }
-    factory { UpdateTvUseCase(get()) }
-    factory { SearchTvUseCase(get()) }
+    factory { DownloadTvUseCase(get()) }
+    factory { FavoriteTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
     factory { TvRefreshUseCase(get(), get()) }
     factory { DownloadListUseCase(get(), get()) }
-    factory { CountryImageSearchUseCase(get(), get()) }
+    factory { SearchCountryImageUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
-    factory<TvLogoSearchUseCase> { TvLogoSearchUseCaseImpl(get(), get()) }
-    factory<InitDataUseCase> {
-        InitDataUseCaseImpl(
-            get(),
-            get(),
-            get(),
-            androidContext(),
-            get()
-        )
-    }
-    factory {
-        ParseM3uUseCase(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
+    factory<SearchTvLogoUseCase> { SearchTvLogoUseCaseImpl(get(), get()) }
+    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext(), get()) }
+    factory { ParseM3uUseCase(get(), get()) }
 
     /**图片搜索*/
     single { AppDelegatingWorkerFactory(get(), get()) }
-    single { CountryImageSearch(get(), get()) }
-    single { TvLogoSearch(get(), get()) }
+    single { SearchCountryImage(get(), get()) }
+    single { SearchTvLogo(get(), get()) }
     factory<SearchImage> { SearchImageImpl() }
 }

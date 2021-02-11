@@ -17,10 +17,13 @@ interface TvDao : BaseDao<Tv> {
     fun getTvWithPlaylistss(): List<TvWithPlaylists>
 
     @Query("SELECT * FROM Tv LIMIT :pageSize OFFSET :offset")
-    fun paging(offset: Int,pageSize:Int= PAGE_SIZE): List<Tv>
+    fun paging(offset: Int, pageSize: Int = PAGE_SIZE): List<Tv>
 
     @Query("SELECT COUNT(tvId) FROM Tv")
     fun getCount(): Int
+
+    @Query("SELECT * FROM Tv WHERE logo =:logo")
+    fun getTvsByLogo(logo: String): List<Tv>
 
     @Query("SELECT * FROM Tv")
     fun getTvs(): List<Tv>

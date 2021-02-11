@@ -1,40 +1,67 @@
 package com.bytebyte6.viewmodel
 
-import androidx.lifecycle.map
+import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.common.BaseViewModel
+import com.bytebyte6.common.PagingHelper
 import com.bytebyte6.common.onIo
-import com.bytebyte6.data.dao.PlaylistDao
+import com.bytebyte6.common.onSingle
+import com.bytebyte6.data.DataManager
+import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.*
+import com.bytebyte6.usecase.DownloadTvUseCase
+import com.bytebyte6.usecase.SearchTvLogoParam
+import com.bytebyte6.usecase.SearchTvLogoUseCase
+import com.bytebyte6.usecase.UpdateTvParam
 
 class PlaylistViewModel(
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val updateTvUseCase: UpdateTvUseCase,
-    private val playlistDao: PlaylistDao
-) : BaseViewModel(){
+    private val searchTvLogoUseCase: SearchTvLogoUseCase,
+    private val downloadTvUseCase: DownloadTvUseCase,
+    private val dataManager: DataManager
+) : BaseViewModel() {
 
-    val updateTv = updateTvUseCase.result()
+    val count = MutableLiveData<Int>()
 
-    fun searchLogo(pos: Int) {
+    private val pagingHelper = object : PagingHelper<Tv>(PAGE_SIZE) {
+        override fun count(): Int {
+            val tvCount = dataManager.getTvCountByPlaylistId(playlistId)
+            count.postValue(tvCount)
+            return tvCount
+        }
+
+        override fun paging(offset: Int, pageSize: Int): List<Tv> {
+            val page = getPage()
+            val tvs = dataManager.getTvsByPlaylistId(playlistId, page)
+            addDisposable(
+                searchTvLogoUseCase.execute(SearchTvLogoParam(tvs))
+                    .doOnSuccess { dataManager.updatePlaylistCache(playlistId, tvs, page) }
+                    .onIo()
+            )
+            return tvs
+        }
+    }
+
+    val tvs = pagingHelper.result()
+
+    var playlistId: Long = 0
+
+    val downloadResult = downloadTvUseCase.result()
+
+    fun download(pos: Int, tv: Tv) {
         addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvs[pos].tvId, pos = pos)).onIo()
+            downloadTvUseCase.execute(UpdateTvParam(pos, tv.apply { download = true })).onIo()
         )
     }
 
-    private lateinit var tvs: List<Tv>
-
-    fun getTv(pos: Int) = tvs[pos]
-
-    fun tvs(playlistId: Long) = playlistDao.playlistWithTvs(playlistId).map {
-        tvs = it.tvs
-        tvs
+    fun loadMore() {
+        addDisposable(pagingHelper.loadResult().onSingle())
     }
 
-    fun download(pos: Int) {
-        addDisposable(
-            updateTvUseCase.execute(UpdateTvParam(pos, tvs[pos].apply {
-                download = true
-            })).onIo()
-        )
+    private var first = true
+
+    fun first() {
+        if (first) {
+            loadMore()
+            first = false
+        }
     }
 }

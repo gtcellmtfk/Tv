@@ -12,9 +12,9 @@ val viewModule: Module = module {
             get()
         )
     }
-    viewModel { PlayerViewModel() }
+    viewModel { PlayerViewModel(get(), get(), get(), get(), get()) }
     viewModel {
-        SearchViewModel(
+        SearchViewModel2(
             get(),
             get(),
             get()
@@ -33,11 +33,10 @@ val viewModule: Module = module {
         HomeViewModel(
             get(),
             get(),
-            get(),
             get()
         )
     }
     viewModel { UserViewModel(get(), get()) }
-    viewModel { FavoriteViewModel(get()) }
-    viewModel { DownloadViewModel(get(), get()) }
+    viewModel { FavoriteViewModel(get(), get()) }
+    viewModel { DownloadViewModel(get(), get(), get()) }
 }

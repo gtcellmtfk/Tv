@@ -3,11 +3,12 @@ package com.bytebyte6.ui_factory
 import java.io.File
 import java.util.*
 import javax.swing.filechooser.FileSystemView
+import kotlin.collections.LinkedHashMap
 
 class Ui(
     private val entryPackageName: String = "com.bytebyte6.entry",
     private val servicePackageName: String = "com.bytebyte6.service",
-    private val viewModelPackageName: String = "com.bytebyte6.app_tv_viewmodel.viewmodel",
+    private val viewModelPackageName: String = "com.bytebyte6.app_tv_viewmodel.com.bytebyte.viewmodel",
     private val fragmentPackageName: String = "com.bytebyte6.fragment",
     private val useCasePackageName: String = "com.bytebyte6.usecase",
     private val daoPackageName: String = "com.bytebyte6.dao"
@@ -135,17 +136,17 @@ class Ui(
             builder.append("@Entity").append(ENTER)
         }
         val size = split.size
-        val size1 = size - 1
+        val entryName = split[0]
         if (split.size == 1) {
-            provideDao(split[0])
-            provideRetrofit(split[0])
-            provideUseCase(split[0])
-            provideViewModel(split[0])
-            provideFragment(split[0])
-            provideAdapter(split[0])
-            builder.append("data class ${split[0]}(").append(ENTER)
+            provideDao(entryName)
+            provideRetrofit(entryName)
+            provideUseCase(entryName)
+            provideViewModel(entryName)
+            provideFragment(entryName)
+            provideAdapter(entryName)
+            builder.append("data class $entryName(").append(ENTER)
             builder.append(ENTER).append(") : Parcelable").append(ENTER)
-            this.createFile(builder.toString(), split[0].plus(".kt"), entryDir)
+            this.createFile(builder.toString(), entryName.plus(".kt"), entryDir)
             return
         }
         split.forEachIndexed { index, str ->
@@ -204,14 +205,14 @@ class Ui(
                             .append("var $name:${typeMap[type]} = ${typeMapDefaultValue[type]}")
                     }
                 }
-                if (index != size1) {
+                if (index != size - 1) {
                     builder.append(DOU).append(ENTER)
                 } else {
                     builder.append(ENTER).append(") : Parcelable").append(ENTER)
                 }
             }
         }
-        this.createFile(builder.toString(), split[0].plus(".kt"), entryDir)
+        this.createFile(builder.toString(), entryName.plus(".kt"), entryDir)
     }
 
     override fun provideDao(entryName: String) {
@@ -375,7 +376,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.library.ListFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}ListFragment : ListFragment(){\n" +
                 "\n" +
@@ -412,7 +413,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.base.BaseFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}DetailFragment : BaseFragment<Fragment${entryName}DetailBinding>($detailXmlName){\n" +
                 "\n" +
@@ -458,7 +459,7 @@ class Ui(
                 "import android.os.Bundle\n" +
                 "import android.view.View\n" +
                 "import com.bytebyte6.base.BaseFragment\n" +
-                "import org.koin.android.viewmodel.ext.android.viewModel\n" +
+                "import org.koin.android.com.bytebyte.viewmodel.ext.android.viewModel\n" +
                 "\n" +
                 "class ${entryName}InsertFragment : BaseFragment<Fragment${entryName}DetailBinding>($insertXmlName){\n" +
                 "\n" +

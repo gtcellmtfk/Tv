@@ -33,26 +33,12 @@ class DrawerHelper private constructor(
     }
 
     var current: MenuItem? = null
-    private val listener = object : SimpleDrawerListener() {
-        override fun onDrawerClosed(drawerView: View) {
-            current?.apply {
-                when (itemId) {
-                    R.id.nav_home -> activity.toHome()
-                    R.id.nav_me -> activity.toMe()
-                    R.id.nav_setting -> activity.toSetting()
-                    R.id.nav_fav -> activity.toFav()
-                    R.id.nav_download -> activity.toDownload()
-                }
-                removeDrawerListener()
-            }
-        }
-    }
 
-    fun addDrawerListener() {
+    fun addDrawerListener(listener: SimpleDrawerListener) {
         drawerLayout.addDrawerListener(listener)
     }
 
-    fun removeDrawerListener() {
+    fun removeDrawerListener(listener: SimpleDrawerListener) {
         drawerLayout.removeDrawerListener(listener)
     }
 

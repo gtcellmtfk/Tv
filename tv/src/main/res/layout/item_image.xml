@@ -15,28 +15,45 @@
         app:srcCompat="@drawable/landscape" />
 
     <TextView
-        android:ellipsize="end"
         android:id="@+id/tvName"
-        android:textAppearance="?textAppearanceSubtitle2"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_gravity="bottom"
         android:background="#99000000"
-        android:paddingStart="16dp"
-        android:paddingEnd="48dp"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:paddingStart="16dp"
+        android:paddingEnd="48dp"
+        android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/white"
         tools:text="@string/attach" />
 
-    <ImageButton
-        android:visibility="gone"
-        android:tint="@android:color/white"
-        android:id="@+id/button"
+    <FrameLayout
+        android:id="@+id/fl_button"
         android:layout_width="48dp"
         android:layout_height="36dp"
         android:layout_gravity="end|bottom"
-        android:background="@null"
-        android:src="@drawable/ic_favorite_border" />
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:button="@drawable/checkbox_favorite"
+            android:clickable="false"
+            android:minWidth="0dp"
+            android:visibility="gone"
+            app:buttonTint="@color/white" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#99000000"
+        android:textColor="@color/white" />
 
 </FrameLayout>

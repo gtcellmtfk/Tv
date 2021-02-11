@@ -2,8 +2,12 @@ package com.bytebyte6.data.entity
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import androidx.room.*
-import com.bytebyte6.data.model.Image
+import androidx.recyclerview.widget.DiffUtil
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import com.bytebyte6.data.model.Category
 import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
 
@@ -20,23 +24,42 @@ data class Tv(
     var tvId: Long = 0,
     var url: String = "",
     var category: String = "",
-    override var logo: String = "",
-    override var name: String = "",
-    override var favorite: Boolean = false,
-    override var download: Boolean = false,
+    var logo: String = "",
+    var name: String = "",
+    var favorite: Boolean = false,
+    var download: Boolean = false,
     var language: List<Language> = emptyList(),
-    @Ignore
-    var country: Country = Country(),
+    @Ignore var country: Country = Country(),
     // 此处为一对多关系的关键，把Tv对象插入到数据库时，须将此id设置为相对应国家id
     var countryId: Long = 0,
     var countryName: String = country.name
-) : Parcelable, Image {
-    override var videoUrl: String
-        get() = url
-        set(value) {}
+) : Parcelable {
+    companion object {
+        fun inits(tvs: List<Tv>): List<Tv> {
+            return tvs.map {
+                init(it)
+            }
+        }
 
-    override val transitionName: String
-        get() = url
-    override val id: Long
-        get() = tvId
+        fun init(tv: Tv): Tv {
+            if (tv.category.isEmpty()) {
+                tv.category = Category.OTHER
+            }
+            if (tv.language.isEmpty()) {
+                tv.language = mutableListOf(Language.DEFAULT)
+            }
+            tv.countryName = tv.country.name
+            return tv
+        }
+    }
+}
+
+object TvDiff : DiffUtil.ItemCallback<Tv>() {
+    override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+        return oldItem.tvId == newItem.tvId
+    }
+
+    override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+        return oldItem == newItem
+    }
 }

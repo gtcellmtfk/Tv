@@ -51,6 +51,13 @@ fun <T> Result<T>.runIfNotHandled(doSomething: (() -> Unit)) {
     }
 }
 
+fun <T> Result<T>.isEnd(): Boolean {
+    return when (this) {
+        is Result.Success -> this.end
+        else -> false
+    }
+}
+
 fun <T> Result<T>.isSuccess(): T? {
     return when (this) {
         is Result.Success -> data
@@ -89,4 +96,5 @@ fun <T> Result<T>.isError(): Throwable? {
 }
 
 fun <T> LiveData<Result<T>>.getSuccessData() = this.value?.isSuccess()
+fun <T> LiveData<Result<T>>.end() = if (value == null) false else this.value!!.isEnd()
 fun <T> LiveData<Result<T>>.getError() = this.value?.isError()

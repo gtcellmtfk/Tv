@@ -9,14 +9,14 @@ import androidx.work.*
 class FindImageWork(
     context: Context,
     workerParams: WorkerParameters,
-    private val countryImageSearch: CountryImageSearch,
-    private val tvLogoSearch: TvLogoSearch
+    private val searchCountryImage: SearchCountryImage,
+    private val searchTvLogo: SearchTvLogo
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
         try {
-            countryImageSearch.doThatShit()
-            tvLogoSearch.doThatShit()
+            searchCountryImage.searchCountryImage()
+            searchTvLogo.searchLogo()
         } catch (e: Exception) {
             return Result.failure()
         }
@@ -25,18 +25,17 @@ class FindImageWork(
 }
 
 class AppDelegatingWorkerFactory(
-    countryImageSearch: CountryImageSearch,
-    tvLogoSearch: TvLogoSearch
-) :
-    DelegatingWorkerFactory() {
+    searchCountryImage: SearchCountryImage,
+    searchTvLogo: SearchTvLogo
+) : DelegatingWorkerFactory() {
     init {
-        addFactory(GetCountryFactor(countryImageSearch, tvLogoSearch))
+        addFactory(GetCountryFactory(searchCountryImage, searchTvLogo))
     }
 }
 
-class GetCountryFactor(
-    private val countryImageSearch: CountryImageSearch,
-    private val tvLogoSearch: TvLogoSearch
+class GetCountryFactory(
+    private val searchCountryImage: SearchCountryImage,
+    private val searchTvLogo: SearchTvLogo
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -44,8 +43,8 @@ class GetCountryFactor(
         workerParameters: WorkerParameters
     ): ListenableWorker? {
         return FindImageWork(
-            countryImageSearch = countryImageSearch,
-            tvLogoSearch = tvLogoSearch,
+            searchCountryImage = searchCountryImage,
+            searchTvLogo = searchTvLogo,
             context = appContext,
             workerParams = workerParameters
         )

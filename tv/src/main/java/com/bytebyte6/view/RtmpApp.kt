@@ -1,6 +1,8 @@
 package com.bytebyte6.view
 
 import android.app.Application
+import android.net.TrafficStats
+import android.os.StrictMode
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.bytebyte6.viewmodel.viewModule
@@ -39,6 +41,22 @@ class RtmpApp : Application() {
             logd("Rx Global Exception Handler...${it.message}")
             it.printStackTrace()
         }
-        LogEx.logger=true
+        LogEx.logger = true
+//        strictMode()
+    }
+
+    private fun strictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .build()
+            )
+        }
     }
 }

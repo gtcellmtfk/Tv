@@ -16,11 +16,16 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
 
     fun result(): LiveData<Result<List<T>>> = result
 
+    /**
+     * 从零开始
+     */
     fun getPage() = page
 
     fun getCurrentSize(): Int = list.size
 
     fun getList() = list
+
+    fun getItem(pos: Int) = list[pos]
 
     /**
      * 数据已被更改,重新发出值
@@ -57,5 +62,5 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     abstract fun count(): Int
 
     @WorkerThread
-    abstract fun paging(offset: Int, pageSize: Int = 20): List<T>
+    abstract fun paging(offset: Int, pageSize: Int): List<T>
 }

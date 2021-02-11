@@ -25,6 +25,12 @@ interface PlaylistDao : BaseDao<Playlist> {
     @Query("SELECT * FROM Playlist")
     fun getPlaylists(): List<Playlist>
 
+    @Query("SELECT * FROM Playlist WHERE playlistId=:id")
+    fun getPlaylist(id:Long): Playlist
+
+    @Query("SELECT COUNT(*) FROM Playlist")
+    fun getCount():Int
+
     /**
      * LiveData
      */

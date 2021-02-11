@@ -17,31 +17,8 @@ data class TvFts(
     var logo: String = "",
     var name: String = "",
     var favorite: Boolean = false,
+    var download: Boolean = false,
+    var countryId: Long = 0,
     var countryName: String = "",
     var language: String = ""
-) : Parcelable {
-    companion object {
-        const val TAG = "TvFts"
-         fun toTv(fts: TvFts): Tv {
-            return Tv(
-                logo = fts.logo,
-                name = fts.name,
-                url = fts.url,
-                tvId = fts.tvId,
-                favorite = fts.favorite
-            )
-        }
-
-        fun toTvs(tvFts: List<TvFts>): List<Tv> {
-            val result = mutableListOf<Tv>()
-            for (ipTvFt in tvFts) {
-                result.add(
-                    toTv(
-                        ipTvFt
-                    )
-                )
-            }
-            return result
-        }
-    }
-}
+) : Parcelable

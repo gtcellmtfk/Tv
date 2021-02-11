@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.7">
-      <module name="Tv.lib_common" target="1.8" />
-      <module name="Tv.lib_dependency" target="1.8" />
-      <module name="Tv.lib_recyclerviewutils" target="1.8" />
-      <module name="Tv.tv" target="1.8" />
-      <module name="Tv.tv_model" target="1.8" />
-      <module name="Tv.tv_usecase" target="1.8" />
-      <module name="Tv.tv_viewmodel" target="1.8" />
-      <module name="Tv.weather" target="1.8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8" />
   </component>
 </project>

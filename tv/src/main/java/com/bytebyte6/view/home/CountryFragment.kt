@@ -2,15 +2,18 @@ package com.bytebyte6.view.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.viewmodel.HomeViewModel
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.utils.GridSpaceDecoration
-import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.utils.GridSpaceDecoration2
+import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.CountryAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
 import com.bytebyte6.view.homeToVideoList
+import com.bytebyte6.viewmodel.HomeViewModel
 import org.koin.android.viewmodel.ext.android.getViewModel
 
 class CountryFragment :
@@ -35,14 +38,11 @@ class CountryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val imageAdapter = ImageAdapter().apply {
-            doOnBind = { pos: Int, _: View ->
-                viewModel.searchLogo(pos)
-            }
+        val imageAdapter = CountryAdapter().apply {
             onItemClick = { pos, itemView: View ->
                 homeToVideoList(
                     itemView,
-                    currentList[pos].transitionName
+                    currentList[pos].name
                 )
             }
         }
@@ -50,14 +50,20 @@ class CountryFragment :
         imageClearHelper = imageAdapter
         binding?.apply {
             recyclerView.adapter = imageAdapter
-            recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+            val gridLayoutManager = GridLayoutManager(view.context, 2)
+            recyclerView.layoutManager = gridLayoutManager
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
+            recyclerView.doSomethingOnIdle { first, last ->
+                viewModel.searchLogo(first, last)
+            }
         }
 
         viewModel.cs.observe(viewLifecycleOwner, Observer {
             imageAdapter.submitList(it)
         })
+
+        viewModel.searchLogoOnce()
     }
 }

@@ -13,6 +13,7 @@ import com.bytebyte6.viewmodel.HomeViewModel
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.common.doOnExitTransitionEndOneShot
 import com.bytebyte6.view.*
+import com.bytebyte6.view.adapter.TabAdapter
 import com.bytebyte6.view.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel

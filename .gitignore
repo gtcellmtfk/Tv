@@ -14,3 +14,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+tv/bytebyte.jks
+tv/keystore.properties

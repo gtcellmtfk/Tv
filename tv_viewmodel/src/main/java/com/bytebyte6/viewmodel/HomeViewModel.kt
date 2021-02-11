@@ -1,27 +1,26 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.bytebyte6.common.Result
 import com.bytebyte6.common.BaseViewModel
-import com.bytebyte6.data.dao.CountryDao
-import com.bytebyte6.data.dao.TvDao
+import com.bytebyte6.common.Result
 import com.bytebyte6.common.onIo
-import com.bytebyte6.usecase.CountryImageSearchUseCase
+import com.bytebyte6.data.DataManager
+import com.bytebyte6.usecase.SearchCountryImageParam
+import com.bytebyte6.usecase.SearchCountryImageUseCase
 import com.bytebyte6.usecase.TvRefreshUseCase
 
 class HomeViewModel(
-    tvDao: TvDao,
-    countryDao: CountryDao,
+    dataManager: DataManager,
     private val tvRefreshUseCase: TvRefreshUseCase,
-    private val countryImageSearchUseCase: CountryImageSearchUseCase
+    private val searchCountryImageUseCase: SearchCountryImageUseCase
 ) : BaseViewModel() {
     val tvRefresh = MutableLiveData<Result<Boolean>>()
 
-    val cs = countryDao.countries()
+    val cs = dataManager.countries()
 
-    val lang = tvDao.allLanguage()
+    val lang = dataManager.allLanguage()
 
-    val category = tvDao.allCategory()
+    val category = dataManager.allCategory()
 
     fun refresh() {
         addDisposable(
@@ -33,11 +32,37 @@ class HomeViewModel(
         )
     }
 
-    fun searchLogo(pos: Int) {
-        val country = cs.value?.get(pos) ?: return
+    fun searchLogo(first: Int, last: Int) {
+        if (cs.value==null)
+            return
         addDisposable(
-            countryImageSearchUseCase.execute(country).onIo()
+            searchCountryImageUseCase.execute(
+                SearchCountryImageParam(
+                    first,
+                    last,
+                    cs.value!!
+                )
+            ).onIo()
         )
+    }
+
+    private var first = true
+
+    fun searchLogoOnce() {
+        if (cs.value == null)
+            return
+        if (first) {
+            addDisposable(
+                searchCountryImageUseCase.execute(
+                    SearchCountryImageParam(
+                        0,
+                        10,
+                        cs.value!!
+                    )
+                ).onIo()
+            )
+            first = false
+        }
     }
 }
 

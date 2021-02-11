@@ -2,38 +2,59 @@ package com.bytebyte6.usecase
 
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import com.bytebyte6.common.RxUseCase
-import com.bytebyte6.data.dao.*
+import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
-import com.bytebyte6.data.model.Language
 import com.bytebyte6.data.toTvs
 import org.jetbrains.annotations.TestOnly
 
 class ParseM3uUseCase(
-    private val tvDao: TvDao,
-    private val userDao: UserDao,
-    private val userPlaylistCrossRefDao: UserPlaylistCrossRefDao,
-    private val playlistCrossRefDao: PlaylistTvCrossRefDao,
-    private val playlistDao: PlaylistDao,
-    private val context: Context
+    private val dataManager: DataManager,
+    private val context: Context? = null
 ) : RxUseCase<Uri, Playlist>() {
 
-    //TestOnly
-    var tvsFromFile: List<Tv>? = null
+    private var forTest: List<Tv>? = null
+
+    @TestOnly
+    fun setTvs(list: List<Tv>) {
+        forTest = list
+    }
 
     override fun run(param: Uri): Playlist {
 
-        if (tvsFromFile == null) {
-            tvsFromFile = context.contentResolver.openInputStream(param)!!.toTvs()
+        val m3uFile = param.path!!.endsWith(".m3u") || param.path!!.endsWith(".m3u8")
+        if (!m3uFile) {
+            throw UnsupportedOperationException("only support .m3u or .m3u8 file!")
         }
+
+        var playlistName = ""
+        context?.let { context1 ->
+            context1.contentResolver.query(param, null, null, null, null)
+                ?.use {
+                    val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    it.moveToFirst()
+                    playlistName = it.getString(nameIndex)
+                }
+        }
+        if (playlistName.isEmpty()) {
+            val fileUri = param.toString()
+            playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
+        }
+
+        val tvsFromUri =
+            if (forTest == null)
+                context!!.contentResolver.openInputStream(param)!!.toTvs()
+            else
+                forTest
 
         val tvsFromDb = mutableListOf<Tv>()
 
-        val inserts = tvsFromFile!!.filter {
-            val tvFromDb = tvDao.getTvByUrl(it.url)
+        val needInserts = tvsFromUri!!.filter {
+            val tvFromDb = dataManager.getTvByUrl(it.url)
             if (tvFromDb == null) {
                 true
             } else {
@@ -41,62 +62,30 @@ class ParseM3uUseCase(
                 false
             }
         }.map {
-            if (it.category.isEmpty()) {
-                it.category = "Other"
-            }
-            if (it.language.isEmpty()) {
-                it.language = mutableListOf(Language("Other", "777"))
-            }
-            it
+            Tv.init(it)
         }
 
-        val insertsWithIds = tvDao.insert(inserts).mapIndexed { index, id ->
-            inserts[index].tvId = id
-            inserts[index]
+        val insertsWithIds = dataManager.insertTv(needInserts).mapIndexed { index, id ->
+            needInserts[index].tvId = id
+            needInserts[index]
         }
 
-//        val tvsFromDb = tvsFromFile.filter {
-//            val tvFromDb = tvDao.getTvByUrl(it.url)
-//            if (tvFromDb != null) {
-//                it.tvId = tvFromDb.tvId
-//                true
-//            } else false
-//        }
+        val allTvs = insertsWithIds.plus(tvsFromDb)
 
-        val tvs = insertsWithIds.plus(tvsFromDb)
-
-//        val tvs: List<Tv> = tvsFromFile.map {
-//            val tvFromDb = tvDao.getTvByUrl(it.url)
-//            if (tvFromDb == null) {
-//                if (it.category.isEmpty()) {
-//                    it.category = "Other"
-//                }
-//                if (it.language.isEmpty()) {
-//                    it.language = mutableListOf(Language("Other", "777"))
-//                }
-//                it.tvId = tvDao.insert(it)
-//                it
-//            } else {
-//                tvFromDb
-//            }
-//        }
-
-        val user = userDao.getUser()
+        val user = dataManager.getCurrentUserIfNotExistCreate()
 
         //1、创建播放列表 然后获取播放列表id 然后关联用户id
-        val fileUri = param.toString()
-        val playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
-        val playlistId = playlistDao.insert(Playlist(playlistName = playlistName))
+        val playlistId = dataManager.insertPlaylist(Playlist(playlistName = playlistName))
         val userPlaylistCrossRef = UserPlaylistCrossRef(user.userId, playlistId)
-        userPlaylistCrossRefDao.insert(userPlaylistCrossRef)
+        dataManager.crossRefUserWithPlaylist(userPlaylistCrossRef)
 
         //2、tv对象关联播放列表
         val playlistTvCrossRefs = mutableListOf<PlaylistTvCrossRef>()
-        for (tv in tvs) {
+        for (tv in allTvs) {
             val playlistTvCrossRef = PlaylistTvCrossRef(playlistId, tv.tvId)
             playlistTvCrossRefs.add(playlistTvCrossRef)
         }
-        playlistCrossRefDao.insert(playlistTvCrossRefs)
+        dataManager.crossRefPlaylistWithTv(playlistTvCrossRefs)
 
         //3、返回结果
         return Playlist(playlistId, playlistName)

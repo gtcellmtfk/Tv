@@ -30,6 +30,22 @@
         android:layout_height="wrap_content"
         android:text="@string/setting_pic_download" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:checked="true"
+        android:id="@+id/swOnlyWifiDownload"
+        style="@style/Widget.Rtmp.Switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_only_wifi_download" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:checked="true"
+        android:id="@+id/swOnlyWifiPlay"
+        style="@style/Widget.Rtmp.Switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_only_wifi_play" />
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

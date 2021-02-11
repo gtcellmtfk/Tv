@@ -5,13 +5,19 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.viewmodel.FavoriteViewModel
-import com.bytebyte6.common.doOnExitTransitionEndOneShot
+import com.bytebyte6.common.*
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
-import com.bytebyte6.view.*
+import com.bytebyte6.view.R
+import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.ButtonType
-import com.bytebyte6.view.adapter.ImageAdapter
+import com.bytebyte6.view.adapter.TvAdapter
+import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
+import com.bytebyte6.view.setupToolbarMenuMode
+import com.bytebyte6.view.toPlayer
+import com.bytebyte6.viewmodel.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : ListFragment() {
@@ -36,10 +42,13 @@ class FavoriteFragment : ListFragment() {
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
         }
-        val adapter = ImageAdapter(ButtonType.NONE)
-            .apply {
+        val adapter = TvAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+            override fun onClick(position: Int, tv: Tv) {
+                viewModel.favorite(position, tv)
+            }
+        }).apply {
             onItemClick = { pos, _: View ->
-                toPlayer(currentList[pos].videoUrl)
+                toPlayer(currentList[pos].url)
             }
             onCurrentListChanged = { _, currentList ->
                 binding?.emptyBox?.isVisible = currentList.isEmpty()
@@ -56,8 +65,22 @@ class FavoriteFragment : ListFragment() {
             recyclerview.itemAnimator = null
         }
 
-        viewModel.fav.observe(viewLifecycleOwner, Observer {
+        viewModel.allFav.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+        })
+        viewModel.cancelResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                if (pos != -1) {
+                    showSnack(
+                        view,
+                        Message(
+                            id = R.string.unbookmarked,
+                            actionStringId = R.string.revocation
+                        ),
+                        View.OnClickListener { viewModel.restoreFavorite(tv) }
+                    )
+                }
+            }
         })
     }
 

@@ -18,7 +18,10 @@ interface CountryDao : BaseDao<Country> {
     fun getCount(): Int
 
     @Query("SELECT countryId FROM Country WHERE name=:name")
-    fun getIdByName(name:String): Long
+    fun getIdByName(name: String): Long
+
+    @Query("SELECT * FROM Country WHERE image=:image")
+    fun getCountriesByImage(image: String): List<Country>
 
     @Query("SELECT * FROM Country")
     fun getCountries(): List<Country>

@@ -1,64 +1,35 @@
 package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.LiveData
-import com.bytebyte6.common.BaseViewModel
-import com.bytebyte6.common.PagingHelper
 import com.bytebyte6.common.*
-import com.bytebyte6.data.dao.TvFtsDao
-import com.bytebyte6.data.entity.TvFts
-import com.bytebyte6.usecase.SearchParam
-import com.bytebyte6.usecase.TvLogoSearchUseCase
+import com.bytebyte6.data.DataManager
+import com.bytebyte6.data.PAGE_SIZE
+import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.usecase.FavoriteTvUseCase
+import com.bytebyte6.usecase.SearchTvLogoParam
+import com.bytebyte6.usecase.SearchTvLogoUseCase
 import com.bytebyte6.usecase.UpdateTvParam
-import com.bytebyte6.usecase.UpdateTvUseCase
 
 class VideoListViewModel(
-    private val tvFtsDao: TvFtsDao,
-    private val tvLogoSearchUseCase: TvLogoSearchUseCase,
-    private val updateTvUseCase: UpdateTvUseCase
+    private val dataManager: DataManager,
+    private val searchTvLogoUseCase: SearchTvLogoUseCase,
+    private val favoriteTvUseCase: FavoriteTvUseCase
 ) : BaseViewModel() {
 
-    private val pagingHelper: PagingHelper<TvFts>
+    private val pagingHelper: PagingHelper<Tv> = object : PagingHelper<Tv>(PAGE_SIZE) {
+        override fun count(): Int = dataManager.getFtsTvCount(getKey())
+        override fun paging(offset: Int, pageSize: Int): List<Tv> {
+            val tvs = dataManager.ftsTvPaging(offset, getKey(), pageSize)
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onIo())
+            return tvs
+        }
+    }
 
     private var key: String = ""
 
-    val tvs: LiveData<Result<List<TvFts>>>
+    val tvs: LiveData<Result<List<Tv>>> = pagingHelper.result()
 
-    private val favorite = updateTvUseCase.result()
-
-    private val favoriteObserver: (Result<UpdateTvParam>) -> Unit
-
-    private val searchObserver: (Result<SearchParam>) -> Unit
-
-    init {
-        pagingHelper = object : PagingHelper<TvFts>(50) {
-            override fun count(): Int = tvFtsDao.getCount(getKey())
-            override fun paging(offset: Int, pageSize: Int): List<TvFts> =
-                tvFtsDao.paging(offset, getKey(), pageSize)
-        }
-        tvs = pagingHelper.result()
-        favoriteObserver = { result ->
-            result.emitIfNotHandled(success = {
-                val data = pagingHelper.getList()[it.data.pos]
-                data.favorite = it.data.tv.favorite
-                pagingHelper.dataHasBeenChanged()
-            })
-        }
-        favorite.observeForever(favoriteObserver)
-        searchObserver = { result ->
-            result.emitIfNotHandled(success = {
-                val data = pagingHelper.getList()[it.data.pos]
-                data.logo = it.data.logo
-                pagingHelper.dataHasBeenChanged()
-            })
-        }
-        tvLogoSearchUseCase.result().observeForever(searchObserver)
-    }
-
-    override fun onCleared() {
-        favorite.removeObserver(favoriteObserver)
-        tvLogoSearchUseCase.result().removeObserver(searchObserver)
-        super.onCleared()
-    }
+    val favoriteResult = favoriteTvUseCase.result()
 
     fun setKey(key: String) {
         this.key = key
@@ -66,38 +37,25 @@ class VideoListViewModel(
 
     fun getKey() = key
 
-    fun count(item: String): LiveData<Int> = tvFtsDao.count(item)
+    fun count(item: String): LiveData<Int> = dataManager.ftsTvCount(item)
 
     fun loadMore() {
+        addDisposable(pagingHelper.loadResult().onSingle())
+    }
+
+    fun fav(pos: Int) {
         addDisposable(
-            pagingHelper.loadResult().onIo()
+            favoriteTvUseCase.execute(UpdateTvParam(pos, pagingHelper.getList()[pos])).onIo()
         )
     }
 
     private var first = true
 
-    fun loadOnce() {
+    fun first() {
         if (first) {
-            first = false
             loadMore()
+            first = false
         }
-    }
-
-    fun searchLogo(pos: Int) {
-        val tvId = pagingHelper.getList()[pos].tvId
-        addDisposable(
-            tvLogoSearchUseCase.execute(SearchParam(id = tvId, pos = pos)).onIo()
-        )
-    }
-
-    fun fav(pos: Int) {
-        addDisposable(
-            updateTvUseCase.execute(
-                UpdateTvParam(pos, TvFts.toTv(pagingHelper.getList()[pos]).apply {
-                    favorite = !favorite
-                })
-            ).onIo()
-        )
     }
 }
 

@@ -2,12 +2,13 @@ package com.bytebyte6.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bytebyte6.common.baseModule
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.common.isLoading
-import com.bytebyte6.data.AppDatabase
+
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.DownloadListUseCase
-import com.bytebyte6.usecase.UpdateTvUseCase
+import com.bytebyte6.usecase.DownloadTvUseCase
 
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
@@ -20,13 +21,10 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
-import org.koin.test.inject
 
 
 @RunWith(AndroidJUnit4::class)
 class DownloadViewModelTest : AutoCloseKoinTest() {
-
-    private val appDatabase by inject<AppDatabase>()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -37,7 +35,7 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
         startKoin {
             modules(
                 roomMemoryModule, dataModule, useCaseModule,
-                viewModule, testExoPlayerModule
+                viewModule, testExoPlayerModule, baseModule
             )
         }
         RxJavaPlugins.setIoSchedulerHandler {
@@ -92,8 +90,9 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
 
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
-            DownloadListUseCase(appDatabase.tvDao(), get()),
-            UpdateTvUseCase(appDatabase.tvDao())
+            get(),
+            DownloadListUseCase(get(), get()),
+            DownloadTvUseCase(get())
         )
     }
 }
