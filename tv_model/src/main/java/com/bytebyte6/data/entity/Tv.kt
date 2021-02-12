@@ -42,6 +42,13 @@ data class Tv(
         }
 
         fun init(tv: Tv): Tv {
+            val startsWith = tv.name.startsWith("&")
+            if (startsWith) {
+                tv.name.replace("&", "")
+            }
+            if (!startsWith && tv.name.contains("&")) {
+                tv.name.replace("&", " ")
+            }
             if (tv.category.isEmpty()) {
                 tv.category = Category.OTHER
             }

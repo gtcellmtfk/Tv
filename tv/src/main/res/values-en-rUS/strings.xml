@@ -48,4 +48,5 @@
     <string name="tip_play_confirm">Data network, do you want to continue playing?</string>
     <string name="setting_only_wifi_download">Download only on WiFi</string>
     <string name="setting_only_wifi_play">Play only on WiFi</string>
+    <string name="tip_flag_wrong">The flag is not displayed correctly? Click OK button to replace!</string>
 </resources>
