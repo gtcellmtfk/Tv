@@ -48,5 +48,4 @@
     <string name="tip_play_confirm">当前为数据网络,是否继续播放?</string>
     <string name="setting_only_wifi_download">只在Wifi状态下进行下载</string>
     <string name="setting_only_wifi_play">只在Wifi状态下播放</string>
-    <string name="tip_flag_wrong">国旗显示不正确?点击确定按钮更换!</string>
 </resources>

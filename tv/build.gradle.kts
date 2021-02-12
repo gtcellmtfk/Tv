@@ -73,7 +73,6 @@ dependencies {
     implementation(Libs.EXOPLAYER_CORE)
     implementation(Libs.EXOPLAYER_DASH)
     implementation(Libs.EXOPLAYER_UI)
-    implementation(Libs.EXOPLAYER_RTMP)
 
     debugImplementation(Libs.TEST_FRAGMENT_TESTING) {
         exclude("androidx.test", "core")

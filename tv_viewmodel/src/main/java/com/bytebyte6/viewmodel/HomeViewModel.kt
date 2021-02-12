@@ -33,7 +33,7 @@ class HomeViewModel(
     }
 
     fun searchLogo(first: Int, last: Int) {
-        if (cs.value == null)
+        if (cs.value==null)
             return
         addDisposable(
             searchCountryImageUseCase.execute(
@@ -62,16 +62,6 @@ class HomeViewModel(
                 ).onIo()
             )
             first = false
-        }
-    }
-
-    fun logoWrong(pos: Int) {
-        if (cs.value != null) {
-            addDisposable(
-                searchCountryImageUseCase.execute(
-                    SearchCountryImageParam(pos, 0, cs.value!!, true)
-                ).onIo()
-            )
         }
     }
 }

@@ -5,11 +5,11 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import com.bytebyte6.common.RxUseCase
 import com.bytebyte6.data.DataManager
-import com.bytebyte6.data.M3u
 import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.entity.PlaylistTvCrossRef
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.data.entity.UserPlaylistCrossRef
+import com.bytebyte6.data.toTvs
 import org.jetbrains.annotations.TestOnly
 
 class ParseM3uUseCase(
@@ -26,11 +26,9 @@ class ParseM3uUseCase(
 
     override fun run(param: Uri): Playlist {
 
-        val support = param.path!!.endsWith(".m3u")
-                || param.path!!.endsWith(".m3u8")
-                || param.path!!.endsWith(".txt")
-        if (!support) {
-            throw UnsupportedOperationException("only support .m3u or .m3u8 or .txt file!")
+        val m3uFile = param.path!!.endsWith(".m3u") || param.path!!.endsWith(".m3u8")
+        if (!m3uFile) {
+            throw UnsupportedOperationException("only support .m3u or .m3u8 file!")
         }
 
         var playlistName = ""
@@ -49,7 +47,7 @@ class ParseM3uUseCase(
 
         val tvsFromUri =
             if (forTest == null)
-                M3u.getTvs(context!!.contentResolver.openInputStream(param)!!)
+                context!!.contentResolver.openInputStream(param)!!.toTvs()
             else
                 forTest
 
