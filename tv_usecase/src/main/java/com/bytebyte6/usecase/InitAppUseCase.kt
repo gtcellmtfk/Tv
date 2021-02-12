@@ -8,12 +8,13 @@ import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.User
 import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.jetbrains.annotations.TestOnly
 
-interface InitAppUseCase : RxUseCase2<Unit, List<Tv>>
+interface InitAppUseCase : RxUseCase2<Unit, User>
 
 class InitAppUseCaseImpl(
     private val dataManager: DataManager,
@@ -21,7 +22,7 @@ class InitAppUseCaseImpl(
     private val gson: Gson
 ) : InitAppUseCase {
 
-    override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()
+    override val result: MutableLiveData<Result<User>> = MutableLiveData()
 
     private var tvs: List<Tv>? = null
 
@@ -30,9 +31,9 @@ class InitAppUseCaseImpl(
         this.tvs = tvs
     }
 
-    override fun run(param: Unit): List<Tv> {
+    override fun run(param: Unit): User {
 
-        dataManager.getCurrentUserIfNotExistCreate()
+        val user = dataManager.getCurrentUserIfNotExistCreate()
 
         if (dataManager.getTvCount() == 0) {
             if (tvs == null) {
@@ -55,13 +56,13 @@ class InitAppUseCaseImpl(
             dataManager.insertTv(newTvs)
         }
 
-        if (dataManager.getTvCount() != 0 && dataManager.getCurrentUserIfNotExistCreate().capturePic) {
+        if (dataManager.getTvCount() != 0 && user.capturePic) {
             findImageLink()
         }
 
         tvs = null
 
-        return emptyList()
+        return user
     }
 
     private fun findImageLink() {

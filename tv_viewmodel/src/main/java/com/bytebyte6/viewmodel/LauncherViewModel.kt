@@ -13,29 +13,9 @@ import com.bytebyte6.data.entity.User
 import com.bytebyte6.usecase.InitAppUseCase
 
 class LauncherViewModel(
-    dataManager: DataManager,
     private val initAppUseCase: InitAppUseCase
 ) : BaseViewModel() {
-
-    private val observer = object : Observer<User> {
-        override fun onChanged(user1: User) {
-            user1.let {
-                AppCompatDelegate.setDefaultNightMode(
-                    if (it.nightMode) AppCompatDelegate.MODE_NIGHT_YES
-                    else AppCompatDelegate.MODE_NIGHT_NO
-                )
-                user.removeObserver(this)
-            }
-        }
-    }
-
-    private val user = dataManager.user()
-
-    fun obs() {
-        user.observeForever(observer)
-    }
-
-    fun start(): LiveData<Result<List<Tv>>> {
+    fun start(): LiveData<Result<User>> {
         addDisposable(
             initAppUseCase.execute(Unit).onComputation()
         )

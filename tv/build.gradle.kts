@@ -5,6 +5,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val key = loadProperties(projectDir.absolutePath + "/keystore.properties")
@@ -66,7 +68,6 @@ dependencies {
     implementation(project(":tv_usecase"))
     implementation(project(":tv_model"))
     implementation(project(":tv_viewmodel"))
-
     kapt(Libs.KAPT_GLIDE)
 
     implementation(Libs.EXOPLAYER)
@@ -74,6 +75,10 @@ dependencies {
     implementation(Libs.EXOPLAYER_DASH)
     implementation(Libs.EXOPLAYER_UI)
     implementation(Libs.EXOPLAYER_RTMP)
+
+    implementation(Libs.FIREBASE_ANALYTICS)
+    implementation(Libs.FIREBASE_CRASH)
+    implementation(platform(Libs.FIREBASE_BOM))
 
     debugImplementation(Libs.TEST_FRAGMENT_TESTING) {
         exclude("androidx.test", "core")
