@@ -33,6 +33,8 @@ class NetworkHelper(context: Context) {
 
         override fun onAvailable(network: Network) {
             this@NetworkHelper.logd("onAvailable network=$network")
+            postNetworkIsConnected()
+            postNetworkType()
         }
 
         override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
@@ -59,8 +61,6 @@ class NetworkHelper(context: Context) {
                 "onCapabilitiesChanged network=$network" +
                         " networkCapabilities=$networkCapabilities"
             )
-            postNetworkIsConnected()
-            postNetworkType()
         }
 
         override fun onLost(network: Network) {
