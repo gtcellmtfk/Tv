@@ -24,7 +24,6 @@ object Libs {
     const val EXOPLAYER_CORE = "com.google.android.exoplayer:exoplayer-core:${Versions.exoplayer}"
     const val EXOPLAYER_DASH = "com.google.android.exoplayer:exoplayer-dash:${Versions.exoplayer}"
     const val EXOPLAYER_UI = "com.google.android.exoplayer:exoplayer-ui:${Versions.exoplayer}"
-    const val EXOPLAYER_RTMP = "com.google.android.exoplayer:extension-rtmp:${Versions.exoplayer}"
 
     //androidx
     const val ANDROIDX_CORE_KTX = "androidx.core:core-ktx:1.3.2"

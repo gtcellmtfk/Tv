@@ -12,7 +12,6 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadServicePro
-import com.bytebyte6.view.player.TestPlayerFragment
 import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.android.inject
 
@@ -58,7 +57,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         if (savedInstanceState == null) {
             toHome()
-//            replace(TestPlayerFragment.newInstance(Bundle()),null)
         }
 
         networkHelper.networkConnected.observe(this, Observer { connected ->
