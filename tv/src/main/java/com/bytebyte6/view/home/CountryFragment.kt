@@ -2,12 +2,11 @@ package com.bytebyte6.view.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.doOnPreDraw
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.utils.GridSpaceDecoration
-import com.bytebyte6.utils.GridSpaceDecoration2
 import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.CountryAdapter
@@ -44,6 +43,18 @@ class CountryFragment :
                     itemView,
                     currentList[pos].name
                 )
+            }
+            onItemLongClick = { pos, _ ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.tip)
+                    .setMessage(getString(R.string.tip_flag_wrong))
+                    .setPositiveButton(R.string.enter) { dialog, _ ->
+                        viewModel.logoWrong(pos)
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+                true
             }
         }
         recyclerView = binding?.recyclerView

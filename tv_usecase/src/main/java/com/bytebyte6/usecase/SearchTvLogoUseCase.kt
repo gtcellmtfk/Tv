@@ -20,7 +20,7 @@ class SearchTvLogoUseCaseImpl(
         param.tvs.filter {
             it.logo.isEmpty() && it.name.isNotEmpty()
         }.forEach {
-            val result = searchImage.search(it.name.replace("&", " "))
+            val result = searchImage.search(it.name)
             if (result.isNotEmpty()) {
                 it.logo = result
                 dataManager.updateTv(it)

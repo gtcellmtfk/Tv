@@ -17,12 +17,17 @@ data class Country(
     @PrimaryKey(autoGenerate = true)
     var countryId: Long = 0,
     var name: String = "",
+    var code: String = "",
     var image: String = ""
-) : Parcelable
+) : Parcelable {
+    companion object {
+        const val UNKOWN = "UNKOWN"
+    }
+}
 
-object CountryDiff : DiffUtil.ItemCallback<Country>(){
+object CountryDiff : DiffUtil.ItemCallback<Country>() {
     override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
-        return oldItem.countryId==newItem.countryId
+        return oldItem.countryId == newItem.countryId
     }
 
     override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
