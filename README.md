@@ -29,7 +29,7 @@
 
 # RxJava
 
-[RxUseCase 用例实现，用于编写业务逻辑](https://github.com/bytebyte6/Tv/blob/master/lib_common/src/main/java/com/bytebyte6/common/RxEx.kt)
+[RxUseCase](https://github.com/bytebyte6/Tv/blob/master/lib_common/src/main/java/com/bytebyte6/common/RxEx.kt)
 
 # ExoPlayer
 
