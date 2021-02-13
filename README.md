@@ -16,8 +16,6 @@
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(16).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(17).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(19).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(21).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(23).jpg" width="360" height="640">
 
 # 功能
 - 支持下载点播文件
@@ -38,33 +36,6 @@
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(10).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(5).jpg" width="360" height="640">
 
-+ Kotlin 
-+ RxJava
-+ Retrofit
-+ ExoPlayer
-+ Material Design 主题样式、动画Motion、过渡动画 
-+ 依赖注入Koin
-+ Room
-+ Jetpack
-+ 网络状态监听
-+ Kotlin类代理
-
-# Kotlin
-
-1、扩展函数
-
-2、序列化
-
-3、DataClass hashCode toString
-
-4、函数参数默认值
-
-5、属性委托、类委托
-
-6、密封类
-
-7、协程
-
 # RxJava
 
 [RxUseCase](https://github.com/bytebyte6/Tv/blob/master/lib_common/src/main/java/com/bytebyte6/common/RxEx.kt)
@@ -81,3 +52,10 @@
 
 [一对多关系，多对多关系映射，fts全文检索，单元测试](https://github.com/bytebyte6/Tv/blob/master/Room%E5%92%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.md)
 
+# Koin
+
+DI.kt
+
+#  网络状态监听
+
+[NetworkHelper.kt](https://github.com/bytebyte6/Tv/blob/ceb1b4ae4de7a16946dc939f74cb9e8cb6573997/lib_common/src/main/java/com/bytebyte6/common/NetworkHelper.kt)
