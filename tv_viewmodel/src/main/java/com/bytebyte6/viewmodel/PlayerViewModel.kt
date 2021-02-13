@@ -75,6 +75,10 @@ class PlayerViewModel(
     }
 
     private val networkTypeObserver = Observer<NetworkHelper.NetworkType> { type ->
+        emit(type)
+    }
+
+    private fun emit(type: NetworkHelper.NetworkType?) {
         when (type) {
             NetworkHelper.NetworkType.WIFI -> playThatShit()
             NetworkHelper.NetworkType.MOBILE -> {

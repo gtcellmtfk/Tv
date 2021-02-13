@@ -30,14 +30,13 @@ object M3u {
         return getTvs(m3uString)
     }
 
-    private fun getTvs(m3uString: String): MutableList<Tv> {
+    private fun getTvs(m3uString: String): List<Tv> {
         val contains = m3uString.contains("tvg-id")
         val nameAndUrlList = if (contains) {
-            m3uString.split("#EXTINF:-1 ").toMutableList()
+            m3uString.split("#EXTINF:-1 ")
         } else {
-            m3uString.split("#EXTINF:-1 ,").toMutableList()
+            m3uString.split("#EXTINF:-1 ,")
         }
-        nameAndUrlList.removeAt(0)
         return if (contains) {
             getTvsByTvg(nameAndUrlList)
         } else {
@@ -45,18 +44,20 @@ object M3u {
         }
     }
 
-    private fun getTvsNormal(nameAndUrlList: MutableList<String>): MutableList<Tv> {
+    private fun getTvsNormal(nameAndUrlList: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
         for (str in nameAndUrlList) {
+            if (str.contains("#EXTM3U")) continue
             val nameAndUrl = str.split("\n")
             tvs.add(Tv(name = nameAndUrl[0], url = nameAndUrl[1].trim()))
         }
         return tvs
     }
 
-    private fun getTvsByTvg(nameAndUrlList: MutableList<String>): MutableList<Tv> {
+    private fun getTvsByTvg(nameAndUrlList: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
         for (str in nameAndUrlList) {
+            if (str.contains("#EXTM3U")) continue
             val url = if (str.contains("#EXTVLCOPT")) {
                 str.split("\n")[2].trim()
             } else {
@@ -78,14 +79,14 @@ object M3u {
             val country = countryRegex.find(str)?.value ?: Country.UNKOWN
             val category = categoryRegex.find(str)?.value ?: Category.OTHER
             tvs.add(
-                Tv(
-                    url = url,
-                    logo = logo,
-                    name = name,
-                    language = langList,
-                    country = Country(code = country),
-                    category = category
-                )
+                Tv().apply {
+                    this.url = url
+                    this.logo = logo
+                    this.name = name
+                    this.language = langList
+                    this.country = Country(code = country)
+                    this.category = category
+                }
             )
         }
         return tvs

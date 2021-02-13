@@ -28,7 +28,7 @@ val viewModule: Module = module {
             get()
         )
     }
-    viewModel { LauncherViewModel(get(), get()) }
+    viewModel { LauncherViewModel(get()) }
     viewModel {
         HomeViewModel(
             get(),

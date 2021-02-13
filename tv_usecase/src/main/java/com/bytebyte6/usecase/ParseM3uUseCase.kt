@@ -49,7 +49,7 @@ class ParseM3uUseCase(
 
         val tvsFromUri =
             if (forTest == null)
-                M3u.getTvs(context!!.contentResolver.openInputStream(param)!!)
+                M3u.getTvs(context!!.contentResolver.openInputStream(param)!!)/*.toTvs()*/
             else
                 forTest
 
