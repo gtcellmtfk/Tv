@@ -241,4 +241,4 @@ class CountryDaoTest {
 }
 ```
 
-# [详细内容](https://github.com/bytebyte6/Rtmp/tree/master/app_tv_model/src/main/java/com/bytebyte6/data)
+# [详细内容](https://github.com/bytebyte6/Rtmp/tree/master/tv_model/src/main/java/com/bytebyte6/data)
