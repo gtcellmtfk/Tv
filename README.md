@@ -22,7 +22,7 @@
 # 功能
 - 支持下载点播文件
 - 支持导入m3u m3u8 txt格式文件
-# [直播源](https://github.com/iptv-org/iptv)
+- [直播源推荐](https://github.com/iptv-org/iptv)
 
 # 暗黑模式
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(24).jpg" width="360" height="640">
