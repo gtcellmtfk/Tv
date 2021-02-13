@@ -89,7 +89,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         val playlistAdapter = PlaylistAdapter()
         playlistAdapter.onItemClick = { pos, itemView ->
             meToPlaylist(
-                viewModel.getPlaylistId(pos),
+                playlistAdapter.list[pos].playlistId,
                 playlistAdapter.list[pos].playlistName,
                 itemView
             )
@@ -141,10 +141,15 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             result.emitIfNotHandled(
                 {
                     hideProgressBar()
-                    meToPlaylist(
-                        it.data.playlistId,
-                        it.data.playlistName
-                    )
+                    recyclerView?.let {
+                        it.findViewHolderForAdapterPosition(
+                            playlistAdapter.list.size - 1
+                        )?.itemView?.performClick()
+                    }
+//                    meToPlaylist(
+//                        it.data.playlistId,
+//                        it.data.playlistName
+//                    )
                 }, {
                     hideProgressBar()
                     if (it.error is UnsupportedOperationException) {

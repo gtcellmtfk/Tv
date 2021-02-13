@@ -48,7 +48,7 @@ val useCaseModule: Module = module {
     factory { SearchCountryImageUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
     factory<SearchTvLogoUseCase> { SearchTvLogoUseCaseImpl(get(), get()) }
-    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext()) }
+    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext(), get()) }
     factory { ParseM3uUseCase(get(), get()) }
 
     /**图片搜索*/

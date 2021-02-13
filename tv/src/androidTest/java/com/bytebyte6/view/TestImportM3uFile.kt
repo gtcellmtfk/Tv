@@ -58,14 +58,14 @@ class TestImportM3uFile {
         applicationContext.startActivity(intent)
 
         // 点击菜单
-        val desc = applicationContext.getString(R.string.toolbar_navigation)
-        val navButton = device.findObject(UiSelector().description(desc))
-        navButton.click()
+//        val desc = applicationContext.getString(R.string.toolbar_navigation)
+//        val navButton = device.findObject(UiSelector().description(desc))
+//        navButton.click()
 
         // 点击导入
-        val importText = applicationContext.getString(R.string.nav_import)
-        val menuImport = device.findObject(By.text(importText))
-        menuImport.click()
+//        val importText = applicationContext.getString(R.string.nav_import)
+//        val menuImport = device.findObject(By.text(importText))
+//        menuImport.click()
 
         // 点击加号导入
         val importButton =

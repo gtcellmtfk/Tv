@@ -7,8 +7,6 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.Language
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -28,34 +26,24 @@ data class Tv(
     var name: String = "",
     var favorite: Boolean = false,
     var download: Boolean = false,
-    var language: List<Language> = emptyList(),
-    @Ignore var country: Country = Country(),
+    var language: String = "",
+    @Ignore var country: Country = Country.DEFAULT,
     // 此处为一对多关系的关键，把Tv对象插入到数据库时，须将此id设置为相对应国家id
     var countryId: Long = 0,
-    var countryName: String = country.name
+    var countryName: String = country.name,
+    var countryCode: String = country.code
 ) : Parcelable {
     companion object {
-        fun inits(tvs: List<Tv>): List<Tv> {
-            return tvs.map {
-                init(it)
-            }
-        }
-
-        fun init(tv: Tv): Tv {
-            val startsWith = tv.name.startsWith("&")
-            if (startsWith) {
-                tv.name.replace("&", "")
-            }
-            if (!startsWith && tv.name.contains("&")) {
-                tv.name.replace("&", " ")
-            }
+        fun init(tv: Tv, country: Country = Country.DEFAULT): Tv {
             if (tv.category.isEmpty()) {
                 tv.category = Category.OTHER
             }
             if (tv.language.isEmpty()) {
-                tv.language = mutableListOf(Language.DEFAULT)
+                tv.language = Language.NAME
             }
-            tv.countryName = tv.country.name
+            tv.countryName = country.name
+            tv.countryId = country.countryId
+            tv.countryCode = country.code
             return tv
         }
     }

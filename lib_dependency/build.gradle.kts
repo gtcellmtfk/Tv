@@ -30,6 +30,16 @@ android {
                 "proguard-rules.pro"
             )
         }
+        maybeCreate("labtest")
+        getByName("labtest") {
+            initWith(getByName("release"))
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            versionNameSuffix = "-labtest"
+        }
     }
 
     compileOptions {
@@ -56,6 +66,7 @@ dependencies {
     api(Libs.GSON)
     api(Libs.LOTTIE)
     api(Libs.KOTLIN_COROUTINES)
+    api(Libs.KOTLIN_STDLIB)
     api(Libs.LIVEDATA_KTX)
     api(Libs.ACTIVITY)
     api(Libs.FRAGMENT)

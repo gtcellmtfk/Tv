@@ -1,9 +1,11 @@
-package com.bytebyte6.data.model
+package com.bytebyte6.data.entity
 
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.recyclerview.widget.DiffUtil
+import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.bytebyte6.common.randomColorByNightMode
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
@@ -20,13 +22,15 @@ object CategoryDiff : DiffUtil.ItemCallback<Category>() {
 
 @Parcelize
 @Keep
+@Entity
 data class Category(
+    @PrimaryKey
     var category: String = ""
 ) : Parcelable {
     @IgnoredOnParcel
     @Ignore
     val color :Int = randomColorByNightMode()
     companion object {
-        const val OTHER = "OTHER"
+        const val OTHER = "Other"
     }
 }

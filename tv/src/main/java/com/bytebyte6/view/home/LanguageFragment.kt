@@ -39,7 +39,7 @@ class LanguageFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout
         val languageAdapter = LanguageAdapter()
         languageAdapter.onItemClick = { pos, itemView ->
             val item = languageAdapter.currentList[pos]
-            homeToVideoList(itemView, item.langName)
+            homeToVideoList(itemView, item.languageName)
         }
         recyclerView = binding?.recyclerView
         binding?.apply {

@@ -49,7 +49,7 @@ class ParseM3uUseCase(
 
         val tvsFromUri =
             if (forTest == null)
-                M3u.getTvs(context!!.contentResolver.openInputStream(param)!!)/*.toTvs()*/
+                M3u.getTvs(context!!.contentResolver.openInputStream(param)!!)
             else
                 forTest
 
@@ -64,7 +64,8 @@ class ParseM3uUseCase(
                 false
             }
         }.map {
-            Tv.init(it)
+            val country = dataManager.getCountryByCode(it.country.code)
+            Tv.init(it, country)
         }
 
         val insertsWithIds = dataManager.insertTv(needInserts).mapIndexed { index, id ->

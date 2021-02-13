@@ -1,12 +1,14 @@
 package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
-import com.bytebyte6.data.model.Category
-import com.bytebyte6.data.model.CategoryDiff
+import com.bytebyte6.data.entity.Category
+import com.bytebyte6.data.entity.CategoryDiff
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.randomImage
 
-class CategoryAdapter : BaseListAdapter<Category, CardViewHolder>(CategoryDiff) {
+class CategoryAdapter : BaseListAdapter<Category, CardViewHolder>(
+    CategoryDiff
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         return CardViewHolder.create(parent)

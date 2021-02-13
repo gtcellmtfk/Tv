@@ -23,6 +23,7 @@ class ParseM3uUseCaseTest : KoinTest {
 
     private val dataManager: DataManager by inject()
     private val parseM3uUseCase: ParseM3uUseCase by inject()
+    private val initAppUseCase: InitAppUseCase by inject()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -41,7 +42,9 @@ class ParseM3uUseCaseTest : KoinTest {
 
     @Test
     fun test() {
-        dataManager.insertUser(User(name = "Admin"))
+        initAppUseCase.execute(Unit).test().assertValue {
+            it.name == "Admin"
+        }
         val tv1 = Tv(name = "A", url = "A.url")
         val tv2 = Tv(name = "B", url = "B.url")
         val tv3 = Tv(name = "C", url = "C.url")

@@ -81,11 +81,11 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickLi
 
         binding?.apply {
             appbar.toolbar.title = requireArguments().getString(KEY_TITLE)
-            recyclerview.adapter = tvAdapter
-            recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
-            recyclerview.setHasFixedSize(true)
-            recyclerview.itemAnimator = null
+            recyclerView.adapter = tvAdapter
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.playlistId = requireArguments().getLong(KEY_PLAY_LIST_ID)

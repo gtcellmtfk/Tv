@@ -7,9 +7,13 @@ import com.bytebyte6.data.entity.*
 import com.bytebyte6.data.model.*
 import java.util.*
 
-val china get() = Country(countryId = 1, name = "CHINA")
-val usa get() = Country(countryId = 2, name = "US")
-val kor get() = Country(countryId = 3, name = "KOR")
+val c1 get() = Category("A")
+val c2 get() = Category("B")
+val c3 get() = Category("C")
+
+val china get() = Country(countryId = 1, name = "CHINA", code = "CN")
+val usa get() = Country(countryId = 2, name = "US", code = "Us")
+val kor get() = Country(countryId = 3, name = "KOR", code = "Ko")
 val countries
     get() = mutableListOf(
         china,
@@ -25,7 +29,7 @@ val tv1
             name = "A",
             url = "A.url",
             countryName = china.name,
-            language = mutableListOf(lang1),
+            language = Language.NAME,
             category = "A"
         )
 val tv2
@@ -35,7 +39,7 @@ val tv2
             name = "B",
             url = "B.url",
             countryName = usa.name,
-            language = mutableListOf(lang2),
+            language = Language.NAME,
             category = "B"
         )
 val tv3
@@ -45,10 +49,7 @@ val tv3
         name = "C",
         url = "C.url",
         countryName = kor.name,
-        language = mutableListOf(
-            lang1,
-            lang2
-        )
+        language = Language.NAME
     )
 val tvs
     get() = mutableListOf(
@@ -68,6 +69,26 @@ abstract class TestDataManager : DataManager {
     val testTvs = mutableListOf<Tv>()
 
     val testUsers = mutableListOf<User>()
+
+    override fun insertLanguages(languages: List<Language>) {
+
+    }
+
+    override fun getLangCount(): Int {
+        return 1
+    }
+
+    override fun getCountryByCode(code: String): Country {
+        return Country.DEFAULT
+    }
+
+    override fun insertCategory(categories: List<Category>) {
+
+    }
+
+    override fun getCategoryCount(): Int {
+        return 1
+    }
 
     override fun insertUser(user: User): Long {
         testUsers.add(user)
@@ -316,7 +337,7 @@ abstract class TestDataManager : DataManager {
         return MutableLiveData()
     }
 
-    override fun allLanguage(): LiveData<List<Languages>> {
+    override fun allLanguage(): LiveData<List<Language>> {
         return MutableLiveData()
     }
 

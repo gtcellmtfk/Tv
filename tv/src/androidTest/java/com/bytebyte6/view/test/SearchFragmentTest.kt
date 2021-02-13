@@ -31,8 +31,8 @@ class SearchFragmentTest {
                 NotDisplayed()
             )
         )
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview)).perform(
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(
             RecyclerViewActions.actionOnItemAtPosition<ImageViewHolder>(0, ClickFavorite)
         )
     }

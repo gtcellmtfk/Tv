@@ -383,24 +383,27 @@ class DataManagerTest {
 
     @Test
     fun allLanguage() {
-        dataManager.insertTv(mutableListOf(
-            com.bytebyte6.testdata.tv1,
-            com.bytebyte6.testdata.tv2,
-            com.bytebyte6.testdata.tv3
-        ))
+        dataManager.insertLanguages(
+            mutableListOf(
+                com.bytebyte6.testdata.lang1,
+                com.bytebyte6.testdata.lang2
+            )
+        )
         val allLanguage = dataManager.allLanguage()
         allLanguage.observeForTesting {
-            assert(allLanguage.getAwaitValue()!!.size == 3)
+            assert(allLanguage.getAwaitValue()!!.size == 2)
         }
     }
 
     @Test
     fun allCategory() {
-        dataManager.insertTv(mutableListOf(
-            com.bytebyte6.testdata.tv1,
-            com.bytebyte6.testdata.tv2,
-            com.bytebyte6.testdata.tv3
-        ))
+        dataManager.insertCategory(
+            mutableListOf(
+                com.bytebyte6.testdata.c1,
+                com.bytebyte6.testdata.c2,
+                com.bytebyte6.testdata.c3
+            )
+        )
         val allCategory = dataManager.allCategory()
         allCategory.observeForTesting {
             assert(allCategory.getAwaitValue()!!.size == 3)

@@ -71,11 +71,11 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         binding?.apply {
             appbar.toolbar.inflateMenu(R.menu.menu_download)
             appbar.toolbar.setOnMenuItemClickListener(this@DownloadFragment)
-            recyclerview.layoutManager = LinearLayoutManager(view.context)
-            recyclerview.adapter = downloadAdapter
-            recyclerview.setHasFixedSize(true)
-            recyclerview.addItemDecoration(LinearSpaceDecoration())
-            recyclerview.itemAnimator = null
+            recyclerView.layoutManager = LinearLayoutManager(view.context)
+            recyclerView.adapter = downloadAdapter
+            recyclerView.setHasFixedSize(true)
+            recyclerView.addItemDecoration(LinearSpaceDecoration())
+            recyclerView.itemAnimator = null
         }
 
         viewModel.downloadListResult.observe(viewLifecycleOwner, Observer { result ->

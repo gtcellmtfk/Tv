@@ -58,11 +58,11 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.recyclerView = binding?.recyclerview
+        this.recyclerView = binding?.recyclerView
         binding?.run {
-            recyclerview.addOnScrollListener(listener)
-            recyclerview.addOnScrollListener(glideListener)
-            recyclerview.doOnPreDraw {
+            recyclerView.addOnScrollListener(listener)
+            recyclerView.addOnScrollListener(glideListener)
+            recyclerView.doOnPreDraw {
                 startPostponedEnterTransition()
             }
             swipeRefreshLayout.setOnRefreshListener {
@@ -73,7 +73,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
     }
 
     override fun onDestroyView() {
-        binding?.recyclerview?.clearOnScrollListeners()
+        binding?.recyclerView?.clearOnScrollListeners()
         binding?.swipeRefreshLayout?.setOnRefreshListener(null)
         super.onDestroyView()
     }

@@ -28,7 +28,7 @@ class DownloadFragmentTest {
         Espresso.onView(ViewMatchers.withId(R.id.emptyBox))
             .withFailureHandler { _, _ ->
                 //有数据测试长按是否正常
-                Espresso.onView(ViewMatchers.withId(R.id.recyclerview))
+                Espresso.onView(ViewMatchers.withId(R.id.recyclerView))
                     .perform(
                         RecyclerViewActions.actionOnItemAtPosition<DownloadViewHolder>(
                             0,

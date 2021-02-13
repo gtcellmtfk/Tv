@@ -76,15 +76,15 @@ class SearchFragment2 : ListFragment() {
             }
         }
         imageClearHelper = adapter
-        recyclerView = binding?.recyclerview
+        recyclerView = binding?.recyclerView
 
         binding?.apply {
-            recyclerview.adapter = adapter
-            recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.setHasFixedSize(true)
-            recyclerview.itemAnimator = null
-            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
-            recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            recyclerView.adapter = adapter
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         KeyboardUtils.hideSoftInput(requireActivity())

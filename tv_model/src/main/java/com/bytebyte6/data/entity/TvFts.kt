@@ -20,5 +20,6 @@ data class TvFts(
     var download: Boolean = false,
     var countryId: Long = 0,
     var countryName: String = "",
+    var countryCode: String = "",
     var language: String = ""
 ) : Parcelable

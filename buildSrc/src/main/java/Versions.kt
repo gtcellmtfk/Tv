@@ -6,7 +6,7 @@ object Versions {
     const val min_sdk = 21
     const val buildToolsVersion = "30.0.2"
     const val android_gradle_plugin = "4.1.1"
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.10"
     const val rxjava = "3.0.4"
     const val retrofit = "2.9.0"
     const val extJunit = "1.1.2"

@@ -10,7 +10,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(
-    indices = [Index(value = ["name"], unique = true)]
+    indices = [
+        Index(value = ["name"], unique = true),
+        Index(value = ["code"], unique = true)
+    ]
 )
 @Keep
 data class Country(
@@ -21,7 +24,8 @@ data class Country(
     var image: String = ""
 ) : Parcelable {
     companion object {
-        const val UNKOWN = "UNKOWN"
+        const val UNKOWN = "Unkown"
+        val DEFAULT = Country(name = UNKOWN, code = UNKOWN)
     }
 }
 

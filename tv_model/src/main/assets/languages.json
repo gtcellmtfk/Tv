@@ -1,0 +1,322 @@
+[
+  {
+    "name": "Unkown",
+    "code": "Unkown"
+  },
+  {
+    "name": "Spanish",
+    "code": "spa"
+  },
+  {
+    "name": "Romanian",
+    "code": "ron"
+  },
+  {
+    "name": "Bulgarian",
+    "code": "bul"
+  },
+  {
+    "name": "Ukrainian",
+    "code": "ukr"
+  },
+  {
+    "name": "Russian",
+    "code": "rus"
+  },
+  {
+    "name": "Georgian",
+    "code": "kat"
+  },
+  {
+    "name": "Arabic",
+    "code": "ara"
+  },
+  {
+    "name": "English",
+    "code": "eng"
+  },
+  {
+    "name": "Persian",
+    "code": "fas"
+  },
+  {
+    "name": "Tamil",
+    "code": "tam"
+  },
+  {
+    "name": "Catalan",
+    "code": "cat"
+  },
+  {
+    "name": "French",
+    "code": "fra"
+  },
+  {
+    "name": "Polish",
+    "code": "pol"
+  },
+  {
+    "name": "Italian",
+    "code": "ita"
+  },
+  {
+    "name": "Hindi",
+    "code": "hin"
+  },
+  {
+    "name": "Kazakh",
+    "code": "kaz"
+  },
+  {
+    "name": "Serbian",
+    "code": "srp"
+  },
+  {
+    "name": "Chinese",
+    "code": "zho"
+  },
+  {
+    "name": "Urdu",
+    "code": "urd"
+  },
+  {
+    "name": "Portuguese",
+    "code": "por"
+  },
+  {
+    "name": "Malayalam",
+    "code": "mal"
+  },
+  {
+    "name": "German",
+    "code": "deu"
+  },
+  {
+    "name": "Chinese",
+    "code": "zho"
+  },
+  {
+    "name": "Yue Chinese",
+    "code": "yue"
+  },
+  {
+    "name": "Turkish",
+    "code": "tur"
+  },
+  {
+    "name": "Amharic",
+    "code": "amh"
+  },
+  {
+    "name": "Indonesian",
+    "code": "ind"
+  },
+  {
+    "name": "Bosnian",
+    "code": "bos"
+  },
+  {
+    "name": "Albanian",
+    "code": "sqi"
+  },
+  {
+    "name": "Modern Greek (1453-)",
+    "code": "ell"
+  },
+  {
+    "name": "Turkmen",
+    "code": "tuk"
+  },
+  {
+    "name": "Armenian",
+    "code": "hye"
+  },
+  {
+    "name": "Kurdish",
+    "code": "kur"
+  },
+  {
+    "name": "Vietnamese",
+    "code": "vie"
+  },
+  {
+    "name": "Tagalog",
+    "code": "tgl"
+  },
+  {
+    "name": "Azerbaijani",
+    "code": "aze"
+  },
+  {
+    "name": "Pushto",
+    "code": "pus"
+  },
+  {
+    "name": "Korean",
+    "code": "kor"
+  },
+  {
+    "name": "Malay (macrolanguage)",
+    "code": "msa"
+  },
+  {
+    "name": "Swedish",
+    "code": "swe"
+  },
+  {
+    "name": "Hungarian",
+    "code": "hun"
+  },
+  {
+    "name": "Khmer",
+    "code": "khm"
+  },
+  {
+    "name": "Dutch",
+    "code": "nld"
+  },
+  {
+    "name": "Slovak",
+    "code": "slk"
+  },
+  {
+    "name": "Somali",
+    "code": "som"
+  },
+  {
+    "name": "Chinese",
+    "code": "zho"
+  },
+  {
+    "name": "Mandarin Chinese",
+    "code": "cmn"
+  },
+  {
+    "name": "Japanese",
+    "code": "jpn"
+  },
+  {
+    "name": "Hebrew",
+    "code": "heb"
+  },
+  {
+    "name": "Luxembourgish",
+    "code": "ltz"
+  },
+  {
+    "name": "Thai",
+    "code": "tha"
+  },
+  {
+    "name": "Burmese",
+    "code": "mya"
+  },
+  {
+    "name": "Bengali",
+    "code": "ben"
+  },
+  {
+    "name": "Latvian",
+    "code": "lav"
+  },
+  {
+    "name": "Basque",
+    "code": "eus"
+  },
+  {
+    "name": "Czech",
+    "code": "ces"
+  },
+  {
+    "name": "Estonian",
+    "code": "est"
+  },
+  {
+    "name": "Chinese",
+    "code": "zho"
+  },
+  {
+    "name": "Min Nan Chinese",
+    "code": "nan"
+  },
+  {
+    "name": "Sinhala",
+    "code": "sin"
+  },
+  {
+    "name": "Croatian",
+    "code": "hrv"
+  },
+  {
+    "name": "Norwegian Bokmål",
+    "code": "nob"
+  },
+  {
+    "name": "Danish",
+    "code": "dan"
+  },
+  {
+    "name": "Kinyarwanda",
+    "code": "kin"
+  },
+  {
+    "name": "Macedonian",
+    "code": "mkd"
+  },
+  {
+    "name": "Faroese",
+    "code": "fao"
+  },
+  {
+    "name": "Lao",
+    "code": "lao"
+  },
+  {
+    "name": "Slovenian",
+    "code": "slv"
+  },
+  {
+    "name": "Icelandic",
+    "code": "isl"
+  },
+  {
+    "name": "Dutch",
+    "code": "nld"
+  },
+  {
+    "name": "Western Frisian",
+    "code": "fry"
+  },
+  {
+    "name": "Akan",
+    "code": "aka"
+  },
+  {
+    "name": "Finnish",
+    "code": "fin"
+  },
+  {
+    "name": "Galician",
+    "code": "glg"
+  },
+  {
+    "name": "Javanese",
+    "code": "jav"
+  },
+  {
+    "name": "Mongolian",
+    "code": "mon"
+  },
+  {
+    "name": "Chinese",
+    "code": "zho"
+  },
+  {
+    "name": "Yue Chinese",
+    "code": "yue"
+  },
+  {
+    "name": "Portuguese",
+    "code": "por"
+  }
+]

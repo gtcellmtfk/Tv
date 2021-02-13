@@ -1,7 +1,9 @@
 package com.bytebyte6.data
 
 import com.bytebyte6.common.GsonConfig
+import com.bytebyte6.data.entity.Category
 import com.bytebyte6.data.entity.Tv
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.junit.Test
@@ -21,52 +23,96 @@ class Test2 {
         "C:\\Users\\zacks\\Videos\\111.m3u"
     )
 
-    private val gson =
-        GsonBuilder().registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
-            .create()
+    @Test
+    fun test11() {
+//        val gson=Gson()
+//        val list= listOf(
+//            Category("A","A Desc"),
+//            Category("B","B Desc"),
+//            Category("C","C Desc")
+//        )
+//        println(gson.toJson(list))
+        //[{"color":0,"category":"A","desc":"A Desc"},{"color":0,"category":"B","desc":"B Desc"},{"color":0,"category":"C","desc":"C Desc"}]
+    }
+
+    @Test
+    fun test2() {
+        val file = File(paths[0])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test4() {
+        val file = File(paths[1])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test5() {
+        val file = File(paths[2])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
 
     @Test
     fun test3() {
-        val path = "C:\\Users\\zacks\\Downloads\\channels.json"
-        val file = File(path)
-        val tvs = getTvs(file).map {
-            Tv.init(it)
+        val file = File(paths[3])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
         }
-
-        val countries = tvs.map {
-            it.country
-        }.toSet()
-        val json = gson.toJson(countries)
-        val countriesFile = File("C:\\Users\\zacks\\Downloads\\countries.json")
-        countriesFile.writeText(json)
-
-        val languages = tvs.map {
-            it.language
-        }.toSet()
-        val json2 = gson.toJson(languages)
-        val languagesFile = File("C:\\Users\\zacks\\Downloads\\languages.json")
-        languagesFile.writeText(json2)
-
-        val categories = tvs.map {
-            it.category
-        }.toSet()
-        val json3 = gson.toJson(categories)
-        val categoriesFile = File("C:\\Users\\zacks\\Downloads\\categories.json")
-        categoriesFile.writeText(json3)
-    }
-
-    private fun getTvs(file: File): List<Tv> {
-        val json: String = file.readText()
-        return gson.fromJson(json, object : TypeToken<List<Tv>>() {}.type)
     }
 
     @Test
-    fun test() {
-        paths.forEach { path ->
-            val file = File(path)
-            M3u.getTvs(file).forEach {
-                println(it)
-            }
+    fun test7() {
+        val file = File(paths[4])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test6() {
+        val file = File(paths[5])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test8() {
+        val file = File(paths[6])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test9() {
+        val file = File(paths[7])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
+        }
+    }
+
+    @Test
+    fun test10() {
+        val file = File(paths[8])
+        M3u.getTvs(file).forEach {
+            println(it.name)
+            println(it.url)
         }
     }
 }
