@@ -18,7 +18,9 @@ class InitAppUseCaseTest {
 
     @Before
     fun setup() {
-        dataManager = object : TestDataManager() {}
+        dataManager = object : TestDataManager() {
+
+        }
         initAppUseCase = InitAppUseCaseImpl(
             dataManager,
             null,
@@ -29,7 +31,7 @@ class InitAppUseCaseTest {
     @Test
     fun test() {
         initAppUseCase.setTvs(tvs)
-        initAppUseCase.execute(Unit).test().assertValue(emptyList())
+        initAppUseCase.execute(Unit).test().assertValue(dataManager.testUsers[0])
         assert(dataManager.getTvCount() != 0)
         assert(dataManager.getCountryCount() != 0)
         assert(dataManager.getUsers().isNotEmpty())

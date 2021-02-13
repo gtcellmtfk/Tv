@@ -1,7 +1,5 @@
 # 网络电视
 
-记录以下技术使用
-
 + Kotlin 
 + RxJava
 + Retrofit
@@ -31,15 +29,15 @@
 
 # RxJava
 
-[RxUseCase 用例实现，用于编写业务逻辑](https://github.com/bytebyte6/Tv/blob/master/lib_common/src/main/java/com/bytebyte6/base/RxEx.kt)
+[RxUseCase 用例实现，用于编写业务逻辑](https://github.com/bytebyte6/Tv/blob/master/lib_common/src/main/java/com/bytebyte6/common/RxEx.kt)
 
 # ExoPlayer
 
-[基本用法](https://github.com/bytebyte6/Rtmp/blob/master/app_tv_view/src/main/java/com/bytebyte6/view/player/PlayerFragment.kt)
+[基本用法](https://github.com/bytebyte6/Tv/blob/master/tv/src/main/java/com/bytebyte6/view/player/PlayerFragment2.kt)
 
 # Material Design 
 
-[过渡动画、MotionLayout](https://github.com/bytebyte6/Rtmp/blob/master/Material%20Design%E7%9A%84%E4%BD%BF%E7%94%A8.md)
+[过渡动画、MotionLayout](https://github.com/bytebyte6/Rtmp/blob/master/Material%20Design.md)
 
 # Room
 

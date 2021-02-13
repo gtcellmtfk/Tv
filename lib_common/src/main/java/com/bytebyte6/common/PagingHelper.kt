@@ -17,7 +17,7 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
     fun result(): LiveData<Result<List<T>>> = result
 
     /**
-     * 从零开始
+     * 页码从零开始
      */
     fun getPage() = page
 

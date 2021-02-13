@@ -32,7 +32,6 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
                 return
             }
             this@ListFragment.onLoadMore()
-            this@ListFragment.logd("onLoadMore")
         }
     }
 

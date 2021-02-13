@@ -6,6 +6,8 @@ import com.bytebyte6.common.Result
 import com.bytebyte6.common.getError
 import com.bytebyte6.common.getSuccessData
 import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.User
+import com.bytebyte6.testdata.defaultUser
 import com.bytebyte6.testdata.tv1
 import com.bytebyte6.usecase.InitAppUseCase
 import com.bytebyte6.viewmodel.LauncherViewModel
@@ -32,9 +34,9 @@ class LauncherViewModelTest {
 
     @Test
     fun test() {
-        val viewModel = LauncherViewModel(FakeDataManager,FakeInitAppUseCase)
+        val viewModel = LauncherViewModel(FakeInitAppUseCase)
         val successData = viewModel.start().getSuccessData()
-        assert(successData != null && successData[0] == tv1)
+        assert(successData != null && successData == defaultUser)
         FakeInitAppUseCase.error = true
         val error = viewModel.start().getError()
         assert(error != null && error.message == "Error")
@@ -44,13 +46,13 @@ class LauncherViewModelTest {
     object FakeInitAppUseCase : InitAppUseCase {
         var error = false
 
-        override fun run(param: Unit): List<Tv> {
+        override fun run(param: Unit): User {
             return if (error)
                 throw Exception("Error")
             else
-                listOf(tv1)
+                defaultUser
         }
 
-        override val result: MutableLiveData<Result<List<Tv>>> = MutableLiveData()
+        override val result: MutableLiveData<Result<User>> = MutableLiveData()
     }
 }

@@ -9,16 +9,16 @@ import java.io.File
 
 class Test2 {
     private val paths = listOf(
-//        "C:\\Users\\zacks\\Videos\\zho.m3u",
-//        "C:\\Users\\zacks\\Videos\\china.m3u8",
-//        "C:\\Users\\zacks\\Videos\\test.m3u",
-//        "C:\\Users\\zacks\\Videos\\test2.m3u",
-//        "C:\\Users\\zacks\\Videos\\央视+卫视+NewTV广西移动源.m3u",
-        "C:\\Users\\zacks\\Videos\\mov.m3u"
-//        "C:\\Users\\zacks\\Videos\\kor.m3u",
-//        "C:\\Users\\zacks\\Videos\\index.m3u"
-//        "C:\\Users\\zacks\\Videos\\aqy.m3u",
-//        "C:\\Users\\zacks\\Videos\\111.m3u"
+        "C:\\Users\\zacks\\Videos\\zho.m3u",
+        "C:\\Users\\zacks\\Videos\\china.m3u8",
+        "C:\\Users\\zacks\\Videos\\test.m3u",
+        "C:\\Users\\zacks\\Videos\\test2.m3u",
+        "C:\\Users\\zacks\\Videos\\央视+卫视+NewTV广西移动源.m3u",
+        "C:\\Users\\zacks\\Videos\\mov.m3u",
+        "C:\\Users\\zacks\\Videos\\kor.m3u",
+        "C:\\Users\\zacks\\Videos\\index.m3u",
+        "C:\\Users\\zacks\\Videos\\aqy.m3u",
+        "C:\\Users\\zacks\\Videos\\111.m3u"
     )
 
     private val gson =
@@ -60,22 +60,13 @@ class Test2 {
         return gson.fromJson(json, object : TypeToken<List<Tv>>() {}.type)
     }
 
-
     @Test
-    fun testZho() {
+    fun test() {
         paths.forEach { path ->
             val file = File(path)
-            println("-------------------$path---------------------------")
             M3u.getTvs(file).forEach {
                 println(it)
             }
         }
     }
 }
-
-//Tv(tvId=5009, url=https://you-cdn.maque-zuida.com/20200105/DUvcSqLu/index.m3u8, category=OTHER, logo=https://tse4-mm.cn.bing.net/th?id=OIP.fGMT153-z0HVNHQV4oGdSgHaO0&pid=15.1, name=4等
-//, favorite=false, download=false, language=[Language(languageName=Unkown, languageCode=Unkown)], country=Country(countryId=0, name=, code=, image=), countryId=0, countryName=)
-
-//Tv(tvId=7790, url=https://you-cdn.maque-zuida.com/20200105/DUvcSqLu/index.m3u8
-//, category=OTHER, logo=https://tse4-mm.cn.bing.net/th?id=OIP.fGMT153-z0HVNHQV4oGdSgHaO0&pid=15.1, name=4等
-//, favorite=false, download=false, language=[Language(languageName=Unkown, languageCode=Unkown)], country=Country(countryId=0, name=, code=, image=), countryId=0, countryName=)

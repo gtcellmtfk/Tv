@@ -18,7 +18,7 @@ class TestPlayerFragment :
     BaseShareFragment<FragmentVideoBinding>(R.layout.fragment_video) {
 
     companion object {
-        const val TAG: String = "PlayerFragment"
+        const val TAG: String = "TestPlayerFragment"
         fun newInstance(bundle: Bundle) = TestPlayerFragment().apply {
             arguments = bundle
         }

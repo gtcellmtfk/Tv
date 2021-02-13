@@ -3,6 +3,9 @@ package com.bytebyte6.common
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
+/**
+ * 用于转场动画结束时清理资源
+ */
 interface ImageClearHelper {
     val images: MutableSet<ImageView>
     fun clear()
