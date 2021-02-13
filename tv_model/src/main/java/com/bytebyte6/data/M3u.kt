@@ -11,11 +11,13 @@ import java.io.InputStream
 object M3u {
     private const val logoPattern = "(?<=tvg-logo=\").*?(?=\")"
     private const val namePattern = "(?<=tvg-name=\").*?(?=\")"
+    private const val namePattern3 = "(?<=\",).*?(?=\n)"
     private const val languagePattern = "(?<=tvg-language=\").*?(?=\")"
     private const val countryPattern = "(?<=tvg-country=\").*?(?=\")"
     private const val categoryPattern = "(?<=group-title=\").*?(?=\")"
     private val logoRegex = Regex(logoPattern)
     private val nameRegex = Regex(namePattern)
+    private val nameRegex3 = Regex(namePattern3)
     private val langRegex = Regex(languagePattern)
     private val countryRegex = Regex(countryPattern)
     private val categoryRegex = Regex(categoryPattern)
@@ -64,9 +66,9 @@ object M3u {
                 str.split("\n")[1].trim()
             }
             val logo = logoRegex.find(str)?.value ?: ""
-            var name = nameRegex.find(str)?.value
-            if (name.isNullOrEmpty()) {
-                name = str.split(",")[1]
+            var name = nameRegex3.find(str)?.value ?: ""
+            if (name.isEmpty()) {
+                name = nameRegex.find(str)?.value ?: ""
             }
             val lang = langRegex.find(str)?.value ?: ""
             val langList = if (lang.contains(";")) {
