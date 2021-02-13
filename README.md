@@ -1,4 +1,9 @@
 # 网络电视
+功能
+- 支持下载点播文件
+- 支持导入m3u m3u8 txt格式文件
+- [直播源推荐](https://github.com/iptv-org/iptv)
+
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(20).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(9).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(1).jpg" width="360" height="640">
@@ -16,11 +21,6 @@
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(16).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(17).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(19).jpg" width="360" height="640">
-
-# 功能
-- 支持下载点播文件
-- 支持导入m3u m3u8 txt格式文件
-- [直播源推荐](https://github.com/iptv-org/iptv)
 
 # 暗黑模式
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(24).jpg" width="360" height="640">
