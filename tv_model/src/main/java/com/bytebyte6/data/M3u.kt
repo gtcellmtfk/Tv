@@ -49,7 +49,7 @@ object M3u {
         val tvs = mutableListOf<Tv>()
         for (str in nameAndUrlList) {
             val nameAndUrl = str.split("\n")
-            tvs.add(Tv(name = nameAndUrl[0], url = nameAndUrl[1]))
+            tvs.add(Tv(name = nameAndUrl[0], url = nameAndUrl[1].trim()))
         }
         return tvs
     }
@@ -58,9 +58,9 @@ object M3u {
         val tvs = mutableListOf<Tv>()
         for (str in nameAndUrlList) {
             val url = if (str.contains("#EXTVLCOPT")) {
-                str.split("\n")[2]
+                str.split("\n")[2].trim()
             } else {
-                str.split("\n")[1]
+                str.split("\n")[1].trim()
             }
             val logo = logoRegex.find(str)?.value ?: ""
             val name = nameRegex.find(str)?.value ?: str.split(",")[1]
