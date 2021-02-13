@@ -21,7 +21,6 @@ val roomModule = module {
 
 val dataModule = module {
     single { createRetrofit(get()) }
-    single<TvApi> { get(Retrofit::class.java).create(TvApi::class.java) }
     single<DataManager> { DataManagerImpl(get(AppDatabase::class)) }
     factory {
         GsonBuilder().registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())

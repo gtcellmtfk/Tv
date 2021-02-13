@@ -23,14 +23,12 @@ class InitAppUseCaseTest {
         }
         initAppUseCase = InitAppUseCaseImpl(
             dataManager,
-            null,
-            Gson()
+            null
         )
     }
 
     @Test
     fun test() {
-        initAppUseCase.setTvs(tvs)
         initAppUseCase.execute(Unit).test().assertValue(dataManager.testUsers[0])
         assert(dataManager.getTvCount() != 0)
         assert(dataManager.getCountryCount() != 0)

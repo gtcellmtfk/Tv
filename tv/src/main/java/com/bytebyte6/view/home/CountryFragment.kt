@@ -37,7 +37,7 @@ class CountryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val imageAdapter = CountryAdapter().apply {
+        val countryAdapter = CountryAdapter().apply {
             onItemClick = { pos, itemView: View ->
                 homeToVideoList(
                     itemView,
@@ -58,9 +58,9 @@ class CountryFragment :
             }
         }
         recyclerView = binding?.recyclerView
-        imageClearHelper = imageAdapter
+        imageClearHelper = countryAdapter
         binding?.apply {
-            recyclerView.adapter = imageAdapter
+            recyclerView.adapter = countryAdapter
             val gridLayoutManager = GridLayoutManager(view.context, 2)
             recyclerView.layoutManager = gridLayoutManager
             recyclerView.addItemDecoration(GridSpaceDecoration())
@@ -72,7 +72,7 @@ class CountryFragment :
         }
 
         viewModel.cs.observe(viewLifecycleOwner, Observer {
-            imageAdapter.submitList(it)
+            countryAdapter.submitList(it)
         })
 
         viewModel.searchLogoOnce()

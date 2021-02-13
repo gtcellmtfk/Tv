@@ -36,21 +36,21 @@ class LanguageFragment : BaseShareFragment<FragmentRecyclerViewBinding>(R.layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cardAdapter = LanguageAdapter()
-        cardAdapter.onItemClick= { pos, itemView ->
-            val item = cardAdapter.currentList[pos]
+        val languageAdapter = LanguageAdapter()
+        languageAdapter.onItemClick = { pos, itemView ->
+            val item = languageAdapter.currentList[pos]
             homeToVideoList(itemView, item.langName)
         }
-        recyclerView=binding?.recyclerView
+        recyclerView = binding?.recyclerView
         binding?.apply {
-            recyclerView.adapter = cardAdapter
+            recyclerView.adapter = languageAdapter
             recyclerView.addItemDecoration(LinearSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
         }
 
         viewModel.lang.observe(viewLifecycleOwner, Observer {
-            cardAdapter.submitList(it)
+            languageAdapter.submitList(it)
         })
     }
 }

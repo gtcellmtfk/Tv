@@ -44,12 +44,11 @@ val useCaseModule: Module = module {
     factory { DownloadTvUseCase(get()) }
     factory { FavoriteTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
-    factory { TvRefreshUseCase(get(), get()) }
     factory { DownloadListUseCase(get(), get()) }
     factory { SearchCountryImageUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
     factory<SearchTvLogoUseCase> { SearchTvLogoUseCaseImpl(get(), get()) }
-    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext(), get()) }
+    factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext()) }
     factory { ParseM3uUseCase(get(), get()) }
 
     /**图片搜索*/

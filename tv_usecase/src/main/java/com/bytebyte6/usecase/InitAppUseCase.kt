@@ -18,49 +18,18 @@ interface InitAppUseCase : RxUseCase2<Unit, User>
 
 class InitAppUseCaseImpl(
     private val dataManager: DataManager,
-    private val context: Context? = null,
-    private val gson: Gson
+    private val context: Context? = null
 ) : InitAppUseCase {
 
     override val result: MutableLiveData<Result<User>> = MutableLiveData()
-
-    private var tvs: List<Tv>? = null
-
-    @TestOnly
-    fun setTvs(tvs: List<Tv>) {
-        this.tvs = tvs
-    }
 
     override fun run(param: Unit): User {
 
         val user = dataManager.getCurrentUserIfNotExistCreate()
 
-        if (dataManager.getTvCount() == 0) {
-            if (tvs == null) {
-                tvs = getTvs(context!!)
-            }
-            val cs = mutableSetOf<Country>()
-            tvs!!.forEach {
-                Tv.init(it)
-                cs.add(it.country)
-            }
-            dataManager.insertCountry(cs.toList())
-            val newTvs = tvs!!.map {
-                val name = it.country.name
-                if (name.isNotEmpty()) {
-                    //实体关联
-                    it.countryId = dataManager.getCountryIdByName(name)
-                }
-                it
-            }
-            dataManager.insertTv(newTvs)
-        }
-
         if (dataManager.getTvCount() != 0 && user.capturePic) {
             findImageLink()
         }
-
-        tvs = null
 
         return user
     }
@@ -76,13 +45,6 @@ class InitAppUseCaseImpl(
                 .beginUniqueWork("findImageLink", ExistingWorkPolicy.KEEP, workRequest)
                 .enqueue()
         }
-    }
-
-    private fun getTvs(context: Context): List<Tv> {
-        val json: String = context.assets.open("channels.json")
-            .bufferedReader()
-            .use { it.readText() }
-        return gson.fromJson(json, object : TypeToken<List<Tv>>() {}.type)
     }
 }
 
