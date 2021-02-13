@@ -64,7 +64,10 @@ object M3u {
                 str.split("\n")[1].trim()
             }
             val logo = logoRegex.find(str)?.value ?: ""
-            val name = nameRegex.find(str)?.value ?: str.split(",")[1]
+            var name = nameRegex.find(str)?.value
+            if (name.isNullOrEmpty()) {
+                name = str.split(",")[1]
+            }
             val lang = langRegex.find(str)?.value ?: ""
             val langList = if (lang.contains(";")) {
                 val result = mutableListOf<Language>()
