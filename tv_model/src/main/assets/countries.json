@@ -181,7 +181,7 @@
   },
   {
     "countryId": 0,
-    "name": "Hong Kong",
+    "name": "China Hong Kong",
     "code": "hk",
     "image": ""
   },
@@ -529,7 +529,7 @@
   },
   {
     "countryId": 0,
-    "name": "Taiwan",
+    "name": "China Taiwan",
     "code": "tw",
     "image": ""
   },
