@@ -1,15 +1,13 @@
 # 网络电视
-
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(20).jpg" width="360" height="640">
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(9).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(1).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(2).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(3).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(4).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(5).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(6).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(7).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(8).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(9).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(10).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(11).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(12).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(13).jpg" width="360" height="640">
@@ -17,11 +15,8 @@
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(15).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(16).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(17).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(18).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(19).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(20).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(21).jpg" width="360" height="640">
-<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(22).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(23).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(24).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(25).jpg" width="360" height="640">
@@ -31,6 +26,11 @@
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(29).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(30).jpg" width="360" height="640">
 <img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(31).jpg" width="360" height="640">
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(22).jpg" width="360" height="640">
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(18).jpg" width="360" height="640">
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(10).jpg" width="360" height="640">
+<img src="https://github.com/bytebyte6/Tv/blob/master/pic/tv%20(5).jpg" width="360" height="640">
+
 
 + Kotlin 
 + RxJava
