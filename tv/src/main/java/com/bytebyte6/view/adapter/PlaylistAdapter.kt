@@ -35,18 +35,18 @@ class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
         holder.apply {
             // 重建后的recyclerview Item是没有transName的
             // 所以在onBind要重新赋值一遍 动画效果才会有~~
-            itemView.transitionName = item.playlistId.toString()
+            itemView.transitionName = item.hashCode().toString()
             tvTitle.text = item.playlistName
-            tvBody.text = item.playlistId.toString()
+            tvBody.text = itemView.context.getString(R.string.total, item.total)
             ivIcon.setImageResource(randomImage())
             cardView.strokeWidth = 4
             cardView.strokeColor = randomColorByNightMode()
             cardView.radius = 10f
             cardView.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.itemRootLayoutBackgroundColor
-                )
+                    ContextCompat.getColor(
+                            itemView.context,
+                            R.color.itemRootLayoutBackgroundColor
+                    )
             )
         }
     }

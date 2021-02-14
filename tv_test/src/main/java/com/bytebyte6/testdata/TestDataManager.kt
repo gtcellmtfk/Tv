@@ -25,31 +25,28 @@ val lang2 get() = Language("ENGLISH", "EN")
 val tv1
     get() =
         Tv(
-            country = china,
-            name = "A",
-            url = "A.url",
-            countryName = china.name,
-            language = Language.NAME,
-            category = "A"
+                name = "A",
+                url = "A.url",
+                countryName = china.name,
+                language = Language.UNKOWN,
+                category = "A"
         )
 val tv2
     get() =
         Tv(
-            country = usa,
-            name = "B",
-            url = "B.url",
-            countryName = usa.name,
-            language = Language.NAME,
-            category = "B"
+                name = "B",
+                url = "B.url",
+                countryName = usa.name,
+                language = Language.UNKOWN,
+                category = "B"
         )
 val tv3
     get() = Tv(
-        country = kor,
-        category = "C",
-        name = "C",
-        url = "C.url",
-        countryName = kor.name,
-        language = Language.NAME
+            category = "C",
+            name = "C",
+            url = "C.url",
+            countryName = kor.name,
+            language = Language.UNKOWN
     )
 val tvs
     get() = mutableListOf(

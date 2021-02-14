@@ -33,12 +33,12 @@ import java.io.IOException
 class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickListener {
 
     companion object {
-        fun newInstance(playlistId: Long, title: String): Fragment {
+        fun newInstance(playlistId: Long, title: String, transitionName: String): Fragment {
             return PlaylistFragment().apply {
                 arguments = Bundle().apply {
                     putLong(KEY_PLAY_LIST_ID, playlistId)
                     putString(KEY_TITLE, title)
-                    putString(KEY_TRANS_NAME, playlistId.toString())
+                    putString(KEY_TRANS_NAME, transitionName)
                 }
             }
         }

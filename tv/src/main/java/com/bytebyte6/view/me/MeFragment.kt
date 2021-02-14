@@ -131,7 +131,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 showProgressBar()
             })
         })
-        viewModel.playlistNames.observe(viewLifecycleOwner, Observer {
+        viewModel.playlists.observe(viewLifecycleOwner, Observer {
             playlistAdapter.replace(it)
             binding?.apply {
                 lavEmpty.isVisible = it.isEmpty()
@@ -139,30 +139,21 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         })
         viewModel.parseResult.observe(viewLifecycleOwner, Observer { result ->
             result.emitIfNotHandled(
-                {
-                    hideProgressBar()
-                    recyclerView?.let {
-                        it.findViewHolderForAdapterPosition(
-                            playlistAdapter.list.size - 1
-                        )?.itemView?.performClick()
-                    }
-//                    meToPlaylist(
-//                        it.data.playlistId,
-//                        it.data.playlistName
-//                    )
-                }, {
-                    hideProgressBar()
-                    if (it.error is UnsupportedOperationException) {
-                        showSnack(view, R.string.tip_not_m3u_m3u8_file)
-                    } else {
-                        showSnack(
+                    {
+                        hideProgressBar()
+                    }, {
+                hideProgressBar()
+                if (it.error is UnsupportedOperationException) {
+                    showSnack(view, R.string.tip_not_m3u_m3u8_file)
+                } else {
+                    showSnack(
                             view,
                             getString(R.string.tip_parse_file_error, it.error.message.toString())
-                        )
-                    }
-                }, {
-                    showProgressBar()
+                    )
                 }
+            }, {
+                showProgressBar()
+            }
             )
         })
     }

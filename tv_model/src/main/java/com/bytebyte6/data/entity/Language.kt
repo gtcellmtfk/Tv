@@ -26,11 +26,6 @@ data class Language(
     val color: Int = randomColorByNightMode()
 
     companion object {
-        const val NAME = "Unkown"
-        private const val CODE = "Unkown"
-        val DEFAULT = Language(
-            NAME,
-            CODE
-        )
+        const val UNKOWN = "Unkown"
     }
 }

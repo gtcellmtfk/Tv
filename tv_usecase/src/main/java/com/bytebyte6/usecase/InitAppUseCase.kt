@@ -7,7 +7,6 @@ import com.bytebyte6.common.Result
 import com.bytebyte6.common.RxUseCase2
 import com.bytebyte6.common.loge
 import com.bytebyte6.data.DataManager
-import com.bytebyte6.data.M3u
 import com.bytebyte6.data.TypeConverter
 import com.bytebyte6.data.entity.Category
 import com.bytebyte6.data.entity.Country
@@ -41,16 +40,18 @@ class InitAppUseCaseImpl(
 
         initLanguageData()
 
-        initData()
+        initTestData()
 
         return user
     }
 
-    private fun initData() {
+    /**
+     * 上传到Firebase测试用到
+     */
+    private fun initTestData() {
         try {
-            val inputStream = context.assets.open("index.m3u")
-            val tvs = M3u.getTvs(inputStream)
-            dataManager.insertTv(tvs)
+            val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
+            parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
         } catch (e: Exception) {
             loge("for build type labtest,if error ignore!")
         }

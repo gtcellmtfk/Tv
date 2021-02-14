@@ -54,44 +54,74 @@ object M3u {
         }
     }
 
-    private fun getTvsNormal(nameAndUrlList: List<String>): List<Tv> {
+    private fun getTvsNormal(list: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
-        for (str in nameAndUrlList) {
+        for (str in list) {
             val nameAndUrl = str.split("\n")
-            tvs.add(Tv(name = nameAndUrl[0], url = nameAndUrl[1].trim()))
+            tvs.add(
+                    Tv(
+                            name = nameAndUrl[0],
+                            url = nameAndUrl[1].trim(),
+                            countryCode = Country.UNKOWN,
+                            language = Language.UNKOWN,
+                            category = Category.OTHER
+                    )
+            )
         }
         return tvs
     }
 
-    private fun getTvsByTvg(nameAndUrlList: List<String>): List<Tv> {
+    private fun getTvsByTvg(list: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
-        for (str in nameAndUrlList) {
+        for (str in list) {
             val url = if (str.contains("#EXTVLCOPT")) {
                 str.split("\n")[2].trim()
             } else {
                 str.split("\n")[1].trim()
             }
+
+            if (url.isEmpty()) {
+                println("url.isEmpty() continue")
+                continue
+            }
+
             val logo = logoRegex.find(str)?.value ?: ""
+
             var name = nameRegex3.find(str)?.value ?: ""
             if (name.isEmpty()) {
                 name = nameRegex.find(str)?.value ?: ""
             }
+            if (name.isEmpty()) {
+                println("name.isEmpty() continue")
+                continue
+            }
             if (name.contains("&")) {
                 name = name.replace("&", "")
             }
-            val lang = langRegex.find(str)?.value ?: ""
-            val code = countryRegex.find(str)?.value ?: Country.UNKOWN
-            val category = categoryRegex.find(str)?.value ?: Category.OTHER
-            tvs.add(
-                Tv().apply {
-                    this.url = url
-                    this.logo = logo
-                    this.name = name
-                    this.language = lang
-                    this.country = Country(code = code.toLowerCase(Locale.ROOT))
-                    this.category = category
-                }
-            )
+
+            var lang = langRegex.find(str)?.value ?: ""
+            if (lang.isEmpty()) {
+                lang = Language.UNKOWN
+            }
+
+            var code = countryRegex.find(str)?.value ?: ""
+            if (code.isEmpty()) {
+                code = Country.UNKOWN
+            }
+
+            var category = categoryRegex.find(str)?.value ?: ""
+            if (category.isEmpty()) {
+                category = Category.OTHER
+            }
+
+            tvs.add(Tv().apply {
+                this.url = url
+                this.logo = logo
+                this.name = name
+                this.language = lang
+                this.countryCode = code.toLowerCase(Locale.ROOT)
+                this.category = category
+            })
         }
         return tvs
     }
