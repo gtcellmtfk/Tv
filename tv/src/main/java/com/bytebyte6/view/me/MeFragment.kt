@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
@@ -116,7 +115,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 }
             }
         }
-        viewModel.deleteResult.observe(viewLifecycleOwner, Observer {
+        viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
                 hideProgressBar()
                 selectionTracker.clearSelection()
@@ -131,29 +130,29 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 showProgressBar()
             })
         })
-        viewModel.playlists.observe(viewLifecycleOwner, Observer {
+        viewModel.playlists.observe(viewLifecycleOwner, {
             playlistAdapter.replace(it)
             binding?.apply {
                 lavEmpty.isVisible = it.isEmpty()
             }
         })
-        viewModel.parseResult.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.parseResult.observe(viewLifecycleOwner, { result ->
             result.emitIfNotHandled(
-                    {
-                        hideProgressBar()
-                    }, {
-                hideProgressBar()
-                if (it.error is UnsupportedOperationException) {
-                    showSnack(view, R.string.tip_not_m3u_m3u8_file)
-                } else {
-                    showSnack(
+                {
+                    hideProgressBar()
+                }, {
+                    hideProgressBar()
+                    if (it.error is UnsupportedOperationException) {
+                        showSnack(view, R.string.tip_not_m3u_m3u8_file)
+                    } else {
+                        showSnack(
                             view,
                             getString(R.string.tip_parse_file_error)
-                    )
+                        )
+                    }
+                }, {
+                    showProgressBar()
                 }
-            }, {
-                showProgressBar()
-            }
             )
         })
     }

@@ -25,7 +25,7 @@
     </style>
 
     <style name="TextAppearance.Rtmp.MaterialComponents.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="NavigationView.Rtmp" parent="Widget.Design.NavigationView">

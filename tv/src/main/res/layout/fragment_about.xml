@@ -14,37 +14,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/setting_user" />
+        android:text="@string/material" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/swNightMode"
-        style="@style/Widget.Rtmp.Switch"
+    <TextView
+        style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/mode_night" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@string/tip_about_material" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/swCapturePic"
-        style="@style/Widget.Rtmp.Switch"
+    <TextView
+        style="@style/TextAppearance.Rtmp.MaterialComponents.Subtitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setting_pic_download" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@string/live_src" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:checked="true"
-        android:id="@+id/swOnlyWifiDownload"
-        style="@style/Widget.Rtmp.Switch"
+    <TextView
+        style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setting_only_wifi_download" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@string/tip_live_src" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:checked="true"
-        android:id="@+id/swOnlyWifiPlay"
-        style="@style/Widget.Rtmp.Switch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/setting_only_wifi_play" />
+<!--    <TextView-->
+<!--        style="@style/TextAppearance.Rtmp.MaterialComponents.Subtitle1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:paddingBottom="16dp"-->
+<!--        android:text="下载" />-->
+
+<!--    <TextView-->
+<!--        style="@style/TextAppearance.MaterialComponents.Caption"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:paddingBottom="16dp"-->
+<!--        android:text="下载功能不支持直播内容" />-->
 
     <View
         android:layout_width="match_parent"
@@ -71,5 +86,4 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/tip_if_like" />
-
 </LinearLayout>

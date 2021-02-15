@@ -8,14 +8,11 @@ import com.bytebyte6.common.onSingle
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.DownloadTvUseCase
-import com.bytebyte6.usecase.SearchTvLogoParam
-import com.bytebyte6.usecase.SearchTvLogoUseCase
-import com.bytebyte6.usecase.UpdateTvParam
+import com.bytebyte6.usecase.*
 
 class PlaylistViewModel(
     private val searchTvLogoUseCase: SearchTvLogoUseCase,
-    private val downloadTvUseCase: DownloadTvUseCase,
+    private val favoriteTvUseCase: FavoriteTvUseCase,
     private val dataManager: DataManager
 ) : BaseViewModel() {
 
@@ -44,11 +41,11 @@ class PlaylistViewModel(
 
     var playlistId: Long = 0
 
-    val downloadResult = downloadTvUseCase.result()
+    val downloadResult = favoriteTvUseCase.result()
 
-    fun download(pos: Int, tv: Tv) {
+    fun fav(pos: Int, tv: Tv) {
         addDisposable(
-            downloadTvUseCase.execute(UpdateTvParam(pos, tv.apply { download = true })).onIo()
+            favoriteTvUseCase.execute(UpdateTvParam(pos,tv)).onIo()
         )
     }
 

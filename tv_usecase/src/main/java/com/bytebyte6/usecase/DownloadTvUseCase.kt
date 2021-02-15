@@ -9,7 +9,6 @@ class DownloadTvUseCase(private val dataManager: DataManager) :
     RxUseCase<UpdateTvParam, UpdateTvParam>() {
     override fun run(param: UpdateTvParam): UpdateTvParam {
         val tv = dataManager.getTvById(param.tv.tvId)
-        tv.download = param.tv.download
         dataManager.updateTv(tv)
         param.tv = tv
         return param

@@ -14,14 +14,12 @@ import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.download.DownloadServicePro
 import com.bytebyte6.viewmodel.PlaylistViewModel
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.offline.DownloadHelper
-import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,7 +28,7 @@ import java.io.IOException
 /***
  * 播放列表
  */
-class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickListener {
+class PlaylistFragment : ListFragment(), ButtonClickListener {
 
     companion object {
         fun newInstance(playlistId: Long, title: String, transitionName: String): Fragment {
@@ -67,11 +65,13 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarArrowBack()
+        setupToolbarArrowBack {
+            binding?.emptyBox?.cancelAnimation()
+        }
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
 
-        val tvAdapter = TvAdapter(ButtonType.DOWNLOAD, this)
+        val tvAdapter = TvAdapter(this,download = true)
 
         tvAdapter.onItemClick = { pos, _: View ->
             toPlayer(tvAdapter.currentList[pos].url)
@@ -149,7 +149,6 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickLi
     private fun getDownloadHelperCallback(pos: Int, tv: Tv): DownloadHelper.Callback {
         return object : DownloadHelper.Callback {
             override fun onPrepared(helper: DownloadHelper) {
-                viewModel.download(pos, tv)
                 DownloadServicePro.addDownload(requireContext(), tv.url)
                 val tip = getString(R.string.tip_add_download_has_been)
                 showSnack(requireView(), tip)

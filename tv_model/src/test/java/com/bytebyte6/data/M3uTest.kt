@@ -9,9 +9,8 @@ class M3uTest {
         val modelDir = File(".", "channels")
         val listFiles = modelDir.listFiles()
         listFiles?.forEach { file ->
-            println(file.name)
             val tvs = M3u.getTvs(file)
-            println("Tvs Size = ${tvs.size}")
+            println("${file.name} size = ${tvs.size}")
             tvs.forEach {
                 assert(it.name.isNotEmpty())
                 assert(it.countryCode.isNotEmpty())
@@ -20,6 +19,6 @@ class M3uTest {
                 assert(it.category.isNotEmpty())
             }
         }
-        println("File size = ${listFiles?.size}")
+        println("Total File: = ${listFiles?.size}")
     }
 }

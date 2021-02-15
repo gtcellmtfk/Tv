@@ -80,14 +80,6 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
         assert(!viewModel.isStartInterval())
     }
 
-
-    @Test
-    fun test_delete() {
-        val viewModel = getViewModel()
-        viewModel.deleteDownload(0)
-        assert(viewModel.deleteResult.value == null)
-    }
-
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
             get(),

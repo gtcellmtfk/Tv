@@ -27,6 +27,7 @@ object M3u {
         val m3uString = inputStream.readBytes()
             .commonToUtf8String()
             .removePrefix("#EXTM3U")
+            .replace("\r\n", "\n")
             .trim()
         return getTvs(m3uString)
     }
@@ -35,22 +36,23 @@ object M3u {
         val m3uString = m3uFile.readBytes()
             .commonToUtf8String()
             .removePrefix("#EXTM3U")
+            .replace("\r\n", "\n")
             .trim()
         return getTvs(m3uString)
     }
 
     private fun getTvs(m3uString: String): List<Tv> {
         val contains = m3uString.contains("tvg-id")
-        val nameAndUrlList = if (contains) {
-            m3uString.split("#EXTINF:-1 ").toMutableList()
+        val mutableList = if (contains) {
+            m3uString.split("#EXTINF:-1 ")
         } else {
-            m3uString.split("#EXTINF:-1 ,").toMutableList()
-        }
-        nameAndUrlList.remove("")
+            m3uString.split("#EXTINF:-1 ,")
+        }.toMutableList()
+        mutableList.remove("")
         return if (contains) {
-            getTvsByTvg(nameAndUrlList)
+            getTvsByTvg(mutableList)
         } else {
-            getTvsNormal(nameAndUrlList)
+            getTvsNormal(mutableList)
         }
     }
 
@@ -59,13 +61,13 @@ object M3u {
         for (str in list) {
             val nameAndUrl = str.split("\n")
             tvs.add(
-                    Tv(
-                            name = nameAndUrl[0],
-                            url = nameAndUrl[1].trim(),
-                            countryCode = Country.UNSORTED_LOW,
-                            language = Language.UNKOWN,
-                            category = Category.OTHER
-                    )
+                Tv(
+                    name = nameAndUrl[0],
+                    url = nameAndUrl[1].trim(),
+                    countryCode = Country.UNSORTED_LOW,
+                    language = Language.UNKOWN,
+                    category = Category.OTHER
+                )
             )
         }
         return tvs
@@ -90,13 +92,9 @@ object M3u {
             var name = nameRegex3.find(str)?.value
             if (name.isNullOrEmpty()) {
                 name = nameRegex.find(str)?.value
-            }
-            if (name.isNullOrEmpty()) {
-                println("name.isEmpty() continue")
-                continue
-            }
-            if (name.contains("&")) {
-                name = name.replace("&", "")
+                if (name!!.contains("&")) {
+                    name = name.replace("&", "")
+                }
             }
 
             var lang = langRegex.find(str)?.value

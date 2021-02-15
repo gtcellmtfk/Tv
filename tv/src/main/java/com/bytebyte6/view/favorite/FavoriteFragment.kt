@@ -12,7 +12,6 @@ import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
@@ -42,7 +41,7 @@ class FavoriteFragment : ListFragment() {
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
         }
-        val adapter = TvAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+        val adapter = TvAdapter(object : ButtonClickListener {
             override fun onClick(position: Int, tv: Tv) {
                 viewModel.favorite(position, tv)
             }

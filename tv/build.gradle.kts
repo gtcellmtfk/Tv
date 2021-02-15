@@ -94,7 +94,6 @@ dependencies {
         exclude("androidx.test", "core")
     }
     debugImplementation(Libs.LEAK_CANARY)
-    implementation(Libs.CRASH_REPORTER)
 
     androidTestImplementation(Libs.TEST_ESPRESSO_CORE)
     androidTestImplementation(Libs.TEST_ESPRESSO_CONTRIB)

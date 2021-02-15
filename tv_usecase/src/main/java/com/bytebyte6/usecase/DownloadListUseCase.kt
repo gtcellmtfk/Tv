@@ -15,7 +15,7 @@ class DownloadListUseCase(
 
         while (cursor.moveToNext()) {
             val tvByUrl = dataManager.getTvByUrl(cursor.download.request.uri.toString())
-            if (tvByUrl != null && tvByUrl.download) {
+            if (tvByUrl != null ) {
                 list.add(TvAndDownload(tvByUrl, cursor.download))
             }
         }

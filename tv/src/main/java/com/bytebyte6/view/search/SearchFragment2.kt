@@ -16,7 +16,6 @@ import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
@@ -66,7 +65,7 @@ class SearchFragment2 : ListFragment() {
         }
         disEnabledSwipeRefreshLayout()
         setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
-        val adapter = TvAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+        val adapter = TvAdapter(object : ButtonClickListener {
             override fun onClick(position: Int, tv: Tv) {
                 viewModel.fav(position)
             }

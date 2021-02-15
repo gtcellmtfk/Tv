@@ -11,24 +11,24 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Keep
 data class Tv(
-        @PrimaryKey(autoGenerate = true)
-        var tvId: Long = 0,
-        var url: String = "",
-        var category: String = "",
-        var logo: String = "",
-        var name: String = "",
-        var favorite: Boolean = false,
-        var download: Boolean = false,
-        var language: String = "",
-        var countryId: Long = 0,
-        var countryName: String = "",
-        var countryCode: String = ""
+    @PrimaryKey(autoGenerate = true)
+    var tvId: Long = 0,
+    var url: String = "",
+    var category: String = "",
+    var logo: String = "",
+    var name: String = "",
+    var favorite: Boolean = false,
+    var language: String = "",
+    var countryId: Long = 0,
+    var countryName: String = "",
+    var countryCode: String = ""
 ) : Parcelable
 
 object TvDiff : DiffUtil.ItemCallback<Tv>() {
     override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {
         return oldItem.tvId == newItem.tvId
     }
+
     override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean {
         return oldItem == newItem
     }

@@ -17,7 +17,6 @@ data class TvFts(
     var logo: String = "",
     var name: String = "",
     var favorite: Boolean = false,
-    var download: Boolean = false,
     var countryId: Long = 0,
     var countryName: String = "",
     var countryCode: String = "",

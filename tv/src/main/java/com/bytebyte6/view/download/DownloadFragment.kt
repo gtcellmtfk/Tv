@@ -99,8 +99,8 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
                 DownloadServicePro.removeDownload(
                     requireContext(), downloadAdapter.currentList[pos].download.request.id
                 )
-                viewModel.deleteDownload(pos)
                 dialogInterface.dismiss()
+                showSnack(requireView(),getString(R.string.tip_del_success_notification))
             }
             .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()

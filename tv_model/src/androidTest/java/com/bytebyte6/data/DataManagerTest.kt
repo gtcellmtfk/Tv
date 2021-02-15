@@ -391,7 +391,8 @@ class DataManagerTest {
         )
         val allLanguage = dataManager.allLanguage()
         allLanguage.observeForTesting {
-            assert(allLanguage.getAwaitValue()!!.size == 2)
+            val awaitValue = allLanguage.getAwaitValue()
+            assert(awaitValue!!.size == 2)
         }
     }
 

@@ -37,5 +37,5 @@ val viewModule: Module = module {
     }
     viewModel { UserViewModel(get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
-    viewModel { DownloadViewModel(get(), get(), get()) }
+    viewModel { DownloadViewModel(get(), get()) }
 }

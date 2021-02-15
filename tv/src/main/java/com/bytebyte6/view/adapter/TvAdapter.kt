@@ -3,7 +3,6 @@ package com.bytebyte6.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
@@ -16,18 +15,14 @@ import com.bytebyte6.view.databinding.ItemImageBinding
 import com.bytebyte6.view.load
 import com.google.android.material.checkbox.MaterialCheckBox
 
-enum class ButtonType {
-    FAVORITE, DOWNLOAD, NONE
-}
-
 interface ButtonClickListener {
     fun onClick(position: Int, tv: Tv)
 }
 
 class TvAdapter(
-    private val type: ButtonType = ButtonType.NONE,
     private var btnClickListener: ButtonClickListener? = null,
-    private val clearHelper: ImageClearHelper = GlideClearHelper()
+    private val clearHelper: ImageClearHelper = GlideClearHelper(),
+    private val download: Boolean = false
 ) : BaseListAdapter<Tv, ImageViewHolder>(TvDiff), ImageClearHelper by clearHelper {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -61,18 +56,10 @@ class TvAdapter(
         flButton.setOnClickListener {
             btnClickListener?.onClick(position, item)
         }
-        when (type) {
-            ButtonType.FAVORITE -> {
-                button.visibility = View.VISIBLE
-                button.isChecked = item.favorite
-            }
-            ButtonType.DOWNLOAD -> {
-                button.isVisible = !item.download
-                button.setButtonDrawable(R.drawable.checkbox_download)
-            }
-            ButtonType.NONE -> {
-                button.visibility = View.GONE
-            }
+        button.isChecked = item.favorite
+
+        if (download){
+            button.setButtonDrawable(R.drawable.checkbox_download)
         }
     }
 }

@@ -42,7 +42,9 @@ class HomeFragmentTest  {
         onView(withId(R.id.tabLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.tabLayout)).perform(selectTabAtPosition(0))
         Thread.sleep(1000)
-        onView(withText("Angola")).check(matches(isDisplayed()))
+        onView(withText("安哥拉")).check(matches(isDisplayed())).withFailureHandler { error, viewMatcher ->
+            onView(withText("Angola")).check(matches(isDisplayed()))
+        }
     }
 
     @Test

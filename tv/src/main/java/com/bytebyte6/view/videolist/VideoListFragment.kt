@@ -12,7 +12,6 @@ import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.KEY_TITLE
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
@@ -50,7 +49,7 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = TvAdapter(ButtonType.FAVORITE, buttonClickListener).apply {
+        val adapter = TvAdapter(buttonClickListener).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].url)
             }
@@ -61,7 +60,9 @@ class VideoListFragment : ListFragment() {
         imageClearHelper = adapter
 
         val title = requireArguments().getString(KEY_TITLE)!!
-        setupToolbarArrowBack(title)
+        setupToolbarArrowBack(title){
+            binding?.emptyBox?.cancelAnimation()
+        }
         viewModel.setKey(title)
 
         binding?.apply {
