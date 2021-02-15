@@ -4,11 +4,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.5.0")
-        classpath("com.google.gms:google-services:4.3.5")
-        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
-        classpath("com.android.tools.build:gradle:${Versions.android_gradle_plugin}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
+        classpath(ClassPath.FIREBASE_CRASH_GRADLE)
+        classpath(ClassPath.GOOGLE_SERVICE)
+        classpath(ClassPath.KOTLIN_GRADLE)
+        classpath(ClassPath.PULISH_GRADLE)
+        classpath(ClassPath.TOOLS_GRADLE)
     }
 }
 

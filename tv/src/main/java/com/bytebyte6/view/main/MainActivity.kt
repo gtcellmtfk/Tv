@@ -57,8 +57,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawerHelper = DrawerHelper.getInstance(this)!!
 
         if (savedInstanceState == null) {
-            toHome()
-//            replace(TestPlayerFragment.newInstance(Bundle()),null)
+            toMe()
         }
 
         networkHelper.networkConnected.observe(this, Observer { connected ->
@@ -81,7 +80,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 val id = savedInstanceState.getInt(CURRENT_MENU_ITEM_ID)
                 menu.findItem(id)
             } else {
-                setCheckedItem(R.id.nav_home)
+                setCheckedItem(R.id.nav_me)
                 checkedItem
             }
         }

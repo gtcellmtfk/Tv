@@ -67,6 +67,7 @@ object Libs {
 
     //kotlin
     const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
+    const val KOTLIN_STDLIB_JDK = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
     const val KOTLIN_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
 
     const val GETIMAGE = "com.github.bytebyte6:GetImage:6.0"

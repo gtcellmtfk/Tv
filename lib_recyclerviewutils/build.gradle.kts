@@ -21,12 +21,22 @@ android {
     }
 
     buildTypes {
-        getByName("release")  {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        maybeCreate("labtest")
+        getByName("labtest") {
+            initWith(getByName("release"))
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            versionNameSuffix = "-labtest"
         }
     }
 

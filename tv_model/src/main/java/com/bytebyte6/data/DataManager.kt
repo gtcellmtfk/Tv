@@ -16,6 +16,10 @@ interface DataManager {
     fun user(): LiveData<User>
     fun getUsers(): List<User>
 
+    //Language
+    fun insertLanguages(languages: List<Language>)
+    fun getLangCount(): Int
+
     //Country
     fun insertCountry(countries: List<Country>): List<Long>
     fun insertCountry(country: Country): Long
@@ -26,6 +30,7 @@ interface DataManager {
     fun getImageEmptyCountries(): List<Country>
     fun getCountryIdByName(name: String): Long
     fun getCountryCount(): Int
+    fun getCountryByCode(code: String): Country
 
     //Tv
     fun insertTv(tvs: List<Tv>): List<Long>
@@ -80,7 +85,11 @@ interface DataManager {
     fun crossRefUserWithPlaylists(userPlaylistCrossRefs: List<UserPlaylistCrossRef>): List<Long>
     fun crossRefPlaylistWithTv(playlistTvCrossRefs: List<PlaylistTvCrossRef>): List<Long>
 
+    //Category
+    fun insertCategory(categories: List<Category>)
+    fun getCategoryCount(): Int
+
     fun allFavoriteTv(): LiveData<List<Tv>>
-    fun allLanguage(): LiveData<List<Languages>>
+    fun allLanguage(): LiveData<List<Language>>
     fun allCategory(): LiveData<List<Category>>
 }

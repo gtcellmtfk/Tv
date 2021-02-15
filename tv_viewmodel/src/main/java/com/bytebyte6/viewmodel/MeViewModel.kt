@@ -13,6 +13,7 @@ import com.bytebyte6.data.entity.Playlist
 import com.bytebyte6.data.model.UserWithPlaylists
 import com.bytebyte6.usecase.DeletePlaylistUseCase
 import com.bytebyte6.usecase.ParseM3uUseCase
+import com.bytebyte6.usecase.ParseParam
 
 class MeViewModel(
     dataManager: DataManager,
@@ -22,7 +23,7 @@ class MeViewModel(
 
     private lateinit var userWithPlaylist: UserWithPlaylists
 
-    val playlistNames = dataManager.user().switchMap { user ->
+    val playlists = dataManager.user().switchMap { user ->
         dataManager.userWithPlaylist(user.userId).map { userWithPlaylists ->
             userWithPlaylist = userWithPlaylists
             userWithPlaylist.playlists
@@ -33,13 +34,9 @@ class MeViewModel(
 
     val deleteResult = deletePlaylistUseCase.result()
 
-    fun getPlaylistId(pos: Int): Long {
-        return userWithPlaylist.playlists[pos].playlistId
-    }
-
     fun parseM3u(it: Uri) {
         addDisposable(
-            parseM3uUseCase.execute(it).onIo()
+                parseM3uUseCase.execute(ParseParam(it)).onIo()
         )
     }
 

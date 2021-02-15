@@ -9,6 +9,8 @@ class DataManagerImpl(
 ) : DataManager {
 
     private val tvDao = appDatabase.tvDao()
+    private val languageDao = appDatabase.languageDao()
+    private val categoryDao = appDatabase.categoryDao()
     private val tvFtsDao = appDatabase.tvFtsDao()
     private val userDao = appDatabase.userDao()
     private val playlistDao = appDatabase.playlistDao()
@@ -55,6 +57,14 @@ class DataManagerImpl(
         return userDao.getUsers()
     }
 
+    override fun insertLanguages(languages: List<Language>) {
+        languageDao.insert(languages)
+    }
+
+    override fun getLangCount(): Int {
+        return languageDao.getCount()
+    }
+
     override fun insertCountry(country: Country): Long {
         return countryDao.insert(country)
     }
@@ -89,6 +99,10 @@ class DataManagerImpl(
 
     override fun getCountryCount(): Int {
         return countryDao.getCount()
+    }
+
+    override fun getCountryByCode(code: String): Country {
+        return countryDao.getByCode(code)
     }
 
     override fun insertTv(tvs: List<Tv>): List<Long> {
@@ -247,15 +261,23 @@ class DataManagerImpl(
         return playlistTvCrossRefDao.insert(playlistTvCrossRefs)
     }
 
+    override fun insertCategory(categories: List<Category>) {
+        categoryDao.insert(categories)
+    }
+
+    override fun getCategoryCount(): Int {
+        return categoryDao.getCount()
+    }
+
     override fun allFavoriteTv(): LiveData<List<Tv>> {
         return tvDao.allFavorite()
     }
 
-    override fun allLanguage(): LiveData<List<Languages>> {
-        return tvDao.allLanguage()
+    override fun allLanguage(): LiveData<List<Language>> {
+        return languageDao.languages()
     }
 
     override fun allCategory(): LiveData<List<Category>> {
-        return tvDao.allCategory()
+        return categoryDao.categories()
     }
 }

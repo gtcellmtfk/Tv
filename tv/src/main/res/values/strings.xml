@@ -63,4 +63,29 @@
     <string name="setting_only_wifi_download">只在Wifi状态下进行下载</string>
     <string name="setting_only_wifi_play">只在Wifi状态下播放</string>
     <string name="tip_flag_wrong">国旗显示不正确?点击确定按钮更换!</string>
+    <string name="category_other" translatable="false">其他</string>
+    <string name="category_music" translatable="false">音乐</string>
+    <string name="category_auto" translatable="false">汽车</string>
+    <string name="category_news" translatable="false">新闻资讯</string>
+    <string name="category_local" translatable="false">本地生活</string>
+    <string name="category_movies" translatable="false">电影</string>
+    <string name="category_entertainment" translatable="false">娱乐</string>
+    <string name="category_general" translatable="false">一般</string>
+    <string name="category_religious" translatable="false">宗教</string>
+    <string name="category_sport" translatable="false">体育</string>
+    <string name="category_comedy" translatable="false">喜剧</string>
+    <string name="category_hobby" translatable="false">爱好</string>
+    <string name="category_kids" translatable="false">儿童</string>
+    <string name="category_legislative" translatable="false">立法</string>
+    <string name="category_business" translatable="false">经济</string>
+    <string name="category_lifestyle" translatable="false">生活</string>
+    <string name="category_travel" translatable="false">旅行</string>
+    <string name="category_education" translatable="false">教育</string>
+    <string name="category_documentary" translatable="false">纪录片</string>
+    <string name="category_shop" translatable="false">购物</string>
+    <string name="category_fashion" translatable="false">时尚</string>
+    <string name="category_history" translatable="false">历史</string>
+    <string name="category_family" translatable="false">家庭</string>
+    <string name="category_health" translatable="false">健康</string>
+    <string name="category_weather" translatable="false">天气</string>
 </resources>

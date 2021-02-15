@@ -32,7 +32,6 @@ val viewModule: Module = module {
     viewModel {
         HomeViewModel(
             get(),
-            get(),
             get()
         )
     }

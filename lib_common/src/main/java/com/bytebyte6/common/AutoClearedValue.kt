@@ -3,6 +3,7 @@ package com.bytebyte6.common
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -11,15 +12,18 @@ class AutoClearedValue<T : Any>(val fragment: Fragment) : ReadWriteProperty<Frag
     private var _value: T? = null
 
     init {
-        fragment.lifecycle.addObserver(object: DefaultLifecycleObserver {
+        fragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
-                fragment.viewLifecycleOwnerLiveData.observe(fragment) { viewLifecycleOwner ->
-                    viewLifecycleOwner?.lifecycle?.addObserver(object: DefaultLifecycleObserver {
-                        override fun onDestroy(owner: LifecycleOwner) {
-                            _value = null
-                        }
+                fragment.viewLifecycleOwnerLiveData.observe(
+                    fragment,
+                    Observer { viewLifecycleOwner ->
+                        viewLifecycleOwner?.lifecycle?.addObserver(object :
+                            DefaultLifecycleObserver {
+                            override fun onDestroy(owner: LifecycleOwner) {
+                                _value = null
+                            }
+                        })
                     })
-                }
             }
         })
     }

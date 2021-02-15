@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:checkable="true"
-        app:showAsAction="ifRoom"
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/nav_home" />
-
-    <item
         android:contentDescription="@string/nav_import"
         android:checkable="true"
         app:showAsAction="ifRoom"
         android:id="@+id/nav_me"
         android:icon="@drawable/ic_playlist_add"
         android:title="@string/nav_import" />
+
+    <item
+        android:checkable="true"
+        app:showAsAction="ifRoom"
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_category"
+        android:title="@string/home_category_view" />
 
     <item
         android:checkable="true"

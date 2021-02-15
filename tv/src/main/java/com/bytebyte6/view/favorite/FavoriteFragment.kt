@@ -58,11 +58,11 @@ class FavoriteFragment : ListFragment() {
         imageClearHelper = adapter
 
         binding?.run {
-            recyclerview.adapter = adapter
-            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
-            recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.setHasFixedSize(true)
-            recyclerview.itemAnimator = null
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.allFav.observe(viewLifecycleOwner, Observer {

@@ -20,28 +20,15 @@ val roomModule = module {
 }
 
 val dataModule = module {
-    single { createRetrofit(get()) }
-    single<TvApi> { get(Retrofit::class.java).create(TvApi::class.java) }
     single<DataManager> { DataManagerImpl(get(AppDatabase::class)) }
     factory {
-        GsonBuilder().registerTypeAdapterFactory(GsonConfig.NullStringToEmptyAdapterFactory())
-            .create()
+        val nullStringToEmptyAdapterFactory = GsonConfig.NullStringToEmptyAdapterFactory()
+        GsonBuilder().registerTypeAdapterFactory(nullStringToEmptyAdapterFactory).create()
     }
     factory { GsonConverterFactory.create(get()) }
 }
 
 private fun createDb(context: Context): AppDatabase {
     return Room.databaseBuilder(context, AppDatabase::class.java, "rtmp.db").build()
-}
-
-private fun createRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
-    return Retrofit.Builder()
-        .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }).build())
-        .baseUrl("https://iptv-org.github.io/iptv/")
-        .addConverterFactory(gsonConverterFactory)
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .build()
 }
 

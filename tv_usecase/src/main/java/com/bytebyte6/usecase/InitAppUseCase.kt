@@ -5,84 +5,103 @@ import androidx.lifecycle.MutableLiveData
 import androidx.work.*
 import com.bytebyte6.common.Result
 import com.bytebyte6.common.RxUseCase2
+import com.bytebyte6.common.loge
 import com.bytebyte6.data.DataManager
+import com.bytebyte6.data.TypeConverter
+import com.bytebyte6.data.entity.Category
 import com.bytebyte6.data.entity.Country
-import com.bytebyte6.data.entity.Tv
+import com.bytebyte6.data.entity.Language
 import com.bytebyte6.data.entity.User
 import com.bytebyte6.usecase.work.FindImageWork
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.jetbrains.annotations.TestOnly
 
 interface InitAppUseCase : RxUseCase2<Unit, User>
 
 class InitAppUseCaseImpl(
     private val dataManager: DataManager,
-    private val context: Context? = null,
+    private val context: Context,
     private val gson: Gson
 ) : InitAppUseCase {
 
     override val result: MutableLiveData<Result<User>> = MutableLiveData()
 
-    private var tvs: List<Tv>? = null
-
-    @TestOnly
-    fun setTvs(tvs: List<Tv>) {
-        this.tvs = tvs
-    }
-
     override fun run(param: Unit): User {
 
         val user = dataManager.getCurrentUserIfNotExistCreate()
-
-        if (dataManager.getTvCount() == 0) {
-            if (tvs == null) {
-                tvs = getTvs(context!!)
-            }
-            val cs = mutableSetOf<Country>()
-            tvs!!.forEach {
-                Tv.init(it)
-                cs.add(it.country)
-            }
-            dataManager.insertCountry(cs.toList())
-            val newTvs = tvs!!.map {
-                val name = it.country.name
-                if (name.isNotEmpty()) {
-                    //实体关联
-                    it.countryId = dataManager.getCountryIdByName(name)
-                }
-                it
-            }
-            dataManager.insertTv(newTvs)
-        }
 
         if (dataManager.getTvCount() != 0 && user.capturePic) {
             findImageLink()
         }
 
-        tvs = null
+        initCountryData()
+
+        initCategoryData()
+
+        initLanguageData()
+
+        initTestData()
 
         return user
     }
 
-    private fun findImageLink() {
-        context?.let {
-            val workRequest = OneTimeWorkRequestBuilder<FindImageWork>()
-                .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-                )
-                .build()
-            WorkManager.getInstance(it)
-                .beginUniqueWork("findImageLink", ExistingWorkPolicy.KEEP, workRequest)
-                .enqueue()
+    /**
+     * 上传到Firebase测试用到
+     */
+    private fun initTestData() {
+        try {
+            val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
+            parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
+        } catch (e: Exception) {
+            loge("for build type labtest,if error ignore!")
         }
     }
 
-    private fun getTvs(context: Context): List<Tv> {
-        val json: String = context.assets.open("channels.json")
-            .bufferedReader()
-            .use { it.readText() }
-        return gson.fromJson(json, object : TypeToken<List<Tv>>() {}.type)
+    private fun initCategoryData() {
+        if (dataManager.getCategoryCount() == 0) {
+            val json = context.assets.open("categories.json")
+                .bufferedReader()
+                .use { it.readText() }
+            val categories: List<String> =
+                gson.fromJson(json, TypeConverter.sType)
+            val list = categories.map {
+                Category(it)
+            }
+            dataManager.insertCategory(list)
+        }
+    }
+
+    private fun initLanguageData() {
+        if (dataManager.getLangCount() == 0) {
+            val json = context.assets.open("languages.json")
+                .bufferedReader()
+                .use { it.readText() }
+            val languages: List<Language> =
+                gson.fromJson(json, TypeConverter.type)
+            dataManager.insertLanguages(languages)
+        }
+    }
+
+    private fun initCountryData() {
+        if (dataManager.getCountryCount() == 0) {
+            val json = context.assets.open("countries.json")
+                .bufferedReader()
+                .use { it.readText() }
+            val cs: List<Country> =
+                gson.fromJson(json, object : TypeToken<List<Country>>() {}.type)
+            dataManager.insertCountry(cs)
+        }
+    }
+
+    private fun findImageLink() {
+        val workRequest = OneTimeWorkRequestBuilder<FindImageWork>()
+            .setConstraints(
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            )
+            .build()
+        WorkManager.getInstance(context)
+            .beginUniqueWork("FindImageLink", ExistingWorkPolicy.KEEP, workRequest)
+            .enqueue()
     }
 }
 

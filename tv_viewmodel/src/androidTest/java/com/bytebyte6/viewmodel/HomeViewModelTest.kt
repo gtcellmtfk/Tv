@@ -37,27 +37,6 @@ class HomeViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun test_refresh() {
-        val countDownLatch = CountDownLatch(1)
-        var loadingCount = 0
-        var successCount = 0
-        var errorCount = 0
-        viewModel.tvRefresh.observeForever {
-            it.emit(
-                {
-                    successCount++
-                    countDownLatch.countDown()
-                }, {
-                    errorCount++
-                    countDownLatch.countDown()
-                }, {
-                    loadingCount++
-                }
-            )
-        }
-        viewModel.refresh()
-        countDownLatch.await(5, TimeUnit.SECONDS)
-        assert(loadingCount == 1)
-        assert(successCount == 1)
-        assert(errorCount == 0)
+
     }
 }

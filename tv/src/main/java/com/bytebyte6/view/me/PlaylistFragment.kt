@@ -33,12 +33,12 @@ import java.io.IOException
 class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickListener {
 
     companion object {
-        fun newInstance(playlistId: Long, title: String): Fragment {
+        fun newInstance(playlistId: Long, title: String, transitionName: String): Fragment {
             return PlaylistFragment().apply {
                 arguments = Bundle().apply {
                     putLong(KEY_PLAY_LIST_ID, playlistId)
                     putString(KEY_TITLE, title)
-                    putString(KEY_TRANS_NAME, playlistId.toString())
+                    putString(KEY_TRANS_NAME, transitionName)
                 }
             }
         }
@@ -81,11 +81,11 @@ class PlaylistFragment : ListFragment(), DownloadManager.Listener, ButtonClickLi
 
         binding?.apply {
             appbar.toolbar.title = requireArguments().getString(KEY_TITLE)
-            recyclerview.adapter = tvAdapter
-            recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
-            recyclerview.setHasFixedSize(true)
-            recyclerview.itemAnimator = null
+            recyclerView.adapter = tvAdapter
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.playlistId = requireArguments().getLong(KEY_PLAY_LIST_ID)

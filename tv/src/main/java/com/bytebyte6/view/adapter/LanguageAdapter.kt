@@ -2,13 +2,13 @@ package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.bytebyte6.data.entity.Language
 import com.bytebyte6.data.model.LangDiff
-import com.bytebyte6.data.model.Languages
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.randomImage
 
-class LanguageAdapter : BaseListAdapter<Languages, CardViewHolder>(LangDiff) {
+class LanguageAdapter : BaseListAdapter<Language, CardViewHolder>(LangDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         return CardViewHolder.create(parent)
@@ -21,9 +21,9 @@ class LanguageAdapter : BaseListAdapter<Languages, CardViewHolder>(LangDiff) {
         holder.apply {
             // 重建后的recyclerview Item是没有transName的
             // 所以在onBind要重新赋值一遍 动画效果才会有~~
-            itemView.transitionName = item.langName
-            tvTitle.text = item.langName
-            tvBody.text = item.langCode
+            itemView.transitionName = item.languageCode
+            tvTitle.text = item.languageName
+            tvBody.text = item.languageCode
             ivIcon.setImageResource(randomImage())
             cardView.strokeWidth = 4
             cardView.strokeColor = item.color

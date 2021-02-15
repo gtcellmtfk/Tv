@@ -2,7 +2,6 @@ package com.bytebyte6.view.test
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
@@ -39,10 +38,11 @@ class VideoListFragmentTest {
         // 收藏功能是否正常
         Espresso.onView(withText("Unkown")).check(matches(isDisplayed()))
         val subTitle = context.getString(R.string.total).split(" ")[0]
-        Espresso.onView(withText(StringContains.containsString(subTitle))).check(matches(isDisplayed()))
+        Espresso.onView(withText(StringContains.containsString(subTitle)))
+            .check(matches(isDisplayed()))
         Espresso.onView(withId(R.id.emptyBox)).check(matches(NotDisplayed()))
-        Espresso.onView(withId(R.id.recyclerview)).check(matches(isDisplayed()))
-        Espresso.onView(withId(R.id.recyclerview)).perform(
+        Espresso.onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        Espresso.onView(withId(R.id.recyclerView)).perform(
             RecyclerViewActions.actionOnItemAtPosition<ImageViewHolder>(0, ClickFavorite)
         )
     }

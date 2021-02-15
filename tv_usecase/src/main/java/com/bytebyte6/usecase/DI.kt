@@ -44,7 +44,6 @@ val useCaseModule: Module = module {
     factory { DownloadTvUseCase(get()) }
     factory { FavoriteTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
-    factory { TvRefreshUseCase(get(), get()) }
     factory { DownloadListUseCase(get(), get()) }
     factory { SearchCountryImageUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }

@@ -65,11 +65,11 @@ class VideoListFragment : ListFragment() {
         viewModel.setKey(title)
 
         binding?.apply {
-            recyclerview.adapter = adapter
-            recyclerview.layoutManager = GridLayoutManager(view.context, 2)
-            recyclerview.addItemDecoration(GridSpaceDecoration())
-            recyclerview.setHasFixedSize(true)
-            recyclerview.itemAnimator = null
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+            recyclerView.addItemDecoration(GridSpaceDecoration())
+            recyclerView.setHasFixedSize(true)
+            recyclerView.itemAnimator = null
         }
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
