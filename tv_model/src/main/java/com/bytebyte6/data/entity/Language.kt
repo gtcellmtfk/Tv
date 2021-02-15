@@ -16,6 +16,7 @@ import kotlinx.android.parcel.Parcelize
 data class Language(
     @SerializedName("name")
     var languageName: String = "",
+    var languageNameChinese: String = "",
     @PrimaryKey
     @SerializedName("code")
     var languageCode: String = ""

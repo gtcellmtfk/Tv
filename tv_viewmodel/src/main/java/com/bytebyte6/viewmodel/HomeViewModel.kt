@@ -19,6 +19,8 @@ class HomeViewModel(
 
     val category = dataManager.allCategory()
 
+    val logoWrongResult = searchCountryImageUseCase.result()
+
     fun searchLogo(first: Int, last: Int) {
         if (cs.value == null)
             return

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.isSuccess
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.R
@@ -71,10 +72,17 @@ class CountryFragment :
             }
         }
 
-        viewModel.cs.observe(viewLifecycleOwner, Observer {
-            countryAdapter.submitList(it)
+        viewModel.logoWrongResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                if (logoWrong){
+                    countryAdapter.notifyItemChanged(first)
+                }
+            }
         })
 
-        viewModel.searchLogoOnce()
+        viewModel.cs.observe(viewLifecycleOwner, Observer {
+            countryAdapter.submitList(it)
+            viewModel.searchLogoOnce()
+        })
     }
 }

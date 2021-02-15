@@ -23,14 +23,14 @@ class LanguageAdapter : BaseListAdapter<Language, CardViewHolder>(LangDiff) {
             // 所以在onBind要重新赋值一遍 动画效果才会有~~
             itemView.transitionName = item.languageCode
             tvTitle.text = item.languageName
-            tvBody.text = item.languageCode
+            tvBody.text = item.languageNameChinese
             ivIcon.setImageResource(randomImage())
             cardView.strokeWidth = 4
             cardView.strokeColor = item.color
             cardView.radius = 10f
             cardView.setCardBackgroundColor(
                 ContextCompat.getColor(
-                    holder.itemView.context,
+                    itemView.context,
                     R.color.itemRootLayoutBackgroundColor
                 )
             )

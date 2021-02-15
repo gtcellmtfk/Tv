@@ -148,7 +148,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 } else {
                     showSnack(
                             view,
-                            getString(R.string.tip_parse_file_error, it.error.message.toString())
+                            getString(R.string.tip_parse_file_error)
                     )
                 }
             }, {

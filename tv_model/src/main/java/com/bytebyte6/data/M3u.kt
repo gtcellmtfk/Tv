@@ -62,7 +62,7 @@ object M3u {
                     Tv(
                             name = nameAndUrl[0],
                             url = nameAndUrl[1].trim(),
-                            countryCode = Country.UNKOWN,
+                            countryCode = Country.UNSORTED_LOW,
                             language = Language.UNKOWN,
                             category = Category.OTHER
                     )
@@ -87,11 +87,11 @@ object M3u {
 
             val logo = logoRegex.find(str)?.value ?: ""
 
-            var name = nameRegex3.find(str)?.value ?: ""
-            if (name.isEmpty()) {
-                name = nameRegex.find(str)?.value ?: ""
+            var name = nameRegex3.find(str)?.value
+            if (name.isNullOrEmpty()) {
+                name = nameRegex.find(str)?.value
             }
-            if (name.isEmpty()) {
+            if (name.isNullOrEmpty()) {
                 println("name.isEmpty() continue")
                 continue
             }
@@ -99,18 +99,18 @@ object M3u {
                 name = name.replace("&", "")
             }
 
-            var lang = langRegex.find(str)?.value ?: ""
-            if (lang.isEmpty()) {
+            var lang = langRegex.find(str)?.value
+            if (lang.isNullOrEmpty()) {
                 lang = Language.UNKOWN
             }
 
-            var code = countryRegex.find(str)?.value ?: ""
-            if (code.isEmpty()) {
-                code = Country.UNKOWN
+            var code = countryRegex.find(str)?.value
+            if (code.isNullOrEmpty()) {
+                code = Country.UNSORTED
             }
 
-            var category = categoryRegex.find(str)?.value ?: ""
-            if (category.isEmpty()) {
+            var category = categoryRegex.find(str)?.value
+            if (category.isNullOrEmpty()) {
                 category = Category.OTHER
             }
 

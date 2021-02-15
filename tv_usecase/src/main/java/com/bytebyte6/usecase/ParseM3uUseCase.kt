@@ -15,14 +15,14 @@ import com.bytebyte6.data.entity.UserPlaylistCrossRef
 
 @Keep
 data class ParseParam(
-        val uri: Uri? = null,
-        val assetsFileName: String? = null,
-        val forTest: List<Tv>? = null
+    val uri: Uri? = null,
+    val assetsFileName: String? = null,
+    val forTest: List<Tv>? = null
 )
 
 class ParseM3uUseCase(
-        private val dataManager: DataManager,
-        private val context: Context? = null
+    private val dataManager: DataManager,
+    private val context: Context? = null
 ) : RxUseCase<ParseParam, Playlist>() {
 
     override fun run(param: ParseParam): Playlist {
@@ -64,11 +64,11 @@ class ParseM3uUseCase(
             param.uri != null -> {
                 var playlistName = ""
                 context!!.contentResolver.query(param.uri, null, null, null, null)
-                        ?.use {
-                            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            it.moveToFirst()
-                            playlistName = it.getString(nameIndex)
-                        }
+                    ?.use {
+                        val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        it.moveToFirst()
+                        playlistName = it.getString(nameIndex)
+                    }
                 if (playlistName.isEmpty()) {
                     val fileUri = param.uri.path!!
                     playlistName = fileUri.substring(fileUri.indexOfLast { it == '/' }.plus(1))
@@ -86,17 +86,17 @@ class ParseM3uUseCase(
 
     private fun getTvs(param: ParseParam): List<Tv> {
         return param.forTest
-                ?: if (param.assetsFileName != null) {
-                    val inputStream = context!!.assets.open(param.assetsFileName)
-                    M3u.getTvs(inputStream)
-                } else {
-                    val support = param.uri!!.path!!.endsWith(".m3u")
-                            || param.uri.path!!.endsWith(".m3u8")
-                            || param.uri.path!!.endsWith(".txt")
-                    if (!support) {
-                        throw UnsupportedOperationException("only support .m3u or .m3u8 or .txt file!")
-                    }
-                    M3u.getTvs(context!!.contentResolver.openInputStream(param.uri)!!)
+            ?: if (param.assetsFileName != null) {
+                val inputStream = context!!.assets.open(param.assetsFileName)
+                M3u.getTvs(inputStream)
+            } else {
+                val support = param.uri!!.path!!.endsWith(".m3u")
+                        || param.uri.path!!.endsWith(".m3u8")
+                        || param.uri.path!!.endsWith(".txt")
+                if (!support) {
+                    throw UnsupportedOperationException("only support .m3u or .m3u8 or .txt file!")
                 }
+                M3u.getTvs(context!!.contentResolver.openInputStream(param.uri)!!)
+            }
     }
 }
