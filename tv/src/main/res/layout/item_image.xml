@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_gravity="bottom"
-        android:background="#99000000"
+        android:background="#BF000000"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
@@ -53,7 +53,7 @@
         android:id="@+id/tvPosition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#99000000"
+        android:background="#BF000000"
         android:textColor="@color/white" />
 
 </FrameLayout>

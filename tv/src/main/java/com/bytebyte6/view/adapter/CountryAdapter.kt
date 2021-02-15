@@ -8,6 +8,7 @@ import com.bytebyte6.data.entity.CountryDiff
 import com.bytebyte6.utils.BaseListAdapter
 import com.bytebyte6.view.R
 import com.bytebyte6.view.load
+import java.util.*
 
 
 class CountryAdapter(
@@ -24,7 +25,11 @@ class CountryAdapter(
         val tvName = holder.binding.tvName
         val ivPreview = holder.binding.ivPreview
         images.add(ivPreview)
-        tvName.text = item.name
+        if (Locale.getDefault().language.contains("zh")){
+            tvName.text = item.nameChinese
+        }else{
+            tvName.text = item.name
+        }
         if (item.image.isEmpty()) {
             ivPreview.setImageResource(R.drawable.landscape)
         } else {

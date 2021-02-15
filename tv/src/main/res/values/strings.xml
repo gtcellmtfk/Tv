@@ -3,7 +3,7 @@
     <string name="app_name">TV</string>
     <string name="home_category">类型</string>
     <string name="home_language">语言</string>
-    <string name="home_country">国家</string>
+    <string name="home_country">地区</string>
     <string name="home_other" translatable="false">Other</string>
     <string name="home_category_view">分类浏览</string>
     <string name="share" translatable="false">Share</string>
@@ -20,7 +20,7 @@
     <string name="m3u">导入m3u文件</string>
     <string name="me_import_file">导入m3u文件后可展示列表</string>
     <string name="me_playlist">我的播放列表</string>
-    <string name="tip_parse_file_error">文件解析失败%s</string>
+    <string name="tip_parse_file_error">文件解析失败</string>
     <string name="tip_not_m3u_m3u8_file">只支持导入m3u或m3u8文件</string>
     <string name="search_share" translatable="false">searchShare</string>
     <string name="delete_forever" translatable="false">delete_forever</string>

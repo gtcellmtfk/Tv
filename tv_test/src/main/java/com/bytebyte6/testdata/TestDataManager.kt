@@ -75,8 +75,10 @@ abstract class TestDataManager : DataManager {
         return 1
     }
 
+    val DEFAULT = Country(name = Country.UNSORTED, code = Country.UNSORTED)
+
     override fun getCountryByCode(code: String): Country {
-        return Country.DEFAULT
+        return DEFAULT
     }
 
     override fun insertCategory(categories: List<Category>) {

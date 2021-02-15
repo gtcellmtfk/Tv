@@ -3,7 +3,7 @@
     <string name="app_name">TV</string>
     <string name="home_category">Category</string>
     <string name="home_language">Language</string>
-    <string name="home_country">Country</string>
+    <string name="home_country">Area</string>
     <string name="home_category_view">View</string>
     <string name="total">Total:%d</string>
     <string name="tip_play_error">Error,please retry!!!</string>
@@ -15,7 +15,7 @@
     <string name="m3u">Import m3u file</string>
     <string name="me_import_file">m3u list</string>
     <string name="me_playlist">Playlist</string>
-    <string name="tip_parse_file_error">File parsing failed%s</string>
+    <string name="tip_parse_file_error">File parsing failed</string>
     <string name="tip_not_m3u_m3u8_file">Only importing M3U or M3U8 files is supported</string>
     <string name="tip_del_playlist">Delete playlists</string>
     <string name="tip_del_video">Delete the video</string>

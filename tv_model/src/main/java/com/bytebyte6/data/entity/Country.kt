@@ -20,12 +20,13 @@ data class Country(
     @PrimaryKey(autoGenerate = true)
     var countryId: Long = 0,
     var name: String = "",
+    var nameChinese: String = "",
     var code: String = "",
     var image: String = ""
 ) : Parcelable {
     companion object {
-        const val UNKOWN = "Unkown"
-        val DEFAULT = Country(name = UNKOWN, code = UNKOWN)
+        const val UNSORTED = "Unsorted"
+        const val UNSORTED_LOW = "unsorted"
     }
 }
 

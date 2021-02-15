@@ -16,8 +16,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url = uri("https://jitpack.io") }
-        maven { url = uri("http://maven.aliyun.com/nexus/content/groups/public/") }
+        maven { url = uri(RepoUri.JITPACK_IO) }
+        maven { url = uri(RepoUri.ALI_YUN_MAVEN) }
     }
 }
 

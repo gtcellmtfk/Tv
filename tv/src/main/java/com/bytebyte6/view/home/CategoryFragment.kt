@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bytebyte6.viewmodel.HomeViewModel
 import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.dp8
 import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.TAB
@@ -46,7 +47,7 @@ class CategoryFragment :
         recyclerView = binding?.recyclerView
         binding?.apply {
             recyclerView.adapter = categoryAdapter
-            recyclerView.addItemDecoration(LinearSpaceDecoration())
+            recyclerView.addItemDecoration(LinearSpaceDecoration(top = dp8))
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
         }

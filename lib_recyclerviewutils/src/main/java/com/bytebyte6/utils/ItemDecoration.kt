@@ -11,9 +11,9 @@ import com.bytebyte6.common.dp8
 
 class LinearSpaceDecoration(
     private val start: Int = dp16,
-    private val top: Int = start,
+    private val top: Int = dp8,
     private val end: Int = start,
-    private val bottom: Int = start
+    private val bottom: Int = top
 ) : ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
@@ -38,10 +38,7 @@ class LinearSpaceDecoration(
  * {@link GridSpaceDecoration2}
  */
 class GridSpaceDecoration(
-    private val start: Int = dp8,
-    private val top: Int = start,
-    private val end: Int = start,
-    private val bottom: Int = start,
+    private val distance: Int = dp8,
     private val span: Int = 2
 ) : ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
@@ -52,40 +49,34 @@ class GridSpaceDecoration(
             if (itemCount <= span) {
                 //只有一行
                 if (pos == 0) {
-                    outRect.set(start, top, end, bottom)
+                    outRect.set(distance, distance, distance, distance)
                 } else {
-                    outRect.set(0, top, end, bottom)
+                    outRect.set(0, distance, distance, distance)
                 }
                 return
             }
 
-            val start: Int
-            val top: Int
-
-            top = if (pos < span) {
+            val top: Int = if (pos < span) {
                 //第一行
-                this.top
+                this.distance
             } else {
                 0
             }
 
-            start = if (pos % span == 0) {
+            val start: Int = if (pos % span == 0) {
                 //第一列
-                this.start
+                this.distance
             } else {
                 0
             }
 
-            outRect.set(start, top, end, bottom)
+            outRect.set(start, top, distance, distance)
         }
     }
 }
 
 class GridSpaceDecoration2(
-    private val start: Int = dp8,
-    private val top: Int = start,
-    private val end: Int = start,
-    private val bottom: Int = start,
+    private val distance: Int = dp8,
     private val span: Int = 4
 ) : ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
@@ -95,29 +86,26 @@ class GridSpaceDecoration2(
 
             if (itemCount <= span) {
                 if (pos == 0) {
-                    outRect.set(start, top, end, bottom)
+                    outRect.set(distance, distance, distance, distance)
                 } else {
-                    outRect.set(start, 0, end, bottom)
+                    outRect.set(distance, 0, distance, distance)
                 }
                 return
             }
 
-            val start: Int
-            val top: Int
-
-            start = if (pos < span) {
-                this.top
+            val start: Int = if (pos < span) {
+                this.distance
             } else {
                 0
             }
 
-            top = if (pos % span == 0) {
-                this.start
+            val top: Int = if (pos % span == 0) {
+                this.distance
             } else {
                 0
             }
 
-            outRect.set(start, top, end, bottom)
+            outRect.set(start, top, distance, distance)
         }
     }
 }

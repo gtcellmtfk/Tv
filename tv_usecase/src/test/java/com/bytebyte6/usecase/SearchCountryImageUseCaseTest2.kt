@@ -24,29 +24,36 @@ class SearchCountryImageUseCaseTest2 {
 
     @Test
     fun test() {
+        val param = SearchCountryImageParam(
+            0, 0, emptyList()
+        )
         searchCountryImageUseCase.execute(
-            SearchCountryImageParam(
-                0, 0, emptyList()
-            )
-        ).test().assertValue(false)
+            param
+        ).test().assertError(IllegalParamException)
 
+        val param1 = SearchCountryImageParam(
+            1, 0, emptyList()
+        )
         searchCountryImageUseCase.execute(
-            SearchCountryImageParam(
-                1, 0, emptyList()
-            )
-        ).test().assertValue(false)
+            param1
+        ).test().assertError(IllegalParamException)
 
+        val param2 = SearchCountryImageParam(
+            0, 11, countries
+        )
         searchCountryImageUseCase.execute(
-            SearchCountryImageParam(
-                0, 11, countries
-            )
-        ).test().assertValue(false)
+            param2
+        ).test().assertError(IllegalParamException)
 
-        searchCountryImageUseCase.execute(
-            SearchCountryImageParam(
-                0, 2, countries
-            )
-        ).test().assertValue(true)
+        val param3 = SearchCountryImageParam(
+            0, 2, countries
+        )
+        searchCountryImageUseCase.execute(param3).test().assertValue {
+            assert(it.cs[0].image.isNotEmpty())
+            assert(it.cs[1].image.isNotEmpty())
+            assert(it.cs[2].image.isNotEmpty())
+            true
+        }
 
         assert(dataManager.testCountries.size == 3)
         assert(dataManager.testCountries[0].image.isNotEmpty())
