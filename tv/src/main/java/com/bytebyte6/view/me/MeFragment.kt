@@ -10,20 +10,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.selection.SelectionTracker
-import com.bytebyte6.common.BaseShareFragment
-import com.bytebyte6.common.doOnExitTransitionEndOneShot
-import com.bytebyte6.common.emitIfNotHandled
+import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
+import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
-import com.bytebyte6.view.meToPlaylist
-import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
-import com.bytebyte6.view.setupToolbarMenuMode
 import com.bytebyte6.viewmodel.MeViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
-import splitties.snackbar.longSnack
+
 
 /***
  * 导入
@@ -57,7 +53,21 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarMenuMode()
+        setupToolbarMenuMode(){
+            binding?.emptyBox?.pauseAnimation()
+        }
+        DrawerHelper.getInstance(requireActivity())?.apply {
+            addDrawerListener(object : SimpleDrawerListener() {
+                override fun onDrawerClosed(drawerView: View) {
+                    if (binding == null) {
+                        removeDrawerListener(this)
+                    } else {
+                        binding?.emptyBox?.resumeAnimation()
+                    }
+                }
+            })
+        }
+
         doOnExitTransitionEndOneShot { clearRecyclerView() }
         setupOnBackPressedDispatcherBackToHome()
 
@@ -101,10 +111,10 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
+                binding.fab.hide()
                 hideProgressBar()
                 selectionTracker.clearSelection()
                 showSnackBar(R.string.tip_del_success)
-                binding.fab.hide()
             }, {
                 hideProgressBar()
                 showSnackBar(R.string.tip_del_fail)
@@ -115,7 +125,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.playlists.observe(viewLifecycleOwner, {
             playlistAdapter.replace(it)
-            binding.lavEmpty.isVisible = it.isEmpty()
+            binding.emptyBox.isVisible = it.isEmpty()
         })
 
         viewModel.parseResult.observe(viewLifecycleOwner, { result ->

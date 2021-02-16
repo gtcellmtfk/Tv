@@ -21,7 +21,7 @@ import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.SearchViewModel2
 import org.koin.android.viewmodel.ext.android.viewModel
-import splitties.snackbar.longSnack
+
 
 class SearchFragment2 : ListFragment() {
 
@@ -113,6 +113,11 @@ class SearchFragment2 : ListFragment() {
                 showProgress()
             })
         })
+
+        viewModel.itemChanged.observe(viewLifecycleOwner, Observer { pos ->
+            adapter.notifyItemChanged(pos)
+        })
+
         viewModel.resultCount.observe(viewLifecycleOwner, Observer {
             val empty = it == 0
             binding?.emptyBox?.isVisible = empty

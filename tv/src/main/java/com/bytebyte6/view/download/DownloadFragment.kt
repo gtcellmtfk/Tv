@@ -12,16 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.utils.ListFragment
+import com.bytebyte6.view.*
 import com.bytebyte6.view.R
-import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
-import com.bytebyte6.view.setupToolbarMenuMode
-import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.DownloadViewModel
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import splitties.snackbar.longSnack
+
 
 /***
  * 下载中心
@@ -49,7 +47,20 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
         downloadManager.addListener(this)
 
-        setupToolbarMenuMode(getString(R.string.nav_download), "")
+        setupToolbarMenuMode(getString(R.string.nav_download), ""){
+            binding?.emptyBox?.pauseAnimation()
+        }
+        DrawerHelper.getInstance(requireActivity())?.apply {
+            addDrawerListener(object : SimpleDrawerListener() {
+                override fun onDrawerClosed(drawerView: View) {
+                    if (binding == null) {
+                        removeDrawerListener(this)
+                    } else {
+                        binding?.emptyBox?.resumeAnimation()
+                    }
+                }
+            })
+        }
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()

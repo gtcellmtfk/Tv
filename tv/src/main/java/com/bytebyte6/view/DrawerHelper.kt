@@ -1,7 +1,6 @@
 package com.bytebyte6.view
 
 import android.view.MenuItem
-import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -14,8 +13,10 @@ class DrawerHelper private constructor(
     companion object {
         private var drawerHelper: DrawerHelper? = null
         fun getInstance(activity: FragmentActivity): DrawerHelper? {
-            val drawerLayout: DrawerLayout = activity.findViewById(R.id.drawLayout) ?: return null
-            if (drawerHelper == null) drawerHelper = DrawerHelper(drawerLayout)
+            if (drawerHelper == null) {
+                val drawerLayout: DrawerLayout = activity.findViewById(R.id.drawLayout) ?: return null
+                drawerHelper = DrawerHelper(drawerLayout)
+            }
             return drawerHelper!!
         }
 

@@ -17,7 +17,7 @@ import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.VideoListViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import splitties.snackbar.longSnack
+
 
 class VideoListFragment : ListFragment() {
 
@@ -84,6 +84,10 @@ class VideoListFragment : ListFragment() {
                 adapter.currentList[pos].favorite = tv.favorite
                 adapter.notifyItemChanged(pos)
             }
+        })
+
+        viewModel.itemChanged.observe(viewLifecycleOwner, Observer { pos ->
+            adapter.notifyItemChanged(pos)
         })
 
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->

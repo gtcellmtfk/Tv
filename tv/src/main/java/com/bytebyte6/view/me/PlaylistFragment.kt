@@ -23,7 +23,7 @@ import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import splitties.snackbar.longSnack
+
 import java.io.IOException
 
 /***

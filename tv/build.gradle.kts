@@ -80,8 +80,6 @@ dependencies {
     implementation(project(":tv_viewmodel"))
     kapt(Libs.KAPT_GLIDE)
 
-    implementation(Libs.SNACKBAR)
-
     implementation(Libs.EXOPLAYER)
     implementation(Libs.EXOPLAYER_CORE)
     implementation(Libs.EXOPLAYER_DASH)

@@ -2,6 +2,7 @@ package com.bytebyte6.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.bytebyte6.common.*
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.PAGE_SIZE
@@ -16,6 +17,12 @@ class SearchViewModel2(
     private val searchTvLogoUseCase: SearchTvLogoUseCase,
     private val favoriteTvUseCase: FavoriteTvUseCase
 ) : BaseViewModel() {
+
+    val itemChanged: LiveData<Int> = searchTvLogoUseCase.itemChanged.map {
+        val indexOf = pagingHelper.getList().indexOf(it)
+        val pos = if (indexOf == -1) 0 else indexOf
+        pos
+    }
 
     private val count = MutableLiveData(0)
 
