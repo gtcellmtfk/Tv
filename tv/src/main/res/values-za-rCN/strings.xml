@@ -10,7 +10,7 @@
     <string name="tip_play_retry">重试</string>
     <string name="tip_del_fail">删除失败</string>
     <string name="tip_del_success">删除成功</string>
-    <string name="nav_import">M3u 导入</string>
+    <string name="nav_import">导入</string>
     <string name="nav_home">首页</string>
     <string name="m3u">导入m3u文件</string>
     <string name="me_import_file">导入m3u文件后可展示列表</string>
@@ -29,8 +29,8 @@
     <string name="nav_setting">设置</string>
     <string name="tip">提示</string>
     <string name="enter_exit">是否要退出应用!</string>
-    <string name="nav_fav">我的收藏</string>
-    <string name="nav_download">下载中心</string>
+    <string name="nav_fav">收藏</string>
+    <string name="nav_download">下载</string>
     <string name="tip_add_download_has_been">已添加到下载列表,如需取消请到下载页面!</string>
     <string name="tip_un_support_download_live_stream">不支持下载实时流!</string>
     <string name="pause">暂停下载</string>

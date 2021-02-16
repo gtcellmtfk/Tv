@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 import java.io.IOException
 
 /***
@@ -48,11 +49,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
 
     private val defaultRenderersFactory by lazy { DefaultRenderersFactory(requireContext()) }
 
-    private var downloadHelper: DownloadHelper? = null
-
     private val viewModel: PlaylistViewModel by viewModel()
-
-    private var progressDialog: ProgressDialog2? = null
 
     private val networkHelper by inject<NetworkHelper>()
 
@@ -71,7 +68,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
         disEnabledSwipeRefreshLayout()
         showSwipeRefresh()
 
-        val tvAdapter = TvAdapter(this,download = true)
+        val tvAdapter = TvAdapter(this, download = true)
 
         tvAdapter.onItemClick = { pos, _: View ->
             toPlayer(tvAdapter.currentList[pos].url)
@@ -96,7 +93,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
                 hideSwipeRefresh()
                 hideProgress()
             }, {
-                showSnack(view, it.error.message.toString())
+                view.longSnack(it.error.message.toString())
                 hideSwipeRefresh()
                 hideProgress()
             }, {
@@ -107,17 +104,15 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             binding?.appbar?.toolbar?.subtitle = getString(R.string.total, it)
             binding?.emptyBox?.isVisible = it == 0
         })
-        viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
-            result.emitIfNotHandled(success = {
-                tvAdapter.notifyItemChanged(it.data.pos)
-            }, error = {
-                showSnack(requireView(), it.error.message.toString())
-            })
+
+        viewModel.itemChanged.observe(viewLifecycleOwner, Observer { pos ->
+            tvAdapter.notifyItemChanged(pos)
         })
+
         viewModel.first()
     }
 
-    private fun showTipDialog(position: Int, tv: Tv) {
+    private fun showTipDialog(tv: Tv) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.tip)
             .setMessage(getString(R.string.tip_confirm_the_download))
@@ -126,71 +121,59 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             }
             .setPositiveButton(R.string.enter) { dialog, _ ->
                 dialog.dismiss()
-                onDownloadClick(position, tv)
+                onDownloadClick(tv)
             }
             .setCancelable(false)
             .create()
             .show()
     }
 
-    private fun onDownloadClick(pos: Int, tv: Tv) {
-        showProgressDialog()
-        downloadHelper?.release()
-        downloadHelper = null
-        downloadHelper = DownloadHelper.forMediaItem(
+    private fun onDownloadClick(tv: Tv) {
+        val dialog = showProgressDialog()
+        val downloadHelper = DownloadHelper.forMediaItem(
             requireContext(),
             MediaItem.fromUri(tv.url),
             defaultRenderersFactory,
             httpDataSourceFactory
         )
-        downloadHelper!!.prepare(getDownloadHelperCallback(pos, tv))
+        downloadHelper.prepare(getDownloadHelperCallback(tv, dialog))
     }
 
-    private fun getDownloadHelperCallback(pos: Int, tv: Tv): DownloadHelper.Callback {
+    private fun getDownloadHelperCallback(
+        tv: Tv,
+        dialog: ProgressDialog2
+    ): DownloadHelper.Callback {
         return object : DownloadHelper.Callback {
             override fun onPrepared(helper: DownloadHelper) {
                 DownloadServicePro.addDownload(requireContext(), tv.url)
                 val tip = getString(R.string.tip_add_download_has_been)
-                showSnack(requireView(), tip)
-                hideProgressDialog()
+                requireView().longSnack(tip)
+                dialog.dismiss()
             }
 
             override fun onPrepareError(helper: DownloadHelper, e: IOException) {
                 if (e is DownloadHelper.LiveContentUnsupportedException) {
-                    showSnack(requireView(), R.string.tip_un_support_download_live_stream)
+                    requireView().longSnack(R.string.tip_un_support_download_live_stream)
                 } else {
-                    showSnack(requireView(), Message(message = e.message.toString()))
+                    requireView().longSnack(e.message.toString())
                 }
-                hideProgressDialog()
+                dialog.dismiss()
             }
         }
     }
 
-    private fun showProgressDialog() {
-        progressDialog = ProgressDialog2(requireContext()).apply {
+    private fun showProgressDialog(): ProgressDialog2 {
+        val progressDialog = ProgressDialog2(requireContext()).apply {
             setTitle(R.string.tip)
             setMessage2(getString(R.string.tip_please_wait))
             setCanceledOnTouchOutside(false)
             setCancelable(false)
             setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-                this@PlaylistFragment.progressDialog = null
-                downloadHelper?.release()
-                downloadHelper = null
             }
         }
-        progressDialog!!.show()
-    }
-
-    private fun hideProgressDialog() {
-        progressDialog?.dismiss()
-        progressDialog = null
-    }
-
-    override fun onDestroyView() {
-        downloadHelper?.release()
-        downloadHelper = null
-        super.onDestroyView()
+        progressDialog.show()
+        return progressDialog
     }
 
     override fun onLoadMore() {
@@ -202,13 +185,13 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
     override fun onClick(position: Int, tv: Tv) {
         when (networkHelper.getNetworkType()) {
             NetworkHelper.NetworkType.MOBILE -> {
-                showTipDialog(position, tv)
+                showTipDialog(tv)
             }
             NetworkHelper.NetworkType.WIFI -> {
-                onDownloadClick(position, tv)
+                onDownloadClick(tv)
             }
             else -> {
-                showSnack(requireView(), R.string.network_disconnected)
+                requireView().longSnack(R.string.network_disconnected)
             }
         }
     }

@@ -34,7 +34,7 @@ fun getSelectionTracker(
     return selectionTracker
 }
 
-fun <T, V : DetailsViewHolder> AdapterHelper<T, V>.getItemTouchHelper(
+fun <T, V : DetailsViewHolder> SwapAdapterHelper<T, V>.getItemTouchHelper(
     recyclerView: RecyclerView
 ): ItemTouchHelper {
     val itemTouchHelper = ItemTouchHelper(
@@ -52,7 +52,7 @@ fun <T, V : DetailsViewHolder> AdapterHelper<T, V>.getItemTouchHelper(
     return itemTouchHelper
 }
 
-fun <T, V : DetailsViewHolder> AdapterHelper<T, V>.getItemDelegate(
+fun <T, V : DetailsViewHolder> SwapAdapterHelper<T, V>.getItemDelegate(
     recyclerView: RecyclerView,
     recyclerViewAccessibilityDelegate: RecyclerViewAccessibilityDelegate
 ): RecyclerViewAccessibilityDelegate.ItemDelegate {

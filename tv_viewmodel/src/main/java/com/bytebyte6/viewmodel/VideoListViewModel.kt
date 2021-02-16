@@ -57,5 +57,10 @@ class VideoListViewModel(
             first = false
         }
     }
+
+    override fun onCleared() {
+        searchTvLogoUseCase.stop()
+        super.onCleared()
+    }
 }
 

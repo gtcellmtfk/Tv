@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"/>
 
     <androidx.core.widget.ContentLoadingProgressBar
+        android:visibility="invisible"
         android:progressTint="?attr/colorPrimary"
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar"

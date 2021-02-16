@@ -92,9 +92,9 @@ object M3u {
             var name = nameRegex3.find(str)?.value
             if (name.isNullOrEmpty()) {
                 name = nameRegex.find(str)?.value
-                if (name!!.contains("&")) {
-                    name = name.replace("&", "")
-                }
+            }
+            if (name!!.contains("&")) {
+                name = name.replace("&", "")
             }
 
             var lang = langRegex.find(str)?.value

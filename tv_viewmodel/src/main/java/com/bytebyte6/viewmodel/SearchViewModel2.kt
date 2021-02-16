@@ -67,5 +67,10 @@ class SearchViewModel2(
             )
         }
     }
+
+    override fun onCleared() {
+        searchTvLogoUseCase.stop()
+        super.onCleared()
+    }
 }
 

@@ -41,7 +41,6 @@ val exoPlayerModule = module {
 }
 
 val useCaseModule: Module = module {
-    factory { DownloadTvUseCase(get()) }
     factory { FavoriteTvUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
     factory { DownloadListUseCase(get(), get()) }

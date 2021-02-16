@@ -21,6 +21,7 @@ import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.SearchViewModel2
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 
 class SearchFragment2 : ListFragment() {
 
@@ -107,7 +108,7 @@ class SearchFragment2 : ListFragment() {
                 hideProgress()
             }, {
                 hideProgress()
-                showSnack(view, it.error.message.toString())
+                view.longSnack(it.error.message.toString())
             }, {
                 showProgress()
             })

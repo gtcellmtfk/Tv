@@ -10,7 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.selection.SelectionTracker
-import com.bytebyte6.common.*
+import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.doOnExitTransitionEndOneShot
+import com.bytebyte6.common.emitIfNotHandled
 import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
@@ -19,7 +21,9 @@ import com.bytebyte6.view.meToPlaylist
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
 import com.bytebyte6.viewmodel.MeViewModel
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 
 /***
  * 导入
@@ -36,35 +40,8 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     private lateinit var launcher: ActivityResultLauncher<String>
 
-    private lateinit var selectionTracker: SelectionTracker<Long>
-
-    private val selectionObserver = object : SelectionTracker.SelectionObserver<Long>() {
-        override fun onSelectionChanged() {
-            val hasSelection = selectionTracker.hasSelection()
-            if (hasSelection) {
-                binding?.fab?.show()
-            } else {
-                binding?.fab?.hide()
-            }
-        }
-    }
-
     override fun initViewBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view)
-    }
-
-    private fun showDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.tip_del_playlist))
-            .setMessage(getString(R.string.tip_beyond_retrieve))
-            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, _: Int ->
-                dialogInterface.dismiss()
-                viewModel.delete(selectionTracker.selection)
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
-                dialogInterface.dismiss()
-            }
-            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,10 +58,12 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode()
-        doOnExitTransitionEndOneShot {
-            clearRecyclerView()
-        }
+        doOnExitTransitionEndOneShot { clearRecyclerView() }
         setupOnBackPressedDispatcherBackToHome()
+
+        val binding = binding!!
+
+        //init recyclerview
         val playlistAdapter = PlaylistAdapter()
         playlistAdapter.onItemClick = { pos, itemView ->
             meToPlaylist(
@@ -93,68 +72,100 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 itemView
             )
         }
-
-        binding?.apply {
-            toolbar.apply {
-                setOnMenuItemClickListener {
-                    launcher.launch("*/*")
-                    true
-                }
-            }
-            this@MeFragment.recyclerView = recyclerView
-            recyclerView.adapter = playlistAdapter
-            playlistAdapter.setupSelectionTracker(recyclerView, selectionObserver)
-            selectionTracker = playlistAdapter.selectionTracker!!
-            recyclerView.addItemDecoration(LinearSpaceDecoration())
-            recyclerView.setHasFixedSize(true)
-            fab.setOnClickListener {
-                selectionTracker.selection.apply {
-                    if (!this.isEmpty) {
-                        showDialog()
+        this.recyclerView = binding.recyclerView
+        binding.recyclerView.adapter = playlistAdapter
+        binding.recyclerView.addItemDecoration(LinearSpaceDecoration())
+        binding.recyclerView.setHasFixedSize(true)
+        playlistAdapter.setupSelectionTracker(binding.recyclerView,
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    val hasSelection = playlistAdapter.selectionTracker!!.hasSelection()
+                    if (hasSelection) {
+                        binding.fab.show()
+                    } else {
+                        binding.fab.hide()
                     }
                 }
+            })
+        val selectionTracker = playlistAdapter.selectionTracker!!
+
+        binding.toolbar.setOnMenuItemClickListener {
+            launcher.launch("*/*")
+            true
+        }
+        binding.fab.setOnClickListener {
+            if (!selectionTracker.selection.isEmpty) {
+                showDialog(selectionTracker)
             }
         }
+
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
                 hideProgressBar()
                 selectionTracker.clearSelection()
-                showSnack(view, Message(id = R.string.tip_del_success))
-                binding?.apply {
-                    fab.hide()
-                }
+                showSnackBar(R.string.tip_del_success)
+                binding.fab.hide()
             }, {
                 hideProgressBar()
-                showSnack(view, Message(id = R.string.tip_del_fail))
+                showSnackBar(R.string.tip_del_fail)
             }, {
                 showProgressBar()
             })
         })
+
         viewModel.playlists.observe(viewLifecycleOwner, {
             playlistAdapter.replace(it)
-            binding?.apply {
-                lavEmpty.isVisible = it.isEmpty()
-            }
+            binding.lavEmpty.isVisible = it.isEmpty()
         })
+
         viewModel.parseResult.observe(viewLifecycleOwner, { result ->
-            result.emitIfNotHandled(
-                {
-                    hideProgressBar()
-                }, {
-                    hideProgressBar()
-                    if (it.error is UnsupportedOperationException) {
-                        showSnack(view, R.string.tip_not_m3u_m3u8_file)
-                    } else {
-                        showSnack(
-                            view,
-                            getString(R.string.tip_parse_file_error)
-                        )
-                    }
-                }, {
-                    showProgressBar()
+            result.emitIfNotHandled({
+                hideProgressBar()
+            }, {
+                hideProgressBar()
+                if (it.error is UnsupportedOperationException) {
+                    showSnackBar(R.string.tip_not_m3u_m3u8_file)
+                } else {
+                    showSnackBar(R.string.tip_parse_file_error)
                 }
-            )
+            }, {
+                showProgressBar()
+            })
         })
+    }
+
+    private fun showDialog(selectionTracker: SelectionTracker<Long>) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.tip_del_playlist))
+            .setMessage(getString(R.string.tip_beyond_retrieve))
+            .setPositiveButton(getString(R.string.enter)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                viewModel.delete(selectionTracker.selection)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
+    }
+
+    private fun showSnackBar(messageId: Int) {
+        binding?.apply {
+            if (fab.isVisible) {
+                val actionSetup: Snackbar.() -> Unit = {
+                    anchorView = fab
+                }
+                val longSnack = fab.longSnack(messageId, actionSetup)
+                //memory leak
+                longSnack.addCallback(object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        transientBottomBar?.anchorView = null
+                        longSnack.removeCallback(this)
+                    }
+                })
+            } else {
+                requireView().longSnack(messageId)
+            }
+        }
     }
 
     private fun showProgressBar() {

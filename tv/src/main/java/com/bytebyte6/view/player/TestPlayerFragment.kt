@@ -5,13 +5,13 @@ import android.view.View
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.common.Message
 import com.bytebyte6.common.logd
-import com.bytebyte6.common.showSnack
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentVideoBinding
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import splitties.snackbar.longSnack
 
 
 class TestPlayerFragment :
@@ -69,7 +69,7 @@ class TestPlayerFragment :
             }
             requireActivity()
                 .runOnUiThread {
-                    showSnack(requireView(), m)
+                    requireView().longSnack(m.get(requireContext()))
                 }
         }
     }

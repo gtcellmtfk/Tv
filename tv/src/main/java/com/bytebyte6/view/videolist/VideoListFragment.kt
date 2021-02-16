@@ -17,6 +17,7 @@ import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.VideoListViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 
 class VideoListFragment : ListFragment() {
 
@@ -92,7 +93,7 @@ class VideoListFragment : ListFragment() {
                 hideSwipeRefresh()
                 hideProgress()
             }, {
-                showSnack(view, Message(message = it.error.message.toString()))
+                view.longSnack(it.error.message.toString())
                 hideSwipeRefresh()
                 hideProgress()
             }, {

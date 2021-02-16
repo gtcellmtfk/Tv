@@ -10,7 +10,7 @@
     <string name="tip_play_retry">Retry</string>
     <string name="tip_del_fail">Delete fail</string>
     <string name="tip_del_success">Delete success</string>
-    <string name="nav_import">M3u Import</string>
+    <string name="nav_import">Import</string>
     <string name="nav_home">Home</string>
     <string name="m3u">Import m3u file</string>
     <string name="me_import_file">m3u list</string>
@@ -29,7 +29,7 @@
     <string name="nav_setting">Setting</string>
     <string name="tip">Tip</string>
     <string name="enter_exit">Do you want to quit the app?</string>
-    <string name="nav_fav">My favorite</string>
+    <string name="nav_fav">Favorite</string>
     <string name="nav_download">Download</string>
     <string name="tip_add_download_has_been">Has been added to download list, if you want to cancel, please go to download page!</string>
     <string name="tip_un_support_download_live_stream">Downloading live streams is not supported!</string>

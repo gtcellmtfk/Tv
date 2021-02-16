@@ -53,9 +53,11 @@ class TvAdapter(
         } else {
             ivPreview.load(item.logo)
         }
+
         flButton.setOnClickListener {
             btnClickListener?.onClick(position, item)
         }
+
         button.isChecked = item.favorite
 
         if (download){

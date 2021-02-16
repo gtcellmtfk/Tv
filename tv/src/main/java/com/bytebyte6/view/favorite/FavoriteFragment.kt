@@ -18,6 +18,7 @@ import com.bytebyte6.view.setupToolbarMenuMode
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 
 class FavoriteFragment : ListFragment() {
 
@@ -70,14 +71,11 @@ class FavoriteFragment : ListFragment() {
         viewModel.cancelResult.observe(viewLifecycleOwner, Observer {
             it.isSuccess()?.apply {
                 if (pos != -1) {
-                    showSnack(
-                        view,
-                        Message(
-                            id = R.string.unbookmarked,
-                            actionStringId = R.string.revocation
-                        ),
-                        View.OnClickListener { viewModel.restoreFavorite(tv) }
-                    )
+                    view.longSnack(R.string.unbookmarked) {
+                        setAction(R.string.revocation){
+                            viewModel.restoreFavorite(tv)
+                        }
+                    }
                 }
             }
         })

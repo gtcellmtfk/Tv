@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import splitties.snackbar.longSnack
 
 /***
  * 下载中心
@@ -84,7 +85,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
                 hideSwipeRefresh()
             }, {
                 hideSwipeRefresh()
-                showSnack(view, it.error.message.toString())
+                view.longSnack(it.error.message.toString())
             }, {
                 showSwipeRefresh()
             })
@@ -100,7 +101,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
                     requireContext(), downloadAdapter.currentList[pos].download.request.id
                 )
                 dialogInterface.dismiss()
-                showSnack(requireView(),getString(R.string.tip_del_success_notification))
+                requireView().longSnack(R.string.tip_del_success_notification)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
@@ -110,7 +111,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
     private fun startDownload() {
         DownloadServicePro.resumeDownloads(requireContext())
-        showSnack(requireView(), R.string.resume)
+        requireView().longSnack(R.string.resume)
         viewModel.startInterval()
     }
 
@@ -154,7 +155,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
             when (item.itemId) {
                 R.id.pause -> {
                     DownloadServicePro.pauseDownloads(requireContext())
-                    showSnack(requireView(), R.string.pause)
+                    requireView().longSnack(R.string.pause)
                     viewModel.pauseInterval()
                 }
                 R.id.resume -> {

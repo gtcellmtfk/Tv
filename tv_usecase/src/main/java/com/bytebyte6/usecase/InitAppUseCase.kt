@@ -28,11 +28,7 @@ class InitAppUseCaseImpl(
 
     override fun run(param: Unit): User {
 
-        val user = dataManager.getCurrentUserIfNotExistCreate()
-
-        if (dataManager.getTvCount() != 0 && user.capturePic) {
-            findImageLink()
-        }
+        val user = initUser()
 
         initCountryData()
 
@@ -42,6 +38,15 @@ class InitAppUseCaseImpl(
 
         initTestData()
 
+        return user
+    }
+
+    private fun initUser(): User {
+        val user = dataManager.getCurrentUserIfNotExistCreate()
+
+        if (dataManager.getTvCount() != 0 && user.capturePic) {
+            findImageLink()
+        }
         return user
     }
 
