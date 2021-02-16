@@ -17,6 +17,7 @@ import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
 import com.bytebyte6.viewmodel.MeViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -111,10 +112,13 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
-                binding.fab.hide()
+                binding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener(){
+                    override fun onHidden(fab: FloatingActionButton?) {
+                        showSnackBar(R.string.tip_del_success)
+                    }
+                })
                 hideProgressBar()
                 selectionTracker.clearSelection()
-                showSnackBar(R.string.tip_del_success)
             }, {
                 hideProgressBar()
                 showSnackBar(R.string.tip_del_fail)
