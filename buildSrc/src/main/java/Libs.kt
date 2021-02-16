@@ -75,4 +75,7 @@ object Libs {
     const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
     const val FIREBASE_CRASH = "com.google.firebase:firebase-crashlytics-ktx"
     const val FIREBASE_BOM = "com.google.firebase:firebase-bom:26.4.0"
+
+    //snackbar
+    const val SNACKBAR="com.louiscad.splitties:splitties-snackbar:${Versions.splitties_version}"
 }

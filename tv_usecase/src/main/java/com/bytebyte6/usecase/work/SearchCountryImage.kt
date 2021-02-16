@@ -10,7 +10,7 @@ class SearchCountryImage(
     fun searchCountryImage() {
         val countries = dataManager.getImageEmptyCountries()
         countries.forEach { country ->
-            val image = searchImage.search(country.name.plus(" flag"))
+            val image = searchImage.search(country.name.plus(" Flag"))
             if (image.isNotEmpty()) {
                 country.image = image
                 dataManager.updateCountry(country)

@@ -41,7 +41,7 @@ class GetCountryFactory(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
-    ): ListenableWorker? {
+    ): ListenableWorker {
         return FindImageWork(
             searchCountryImage = searchCountryImage,
             searchTvLogo = searchTvLogo,

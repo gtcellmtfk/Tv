@@ -15,8 +15,6 @@
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:elevation="0dp"
         app:navigationIcon="@drawable/ic_menu"
-        app:title="Title"
-        app:subtitle="SubTitle"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

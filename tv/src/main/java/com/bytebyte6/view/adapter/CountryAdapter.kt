@@ -1,6 +1,7 @@
 package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
 import com.bytebyte6.data.entity.Country
@@ -24,6 +25,7 @@ class CountryAdapter(
         val item = getItem(position)
         val tvName = holder.binding.tvName
         val ivPreview = holder.binding.ivPreview
+        holder.binding.flButton.isVisible=false
         images.add(ivPreview)
         if (Locale.getDefault().language.contains("zh")){
             tvName.text = item.nameChinese

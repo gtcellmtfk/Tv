@@ -8,8 +8,6 @@ import com.bytebyte6.common.isLoading
 
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.DownloadListUseCase
-import com.bytebyte6.usecase.DownloadTvUseCase
-
 import com.bytebyte6.usecase.useCaseModule
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -80,19 +78,10 @@ class DownloadViewModelTest : AutoCloseKoinTest() {
         assert(!viewModel.isStartInterval())
     }
 
-
-    @Test
-    fun test_delete() {
-        val viewModel = getViewModel()
-        viewModel.deleteDownload(0)
-        assert(viewModel.deleteResult.value == null)
-    }
-
     private fun getViewModel(): DownloadViewModel {
         return DownloadViewModel(
             get(),
-            DownloadListUseCase(get(), get()),
-            DownloadTvUseCase(get())
+            DownloadListUseCase(get(), get())
         )
     }
 }

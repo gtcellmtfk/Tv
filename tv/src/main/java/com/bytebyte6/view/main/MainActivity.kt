@@ -39,6 +39,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     R.id.nav_setting -> toSetting()
                     R.id.nav_fav -> toFav()
                     R.id.nav_download -> toDownload()
+                    R.id.nav_about -> toAbout()
                 }
                 drawerHelper.removeDrawerListener(this)
             }
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawerHelper = DrawerHelper.getInstance(this)!!
 
         if (savedInstanceState == null) {
-            toMe()
+            toHome()
         }
 
         networkHelper.networkConnected.observe(this, Observer { connected ->
@@ -80,7 +81,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 val id = savedInstanceState.getInt(CURRENT_MENU_ITEM_ID)
                 menu.findItem(id)
             } else {
-                setCheckedItem(R.id.nav_me)
+                setCheckedItem(R.id.nav_home)
                 checkedItem
             }
         }

@@ -5,20 +5,19 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bytebyte6.common.*
+import com.bytebyte6.common.SimpleDrawerListener
+import com.bytebyte6.common.doOnExitTransitionEndOneShot
+import com.bytebyte6.common.isSuccess
+import com.bytebyte6.common.longSnack
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.UpdateTvParam
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
-import com.bytebyte6.view.R
+import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
-import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
-import com.bytebyte6.view.setupToolbarMenuMode
-import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class FavoriteFragment : ListFragment() {
 
@@ -37,12 +36,25 @@ class FavoriteFragment : ListFragment() {
 
         disEnabledSwipeRefreshLayout()
 
-        setupToolbarMenuMode(getString(R.string.nav_fav), "")
+        setupToolbarMenuMode(getString(R.string.nav_fav), "") {
+            binding?.emptyBox?.pauseAnimation()
+        }
+        DrawerHelper.getInstance(requireActivity())?.apply {
+            addDrawerListener(object : SimpleDrawerListener() {
+                override fun onDrawerClosed(drawerView: View) {
+                    if (binding == null) {
+                        removeDrawerListener(this)
+                    } else {
+                        binding?.emptyBox?.resumeAnimation()
+                    }
+                }
+            })
+        }
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
         }
-        val adapter = TvAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+        val adapter = TvAdapter(object : ButtonClickListener {
             override fun onClick(position: Int, tv: Tv) {
                 viewModel.favorite(position, tv)
             }
@@ -71,25 +83,18 @@ class FavoriteFragment : ListFragment() {
         viewModel.cancelResult.observe(viewLifecycleOwner, Observer {
             it.isSuccess()?.apply {
                 if (pos != -1) {
-                    showSnack(
-                        view,
-                        Message(
-                            id = R.string.unbookmarked,
-                            actionStringId = R.string.revocation
-                        ),
-                        View.OnClickListener { viewModel.restoreFavorite(tv) }
-                    )
+                    view.longSnack(R.string.unbookmarked) {
+                        setAction(R.string.revocation) {
+                            viewModel.restoreFavorite(tv)
+                        }
+                    }
                 }
             }
         })
     }
 
-    override fun onLoadMore() {
+    override fun onLoadMore() = Unit
 
-    }
-
-    override fun onRefresh() {
-
-    }
+    override fun onRefresh() = Unit
 }
 

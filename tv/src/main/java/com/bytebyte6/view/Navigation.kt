@@ -69,6 +69,10 @@ fun FragmentActivity.toSetting() {
     replaceNotAddToBackStack(SettingFragment.newInstance(), SettingFragment.TAG)
 }
 
+fun FragmentActivity.toAbout() {
+    replaceNotAddToBackStack(AboutFragment(), AboutFragment.TAG)
+}
+
 fun FragmentActivity.toFav() {
     replaceNotAddToBackStack(
         FavoriteFragment.newInstance(),

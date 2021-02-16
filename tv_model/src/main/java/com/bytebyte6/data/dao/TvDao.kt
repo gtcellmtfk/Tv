@@ -26,9 +26,6 @@ interface TvDao : BaseDao<Tv> {
     @Query("SELECT * FROM Tv")
     fun getTvs(): List<Tv>
 
-    @Query("SELECT * FROM Tv WHERE download = 1")
-    fun getDownloadTvs(): List<Tv>
-
     @Query("SELECT * FROM Tv WHERE tvId =:id")
     fun getTv(id: Long): Tv
 

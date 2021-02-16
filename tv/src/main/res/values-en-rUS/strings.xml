@@ -29,7 +29,7 @@
     <string name="nav_setting">Setting</string>
     <string name="tip">Tip</string>
     <string name="enter_exit">Do you want to quit the app?</string>
-    <string name="nav_fav">My favorite</string>
+    <string name="nav_fav">Favorite</string>
     <string name="nav_download">Download</string>
     <string name="tip_add_download_has_been">Has been added to download list, if you want to cancel, please go to download page!</string>
     <string name="tip_un_support_download_live_stream">Downloading live streams is not supported!</string>
@@ -49,4 +49,13 @@
     <string name="setting_only_wifi_download">Download only on WiFi</string>
     <string name="setting_only_wifi_play">Play only on WiFi</string>
     <string name="tip_flag_wrong">The flag is not displayed correctly? Click OK button to replace!</string>
+    <string name="bytebyte6">About me😍</string>
+    <string name="material">Material</string>
+    <string name="tip_about_material">Some pictures and animation resources from the network, if the infringement of your rights and interests, please contact me to delete!</string>
+    <string name="live_src">Live resources</string>
+    <string name="tip_live_src">The software does not contain any live broadcasting resources, you can search IPTV through the GitHub website or download M3U or M3U files from other places for import.</string>
+    <string name="about">About</string>
+    <string name="tip_if_like">👆If you like this project, please go to my project home page for a star.👆</string>
+    <string name="tip_download">Click OK to download this resource (live streaming resources are not supported), and you can check the progress in the Download Center.</string>
+    <string name="tip_del_success_notification">Delete successfully, please note the progress of notification bar.</string>
 </resources>

@@ -3,6 +3,7 @@ package com.bytebyte6.view
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -58,14 +59,14 @@ class TestImportM3uFile {
         applicationContext.startActivity(intent)
 
         // 点击菜单
-//        val desc = applicationContext.getString(R.string.toolbar_navigation)
-//        val navButton = device.findObject(UiSelector().description(desc))
-//        navButton.click()
+        val desc = applicationContext.getString(R.string.toolbar_navigation)
+        val navButton = device.findObject(UiSelector().description(desc))
+        navButton.click()
 
         // 点击导入
-//        val importText = applicationContext.getString(R.string.nav_import)
-//        val menuImport = device.findObject(By.text(importText))
-//        menuImport.click()
+        val importText = applicationContext.getString(R.string.nav_import)
+        val menuImport = device.findObject(By.text(importText))
+        menuImport.click()
 
         // 点击加号导入
         val importButton =
@@ -90,9 +91,12 @@ class TestImportM3uFile {
             device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/progressBar"))
         progressBar.waitUntilGone(30000)
 
-        // 断言
-        val toolbar = device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/toolbar"))
-        val title = toolbar.getChild(UiSelector().index(1))
-        assert(title.text.contains(fileName))
+//        val toolbar = device.findObject(UiSelector().resourceId("com.bytebyte6.rtmp:id/toolbar"))
+//        val title = toolbar.getChild(UiSelector().index(1))
+//        assert(title.text.contains(fileName))
+
+        val recyclerView = device.findObject(UiSelector().className(RecyclerView::class.java))
+        val child1 = recyclerView.getChild(UiSelector().text(fileName))
+        assert(child1 != null)
     }
 }

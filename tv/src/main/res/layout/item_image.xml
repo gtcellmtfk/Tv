@@ -33,9 +33,7 @@
         android:id="@+id/fl_button"
         android:layout_width="48dp"
         android:layout_height="36dp"
-        android:layout_gravity="end|bottom"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_gravity="end|bottom">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/button"
@@ -45,7 +43,7 @@
             android:button="@drawable/checkbox_favorite"
             android:clickable="false"
             android:minWidth="0dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:buttonTint="@color/white" />
     </FrameLayout>
 

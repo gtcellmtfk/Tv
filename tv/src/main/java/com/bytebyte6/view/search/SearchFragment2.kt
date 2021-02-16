@@ -16,12 +16,12 @@ import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.SearchViewModel2
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class SearchFragment2 : ListFragment() {
 
@@ -66,7 +66,7 @@ class SearchFragment2 : ListFragment() {
         }
         disEnabledSwipeRefreshLayout()
         setupToolbarArrowBack { KeyboardUtils.hideSoftInput(requireActivity()) }
-        val adapter = TvAdapter(ButtonType.FAVORITE, object : ButtonClickListener {
+        val adapter = TvAdapter(object : ButtonClickListener {
             override fun onClick(position: Int, tv: Tv) {
                 viewModel.fav(position)
             }
@@ -108,11 +108,16 @@ class SearchFragment2 : ListFragment() {
                 hideProgress()
             }, {
                 hideProgress()
-                showSnack(view, it.error.message.toString())
+                view.longSnack(it.error.message.toString())
             }, {
                 showProgress()
             })
         })
+
+        viewModel.itemChanged.observe(viewLifecycleOwner, Observer { pos ->
+            adapter.notifyItemChanged(pos)
+        })
+
         viewModel.resultCount.observe(viewLifecycleOwner, Observer {
             val empty = it == 0
             binding?.emptyBox?.isVisible = empty

@@ -31,8 +31,6 @@
         tools:text="@string/attach" />
 
     <FrameLayout
-        android:focusable="true"
-        android:clickable="true"
         android:id="@+id/fl_button"
         android:layout_gravity="end|bottom"
         android:layout_width="48dp"

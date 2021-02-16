@@ -44,7 +44,7 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:visibility="gone"
-            android:id="@+id/lavEmpty"
+            android:id="@+id/emptyBox"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"

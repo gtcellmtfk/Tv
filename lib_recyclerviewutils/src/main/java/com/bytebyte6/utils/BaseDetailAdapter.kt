@@ -10,5 +10,5 @@ abstract class BaseDetailAdapter<T, V : DetailsViewHolder> : RecyclerView.Adapte
         adapterHelper().onHelperBindViewHolder(holder, position)
     }
 
-    abstract fun adapterHelper(): AdapterHelper<T, V>
+    abstract fun adapterHelper(): SwapAdapterHelper<T, V>
 }

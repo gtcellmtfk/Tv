@@ -111,6 +111,7 @@ class PlayerViewModel(
     }
 
     fun onResume() {
+        _showProgressBar.postValue(true)
         user.observeForever(object : Observer<User> {
             override fun onChanged(user1: User) {
                 user.removeObserver(this)

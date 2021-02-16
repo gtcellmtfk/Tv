@@ -20,8 +20,8 @@ val countries
         usa,
         kor
     )
-val lang1 get() = Language("CHINESE", "CN")
-val lang2 get() = Language("ENGLISH", "EN")
+val lang1 get() = Language("CHINESE", "CN","CN")
+val lang2 get() = Language("ENGLISH", "EN","EN")
 val tv1
     get() =
         Tv(
@@ -343,5 +343,4 @@ abstract class TestDataManager : DataManager {
     override fun allCategory(): LiveData<List<Category>> {
         return MutableLiveData()
     }
-
 }

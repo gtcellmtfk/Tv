@@ -13,7 +13,7 @@ class SearchCountryImageUseCase(
     private val searchImage: SearchImage,
     private val dataManager: DataManager
 ) : RxUseCase<SearchCountryImageParam, SearchCountryImageParam>() {
-    private val flags = mutableListOf(" Flag", " flag", "国旗")
+    private val flags = mutableListOf(" Flag", " flag", " 旗帜")
 
     private fun randomFlag(countryName: String) =
         countryName.plus(flags[Random.Default.nextInt(3)])
@@ -32,7 +32,7 @@ class SearchCountryImageUseCase(
             if (last >= param.cs.size) throw IllegalParamException
             val cs2 = param.cs.subList(first, last + 1)
             cs2.forEach {
-                if (it.image.isEmpty() && it.name.isNotEmpty()) {
+                if (it.image.isEmpty()) {
                     val search = searchImage.search(randomFlag(it.name))
                     if (search.isNotEmpty()) {
                         it.image = search

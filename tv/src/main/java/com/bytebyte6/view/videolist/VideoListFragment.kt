@@ -12,12 +12,12 @@ import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.KEY_TITLE
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.ButtonClickListener
-import com.bytebyte6.view.adapter.ButtonType
 import com.bytebyte6.view.adapter.TvAdapter
 import com.bytebyte6.view.setupToolbarArrowBack
 import com.bytebyte6.view.toPlayer
 import com.bytebyte6.viewmodel.VideoListViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class VideoListFragment : ListFragment() {
 
@@ -50,7 +50,7 @@ class VideoListFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = TvAdapter(ButtonType.FAVORITE, buttonClickListener).apply {
+        val adapter = TvAdapter(buttonClickListener).apply {
             onItemClick = { pos, _: View ->
                 toPlayer(currentList[pos].url)
             }
@@ -61,7 +61,9 @@ class VideoListFragment : ListFragment() {
         imageClearHelper = adapter
 
         val title = requireArguments().getString(KEY_TITLE)!!
-        setupToolbarArrowBack(title)
+        setupToolbarArrowBack(title){
+            binding?.emptyBox?.cancelAnimation()
+        }
         viewModel.setKey(title)
 
         binding?.apply {
@@ -84,6 +86,10 @@ class VideoListFragment : ListFragment() {
             }
         })
 
+        viewModel.itemChanged.observe(viewLifecycleOwner, Observer { pos ->
+            adapter.notifyItemChanged(pos)
+        })
+
         viewModel.tvs.observe(viewLifecycleOwner, Observer { result ->
             result.emit({
                 adapter.submitList(it.data.toList())
@@ -91,7 +97,7 @@ class VideoListFragment : ListFragment() {
                 hideSwipeRefresh()
                 hideProgress()
             }, {
-                showSnack(view, Message(message = it.error.message.toString()))
+                view.longSnack(it.error.message.toString())
                 hideSwipeRefresh()
                 hideProgress()
             }, {

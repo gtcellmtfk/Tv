@@ -8,25 +8,42 @@ import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.entity.Tv
 import com.bytebyte6.image.SearchImage
 
-interface SearchTvLogoUseCase : RxUseCase2<SearchTvLogoParam, SearchTvLogoParam>
+interface SearchTvLogoUseCase : RxUseCase2<SearchTvLogoParam, SearchTvLogoParam> {
+    val itemChanged: MutableLiveData<Tv>
+    fun stop()
+}
 
 class SearchTvLogoUseCaseImpl(
     private val searchImage: SearchImage,
     private val dataManager: DataManager
 ) : SearchTvLogoUseCase {
+
+    private var stop = false
+
+    override val itemChanged: MutableLiveData<Tv> = MutableLiveData()
+
     override val result: MutableLiveData<Result<SearchTvLogoParam>> = MutableLiveData()
 
     override fun run(param: SearchTvLogoParam): SearchTvLogoParam {
         param.tvs.filter {
-            it.logo.isEmpty() && it.name.isNotEmpty()
+            it.logo.isEmpty()
         }.forEach {
-            val result = searchImage.search(it.name)
-            if (result.isNotEmpty()) {
-                it.logo = result
-                dataManager.updateTv(it)
+            if (stop) {
+                return param
+            } else {
+                val result = searchImage.search(it.name)
+                if (result.isNotEmpty()) {
+                    it.logo = result
+                    dataManager.updateTv(it)
+                    itemChanged.postValue(it)
+                }
             }
         }
         return param
+    }
+
+    override fun stop() {
+        stop = true
     }
 }
 

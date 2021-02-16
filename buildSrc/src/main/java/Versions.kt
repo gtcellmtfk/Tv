@@ -7,6 +7,7 @@ object Versions {
     const val buildToolsVersion = "30.0.2"
     const val android_gradle_plugin = "4.1.1"
     const val kotlin = "1.4.10"
+    const val splitties_version = "3.0.0-beta01"
     const val rxjava = "3.0.4"
     const val retrofit = "2.9.0"
     const val extJunit = "1.1.2"
