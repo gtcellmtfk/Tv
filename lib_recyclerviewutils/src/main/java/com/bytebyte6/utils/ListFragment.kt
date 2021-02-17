@@ -7,9 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bytebyte6.common.BaseShareFragment
-import com.bytebyte6.common.logd
 import com.bytebyte6.recyclerviewutils.R
-
 import com.bytebyte6.recyclerviewutils.databinding.FragmentListBinding
 
 abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fragment_list) {
@@ -63,7 +61,9 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
             recyclerView.addOnScrollListener(listener)
             recyclerView.addOnScrollListener(glideListener)
             recyclerView.doOnPreDraw {
-                startPostponedEnterTransition()
+                it.postDelayed({
+                    startPostponedEnterTransition()
+                }, 200)
             }
             swipeRefreshLayout.setOnRefreshListener {
                 end = false
