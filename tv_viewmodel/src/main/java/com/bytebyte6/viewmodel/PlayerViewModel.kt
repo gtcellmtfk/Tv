@@ -141,6 +141,7 @@ class PlayerViewModel(
     }
 
     private fun destroyPlayer() {
+        player?.removeListener(eventListener)
         player?.release()
         player = null
     }
