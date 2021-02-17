@@ -47,6 +47,8 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.playerView?.setShowPreviousButton(false)
+        binding?.playerView?.setShowNextButton(false)
         viewModel.showMobileDialog.observe(viewLifecycleOwner, EventObserver {
             showMobileDialog()
         })
