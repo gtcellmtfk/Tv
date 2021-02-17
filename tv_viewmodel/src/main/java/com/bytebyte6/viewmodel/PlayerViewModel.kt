@@ -72,13 +72,16 @@ class PlayerViewModel(
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            if (error.cause is BehindLiveWindowException) {
-                // BehindLiveWindowException
-                retry()
+            if (isBehindLiveWindow(error)){
+                player?.seekToDefaultPosition()
+                player?.prepare()
                 return
             }
+//            if (error.cause is BehindLiveWindowException) {
+//                retry()
+//                return
+//            }
             if (error.cause is HttpDataSource.InvalidResponseCodeException) {
-                // Response code: 403
                 retry()
                 return
             }
@@ -182,4 +185,18 @@ class PlayerViewModel(
     }
 
     fun networkIsConnected() = networkHelper.networkIsConnected()
+
+    private fun isBehindLiveWindow(e: ExoPlaybackException): Boolean {
+        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
+            return false
+        }
+        var cause: Throwable? = e.sourceException
+        while (cause != null) {
+            if (cause is BehindLiveWindowException) {
+                return true
+            }
+            cause = cause.cause
+        }
+        return false
+    }
 }
