@@ -111,7 +111,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
-                meBinding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
+                binding?.fab?.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
                     override fun onHidden(fab: FloatingActionButton?) {
                         showSnackBar(R.string.tip_del_success)
                     }
