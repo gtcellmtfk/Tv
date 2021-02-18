@@ -129,13 +129,13 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
     }
 
     private fun onDownloadClick(tv: Tv) {
-        val dialog = showProgressDialog()
         val downloadHelper = DownloadHelper.forMediaItem(
             requireContext(),
             MediaItem.fromUri(tv.url),
             defaultRenderersFactory,
             httpDataSourceFactory
         )
+        val dialog = showProgressDialog(downloadHelper)
         downloadHelper.prepare(getDownloadHelperCallback(tv, dialog))
     }
 
@@ -162,7 +162,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
         }
     }
 
-    private fun showProgressDialog(): ProgressDialog2 {
+    private fun showProgressDialog(helper: DownloadHelper): ProgressDialog2 {
         val progressDialog = ProgressDialog2(requireContext()).apply {
             setTitle(R.string.tip)
             setMessage2(getString(R.string.tip_please_wait))
@@ -170,6 +170,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             setCancelable(false)
             setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
+                helper.release()
             }
         }
         progressDialog.show()

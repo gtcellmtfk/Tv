@@ -30,6 +30,12 @@ class FavoriteFragment : ListFragment() {
 
     private val viewModel: FavoriteViewModel by viewModel()
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressedDispatcherBackToHome()
@@ -39,17 +45,7 @@ class FavoriteFragment : ListFragment() {
         setupToolbarMenuMode(getString(R.string.nav_fav), "") {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -91,6 +87,11 @@ class FavoriteFragment : ListFragment() {
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
     }
 
     override fun onLoadMore() = Unit

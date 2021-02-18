@@ -9,6 +9,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
@@ -37,6 +39,12 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     private lateinit var launcher: ActivityResultLauncher<String>
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun initViewBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view)
     }
@@ -54,25 +62,16 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarMenuMode(){
+        setupToolbarMenuMode {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+
+        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot { clearRecyclerView() }
         setupOnBackPressedDispatcherBackToHome()
 
-        val binding = binding!!
+        val meBinding = binding!!
 
         //init recyclerview
         val playlistAdapter = PlaylistAdapter()
@@ -83,28 +82,28 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 itemView
             )
         }
-        this.recyclerView = binding.recyclerView
-        binding.recyclerView.adapter = playlistAdapter
-        binding.recyclerView.addItemDecoration(LinearSpaceDecoration())
-        binding.recyclerView.setHasFixedSize(true)
-        playlistAdapter.setupSelectionTracker(binding.recyclerView,
+        this.recyclerView = meBinding.recyclerView
+        meBinding.recyclerView.adapter = playlistAdapter
+        meBinding.recyclerView.addItemDecoration(LinearSpaceDecoration())
+        meBinding.recyclerView.setHasFixedSize(true)
+        playlistAdapter.setupSelectionTracker(meBinding.recyclerView,
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     val hasSelection = playlistAdapter.selectionTracker!!.hasSelection()
                     if (hasSelection) {
-                        binding.fab.show()
+                        binding?.fab?.show()
                     } else {
-                        binding.fab.hide()
+                        binding?.fab?.hide()
                     }
                 }
             })
         val selectionTracker = playlistAdapter.selectionTracker!!
 
-        binding.toolbar.setOnMenuItemClickListener {
+        meBinding.toolbar.setOnMenuItemClickListener {
             launcher.launch("*/*")
             true
         }
-        binding.fab.setOnClickListener {
+        meBinding.fab.setOnClickListener {
             if (!selectionTracker.selection.isEmpty) {
                 showDialog(selectionTracker)
             }
@@ -112,7 +111,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
-                binding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener(){
+                meBinding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
                     override fun onHidden(fab: FloatingActionButton?) {
                         showSnackBar(R.string.tip_del_success)
                     }
@@ -129,7 +128,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.playlists.observe(viewLifecycleOwner, {
             playlistAdapter.replace(it)
-            binding.emptyBox.isVisible = it.isEmpty()
+            meBinding.emptyBox.isVisible = it.isEmpty()
         })
 
         viewModel.parseResult.observe(viewLifecycleOwner, { result ->
@@ -146,6 +145,11 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 showProgressBar()
             })
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
     }
 
     private fun showDialog(selectionTracker: SelectionTracker<Long>) {

@@ -1,7 +1,6 @@
 package com.bytebyte6.view
 
 import android.app.Application
-import android.net.TrafficStats
 import android.os.StrictMode
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -29,20 +28,14 @@ class RtmpApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RtmpApp)
-            modules(baseModule, roomModule, dataModule,
-                viewModule, useCaseModule, exoPlayerModule)
+            modules(baseModule, roomModule, dataModule, viewModule, useCaseModule, exoPlayerModule)
         }
-        WorkManager.initialize(
-            this, Configuration.Builder().setWorkerFactory(
-                factory
-            ).build()
-        )
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(factory).build())
         RxJavaPlugins.setErrorHandler {
-            logd("Rx Global Exception Handler...${it.message}")
+            logd("Rx Global Exception Handler: ${it.message}")
             it.printStackTrace()
         }
         LogEx.logger = true
-//        strictMode()
     }
 
     private fun strictMode() {

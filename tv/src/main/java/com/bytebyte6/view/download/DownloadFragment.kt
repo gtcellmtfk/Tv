@@ -39,6 +39,12 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
     private lateinit var downloadAdapter: DownloadAdapter
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressedDispatcherBackToHome()
@@ -50,17 +56,7 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         setupToolbarMenuMode(getString(R.string.nav_download), ""){
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -103,6 +99,12 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
+        downloadManager.removeListener(this)
+    }
+
     private fun showDeleteVideoDialog(pos: Int) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.tip_del_video).plus(downloadAdapter.currentList[pos].tv.name))
@@ -124,11 +126,6 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         DownloadServicePro.resumeDownloads(requireContext())
         requireView().longSnack(R.string.resume)
         viewModel.startInterval()
-    }
-
-    override fun onDestroyView() {
-        downloadManager.removeListener(this)
-        super.onDestroyView()
     }
 
     override fun onDownloadChanged(
