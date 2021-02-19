@@ -15,7 +15,7 @@
     <string name="m3u">Import m3u file</string>
     <string name="me_import_file">m3u list</string>
     <string name="me_playlist">Playlist</string>
-    <string name="tip_parse_file_error">File parsing failed</string>
+    <string name="tip_parse_file_error">File parsing failed\\n%s</string>
     <string name="tip_not_m3u_m3u8_file">Only importing M3U or M3U8 files is supported</string>
     <string name="tip_del_playlist">Delete playlists</string>
     <string name="tip_del_video">Delete the video</string>

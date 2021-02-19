@@ -39,7 +39,7 @@ class PlaylistViewModel(
             addDisposable(
                 searchTvLogoUseCase.execute(SearchTvLogoParam(tvs))
                     .doOnSuccess { dataManager.updatePlaylistCache(playlistId, tvs, page) }
-                    .onIo()
+                    .onSingle()
             )
             return tvs
         }
@@ -50,7 +50,7 @@ class PlaylistViewModel(
     var playlistId: Long = 0
 
     fun loadMore() {
-        addDisposable(pagingHelper.loadResult().onSingle())
+        addDisposable(pagingHelper.loadResult().onIo())
     }
 
     private var first = true

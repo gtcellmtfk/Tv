@@ -9,8 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import com.bytebyte6.common.*
 import com.bytebyte6.utils.LinearSpaceDecoration
@@ -136,11 +134,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 hideProgressBar()
             }, {
                 hideProgressBar()
-                if (it.error is UnsupportedOperationException) {
-                    showSnackBar(R.string.tip_not_m3u_m3u8_file)
-                } else {
-                    showSnackBar(R.string.tip_parse_file_error)
-                }
+                showSnackBar(0,getString(R.string.tip_parse_file_error, it.error.message.toString()))
             }, {
                 showProgressBar()
             })
@@ -166,13 +160,16 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             .show()
     }
 
-    private fun showSnackBar(messageId: Int) {
+    private fun showSnackBar(messageId: Int, message: String? = null) {
         binding?.apply {
             if (fab.isVisible) {
                 val actionSetup: Snackbar.() -> Unit = {
                     anchorView = fab
                 }
-                val longSnack = fab.longSnack(messageId, actionSetup)
+                val longSnack = if (message == null)
+                    fab.longSnack(messageId, actionSetup)
+                else
+                    fab.longSnack(message, actionSetup)
                 //memory leak
                 longSnack.addCallback(object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
@@ -181,7 +178,11 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                     }
                 })
             } else {
-                requireView().longSnack(messageId)
+                if (message == null) {
+                    requireView().longSnack(messageId)
+                } else {
+                    requireView().longSnack(message)
+                }
             }
         }
     }

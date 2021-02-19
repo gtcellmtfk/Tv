@@ -36,7 +36,7 @@ class SearchViewModel2(
         override fun paging(offset: Int, pageSize: Int): List<Tv> {
             val ftsTvPaging = dataManager.ftsTvPaging(offset, getKey(), pageSize)
             val param = SearchTvLogoParam(ftsTvPaging)
-            addDisposable(searchTvLogoUseCase.execute(param).onIo())
+            addDisposable(searchTvLogoUseCase.execute(param).onSingle())
             return ftsTvPaging
         }
     }
@@ -54,7 +54,7 @@ class SearchViewModel2(
     fun search(key: CharSequence?) {
         if (!key.isNullOrEmpty()) {
             keyword = key.toString()
-            addDisposable(pagingHelper.refresh().onSingle())
+            addDisposable(pagingHelper.refresh().onIo())
         } else {
             count.postValue(0)
         }
@@ -62,7 +62,7 @@ class SearchViewModel2(
 
     fun loadMore() {
         if (getKey().isNotEmpty()) {
-            addDisposable(pagingHelper.loadResult().onSingle())
+            addDisposable(pagingHelper.loadResult().onIo())
         }
     }
 

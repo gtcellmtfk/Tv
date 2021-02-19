@@ -2,14 +2,39 @@ package com.bytebyte6.data
 
 import org.junit.Test
 import java.io.File
+import java.util.*
 
 class M3uTest {
+
     @Test
-    fun test1(){
-        println(File("..","pic").absolutePath)
+    fun test_Thread() {
+        var stop = false
+
+        Thread {
+            println(Thread.currentThread().name)
+            while (!stop) {
+                println("ing...")
+            }
+            println("stop")
+        }.start()
+
+        for (i in 0..Int.MAX_VALUE) {
+            if (i >= Int.MAX_VALUE / 2) {
+                stop = true
+                println(UUID.randomUUID().toString())
+                break
+            }
+        }
+        println("2 " + Thread.currentThread().name)
     }
+
     @Test
-    fun list() {
+    fun test() {
+        println(File("..", "pic").absolutePath)
+    }
+
+    @Test
+    fun test_m3u_parse() {
         val modelDir = File("..", "channels")
         val listFiles = modelDir.listFiles()
         listFiles?.forEach { file ->

@@ -15,10 +15,22 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class LauncherActivity : BaseActivity() {
 
+    companion object {
+        var mainActivityDestroy = true
+    }
+
     private val viewModel by viewModel<LauncherViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (mainActivityDestroy) {
+            start()
+        } else {
+            toMain()
+        }
+    }
+
+    private fun start() {
         viewModel.start().observe(this, Observer { result ->
             result.emitIfNotHandled(
                 success = { success ->
@@ -28,13 +40,14 @@ class LauncherActivity : BaseActivity() {
                             else AppCompatDelegate.MODE_NIGHT_NO
                         )
                     }
-                    Handler().postDelayed({ toMain() }, 1000)
+                    Handler().postDelayed({ toMain() }, 400)
                 }, error = {
                     showToast(
                         Message(
                             message = it.error.message.toString()
                         )
                     )
+                    finish()
                 }
             )
         })

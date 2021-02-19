@@ -22,7 +22,7 @@ class MeFragmentTest {
     @Test
     fun test_long_click(){
         setup()
-        onView(withId(R.id.lavEmpty))
+        onView(withId(R.id.emptyBox))
             .withFailureHandler { _, _ ->
                 //有数据测试长按是否正常
                 onView(withId(R.id.recyclerView))

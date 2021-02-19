@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.bytebyte6.common.BaseViewModel
 import com.bytebyte6.common.Result
 import com.bytebyte6.common.onIo
+import com.bytebyte6.common.onSingle
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.usecase.SearchCountryImageParam
 import com.bytebyte6.usecase.SearchCountryImageUseCase
@@ -31,7 +32,7 @@ class HomeViewModel(
                     last,
                     cs.value!!
                 )
-            ).onIo()
+            ).onSingle()
         )
     }
 
@@ -48,7 +49,7 @@ class HomeViewModel(
                         10,
                         cs.value!!
                     )
-                ).onIo()
+                ).onSingle()
             )
             first = false
         }

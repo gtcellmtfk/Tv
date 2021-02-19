@@ -26,6 +26,9 @@ class SearchTvLogoUseCaseImpl(
 
     override fun run(param: SearchTvLogoParam): SearchTvLogoParam {
         param.tvs.filter {
+            if (stop) {
+                return param
+            }
             it.logo.isEmpty()
         }.forEach {
             if (stop) {

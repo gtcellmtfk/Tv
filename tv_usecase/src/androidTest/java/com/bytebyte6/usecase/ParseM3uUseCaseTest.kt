@@ -43,10 +43,7 @@ class ParseM3uUseCaseTest : KoinTest {
     @Test
     fun test_parse_error() {
         parseM3uUseCase.execute(ParseParam(Uri.EMPTY))
-                .test().assertError(UnsupportedOperationException::class.java)
-
-        parseM3uUseCase.execute(ParseParam())
-                .test().assertError(NullPointerException::class.java)
+                .test().assertError(Exception::class.java)
 
         parseM3uUseCase.execute(ParseParam(assetsFileName = "1"))
                 .test().assertError(FileNotFoundException::class.java)

@@ -2,17 +2,20 @@ package com.bytebyte6.data
 
 import androidx.room.TypeConverter
 import com.bytebyte6.common.GsonConfig
+import com.bytebyte6.data.entity.Category
 import com.bytebyte6.data.entity.Language
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 class TypeConverter {
 
     companion object {
-        val type = object : TypeToken<List<Language>>() {}.type
+        val type: Type = object : TypeToken<List<Language>>() {}.type
+        val typeCategory: Type = object : TypeToken<List<Category>>() {}.type
 
-        val sType = object : TypeToken<List<String>>() {}.type
+        val sType: Type = object : TypeToken<List<String>>() {}.type
     }
 
     private val gson: Gson = GsonBuilder()

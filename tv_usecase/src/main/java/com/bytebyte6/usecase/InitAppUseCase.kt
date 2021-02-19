@@ -67,12 +67,9 @@ class InitAppUseCaseImpl(
             val json = context.assets.open("categories.json")
                 .bufferedReader()
                 .use { it.readText() }
-            val categories: List<String> =
-                gson.fromJson(json, TypeConverter.sType)
-            val list = categories.map {
-                Category(it)
-            }
-            dataManager.insertCategory(list)
+            val categories: List<Category> =
+                gson.fromJson(json, TypeConverter.typeCategory)
+            dataManager.insertCategory(categories)
         }
     }
 
@@ -92,8 +89,15 @@ class InitAppUseCaseImpl(
             val json = context.assets.open("countries.json")
                 .bufferedReader()
                 .use { it.readText() }
-            val cs: List<Country> =
+            val cs: MutableList<Country> =
                 gson.fromJson(json, object : TypeToken<List<Country>>() {}.type)
+            cs.add(
+                Country(
+                    name = Country.UNSORTED,
+                    nameChinese = "未知",
+                    code = Country.UNSORTED_LOW
+                )
+            )
             dataManager.insertCountry(cs)
         }
     }

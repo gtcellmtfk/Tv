@@ -21,11 +21,6 @@ data class Language(
     @SerializedName("code")
     var languageCode: String = ""
 ) : Parcelable {
-
-    @IgnoredOnParcel
-    @Ignore
-    val color: Int = randomColorByNightMode()
-
     companion object {
         const val UNKOWN = "Unkown"
     }
