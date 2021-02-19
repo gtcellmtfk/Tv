@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.common.isSuccess
 import com.bytebyte6.utils.GridSpaceDecoration
-import com.bytebyte6.utils.doSomethingOnIdle
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.CountryAdapter
 import com.bytebyte6.view.databinding.FragmentRecyclerViewBinding
@@ -50,7 +49,7 @@ class CountryFragment :
                     .setTitle(R.string.tip)
                     .setMessage(getString(R.string.tip_flag_wrong))
                     .setPositiveButton(R.string.enter) { dialog, _ ->
-                        viewModel.logoWrong(pos)
+                        viewModel.changeImage(currentList[pos], pos)
                         dialog.dismiss()
                     }
                     .create()
@@ -67,22 +66,16 @@ class CountryFragment :
             recyclerView.addItemDecoration(GridSpaceDecoration())
             recyclerView.setHasFixedSize(true)
             recyclerView.itemAnimator = null
-            recyclerView.doSomethingOnIdle { first, last ->
-                viewModel.searchLogo(first, last)
-            }
         }
 
-        viewModel.logoWrongResult.observe(viewLifecycleOwner, Observer {
+        viewModel.result.observe(viewLifecycleOwner, Observer {
             it.isSuccess()?.apply {
-                if (logoWrong){
-                    countryAdapter.notifyItemChanged(first)
-                }
+                countryAdapter.notifyItemChanged(pos)
             }
         })
 
         viewModel.cs.observe(viewLifecycleOwner, Observer {
             countryAdapter.submitList(it)
-            viewModel.searchLogoOnce()
         })
     }
 }

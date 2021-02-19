@@ -23,7 +23,7 @@ interface CountryDao : BaseDao<Country> {
     @Query("SELECT * FROM Country WHERE code=:code")
     fun getByCode(code: String): Country
 
-    @Query("SELECT * FROM Country WHERE image=:image")
+    @Query("SELECT * FROM Country WHERE image=:image ORDER BY name ASC")
     fun getCountriesByImage(image: String): List<Country>
 
     @Query("SELECT * FROM Country")

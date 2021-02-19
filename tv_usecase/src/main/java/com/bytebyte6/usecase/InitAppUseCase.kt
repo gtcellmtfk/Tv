@@ -28,8 +28,6 @@ class InitAppUseCaseImpl(
 
     override fun run(param: Unit): User {
 
-        val user = initUser()
-
         initCountryData()
 
         initCategoryData()
@@ -38,13 +36,12 @@ class InitAppUseCaseImpl(
 
         initTestData()
 
-        return user
+        return initUser()
     }
 
     private fun initUser(): User {
         val user = dataManager.getCurrentUserIfNotExistCreate()
-
-        if (dataManager.getTvCount() != 0 && user.capturePic) {
+        if (user.capturePic) {
             findImageLink()
         }
         return user
@@ -55,8 +52,10 @@ class InitAppUseCaseImpl(
      */
     private fun initTestData() {
         try {
-            val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
-            parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
+            if (dataManager.getTvCount() == 0) {
+                val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
+                parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
+            }
         } catch (e: Exception) {
             loge("for build type labtest,if error ignore!")
         }
