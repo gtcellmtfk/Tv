@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.annotation.Keep
 import com.bytebyte6.common.RxUseCase
+import com.bytebyte6.common.loge
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.M3u
 import com.bytebyte6.data.entity.Playlist
@@ -30,9 +31,13 @@ class ParseM3uUseCase(
         val playlistName = getPlaylistName(param)
 
         val needInserts = getTvs(param).map {
-            val country = dataManager.getCountryByCode(it.countryCode)
-            it.countryId = country.countryId
-            it.countryName = country.name
+            try {
+                val country = dataManager.getCountryByCode(it.countryCode)
+                it.countryId = country.countryId
+                it.countryName = country.name
+            } catch (e: Exception) {
+                loge(e.message.toString())
+            }
             it
         }
 
