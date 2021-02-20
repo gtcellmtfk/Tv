@@ -15,7 +15,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
     //是否已经加载全部数据
     protected var end = false
 
-    private val listener = object : LoadMoreListener(20) {
+    private val listener = object : LoadMoreListener(10) {
         override fun onLoadMore() {
             if (binding == null) {
                 return
@@ -63,7 +63,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
             recyclerView.doOnPreDraw {
                 it.postDelayed({
                     startPostponedEnterTransition()
-                }, 200)
+                }, 300)
             }
             swipeRefreshLayout.setOnRefreshListener {
                 end = false
