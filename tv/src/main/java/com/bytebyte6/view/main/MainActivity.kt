@@ -12,7 +12,7 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadServicePro
-import com.bytebyte6.view.player.TestPlayerFragment
+import com.bytebyte6.view.launcher.LauncherActivity
 import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.android.inject
 
@@ -48,6 +48,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        LauncherActivity.mainActivityDestroy = false
 
         networkHelper.registerNetworkCallback()
 
@@ -123,9 +125,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        LauncherActivity.mainActivityDestroy = true
         DrawerHelper.destroy()
         networkHelper.unregisterNetworkCallback()
-        super.onDestroy()
     }
 
     override fun onBackPressed() {
