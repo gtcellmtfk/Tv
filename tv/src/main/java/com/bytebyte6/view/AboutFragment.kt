@@ -19,10 +19,15 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarMenuMode(getString(R.string.about),"")
+        setupToolbarMenuMode(getString(R.string.about), "")
         setupOnBackPressedDispatcherBackToHome()
         binding?.tvByteByte6?.setOnClickListener {
             val parse = Uri.parse("https://github.com/bytebyte6")
+            val intent = Intent(Intent.ACTION_VIEW, parse)
+            startActivity(intent)
+        }
+        binding?.tvStart?.setOnClickListener {
+            val parse = Uri.parse("https://github.com/bytebyte6/Tv")
             val intent = Intent(Intent.ACTION_VIEW, parse)
             startActivity(intent)
         }

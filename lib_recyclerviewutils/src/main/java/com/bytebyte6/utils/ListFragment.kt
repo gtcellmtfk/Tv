@@ -63,7 +63,7 @@ abstract class ListFragment : BaseShareFragment<FragmentListBinding>(R.layout.fr
             recyclerView.doOnPreDraw {
                 it.postDelayed({
                     startPostponedEnterTransition()
-                }, 300)
+                }, 150)
             }
             swipeRefreshLayout.setOnRefreshListener {
                 end = false

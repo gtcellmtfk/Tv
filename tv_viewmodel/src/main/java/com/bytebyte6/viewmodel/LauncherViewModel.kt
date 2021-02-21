@@ -13,9 +13,7 @@ class LauncherViewModel(
     private val initAppUseCase: InitAppUseCase
 ) : BaseViewModel() {
     fun start(): LiveData<Result<User>> {
-        addDisposable(
-                initAppUseCase.execute(Unit).onSingle()
-        )
+        addDisposable(initAppUseCase.execute(Unit).onSingle())
         return initAppUseCase.result()
     }
 }

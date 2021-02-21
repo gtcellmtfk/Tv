@@ -53,9 +53,11 @@
     <string name="material">Material</string>
     <string name="tip_about_material">Some pictures and animation resources from the network, if the infringement of your rights and interests, please contact me to delete!</string>
     <string name="live_src">Live resources</string>
-    <string name="tip_live_src">The software does not contain any live broadcasting resources, you can search IPTV through the GitHub website or download M3U or M3U files from other places for import.</string>
+    <string name="tip_live_src">The software does not contain any live broadcasting resources, you can search IPTV through the GitHub website or download M3U or M3U8 files from other places for import.</string>
     <string name="about">About</string>
     <string name="tip_if_like">👆If you like this project, please go to my project home page for a star.👆</string>
     <string name="tip_download">Click OK to download this resource (live streaming resources are not supported), and you can check the progress in the Download Center.</string>
     <string name="tip_del_success_notification">Delete successfully, please note the progress of notification bar.</string>
+    <string name="g_start">Give me a star⭐</string>
+    <string name="cn">🇨🇳</string>
 </resources>
