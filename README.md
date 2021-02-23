@@ -1,9 +1,10 @@
 # 网络电视
 功能
+- 加载m3u播放列表和播放直播源
 - 支持下载点播文件
 - 支持导入m3u m3u8 txt格式文件
 - [直播源推荐](https://github.com/iptv-org/iptv)
-- [apk下载](https://github.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)
+- [Download apk](https://github.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)
 
 <img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(20).jpg" width="320" height="640">
 <img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(9).jpg" width="320" height="640">
