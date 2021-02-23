@@ -90,7 +90,7 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
                 true
             }
             viewPager2 = viewPager
-            viewPager.isUserInputEnabled = false
+//            viewPager.isUserInputEnabled = false
             tabAdapter = TabAdapter(this@HomeFragment)
             viewPager.adapter = tabAdapter
             mediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->

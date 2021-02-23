@@ -65,10 +65,10 @@ fun <T> Result<T>.isSuccess(): T? {
     }
 }
 
-fun <T> Result<T>.isLoadingAndRun(doSomething: (() -> Unit)) {
+fun <T> Result<T>.isLoadingAndRun(run: (() -> Unit)) {
     if (isLoading()) {
         runIfNotHandled {
-            doSomething.invoke()
+            run.invoke()
         }
     }
 }
@@ -80,10 +80,10 @@ fun <T> Result<T>.isLoading(): Boolean {
     }
 }
 
-fun <T> Result<T>.isErrorAndRun(doSomething: (() -> Unit)) {
+fun <T> Result<T>.isErrorAndRun(run: (() -> Unit)) {
     if (isError() != null) {
         runIfNotHandled {
-            doSomething.invoke()
+            run.invoke()
         }
     }
 }

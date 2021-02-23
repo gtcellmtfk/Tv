@@ -63,6 +63,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             toHome()
         }
 
+        var count = 0
+        binding.tvCn.setOnClickListener {
+            if (count >= 10) {
+                throw NoMoreData
+            }
+            count++
+        }
+
         networkHelper.networkConnected.observe(this, Observer { connected ->
             if (!connected) {
                 toNetworkError()

@@ -199,4 +199,9 @@ class PlayerViewModel(
         }
         return false
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        destroyPlayer()
+    }
 }
