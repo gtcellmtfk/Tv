@@ -35,33 +35,6 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
 
     private var tabAdapter: TabAdapter? = null
 
-    private fun destroyViewPage() {
-        tabAdapter?.fs?.forEach {
-            //清理子片段资源
-            it.clearRecyclerView()
-        }
-        tabAdapter?.fs?.clear()
-        tabAdapter = null
-        //清除ViewPage资源
-        mediator?.detach()
-        mediator = null
-        viewPager2?.adapter = null
-        viewPager2 = null
-    }
-
-    private fun showDialog(context: Context) {
-        AlertDialog.Builder(context)
-            .setTitle(getString(R.string.tip))
-            .setMessage(getString(R.string.enter_exit))
-            .setPositiveButton(R.string.enter) { dialog, _ ->
-                dialog.dismiss()
-                requireActivity().finish()
-            }
-            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-            .create()
-            .show()
-    }
-
     override fun initViewBinding(view: View): FragmentHomeBinding {
         return FragmentHomeBinding.bind(view)
     }
@@ -128,6 +101,33 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
         view.doOnPreDraw {
             it.requestLayout()
         }
+    }
+
+    private fun destroyViewPage() {
+        tabAdapter?.fs?.forEach {
+            //清理子片段资源
+            it.clearRecyclerView()
+        }
+        tabAdapter?.fs?.clear()
+        tabAdapter = null
+        //清除ViewPage资源
+        mediator?.detach()
+        mediator = null
+        viewPager2?.adapter = null
+        viewPager2 = null
+    }
+
+    private fun showDialog(context: Context) {
+        AlertDialog.Builder(context)
+            .setTitle(getString(R.string.tip))
+            .setMessage(getString(R.string.enter_exit))
+            .setPositiveButton(R.string.enter) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
     private fun share() {
