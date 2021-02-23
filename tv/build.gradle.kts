@@ -88,6 +88,7 @@ dependencies {
 
     implementation(Libs.FIREBASE_ANALYTICS)
     implementation(Libs.FIREBASE_CRASH)
+    implementation(Libs.CRASH_REPORTER)
     implementation(platform(Libs.FIREBASE_BOM))
 
     debugImplementation(DebugImpl.FRAGMENT_TESTING) {
