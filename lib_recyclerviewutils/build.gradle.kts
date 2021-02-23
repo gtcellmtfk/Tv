@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("com.github.dcendents.android-maven")
+    id(Plugins.LIB)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.DCENDENTS_ANDROID_MAVEN)
 }
 
 group="com.github.bytebyte6"

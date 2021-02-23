@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
+    id(Plugins.LIB)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_ANDROID_EXT)
+    id(Plugins.KOTLIN_KAPT)
 }
 
 android {
@@ -57,18 +57,16 @@ dependencies {
     implementation(project(":tv_model"))
     implementation(Libs.EXOPLAYER_CORE)
 
-    androidTestImplementation(Libs.TEST_CORE)
-    androidTestImplementation(Libs.TEST_RUNNER)
-    androidTestImplementation(Libs.TEST_RULES)
-    androidTestImplementation(Libs.TEST_KOIN)
-    androidTestImplementation(Libs.TEST_ARCH_TESTING)
-    androidTestImplementation(Libs.TEST_JUNIT_EXT)
-    androidTestImplementation(Libs.TEST_JUNIT_KTX)
+    androidTestImplementation(AndroidTest.CORE)
+    androidTestImplementation(AndroidTest.RUNNER)
+    androidTestImplementation(AndroidTest.RULES)
+    androidTestImplementation(AndroidTest.KOIN)
+    androidTestImplementation(AndroidTest.ARCH_TESTING)
+    androidTestImplementation(AndroidTest.JUNIT_EXT)
     androidTestImplementation(project(":lib_test"))
 
     testImplementation(project(":lib_test"))
-    testImplementation(Libs.TEST_JUNIT)
-    testImplementation(Libs.TEST_ARCH_TESTING)
+    testImplementation(Test.JUNIT)
     testImplementation(Libs.GETIMAGE)
     testImplementation(project(":tv_test"))
 }

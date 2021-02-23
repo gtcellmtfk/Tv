@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
-    id("com.github.dcendents.android-maven")
+    id(Plugins.LIB)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_ANDROID_EXT)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.DCENDENTS_ANDROID_MAVEN)
 }
 
 group = "com.github.bytebyte6"
@@ -57,16 +57,5 @@ android {
 
 dependencies {
     implementation(project(":lib_dependency"))
-    androidTestImplementation(Libs.TEST_ESPRESSO_CORE)
-    androidTestImplementation(Libs.TEST_ESPRESSO_CONTRIB)
-    androidTestImplementation(Libs.TEST_ESPRESSO_UI_AUTOMATOR)
-    androidTestImplementation(Libs.TEST_ESPRESSO_INTEGRATION)
-    androidTestImplementation(Libs.TEST_CORE)
-    androidTestImplementation(Libs.TEST_RUNNER)
-    androidTestImplementation(Libs.TEST_RULES)
-    androidTestImplementation(Libs.TEST_KOIN)
-    androidTestImplementation(Libs.TEST_ARCH_TESTING)
-    androidTestImplementation(Libs.TEST_JUNIT)
-    androidTestImplementation(Libs.TEST_JUNIT_KTX)
 }
 
