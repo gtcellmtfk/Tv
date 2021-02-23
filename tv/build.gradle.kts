@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    id(Plugins.APP)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_ANDROID_EXT)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.FIREBASE_CRASH)
+    id(Plugins.GOOGLE_SERVICES)
 }
 
 val key = loadProperties(projectDir.absolutePath + "/keystore.properties")
@@ -30,7 +30,7 @@ android {
         targetSdkVersion(Versions.target_sdk)
         versionCode = Versions.versionCode
         versionName = Versions.versionName
-        setProperty("archivesBaseName", "tv-$versionName-$versionCode-${date()}")
+        setProperty("archivesBaseName", "tv-$versionName")
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-proguard-rules.pro")
@@ -78,7 +78,7 @@ dependencies {
     implementation(project(":tv_usecase"))
     implementation(project(":tv_model"))
     implementation(project(":tv_viewmodel"))
-    kapt(Libs.KAPT_GLIDE)
+    kapt(Kapt.GLIDE)
 
     implementation(Libs.EXOPLAYER)
     implementation(Libs.EXOPLAYER_CORE)
@@ -90,24 +90,23 @@ dependencies {
     implementation(Libs.FIREBASE_CRASH)
     implementation(platform(Libs.FIREBASE_BOM))
 
-    debugImplementation(Libs.TEST_FRAGMENT_TESTING) {
+    debugImplementation(DebugImpl.FRAGMENT_TESTING) {
         exclude("androidx.test", "core")
     }
     debugImplementation(Libs.LEAK_CANARY)
 
-    androidTestImplementation(Libs.TEST_ESPRESSO_CORE)
-    androidTestImplementation(Libs.TEST_ESPRESSO_CONTRIB)
-    androidTestImplementation(Libs.TEST_ESPRESSO_UI_AUTOMATOR)
-    androidTestImplementation(Libs.TEST_ESPRESSO_INTEGRATION)
-    androidTestImplementation(Libs.TEST_CORE)
-    androidTestImplementation(Libs.TEST_RUNNER)
-    androidTestImplementation(Libs.TEST_RULES)
-    androidTestImplementation(Libs.TEST_KOIN)
-    androidTestImplementation(Libs.TEST_ARCH_TESTING)
-    androidTestImplementation(Libs.TEST_JUNIT)
-    androidTestImplementation(Libs.TEST_JUNIT_KTX)
+    androidTestImplementation(AndroidTest.ESPRESSO_CORE)
+    androidTestImplementation(AndroidTest.ESPRESSO_CONTRIB)
+    androidTestImplementation(AndroidTest.ESPRESSO_UI_AUTOMATOR)
+    androidTestImplementation(AndroidTest.ESPRESSO_INTEGRATION)
+    androidTestImplementation(AndroidTest.CORE)
+    androidTestImplementation(AndroidTest.RUNNER)
+    androidTestImplementation(AndroidTest.RULES)
+    androidTestImplementation(AndroidTest.KOIN)
+    androidTestImplementation(AndroidTest.ARCH_TESTING)
+    androidTestImplementation(AndroidTest.JUNIT_EXT)
 
-    testImplementation(Libs.TEST_JUNIT)
+    testImplementation(Test.JUNIT)
 }
 
 configurations.all {
