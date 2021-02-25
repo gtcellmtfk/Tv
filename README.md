@@ -7,6 +7,10 @@
 > **使用Material Design 组件开发界面，构建过渡动画。**
 >
 > **项目地址：[gitee](https://gitee.com/bytebyte6/Tv)  [github](https://github.com/bytebyte6/Tv)**
+>
+> **[直播源推荐](https://github.com/iptv-org/iptv)**
+>
+> **[Download apk](https://gitee.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)**
 
 # 功能
 
@@ -17,8 +21,7 @@
 - 设置
 - 关于
 - 直播源播放
-- [直播源推荐](https://github.com/iptv-org/iptv)
-- [Download apk](https://gitee.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)
+
 
 # 界面概览
 <img src="https://gitee.com/bytebyte6/blog/raw/master/Tv/1.png" width="320" height="640">
