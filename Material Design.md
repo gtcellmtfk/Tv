@@ -149,7 +149,7 @@ class DrawerContent @JvmOverloads constructor(
 }
 ```
 
-[布局](https://github.com/bytebyte6/Tv/blob/master/tv_view/src/main/res/layout/activity_main.xml)
+布局
 
 ```xml
 <!--要注意设置约束布局属性 设置不对会导致片段显示不全-->
@@ -170,7 +170,7 @@ class DrawerContent @JvmOverloads constructor(
 </com.bytebyte6.base_ui.DrawerContent>
 ```
 
-[scene_home_content.xml](https://github.com/bytebyte6/Tv/blob/master/tv_view/src/main/res/xml/scene_home_content.xml)
+scene_home_content.xml
 
 ```xml
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
