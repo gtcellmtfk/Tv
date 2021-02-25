@@ -1,41 +1,43 @@
-# 网络电视
-功能
+# M3u Tv 播放器 网络电视
+🔥🔥🔥主要功能
+- 加载m3u播放列表和播放直播源
+- 按国家和地区、语音、类型浏览直播源
 - 支持下载点播文件
 - 支持导入m3u m3u8 txt格式文件
 - [直播源推荐](https://github.com/iptv-org/iptv)
-- [apk下载](https://github.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)  
+- [Download apk](https://github.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)
 
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(20).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(9).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(1).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(2).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(3).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(4).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(6).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(7).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(8).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(11).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(12).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(13).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(14).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(15).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(16).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(17).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(19).jpg" width="320" height="640">
+<img src="/pic/tv%20(20).jpg" width="320" height="640">
+<img src="/pic/tv%20(9).jpg" width="320" height="640">
+<img src="/pic/tv%20(1).jpg" width="320" height="640">
+<img src="/pic/tv%20(2).jpg" width="320" height="640">
+<img src="/pic/tv%20(3).jpg" width="320" height="640">
+<img src="/pic/tv%20(4).jpg" width="320" height="640">
+<img src="/pic/tv%20(6).jpg" width="320" height="640">
+<img src="/pic/tv%20(7).jpg" width="320" height="640">
+<img src="/pic/tv%20(8).jpg" width="320" height="640">
+<img src="/pic/tv%20(11).jpg" width="320" height="640">
+<img src="/pic/tv%20(12).jpg" width="320" height="640">
+<img src="/pic/tv%20(13).jpg" width="320" height="640">
+<img src="/pic/tv%20(14).jpg" width="320" height="640">
+<img src="/pic/tv%20(15).jpg" width="320" height="640">
+<img src="/pic/tv%20(16).jpg" width="320" height="640">
+<img src="/pic/tv%20(17).jpg" width="320" height="640">
+<img src="/pic/tv%20(19).jpg" width="320" height="640">
 
 # 暗黑模式
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(24).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(25).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(26).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(27).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(28).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(29).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(30).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(31).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(22).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(18).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(10).jpg" width="320" height="640">
-<img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(5).jpg" width="320" height="640">
+<img src="/pic/tv%20(24).jpg" width="320" height="640">
+<img src="/pic/tv%20(25).jpg" width="320" height="640">
+<img src="/pic/tv%20(26).jpg" width="320" height="640">
+<img src="/pic/tv%20(27).jpg" width="320" height="640">
+<img src="/pic/tv%20(28).jpg" width="320" height="640">
+<img src="/pic/tv%20(29).jpg" width="320" height="640">
+<img src="/pic/tv%20(30).jpg" width="320" height="640">
+<img src="/pic/tv%20(31).jpg" width="320" height="640">
+<img src="/pic/tv%20(22).jpg" width="320" height="640">
+<img src="/pic/tv%20(18).jpg" width="320" height="640">
+<img src="/pic/tv%20(10).jpg" width="320" height="640">
+<img src="/pic/tv%20(5).jpg" width="320" height="640">
 
 # RxJava
 
