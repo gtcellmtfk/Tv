@@ -5,8 +5,6 @@
 - [直播源推荐](https://github.com/iptv-org/iptv)
 - [apk下载](https://github.com/bytebyte6/Tv/raw/store-tv/tv/labtest/tv-labtest.apk)  
 
-<img src="/pic/tv%20(20).jpg" width="320" height="640">
-
 <img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(20).jpg" width="320" height="640">
 <img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(9).jpg" width="320" height="640">
 <img src="https://raw.githubusercontent.com/bytebyte6/Tv/master/pic/tv%20(1).jpg" width="320" height="640">
