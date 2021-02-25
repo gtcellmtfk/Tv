@@ -48,6 +48,8 @@ class LauncherActivity : BaseActivity() {
                         )
                     )
                     finish()
+                }, {
+                    // loading
                 }
             )
         })

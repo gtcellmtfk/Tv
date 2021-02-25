@@ -24,21 +24,18 @@ object M3u {
     private val categoryRegex = Regex(categoryPattern)
 
     fun getTvs(inputStream: InputStream): List<Tv> {
-        val m3uString = inputStream.readBytes()
-            .commonToUtf8String()
-            .removePrefix("#EXTM3U")
-            .replace("\r\n", "\n")
-            .trim()
-        return getTvs(m3uString)
+        return getTvs(getM3uString(inputStream.readBytes()))
     }
 
     fun getTvs(m3uFile: File): List<Tv> {
-        val m3uString = m3uFile.readBytes()
-            .commonToUtf8String()
+        return getTvs(getM3uString(m3uFile.readBytes()))
+    }
+
+    private fun getM3uString(byteArray: ByteArray): String {
+        return byteArray.commonToUtf8String()
             .removePrefix("#EXTM3U")
             .replace("\r\n", "\n")
             .trim()
-        return getTvs(m3uString)
     }
 
     private fun getTvs(m3uString: String): List<Tv> {
@@ -56,6 +53,9 @@ object M3u {
         }
     }
 
+    /**
+     * 解析标准m3u文件
+     */
     private fun getTvsNormal(list: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
         for (str in list) {
@@ -73,6 +73,9 @@ object M3u {
         return tvs
     }
 
+    /**
+     * 解析来自github的m3u文件
+     */
     private fun getTvsByTvg(list: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
         for (str in list) {
