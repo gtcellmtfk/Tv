@@ -1,10 +1,14 @@
 # Android M3u-Tv 播放器
 
-> **一款播放[Iptv资源](https://github.com/iptv-org/iptv)的播放器，导入M3u格式的文件，支持下载点播文件。**
+> **一款播放[IpTv资源](https://github.com/iptv-org/iptv)的播放器，导入M3u格式的文件，支持下载点播文件。**
+> 
+> **项目记录了一些框架和技术的用法，如ExoPlayer、Gradle Kotlin Dsl、Koin...**
 >
-> **项目使用Mvvm-UseCase架构，Kotlin为开发语言，Room数据库，RxJava异步框架，Koin依赖注入。**
+> **使用Mvvm-UseCase架构，Kotlin为开发语言，Room数据库，RxJava异步框架，Koin依赖注入。**
 >
 > **使用Material Design 组件开发界面，构建过渡动画。**
+> 
+> **使用Kotlin Dsl 管理依赖**
 >
 > **项目地址：[gitee](https://gitee.com/bytebyte6/Tv)  [github](https://github.com/bytebyte6/Tv)**
 >
@@ -21,7 +25,6 @@
 - 设置
 - 关于
 - 直播源播放
-
 
 # 界面概览
 <img src="https://gitee.com/bytebyte6/blog/raw/master/Tv/1.png" width="320" height="640">
