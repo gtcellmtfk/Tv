@@ -15,6 +15,7 @@ import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.TvAdapter
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,6 +31,12 @@ class FavoriteFragment : ListFragment() {
 
     private val viewModel: FavoriteViewModel by viewModel()
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressedDispatcherBackToHome()
@@ -39,17 +46,8 @@ class FavoriteFragment : ListFragment() {
         setupToolbarMenuMode(getString(R.string.nav_fav), "") {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -91,6 +89,12 @@ class FavoriteFragment : ListFragment() {
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
     }
 
     override fun onLoadMore() = Unit

@@ -28,7 +28,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var drawerHelper: DrawerHelper
+    lateinit var drawerHelper: DrawerHelper
 
     private val listener = object : SimpleDrawerListener() {
         override fun onDrawerClosed(drawerView: View) {
@@ -49,18 +49,24 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        LauncherActivity.mainActivityDestroy = false
-
         networkHelper.registerNetworkCallback()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
-        drawerHelper = DrawerHelper.getInstance(this)!!
+        drawerHelper = DrawerHelper(binding.drawLayout)
 
         if (savedInstanceState == null) {
             toHome()
+        }
+
+        var count = 0
+        binding.tvCn.setOnClickListener {
+            if (count >= 10) {
+                throw NoMoreData
+            }
+            count++
         }
 
         networkHelper.networkConnected.observe(this, Observer { connected ->
@@ -125,10 +131,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        LauncherActivity.mainActivityDestroy = true
-        DrawerHelper.destroy()
         networkHelper.unregisterNetworkCallback()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {

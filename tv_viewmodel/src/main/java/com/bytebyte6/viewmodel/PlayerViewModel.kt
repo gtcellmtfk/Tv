@@ -1,5 +1,6 @@
 package com.bytebyte6.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.source.BehindLiveWindowException
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
@@ -21,6 +23,7 @@ import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 
+@SuppressLint("StaticFieldLeak")
 class PlayerViewModel(
     private val networkHelper: NetworkHelper,
     dataManager: DataManager,
@@ -69,18 +72,27 @@ class PlayerViewModel(
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            _onPlayerError.postValue(Event(error))
+            if (isBehindLiveWindow(error)){
+                player?.seekToDefaultPosition()
+                player?.prepare()
+                return
+            }
+//            if (error.cause is BehindLiveWindowException) {
+//                retry()
+//                return
+//            }
+            if (error.cause is HttpDataSource.InvalidResponseCodeException) {
+                retry()
+                return
+            }
             _showProgressBar.postValue(false)
+            _onPlayerError.postValue(Event(error))
         }
     }
 
     private val networkTypeObserver = Observer<NetworkHelper.NetworkType> { type ->
-        emit(type)
-    }
-
-    private fun emit(type: NetworkHelper.NetworkType?) {
         when (type) {
-            NetworkHelper.NetworkType.WIFI -> playThatShit()
+            NetworkHelper.NetworkType.WIFI -> playOrInit()
             NetworkHelper.NetworkType.MOBILE -> {
                 if (onlyWifiPlay) {
                     // Dialog展示的三个条件
@@ -91,7 +103,7 @@ class PlayerViewModel(
                         _showMobileDialog.postValue(Event(Unit))
                     }
                 } else {
-                    playThatShit()
+                    playOrInit()
                 }
             }
             else -> _showNoneDialog.postValue(Event(Unit))
@@ -99,14 +111,18 @@ class PlayerViewModel(
     }
 
     fun retry() {
+        _showProgressBar.postValue(true)
+        destroyPlayer()
         initPlayer()
     }
 
-    fun playThatShit() {
+    fun playOrInit() {
         if (player == null) {
             initPlayer()
         } else {
-            player!!.play()
+            player?.addListener(eventListener)
+            player?.play()
+            _play.postValue(player)
         }
     }
 
@@ -123,7 +139,8 @@ class PlayerViewModel(
 
     fun onStop() {
         networkType.removeObserver(networkTypeObserver)
-        destroyPlayer()
+        player?.pause()
+        player?.removeListener(eventListener)
     }
 
     private fun destroyPlayer() {
@@ -133,15 +150,13 @@ class PlayerViewModel(
     }
 
     private fun initPlayer() {
-        destroyPlayer()
         player = if (url.isEmpty()) {
             getCachePlayer()
         } else {
             getPlayer()
         }.apply {
-            playWhenReady = true
-            prepare()
             addListener(eventListener)
+            prepare()
             play()
             _play.postValue(this)
         }
@@ -170,4 +185,23 @@ class PlayerViewModel(
     }
 
     fun networkIsConnected() = networkHelper.networkIsConnected()
+
+    private fun isBehindLiveWindow(e: ExoPlaybackException): Boolean {
+        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
+            return false
+        }
+        var cause: Throwable? = e.sourceException
+        while (cause != null) {
+            if (cause is BehindLiveWindowException) {
+                return true
+            }
+            cause = cause.cause
+        }
+        return false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        destroyPlayer()
+    }
 }

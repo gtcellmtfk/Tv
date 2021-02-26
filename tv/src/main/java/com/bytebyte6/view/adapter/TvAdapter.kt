@@ -3,6 +3,7 @@ package com.bytebyte6.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
@@ -48,21 +49,22 @@ class TvAdapter(
             tvPos.visibility = View.GONE
         }
 
-        if (item.logo.isEmpty()) {
-            ivPreview.setImageResource(R.drawable.landscape)
-        } else {
-            ivPreview.load(item.logo)
-        }
+        ivPreview.load(item.logo)
 
         flButton.setOnClickListener {
             btnClickListener?.onClick(position, item)
         }
 
-        button.isChecked = item.favorite
-
-        if (download){
-            button.setButtonDrawable(R.drawable.checkbox_download)
+        if (download) {
+            if (item.liveContent) {
+                flButton.isVisible = false
+            } else {
+                flButton.isVisible = true
+                button.setButtonDrawable(R.drawable.checkbox_download)
+            }
         }
+
+        button.isChecked = item.favorite
     }
 }
 

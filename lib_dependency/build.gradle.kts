@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
-    id("com.github.dcendents.android-maven")
+    id(Plugins.LIB)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_ANDROID_EXT)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.DCENDENTS_ANDROID_MAVEN)
 }
 
 group = "com.github.bytebyte6"
@@ -58,7 +58,6 @@ android {
 
 dependencies {
     api(Libs.ANDROIDX_CORE_KTX)
-    api(Libs.APPCOMPAT)
     api(Libs.MATERIAL_DESIGN)
     api(Libs.CONSTRAINTLAYOUT)
     api(Libs.RECYCLERVIEW)
@@ -67,10 +66,6 @@ dependencies {
     api(Libs.LOTTIE)
     api(Libs.KOTLIN_COROUTINES)
     api(Libs.KOTLIN_STDLIB)
-    api(Libs.LIVEDATA_KTX)
-    api(Libs.ACTIVITY)
-    api(Libs.FRAGMENT)
-    api(Libs.WORK_RUNTIME_KTX)
     api(Libs.RECYCLERVIEW_SELECTION)
     api(Libs.RXJAVA3)
     api(Libs.RETROFIT)
@@ -83,7 +78,10 @@ dependencies {
     api(Libs.GLIDE)
     api(Libs.ROOM_RUNTIME)
     api(Libs.ROOM_KTX)
-    api(Libs.LIFECYCLE_COMMON)
-    kapt(Libs.KAPT_ROOM)
-    kapt(Libs.KAPT_GLIDE)
+    api(JetPack.ANDROID_APP_COMPAT)
+    api(JetPack.LIFECYCLE_COMMON)
+    api(JetPack.LIFECYCLE_LIVEDATA_KTX)
+    api(JetPack.ACTIVITY)
+    api(JetPack.FRAGMENT)
+    api(JetPack.WORK_RUNTIME_KTX)
 }

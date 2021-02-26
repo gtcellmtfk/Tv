@@ -14,7 +14,7 @@ data class User(
     val userId: Long = 0,
     var name: String = "",
     var nightMode: Boolean = false,
-    var capturePic: Boolean = false,
+    var capturePic: Boolean = true,
     var downloadOnlyOnWifi: Boolean = true,
     var playOnlyOnWifi: Boolean = true
 ) : Parcelable

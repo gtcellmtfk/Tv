@@ -18,6 +18,7 @@ data class Tv(
     var logo: String = "",
     var name: String = "",
     var favorite: Boolean = false,
+    var liveContent: Boolean = false,
     var language: String = "",
     var countryId: Long = 0,
     var countryName: String = "",

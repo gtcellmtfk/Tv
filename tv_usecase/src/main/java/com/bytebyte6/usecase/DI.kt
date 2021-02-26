@@ -42,9 +42,10 @@ val exoPlayerModule = module {
 
 val useCaseModule: Module = module {
     factory { FavoriteTvUseCase(get()) }
+    factory { LiveContentUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
     factory { DownloadListUseCase(get(), get()) }
-    factory { SearchCountryImageUseCase(get(), get()) }
+    factory { ChangeCountryImageUseCase(get(), get()) }
     factory { DeletePlaylistUseCase(get()) }
     factory<SearchTvLogoUseCase> { SearchTvLogoUseCaseImpl(get(), get()) }
     factory<InitAppUseCase> { InitAppUseCaseImpl(get(), androidContext(), get()) }

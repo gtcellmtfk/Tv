@@ -95,13 +95,7 @@ class ParseM3uUseCase(
                 val inputStream = context!!.assets.open(param.assetsFileName)
                 M3u.getTvs(inputStream)
             } else {
-                val support = param.uri!!.path!!.endsWith(".m3u")
-                        || param.uri.path!!.endsWith(".m3u8")
-                        || param.uri.path!!.endsWith(".txt")
-                if (!support) {
-                    throw UnsupportedOperationException("only support .m3u or .m3u8 or .txt file!")
-                }
-                M3u.getTvs(context!!.contentResolver.openInputStream(param.uri)!!)
+                M3u.getTvs(context!!.contentResolver.openInputStream(param.uri!!)!!)
             }
     }
 }

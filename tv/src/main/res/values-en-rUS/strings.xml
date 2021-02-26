@@ -15,7 +15,7 @@
     <string name="m3u">Import m3u file</string>
     <string name="me_import_file">m3u list</string>
     <string name="me_playlist">Playlist</string>
-    <string name="tip_parse_file_error">File parsing failed</string>
+    <string name="tip_parse_file_error">File parsing failed\\n%s</string>
     <string name="tip_not_m3u_m3u8_file">Only importing M3U or M3U8 files is supported</string>
     <string name="tip_del_playlist">Delete playlists</string>
     <string name="tip_del_video">Delete the video</string>
@@ -53,9 +53,11 @@
     <string name="material">Material</string>
     <string name="tip_about_material">Some pictures and animation resources from the network, if the infringement of your rights and interests, please contact me to delete!</string>
     <string name="live_src">Live resources</string>
-    <string name="tip_live_src">The software does not contain any live broadcasting resources, you can search IPTV through the GitHub website or download M3U or M3U files from other places for import.</string>
+    <string name="tip_live_src">The software does not contain any live broadcasting resources, you can search IPTV through the GitHub website or download M3U or M3U8 files from other places for import.</string>
     <string name="about">About</string>
     <string name="tip_if_like">👆If you like this project, please go to my project home page for a star.👆</string>
     <string name="tip_download">Click OK to download this resource (live streaming resources are not supported), and you can check the progress in the Download Center.</string>
     <string name="tip_del_success_notification">Delete successfully, please note the progress of notification bar.</string>
+    <string name="g_start">Give me a star⭐</string>
+    <string name="cn">🇨🇳</string>
 </resources>

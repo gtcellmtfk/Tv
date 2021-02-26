@@ -1,24 +1,4 @@
 object Libs {
-    const val TEST_CORE = "androidx.test:core:" + Versions.androidx_test_core
-    const val TEST_RUNNER = "androidx.test:runner:" + Versions.runner
-    const val TEST_RULES = "androidx.test:rules:" + Versions.rules
-    const val TEST_KOIN = "org.koin:koin-test:" + Versions.koin
-    const val TEST_ARCH_TESTING = "androidx.arch.core:core-testing:" + Versions.testing
-    const val TEST_JUNIT_EXT = "androidx.test.ext:junit:" + Versions.extJunit
-    const val TEST_JUNIT_KTX = "androidx.test.ext:junit-ktx:" + Versions.extJunit
-    const val TEST_ESPRESSO_CORE = "androidx.test.espresso:espresso-core:" + Versions.espresso
-    const val TEST_ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib:" + Versions.espresso
-    const val TEST_ESPRESSO_UI_AUTOMATOR = "androidx.test.uiautomator:uiautomator:2.2.0"
-    const val TEST_ESPRESSO_INTEGRATION = "org.hamcrest:hamcrest-integration:1.3"
-    const val TEST_JUNIT = "junit:junit:" + Versions.junit
-    const val TEST_ROBOLECTRIC = "org.robolectric:robolectric:4.4"
-    const val TEST_FRAGMENT_TESTING =
-        "androidx.fragment:fragment-testing:${Versions.fragment_test}"
-
-    //kapt
-    const val KAPT_GLIDE = "com.github.bumptech.glide:compiler:${Versions.glide}"
-    const val KAPT_ROOM = "androidx.room:room-compiler:${Versions.room}"
-
     //exoplayer
     const val EXOPLAYER = "com.google.android.exoplayer:exoplayer:${Versions.exoplayer}"
     const val EXOPLAYER_CORE = "com.google.android.exoplayer:exoplayer-core:${Versions.exoplayer}"
@@ -26,19 +6,11 @@ object Libs {
     const val EXOPLAYER_UI = "com.google.android.exoplayer:exoplayer-ui:${Versions.exoplayer}"
     const val EXOPLAYER_RTMP = "com.google.android.exoplayer:extension-rtmp:${Versions.exoplayer}"
 
-    //androidx
     const val ANDROIDX_CORE_KTX = "androidx.core:core-ktx:1.3.2"
-    const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
     const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.0.4"
     const val RECYCLERVIEW = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
     const val SWIPEREDRESHLAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    const val LIVEDATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    const val ACTIVITY = "androidx.activity:activity:1.2.0-alpha07"
-    const val FRAGMENT = "androidx.fragment:fragment:1.3.0-alpha07"
-    const val WORK_RUNTIME_KTX = "androidx.work:work-runtime-ktx:2.4.0"
     const val RECYCLERVIEW_SELECTION = "androidx.recyclerview:recyclerview-selection:1.0.0"
-    const val LIFECYCLE_COMMON =
-        "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle_version}"
 
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:2.6"
     const val CRASH_REPORTER = "com.balsikandar.android:crashreporter:1.1.0"
@@ -70,12 +42,10 @@ object Libs {
     const val KOTLIN_STDLIB_JDK = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
     const val KOTLIN_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
 
-    const val GETIMAGE = "com.github.bytebyte6:GetImage:6.0"
-
+    //firebase
     const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
     const val FIREBASE_CRASH = "com.google.firebase:firebase-crashlytics-ktx"
     const val FIREBASE_BOM = "com.google.firebase:firebase-bom:26.4.0"
 
-    //snackbar
-    const val SNACKBAR="com.louiscad.splitties:splitties-snackbar:${Versions.splitties_version}"
+    const val GETIMAGE = "com.github.bytebyte6:GetImage:6.0"
 }

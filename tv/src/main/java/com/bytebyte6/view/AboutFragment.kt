@@ -26,5 +26,10 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             val intent = Intent(Intent.ACTION_VIEW, parse)
             startActivity(intent)
         }
+        binding?.tvStart?.setOnClickListener {
+            val parse = Uri.parse("https://github.com/bytebyte6/Tv")
+            val intent = Intent(Intent.ACTION_VIEW, parse)
+            startActivity(intent)
+        }
     }
 }

@@ -28,8 +28,6 @@ class InitAppUseCaseImpl(
 
     override fun run(param: Unit): User {
 
-        val user = initUser()
-
         initCountryData()
 
         initCategoryData()
@@ -38,13 +36,12 @@ class InitAppUseCaseImpl(
 
         initTestData()
 
-        return user
+        return initUser()
     }
 
     private fun initUser(): User {
         val user = dataManager.getCurrentUserIfNotExistCreate()
-
-        if (dataManager.getTvCount() != 0 && user.capturePic) {
+        if (user.capturePic) {
             findImageLink()
         }
         return user
@@ -55,8 +52,10 @@ class InitAppUseCaseImpl(
      */
     private fun initTestData() {
         try {
-            val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
-            parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
+            if (dataManager.getTvCount() == 0) {
+                val parseM3uUseCase = ParseM3uUseCase(dataManager, context)
+                parseM3uUseCase.run(ParseParam(assetsFileName = "index.m3u"))
+            }
         } catch (e: Exception) {
             loge("for build type labtest,if error ignore!")
         }
@@ -67,12 +66,9 @@ class InitAppUseCaseImpl(
             val json = context.assets.open("categories.json")
                 .bufferedReader()
                 .use { it.readText() }
-            val categories: List<String> =
-                gson.fromJson(json, TypeConverter.sType)
-            val list = categories.map {
-                Category(it)
-            }
-            dataManager.insertCategory(list)
+            val categories: List<Category> =
+                gson.fromJson(json, TypeConverter.typeCategory)
+            dataManager.insertCategory(categories)
         }
     }
 
@@ -92,8 +88,15 @@ class InitAppUseCaseImpl(
             val json = context.assets.open("countries.json")
                 .bufferedReader()
                 .use { it.readText() }
-            val cs: List<Country> =
+            val cs: MutableList<Country> =
                 gson.fromJson(json, object : TypeToken<List<Country>>() {}.type)
+            cs.add(
+                Country(
+                    name = Country.UNSORTED,
+                    nameChinese = "未知",
+                    code = Country.UNSORTED_LOW
+                )
+            )
             dataManager.insertCountry(cs)
         }
     }

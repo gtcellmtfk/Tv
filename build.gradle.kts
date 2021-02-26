@@ -4,11 +4,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath(ClassPath.FIREBASE_CRASH_GRADLE)
+        classpath(ClassPath.FIREBASE_CRASH)
         classpath(ClassPath.GOOGLE_SERVICE)
-        classpath(ClassPath.KOTLIN_GRADLE)
-        classpath(ClassPath.PULISH_GRADLE)
-        classpath(ClassPath.TOOLS_GRADLE)
+        classpath(ClassPath.GRADLE_KOTLIN)
+        classpath(ClassPath.GRADLE_MAVEN)
+        classpath(ClassPath.GRADLE)
     }
 }
 
@@ -16,8 +16,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url = uri(RepoUri.JITPACK_IO) }
-        maven { url = uri(RepoUri.ALI_YUN_MAVEN) }
+        maven { url = uri(Uri.JITPACK_IO) }
+        maven { url = uri(Uri.ALIYUN_MAVEN) }
     }
 }
 

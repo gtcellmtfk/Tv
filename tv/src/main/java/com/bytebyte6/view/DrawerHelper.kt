@@ -6,24 +6,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import com.bytebyte6.common.SimpleDrawerListener
 
-class DrawerHelper private constructor(
+class DrawerHelper constructor(
     private val drawerLayout: DrawerLayout
 ) {
-
-    companion object {
-        private var drawerHelper: DrawerHelper? = null
-        fun getInstance(activity: FragmentActivity): DrawerHelper? {
-            if (drawerHelper == null) {
-                val drawerLayout: DrawerLayout = activity.findViewById(R.id.drawLayout) ?: return null
-                drawerHelper = DrawerHelper(drawerLayout)
-            }
-            return drawerHelper!!
-        }
-
-        fun destroy() {
-            drawerHelper = null
-        }
-    }
 
     init {
         drawerLayout.apply {

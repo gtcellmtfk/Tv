@@ -96,10 +96,10 @@ class SearchFragment2 : ListFragment() {
         KeyboardUtils.showSoftInput(etSearch, requireContext())
 
         viewModel.favoriteResult.observe(viewLifecycleOwner, Observer { result ->
-            result.emitIfNotHandled(success = {
-                adapter.currentList[it.data.pos].favorite = it.data.tv.favorite
-                adapter.notifyItemChanged(it.data.pos)
-            })
+            result.isSuccess()?.apply {
+                adapter.currentList[pos].favorite = tv.favorite
+                adapter.notifyItemChanged(pos)
+            }
         })
         viewModel.searchResult.observe(viewLifecycleOwner, Observer { result ->
             result.emit({

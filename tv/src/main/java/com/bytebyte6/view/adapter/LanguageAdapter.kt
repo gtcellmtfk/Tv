@@ -2,6 +2,7 @@ package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.bytebyte6.common.randomColorByNightMode
 import com.bytebyte6.data.entity.Language
 import com.bytebyte6.data.model.LangDiff
 import com.bytebyte6.utils.BaseListAdapter
@@ -26,7 +27,7 @@ class LanguageAdapter : BaseListAdapter<Language, CardViewHolder>(LangDiff) {
             tvBody.text = item.languageNameChinese
             ivIcon.setImageResource(randomImage())
             cardView.strokeWidth = 4
-            cardView.strokeColor = item.color
+            cardView.strokeColor = randomColorByNightMode()
             cardView.radius = 10f
             cardView.setCardBackgroundColor(
                 ContextCompat.getColor(

@@ -4,8 +4,10 @@
     package="com.bytebyte6.view">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="com.bytebyte6.view.RtmpApp"
@@ -43,7 +45,7 @@
             android:theme="@style/Theme.FullScreen" />
 
         <activity
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:name="com.bytebyte6.view.main.MainActivity"
             android:screenOrientation="portrait"/>
 

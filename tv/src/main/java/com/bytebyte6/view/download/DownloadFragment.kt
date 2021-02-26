@@ -14,6 +14,7 @@ import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.DownloadViewModel
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -39,6 +40,12 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
     private lateinit var downloadAdapter: DownloadAdapter
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressedDispatcherBackToHome()
@@ -47,20 +54,11 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
         downloadManager.addListener(this)
 
-        setupToolbarMenuMode(getString(R.string.nav_download), ""){
+        setupToolbarMenuMode(getString(R.string.nav_download), "") {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -103,6 +101,13 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
+        downloadManager.removeListener(this)
+    }
+
     private fun showDeleteVideoDialog(pos: Int) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.tip_del_video).plus(downloadAdapter.currentList[pos].tv.name))
@@ -124,11 +129,6 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
         DownloadServicePro.resumeDownloads(requireContext())
         requireView().longSnack(R.string.resume)
         viewModel.startInterval()
-    }
-
-    override fun onDestroyView() {
-        downloadManager.removeListener(this)
-        super.onDestroyView()
     }
 
     override fun onDownloadChanged(

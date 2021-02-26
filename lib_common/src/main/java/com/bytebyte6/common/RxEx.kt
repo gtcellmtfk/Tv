@@ -15,7 +15,7 @@ interface RxUseCase2<I, O> {
 
     fun execute(param: I): Single<O> = Single.create<O> {
         try {
-            result.postValue((Result.Loading()))
+            result.postValue((Result.Loading))
             val o = run(param)
             result.postValue((Result.Success(o)))
             it.onSuccess(o)
@@ -28,15 +28,26 @@ interface RxUseCase2<I, O> {
     fun run(param: I): O
 }
 
+abstract class IntervalUseCase<I, O> : RxUseCase<I, O>() {
+    fun interval(param: I, period: Long = 2): Observable<Long> =
+        Observable.interval(period, TimeUnit.SECONDS)
+            .doOnNext {
+                val o = run(param)
+                result.postValue((Result.Success(o)))
+            }.doOnError {
+                result.postValue((Result.Error(it)))
+            }
+}
+
 abstract class RxUseCase<I, O> {
 
-    private val result: MutableLiveData<Result<O>> = MutableLiveData()
+    protected val result: MutableLiveData<Result<O>> = MutableLiveData()
 
     fun result(): LiveData<Result<O>> = result
 
     fun execute(param: I): Single<O> = Single.create<O> {
         try {
-            result.postValue((Result.Loading()))
+            result.postValue((Result.Loading))
             val o = run(param)
             result.postValue((Result.Success(o)))
             it.onSuccess(o)
@@ -45,15 +56,6 @@ abstract class RxUseCase<I, O> {
             it.onError(e)
         }
     }
-
-    fun interval(param: I, period: Long = 2): Observable<Long> =
-        Observable.interval(period, TimeUnit.SECONDS)
-            .doOnNext {
-                val resultType = run(param)
-                result.postValue((Result.Success(resultType)))
-            }.doOnError {
-                result.postValue((Result.Error(it)))
-            }
 
     abstract fun run(param: I): O
 }

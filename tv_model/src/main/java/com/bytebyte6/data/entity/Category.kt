@@ -7,6 +7,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.bytebyte6.common.randomColorByNightMode
+import com.google.gson.annotations.Expose
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
@@ -25,11 +26,9 @@ object CategoryDiff : DiffUtil.ItemCallback<Category>() {
 @Entity
 data class Category(
     @PrimaryKey
-    var category: String = ""
+    var category: String = "",
+    var categoryChinese: String = ""
 ) : Parcelable {
-    @IgnoredOnParcel
-    @Ignore
-    val color :Int = randomColorByNightMode()
     companion object {
         const val OTHER = "Other"
     }

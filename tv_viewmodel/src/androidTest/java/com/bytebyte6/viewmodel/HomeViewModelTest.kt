@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bytebyte6.data.dataModule
 import com.bytebyte6.usecase.useCaseModule
-import com.bytebyte6.common.emit
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

@@ -39,7 +39,7 @@ abstract class PagingHelper<T>(private val pageSize: Int = 20) {
             if (end) {
                 throw NoMoreData
             } else {
-                result.postValue((Result.Loading()))
+                result.postValue((Result.Loading))
                 list.addAll(paging(offset = page * pageSize, pageSize = pageSize))
                 page++
                 end = list.size >= count()

@@ -16,14 +16,5 @@ fun ImageView.load(url: String) {
     GlideApp.with(context)
         .load(url)
         .placeholder(R.drawable.landscape)
-        .error(R.drawable.image_not_found2)
-        .into(this)
-}
-
-fun ImageView.load(fragment: Fragment, url: String) {
-    GlideApp.with(fragment)
-        .load(url)
-        .placeholder(R.drawable.landscape)
-        .error(R.drawable.image_not_found2)
         .into(this)
 }

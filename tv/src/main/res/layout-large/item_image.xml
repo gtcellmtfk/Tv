@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:minWidth="0dp"
             android:button="@drawable/checkbox_favorite"
-            android:visibility="gone"
+            android:visibility="visible"
             app:buttonTint="@color/white" />
     </FrameLayout>
 

@@ -41,7 +41,11 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
             val intent = Intent(Intent.ACTION_VIEW, parse)
             startActivity(intent)
         }
-
+        binding?.tvStart?.setOnClickListener {
+            val parse = Uri.parse("https://github.com/bytebyte6/Tv")
+            val intent = Intent(Intent.ACTION_VIEW, parse)
+            startActivity(intent)
+        }
         viewModel.user.observe(viewLifecycleOwner, Observer {
             binding?.swCapturePic?.isChecked = it.capturePic
             binding?.swNightMode?.isChecked = it.nightMode

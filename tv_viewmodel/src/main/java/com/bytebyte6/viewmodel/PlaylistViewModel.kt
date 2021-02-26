@@ -10,13 +10,15 @@ import com.bytebyte6.common.onSingle
 import com.bytebyte6.data.DataManager
 import com.bytebyte6.data.PAGE_SIZE
 import com.bytebyte6.data.entity.Tv
-import com.bytebyte6.usecase.SearchTvLogoParam
-import com.bytebyte6.usecase.SearchTvLogoUseCase
+import com.bytebyte6.usecase.*
 
 class PlaylistViewModel(
     private val searchTvLogoUseCase: SearchTvLogoUseCase,
+    private val liveContentUseCase: LiveContentUseCase,
     private val dataManager: DataManager
 ) : BaseViewModel() {
+
+    val notLiveContentResult = liveContentUseCase.result()
 
     val itemChanged: LiveData<Int> = searchTvLogoUseCase.itemChanged.map {
         val indexOf = pagingHelper.getList().indexOf(it)
@@ -39,7 +41,7 @@ class PlaylistViewModel(
             addDisposable(
                 searchTvLogoUseCase.execute(SearchTvLogoParam(tvs))
                     .doOnSuccess { dataManager.updatePlaylistCache(playlistId, tvs, page) }
-                    .onIo()
+                    .onSingle()
             )
             return tvs
         }
@@ -50,7 +52,11 @@ class PlaylistViewModel(
     var playlistId: Long = 0
 
     fun loadMore() {
-        addDisposable(pagingHelper.loadResult().onSingle())
+        addDisposable(pagingHelper.loadResult().onIo())
+    }
+
+    fun setLiveContentTrue(pos: Int, tv: Tv) {
+        addDisposable(liveContentUseCase.execute(UpdateTvParam(pos, tv)).onIo())
     }
 
     private var first = true

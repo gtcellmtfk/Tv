@@ -20,7 +20,7 @@
     <string name="m3u">导入m3u文件</string>
     <string name="me_import_file">导入m3u文件后可展示列表</string>
     <string name="me_playlist">我的播放列表</string>
-    <string name="tip_parse_file_error">文件解析失败</string>
+    <string name="tip_parse_file_error">文件解析失败\n%s</string>
     <string name="tip_not_m3u_m3u8_file">只支持导入m3u或m3u8文件</string>
     <string name="search_share" translatable="false">searchShare</string>
     <string name="delete_forever" translatable="false">delete_forever</string>
@@ -92,8 +92,10 @@
     <string name="tip_about_material">部分图片和动画资源来源于网络,如果侵犯到您的权益,请联系我删除!</string>
     <string name="about">关于</string>
     <string name="live_src">直播资源</string>
-    <string name="tip_live_src">软件不包含任何直播资源,推荐通过Github网站搜索Iptv或自行从其他地方下载M3u或M3u文件进行导入.</string>
+    <string name="tip_live_src">软件不包含任何直播资源,推荐通过Github网站搜索Iptv或自行从其他地方下载M3u或M3u8文件进行导入.</string>
     <string name="tip_if_like">👆如果喜欢这个项目,请到我的项目主页给个星星吧.👆</string>
     <string name="tip_download">点击确定下载该资源(不支持直播资源),可在下载中心查看进度.</string>
     <string name="tip_del_success_notification">删除成功,请留意通知栏进度.</string>
+    <string name="g_start">赏我一颗星⭐</string>
+    <string name="cn">🇨🇳</string>
 </resources>

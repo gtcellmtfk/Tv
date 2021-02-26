@@ -1,5 +1,6 @@
 package com.bytebyte6.view.player
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -46,6 +47,8 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.playerView?.setShowPreviousButton(false)
+        binding?.playerView?.setShowNextButton(false)
         viewModel.showMobileDialog.observe(viewLifecycleOwner, EventObserver {
             showMobileDialog()
         })
@@ -99,6 +102,7 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
     }
 
     private fun showNoneDialog() {
+        // 有时候是 网络切换 短暂丢网
         handler.postDelayed({
             if (!viewModel.networkIsConnected()) {
                 AlertDialog.Builder(requireContext())
@@ -130,7 +134,7 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
             .setPositiveButton(R.string.enter) { dialog, _ ->
                 dialog.dismiss()
                 mobileDialog = null
-                viewModel.playThatShit()
+                viewModel.playOrInit()
             }
             .setMessage(R.string.tip_play_confirm)
             .setCancelable(false)
@@ -138,15 +142,34 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
         mobileDialog?.show()
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT > 23) {
+            viewModel.onResume()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.onResume()
+        if (Build.VERSION.SDK_INT <= 23) {
+            viewModel.onResume()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT <= 23) {
+            viewModel.onStop()
+            stop()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.onStop()
-        stop()
+        if (Build.VERSION.SDK_INT > 23) {
+            viewModel.onStop()
+            stop()
+        }
     }
 
     private fun play(player: Player) {
@@ -161,7 +184,11 @@ class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragmen
         binding?.apply {
             playerView.keepScreenOn = false
             playerView.onPause()
-            playerView.player = null
         }
+    }
+
+    override fun onDestroyView() {
+        binding?.playerView?.player = null
+        super.onDestroyView()
     }
 }

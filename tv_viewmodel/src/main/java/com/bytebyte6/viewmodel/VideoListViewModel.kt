@@ -27,7 +27,7 @@ class VideoListViewModel(
         override fun count(): Int = dataManager.getFtsTvCount(getKey())
         override fun paging(offset: Int, pageSize: Int): List<Tv> {
             val tvs = dataManager.ftsTvPaging(offset, getKey(), pageSize)
-            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onIo())
+            addDisposable(searchTvLogoUseCase.execute(SearchTvLogoParam(tvs)).onSingle())
             return tvs
         }
     }
@@ -47,7 +47,7 @@ class VideoListViewModel(
     fun count(item: String): LiveData<Int> = dataManager.ftsTvCount(item)
 
     fun loadMore() {
-        addDisposable(pagingHelper.loadResult().onSingle())
+        addDisposable(pagingHelper.loadResult().onIo())
     }
 
     fun fav(pos: Int) {

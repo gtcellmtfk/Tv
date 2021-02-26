@@ -16,6 +16,7 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.MeViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -37,6 +38,12 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     private lateinit var launcher: ActivityResultLauncher<String>
 
+    private val listener = object : SimpleDrawerListener() {
+        override fun onDrawerClosed(drawerView: View) {
+            binding?.emptyBox?.resumeAnimation()
+        }
+    }
+
     override fun initViewBinding(view: View): FragmentMeBinding {
         return FragmentMeBinding.bind(view)
     }
@@ -54,25 +61,17 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarMenuMode(){
+        setupToolbarMenuMode {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.apply {
-            addDrawerListener(object : SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View) {
-                    if (binding == null) {
-                        removeDrawerListener(this)
-                    } else {
-                        binding?.emptyBox?.resumeAnimation()
-                    }
-                }
-            })
-        }
+
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot { clearRecyclerView() }
         setupOnBackPressedDispatcherBackToHome()
 
-        val binding = binding!!
+        val meBinding = binding!!
 
         //init recyclerview
         val playlistAdapter = PlaylistAdapter()
@@ -83,28 +82,28 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 itemView
             )
         }
-        this.recyclerView = binding.recyclerView
-        binding.recyclerView.adapter = playlistAdapter
-        binding.recyclerView.addItemDecoration(LinearSpaceDecoration())
-        binding.recyclerView.setHasFixedSize(true)
-        playlistAdapter.setupSelectionTracker(binding.recyclerView,
+        this.recyclerView = meBinding.recyclerView
+        meBinding.recyclerView.adapter = playlistAdapter
+        meBinding.recyclerView.addItemDecoration(LinearSpaceDecoration())
+        meBinding.recyclerView.setHasFixedSize(true)
+        playlistAdapter.setupSelectionTracker(meBinding.recyclerView,
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     val hasSelection = playlistAdapter.selectionTracker!!.hasSelection()
                     if (hasSelection) {
-                        binding.fab.show()
+                        binding?.fab?.show()
                     } else {
-                        binding.fab.hide()
+                        binding?.fab?.hide()
                     }
                 }
             })
         val selectionTracker = playlistAdapter.selectionTracker!!
 
-        binding.toolbar.setOnMenuItemClickListener {
-            launcher.launch("*/*")
+        meBinding.toolbar.setOnMenuItemClickListener {
+            launcher.launch("text/*")
             true
         }
-        binding.fab.setOnClickListener {
+        meBinding.fab.setOnClickListener {
             if (!selectionTracker.selection.isEmpty) {
                 showDialog(selectionTracker)
             }
@@ -112,7 +111,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
-                binding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener(){
+                binding?.fab?.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
                     override fun onHidden(fab: FloatingActionButton?) {
                         showSnackBar(R.string.tip_del_success)
                     }
@@ -129,7 +128,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
         viewModel.playlists.observe(viewLifecycleOwner, {
             playlistAdapter.replace(it)
-            binding.emptyBox.isVisible = it.isEmpty()
+            meBinding.emptyBox.isVisible = it.isEmpty()
         })
 
         viewModel.parseResult.observe(viewLifecycleOwner, { result ->
@@ -137,15 +136,17 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 hideProgressBar()
             }, {
                 hideProgressBar()
-                if (it.error is UnsupportedOperationException) {
-                    showSnackBar(R.string.tip_not_m3u_m3u8_file)
-                } else {
-                    showSnackBar(R.string.tip_parse_file_error)
-                }
+                showSnackBar(0,getString(R.string.tip_parse_file_error, it.error.message.toString()))
             }, {
                 showProgressBar()
             })
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
     }
 
     private fun showDialog(selectionTracker: SelectionTracker<Long>) {
@@ -162,13 +163,16 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             .show()
     }
 
-    private fun showSnackBar(messageId: Int) {
+    private fun showSnackBar(messageId: Int, message: String? = null) {
         binding?.apply {
             if (fab.isVisible) {
                 val actionSetup: Snackbar.() -> Unit = {
                     anchorView = fab
                 }
-                val longSnack = fab.longSnack(messageId, actionSetup)
+                val longSnack = if (message == null)
+                    fab.longSnack(messageId, actionSetup)
+                else
+                    fab.longSnack(message, actionSetup)
                 //memory leak
                 longSnack.addCallback(object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
@@ -177,7 +181,11 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                     }
                 })
             } else {
-                requireView().longSnack(messageId)
+                if (message == null) {
+                    requireView().longSnack(messageId)
+                } else {
+                    requireView().longSnack(message)
+                }
             }
         }
     }

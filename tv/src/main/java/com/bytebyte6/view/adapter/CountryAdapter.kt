@@ -2,12 +2,12 @@ package com.bytebyte6.view.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
 import com.bytebyte6.data.entity.Country
 import com.bytebyte6.data.entity.CountryDiff
 import com.bytebyte6.utils.BaseListAdapter
-import com.bytebyte6.view.R
 import com.bytebyte6.view.load
 import java.util.*
 
@@ -25,17 +25,13 @@ class CountryAdapter(
         val item = getItem(position)
         val tvName = holder.binding.tvName
         val ivPreview = holder.binding.ivPreview
-        holder.binding.flButton.isVisible=false
+        holder.binding.flButton.isVisible = false
         images.add(ivPreview)
-        if (Locale.getDefault().language.contains("zh")){
+        if (Locale.getDefault().language.contains("zh")) {
             tvName.text = item.nameChinese
-        }else{
+        } else {
             tvName.text = item.name
         }
-        if (item.image.isEmpty()) {
-            ivPreview.setImageResource(R.drawable.landscape)
-        } else {
-            ivPreview.load(item.image)
-        }
+        ivPreview.load(item.image)
     }
 }
