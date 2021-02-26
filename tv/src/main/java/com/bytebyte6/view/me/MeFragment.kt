@@ -100,7 +100,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         val selectionTracker = playlistAdapter.selectionTracker!!
 
         meBinding.toolbar.setOnMenuItemClickListener {
-            launcher.launch("text/*")
+            launcher.launch("*/*")
             true
         }
         meBinding.fab.setOnClickListener {
