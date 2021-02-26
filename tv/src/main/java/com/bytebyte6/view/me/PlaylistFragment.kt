@@ -109,10 +109,16 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             tvAdapter.notifyItemChanged(pos)
         })
 
+        viewModel.notLiveContentResult.observe(viewLifecycleOwner, Observer {
+            it.isSuccess()?.apply {
+                tvAdapter.notifyItemChanged(pos)
+            }
+        })
+
         viewModel.first()
     }
 
-    private fun showTipDialog(tv: Tv) {
+    private fun showTipDialog(pos: Int, tv: Tv) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.tip)
             .setMessage(getString(R.string.tip_confirm_the_download))
@@ -121,14 +127,14 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             }
             .setPositiveButton(R.string.enter) { dialog, _ ->
                 dialog.dismiss()
-                onDownloadClick(tv)
+                onDownloadClick(pos, tv)
             }
             .setCancelable(false)
             .create()
             .show()
     }
 
-    private fun onDownloadClick(tv: Tv) {
+    private fun onDownloadClick(pos: Int, tv: Tv) {
         val downloadHelper = DownloadHelper.forMediaItem(
             requireContext(),
             MediaItem.fromUri(tv.url),
@@ -136,10 +142,11 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             httpDataSourceFactory
         )
         val dialog = showProgressDialog(downloadHelper)
-        downloadHelper.prepare(getDownloadHelperCallback(tv, dialog))
+        downloadHelper.prepare(getDownloadHelperCallback(pos, tv, dialog))
     }
 
     private fun getDownloadHelperCallback(
+        pos: Int,
         tv: Tv,
         dialog: ProgressDialog2
     ): DownloadHelper.Callback {
@@ -154,6 +161,7 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
             override fun onPrepareError(helper: DownloadHelper, e: IOException) {
                 if (e is DownloadHelper.LiveContentUnsupportedException) {
                     requireView().longSnack(R.string.tip_un_support_download_live_stream)
+                    viewModel.setLiveContentTrue(pos, tv)
                 } else {
                     requireView().longSnack(e.message.toString())
                 }
@@ -184,16 +192,13 @@ class PlaylistFragment : ListFragment(), ButtonClickListener {
     override fun onRefresh() = Unit
 
     override fun onClick(position: Int, tv: Tv) {
+        if (tv.liveContent) {
+            return
+        }
         when (networkHelper.getNetworkType()) {
-            NetworkHelper.NetworkType.MOBILE -> {
-                showTipDialog(tv)
-            }
-            NetworkHelper.NetworkType.WIFI -> {
-                onDownloadClick(tv)
-            }
-            else -> {
-                requireView().longSnack(R.string.network_disconnected)
-            }
+            NetworkHelper.NetworkType.MOBILE -> showTipDialog(position, tv)
+            NetworkHelper.NetworkType.WIFI -> onDownloadClick(position, tv)
+            else -> requireView().longSnack(R.string.network_disconnected)
         }
     }
 }

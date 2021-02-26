@@ -15,6 +15,7 @@ import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.ButtonClickListener
 import com.bytebyte6.view.adapter.TvAdapter
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -45,7 +46,8 @@ class FavoriteFragment : ListFragment() {
         setupToolbarMenuMode(getString(R.string.nav_fav), "") {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -91,7 +93,8 @@ class FavoriteFragment : ListFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
     }
 
     override fun onLoadMore() = Unit

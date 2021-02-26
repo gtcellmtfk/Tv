@@ -3,7 +3,7 @@ package com.bytebyte6.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.GlideClearHelper
 import com.bytebyte6.common.ImageClearHelper
@@ -55,11 +55,16 @@ class TvAdapter(
             btnClickListener?.onClick(position, item)
         }
 
-        button.isChecked = item.favorite
-
         if (download) {
-            button.setButtonDrawable(R.drawable.checkbox_download)
+            if (item.liveContent) {
+                flButton.isVisible = false
+            } else {
+                flButton.isVisible = true
+                button.setButtonDrawable(R.drawable.checkbox_download)
+            }
         }
+
+        button.isChecked = item.favorite
     }
 }
 

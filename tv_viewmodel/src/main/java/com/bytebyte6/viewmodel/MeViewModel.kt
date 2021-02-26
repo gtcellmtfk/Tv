@@ -36,7 +36,7 @@ class MeViewModel(
 
     fun parseM3u(it: Uri) {
         addDisposable(
-                parseM3uUseCase.execute(ParseParam(it)).onIo()
+            parseM3uUseCase.execute(ParseParam(it)).onIo()
         )
     }
 

@@ -45,7 +45,7 @@
             android:theme="@style/Theme.FullScreen" />
 
         <activity
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:name="com.bytebyte6.view.main.MainActivity"
             android:screenOrientation="portrait"/>
 

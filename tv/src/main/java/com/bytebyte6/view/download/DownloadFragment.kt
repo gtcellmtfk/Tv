@@ -14,6 +14,7 @@ import com.bytebyte6.utils.LinearSpaceDecoration
 import com.bytebyte6.utils.ListFragment
 import com.bytebyte6.view.*
 import com.bytebyte6.view.R
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.DownloadViewModel
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -53,10 +54,11 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
         downloadManager.addListener(this)
 
-        setupToolbarMenuMode(getString(R.string.nav_download), ""){
+        setupToolbarMenuMode(getString(R.string.nav_download), "") {
             binding?.emptyBox?.pauseAnimation()
         }
-        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot {
             clearRecyclerView()
@@ -101,7 +103,8 @@ class DownloadFragment : ListFragment(), DownloadManager.Listener, Toolbar.OnMen
 
     override fun onDestroyView() {
         super.onDestroyView()
-        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
         downloadManager.removeListener(this)
     }
 

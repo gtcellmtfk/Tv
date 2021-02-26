@@ -16,6 +16,7 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.PlaylistAdapter
 import com.bytebyte6.view.databinding.FragmentMeBinding
+import com.bytebyte6.view.main.MainActivity
 import com.bytebyte6.viewmodel.MeViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -64,7 +65,8 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             binding?.emptyBox?.pauseAnimation()
         }
 
-        DrawerHelper.getInstance(requireActivity())?.addDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot { clearRecyclerView() }
         setupOnBackPressedDispatcherBackToHome()
@@ -98,7 +100,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
         val selectionTracker = playlistAdapter.selectionTracker!!
 
         meBinding.toolbar.setOnMenuItemClickListener {
-            launcher.launch("*/*")
+            launcher.launch("text/*")
             true
         }
         meBinding.fab.setOnClickListener {
@@ -143,7 +145,8 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        DrawerHelper.getInstance(requireActivity())?.removeDrawerListener(listener)
+        val drawerHelper = (requireActivity() as MainActivity).drawerHelper
+        drawerHelper.removeDrawerListener(listener)
     }
 
     private fun showDialog(selectionTracker: SelectionTracker<Long>) {

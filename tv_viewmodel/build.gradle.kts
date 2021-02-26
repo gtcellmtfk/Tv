@@ -67,6 +67,7 @@ dependencies {
 
     testImplementation(project(":lib_test"))
     testImplementation(Test.JUNIT)
+    testImplementation(Test.ARCH_TESTING)
     testImplementation(Libs.GETIMAGE)
     testImplementation(project(":tv_test"))
 }

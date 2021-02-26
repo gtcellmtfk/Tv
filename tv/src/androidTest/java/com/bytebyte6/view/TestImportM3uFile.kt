@@ -36,6 +36,9 @@ class TestImportM3uFile {
     @Before
     fun setup() {
         device.pressHome()
+        // 启动活动
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        applicationContext.startActivity(intent)
     }
 
     @Test
@@ -54,10 +57,6 @@ class TestImportM3uFile {
     }
 
     private fun test(fileName: String) {
-        // 启动活动
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        applicationContext.startActivity(intent)
-
         // 点击菜单
         val desc = applicationContext.getString(R.string.toolbar_navigation)
         val navButton = device.findObject(UiSelector().description(desc))

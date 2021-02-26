@@ -51,9 +51,9 @@ class ParseM3uUseCaseTest : KoinTest {
 
     @Test
     fun test_parse_success() {
-        initAppUseCase.execute(Unit).test().assertValue {
-            it.name == "Admin"
-        }
+//        initAppUseCase.execute(Unit).test().assertValue {
+//            it.name == "Admin"
+//        }
         val tv1 = Tv(name = "A", url = "A.url", countryCode = "ar")
         val tv2 = Tv(name = "B", url = "B.url", countryCode = "in")
         val tv3 = Tv(name = "C", url = "C.url", countryCode = "cn")
