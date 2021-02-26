@@ -41,6 +41,7 @@ class M3uTest {
             val tvs = M3u.getTvs(file)
             println("${file.name} size = ${tvs.size}")
             tvs.forEach {
+                // 断定以下变量不为空
                 assert(it.name.isNotEmpty())
                 assert(it.countryCode.isNotEmpty())
                 assert(it.url.isNotEmpty())

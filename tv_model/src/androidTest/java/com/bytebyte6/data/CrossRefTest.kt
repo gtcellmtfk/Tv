@@ -47,6 +47,7 @@ class CrossRefTest {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         dataManager = DataManagerImpl(db)
 
+        // 数据准备
         dataManager.insertTv(tvs)
         dataManager.insertUser(users)
         dataManager.insertPlaylist(playlists)
@@ -59,15 +60,20 @@ class CrossRefTest {
 
     @Test
     fun tvOneToMany() {
+        // tv一对多关系验证
+        // tv对playlist
         val playlists = dataManager.getPlaylists()
         val tvs = dataManager.getTvs()
 
+        // tv和playlist 关联
         val a = PlaylistTvCrossRef(playlists[0].playlistId, tvs[0].tvId)
         val b = PlaylistTvCrossRef(playlists[1].playlistId, tvs[0].tvId)
         val c = PlaylistTvCrossRef(playlists[2].playlistId, tvs[0].tvId)
 
+        // 插入关联的实体
         dataManager.crossRefPlaylistWithTv(mutableListOf(a, b, c))
 
+        // 验证
         val list = dataManager.getTvWithPlaylistss()
         assert(list[0].tv.tvId == tvs[0].tvId)
         assert(list[0].playlists.size == 3)
@@ -75,15 +81,19 @@ class CrossRefTest {
 
     @Test
     fun userOneToMany() {
+        // user 对 playlist
         val playlists = dataManager.getPlaylists()
         val users = dataManager.getUsers()
 
+        // 关联user 和 playlist
         val a = UserPlaylistCrossRef(users[0].userId, playlists[0].playlistId)
         val b = UserPlaylistCrossRef(users[0].userId, playlists[1].playlistId)
         val c = UserPlaylistCrossRef(users[0].userId, playlists[2].playlistId)
 
+        // 插入关联
         dataManager.crossRefUserWithPlaylists(mutableListOf(a, b, c))
 
+        // 验证
         dataManager.getUserWithPlaylists().apply {
             assert(this[0].user.userId == users[0].userId)
             assert(this[0].playlists.size == 3)
@@ -92,6 +102,10 @@ class CrossRefTest {
 
     @Test
     fun playlistOneToMany() {
+        // 验证playlist 对 user 和 tv
+        // 拥有这个playlist的用户
+        // 存在这个playlist的tv
+        // 一个tv可能存在于多个playlist
         val tvs = dataManager.getTvs()
         val playlists = dataManager.getPlaylists()
         val users = dataManager.getUsers()
@@ -108,10 +122,14 @@ class CrossRefTest {
 
         dataManager.crossRefUserWithPlaylists(mutableListOf(a, b, c))
 
+        // 获取所有的 playlist和tvs
+        // 验证 一个playlist 对 多个tv
         val playlistsWithTvs = dataManager.getPlaylistsWithTvss()
         assert(playlistsWithTvs[0].playlist.playlistId == playlists[0].playlistId)
         assert(playlistsWithTvs[0].tvs.size == 3)
 
+        // 获取所有的 playlist和users
+        // 验证 一个playlist 对 多个用户
         val playlistsWithUsers = dataManager.getPlaylistsWithUsers()
         assert(playlistsWithUsers[0].playlist.playlistId == playlists[0].playlistId)
         assert(playlistsWithUsers[0].users.size == 3)
@@ -125,15 +143,15 @@ class CrossRefTest {
         assert(playlists.size == 3)
 
         val playlistId = playlists[0].playlistId
-        val tvsByPlaylistId = dataManager.getTvsByPlaylistId(playlistId, 0)
-        assert(tvsByPlaylistId.size == 3)
+        val tvs = dataManager.getTvsByPlaylistId(playlistId, 0)
+        assert(tvs.size == 3)
 
         assertError {
             dataManager.getTvsByPlaylistId(playlistId, 1)
         }
 
-        tvsByPlaylistId[0].name = "996"
-        dataManager.updatePlaylistCache(playlistId, tvsByPlaylistId, 0)
+        tvs[0].name = "996"
+        dataManager.updatePlaylistCache(playlistId, tvs, 0)
         assert(dataManager.getTvsByPlaylistId(playlistId, 0)[0].name == "996")
 
         assertError {
@@ -141,7 +159,7 @@ class CrossRefTest {
         }
 
         assertError {
-            dataManager.updatePlaylistCache(playlistId, tvsByPlaylistId, 1)
+            dataManager.updatePlaylistCache(playlistId, tvs, 1)
         }
 
         assert(dataManager.getTvCountByPlaylistId(playlistId) == 3)

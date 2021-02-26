@@ -23,14 +23,25 @@ object M3u {
     private val countryRegex = Regex(countryPattern)
     private val categoryRegex = Regex(categoryPattern)
 
+    /**
+     * 从inputStream读取
+     * @param inputStream
+     */
     fun getTvs(inputStream: InputStream): List<Tv> {
         return getTvs(getM3uString(inputStream.readBytes()))
     }
 
+    /**
+     * 从文件去读
+     * @param m3uFile xxx.m3u File
+     */
     fun getTvs(m3uFile: File): List<Tv> {
         return getTvs(getM3uString(m3uFile.readBytes()))
     }
 
+    /**
+     * 对得到的字符串做处理
+     */
     private fun getM3uString(byteArray: ByteArray): String {
         return byteArray.commonToUtf8String()
             .removePrefix("#EXTM3U")
@@ -38,15 +49,20 @@ object M3u {
             .trim()
     }
 
+    /**
+     * 分割字符串，去除空字符，按照不同类型的文件解析
+     */
     private fun getTvs(m3uString: String): List<Tv> {
-        val contains = m3uString.contains("tvg-id")
-        val mutableList = if (contains) {
+        // 来自github 开源的m3u文件
+        val fromGithub = m3uString.contains("tvg-id")
+        val mutableList = if (fromGithub) {
             m3uString.split("#EXTINF:-1 ")
         } else {
             m3uString.split("#EXTINF:-1 ,")
         }.toMutableList()
+        // 去除空字符
         mutableList.remove("")
-        return if (contains) {
+        return if (fromGithub) {
             getTvsByTvg(mutableList)
         } else {
             getTvsNormal(mutableList)
@@ -79,6 +95,7 @@ object M3u {
     private fun getTvsByTvg(list: List<String>): List<Tv> {
         val tvs = mutableListOf<Tv>()
         for (str in list) {
+            // #EXTVLCOPT为特殊情况
             val url = if (str.contains("#EXTVLCOPT")) {
                 str.split("\n")[2].trim()
             } else {
