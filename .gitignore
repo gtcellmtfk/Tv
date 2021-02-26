@@ -16,8 +16,6 @@
 local.properties
 tv/google-services.json
 
-*.m3u
-
 # Built application files
 *.apk
 *.aar
