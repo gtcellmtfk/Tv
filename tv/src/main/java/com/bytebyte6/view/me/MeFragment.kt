@@ -61,15 +61,22 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val meBinding = binding!!
+
+        // toolbar
         setupToolbarMenuMode { binding?.emptyBox?.pauseAnimation() }
+        meBinding.toolbar.setOnMenuItemClickListener {
+            launcher.launch("*/*")
+            true
+        }
 
         val drawerHelper = (requireActivity() as MainActivity).drawerHelper
         drawerHelper.addDrawerListener(listener)
 
         doOnExitTransitionEndOneShot { clearRecyclerView() }
-        setupOnBackPressedDispatcherBackToHome()
 
-        val meBinding = binding!!
+        setupOnBackPressedDispatcherBackToHome()
 
         //init recyclerview
         val playlistAdapter = PlaylistAdapter()
@@ -81,9 +88,13 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
             )
         }
         this.recyclerView = meBinding.recyclerView
-        meBinding.recyclerView.adapter = playlistAdapter
-        meBinding.recyclerView.addItemDecoration(LinearSpaceDecoration())
-        meBinding.recyclerView.setHasFixedSize(true)
+        meBinding.recyclerView.apply {
+            adapter = playlistAdapter
+            addItemDecoration(LinearSpaceDecoration())
+            setHasFixedSize(true)
+        }
+
+        // 多选模式设置
         playlistAdapter.setupSelectionTracker(meBinding.recyclerView,
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
@@ -96,16 +107,14 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
                 }
             })
         val selectionTracker = playlistAdapter.selectionTracker!!
-
-        meBinding.toolbar.setOnMenuItemClickListener {
-            launcher.launch("*/*")
-            true
-        }
         meBinding.fab.setOnClickListener {
             if (!selectionTracker.selection.isEmpty) {
                 showDialog(selectionTracker)
             }
         }
+
+        // 拖拽模式设置
+        playlistAdapter.setupItemTouchHelper(recyclerView!!)
 
         viewModel.deleteResult.observe(viewLifecycleOwner, {
             it.emitIfNotHandled({
