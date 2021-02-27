@@ -20,11 +20,11 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class PlayerFragment2 : BaseShareFragment<FragmentVideoBinding>(R.layout.fragment_video) {
+class PlayerFragment : BaseShareFragment<FragmentVideoBinding>(R.layout.fragment_video) {
 
     companion object {
-        const val TAG: String = "PlayerFragment2"
-        fun newInstance(bundle: Bundle) = PlayerFragment2().apply {
+        const val TAG: String = "PlayerFragment"
+        fun newInstance(bundle: Bundle) = PlayerFragment().apply {
             arguments = bundle
         }
     }

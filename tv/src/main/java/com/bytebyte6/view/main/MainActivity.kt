@@ -12,7 +12,6 @@ import com.bytebyte6.view.*
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.ActivityMainBinding
 import com.bytebyte6.view.download.DownloadServicePro
-import com.bytebyte6.view.launcher.LauncherActivity
 import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.android.inject
 
@@ -29,6 +28,24 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var binding: ActivityMainBinding
 
     lateinit var drawerHelper: DrawerHelper
+
+    private var currentUser: User? = null
+
+    private val netObserver = Observer<NetworkHelper.NetworkType> { type ->
+        when (type) {
+            NetworkHelper.NetworkType.WIFI -> {
+                DownloadServicePro.resumeDownloads(this)
+            }
+            NetworkHelper.NetworkType.MOBILE -> {
+                if (currentUser != null) {
+                    if (currentUser!!.downloadOnlyOnWifi) {
+                        DownloadServicePro.pauseDownloads(this)
+                    }
+                }
+            }
+            else -> Unit
+        }
+    }
 
     private val listener = object : SimpleDrawerListener() {
         override fun onDrawerClosed(drawerView: View) {
@@ -97,24 +114,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val name = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tvName)
         dataManager.user().observe(this, Observer { user1 ->
             name.text = user1.name
-            networkHelper.networkType.observe(this, getNetworkTypeObs(user1))
+            currentUser = user1
+            networkHelper.networkType.observe(this, netObserver)
         })
-    }
-
-    private fun getNetworkTypeObs(user: User): Observer<NetworkHelper.NetworkType> {
-        return Observer { type ->
-            when (type) {
-                NetworkHelper.NetworkType.WIFI -> {
-                    DownloadServicePro.resumeDownloads(this)
-                }
-                NetworkHelper.NetworkType.MOBILE -> {
-                    if (user.downloadOnlyOnWifi) {
-                        DownloadServicePro.pauseDownloads(this)
-                    }
-                }
-                else -> Unit
-            }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

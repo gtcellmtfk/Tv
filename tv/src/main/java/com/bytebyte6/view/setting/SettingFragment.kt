@@ -7,11 +7,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.NetworkHelper
 import com.bytebyte6.view.R
 import com.bytebyte6.view.databinding.FragmentSettingBinding
+import com.bytebyte6.view.download.DownloadServicePro
 import com.bytebyte6.view.setupOnBackPressedDispatcherBackToHome
 import com.bytebyte6.view.setupToolbarMenuMode
 import com.bytebyte6.viewmodel.UserViewModel
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
@@ -26,6 +29,8 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
     }
 
     private val viewModel: UserViewModel by viewModel()
+
+    private val networkHelper by inject<NetworkHelper>()
 
     override fun initViewBinding(view: View): FragmentSettingBinding {
         return FragmentSettingBinding.bind(view)
@@ -65,6 +70,10 @@ class SettingFragment : BaseShareFragment<FragmentSettingBinding>(R.layout.fragm
             }
             binding?.swOnlyWifiDownload?.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.updateOnlyWifiDownload(isChecked)
+                if (isChecked && networkHelper.isMobile()) {
+                    // only wifi download & mobile network
+                    DownloadServicePro.pauseDownloads(requireContext())
+                }
             }
             binding?.swOnlyWifiPlay?.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.updateOnlyWifiPlay(isChecked)
