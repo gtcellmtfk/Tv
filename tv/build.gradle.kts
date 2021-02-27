@@ -30,7 +30,7 @@ android {
         targetSdkVersion(Versions.target_sdk)
         versionCode = Versions.versionCode
         versionName = Versions.versionName
-        setProperty("archivesBaseName", "tv-$versionName")
+        setProperty("archivesBaseName", "tv")
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-proguard-rules.pro")
