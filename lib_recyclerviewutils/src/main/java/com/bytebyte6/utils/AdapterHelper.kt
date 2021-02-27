@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 
+/**
+ * 根布局必须实现Checkable接口，如：MaterialCardView
+ */
 interface AdapterHelper<T, V : DetailsViewHolder> {
 
     val adapter: RecyclerView.Adapter<V>
@@ -19,14 +22,19 @@ interface AdapterHelper<T, V : DetailsViewHolder> {
 
     var onBind: ((pos: Int, view: View) -> Unit)?
 
+    val list: MutableList<T>
+
+    fun replace(list: List<T>) {
+        this.list.clear()
+        this.list.addAll(list)
+        adapter.notifyDataSetChanged()
+    }
+
     fun setupSelectionTracker(
         recyclerView: RecyclerView,
         selectionObserver: SelectionTracker.SelectionObserver<Long>
     ) {
-        selectionTracker = getSelectionTracker(
-            recyclerView,
-            selectionObserver
-        )
+        selectionTracker = getSelectionTracker(recyclerView, selectionObserver)
     }
 
     fun onHelperBindViewHolder(holder: V, position: Int) {

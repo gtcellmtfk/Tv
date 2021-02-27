@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 
 class ItemTouchHelperCallback<T, V : DetailsViewHolder>(
-    private val adapterHelper: SwapAdapterHelper<T, V>
+    private val adapterHelper: DragAdapterHelper<T, V>
 ) : ItemTouchHelper.Callback() {
 
     private var materialCardView: MaterialCardView? = null

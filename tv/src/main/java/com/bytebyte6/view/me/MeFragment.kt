@@ -61,9 +61,7 @@ class MeFragment : BaseShareFragment<FragmentMeBinding>(R.layout.fragment_me) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbarMenuMode {
-            binding?.emptyBox?.pauseAnimation()
-        }
+        setupToolbarMenuMode { binding?.emptyBox?.pauseAnimation() }
 
         val drawerHelper = (requireActivity() as MainActivity).drawerHelper
         drawerHelper.addDrawerListener(listener)

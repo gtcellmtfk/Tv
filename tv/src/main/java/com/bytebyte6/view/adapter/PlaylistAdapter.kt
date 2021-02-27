@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bytebyte6.common.randomColorByNightMode
 import com.bytebyte6.data.entity.Playlist
+import com.bytebyte6.utils.AdapterHelper
 import com.bytebyte6.utils.BaseDetailAdapter
-import com.bytebyte6.utils.SwapAdapterHelper
+import com.bytebyte6.utils.DragAdapterHelper
 import com.bytebyte6.view.R
 import com.bytebyte6.view.randomImage
 
 class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
-    SwapAdapterHelper<Playlist, PlaylistViewHolder> {
+    AdapterHelper<Playlist, PlaylistViewHolder> {
 
     override val adapter: RecyclerView.Adapter<PlaylistViewHolder> = this
     override var selectionTracker: SelectionTracker<Long>? = null
@@ -22,7 +23,6 @@ class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
     override var onItemLongClick: ((pos: Int, view: View) -> Boolean)? = null
     override var onBind: ((pos: Int, view: View) -> Unit)? = null
     override val list: MutableList<Playlist> = mutableListOf()
-    override var itemTouchHelper: ItemTouchHelper? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder.create(parent)
@@ -51,7 +51,7 @@ class PlaylistAdapter : BaseDetailAdapter<Playlist, PlaylistViewHolder>(),
         }
     }
 
-    override fun adapterHelper(): SwapAdapterHelper<Playlist, PlaylistViewHolder> {
+    override fun adapterHelper(): AdapterHelper<Playlist, PlaylistViewHolder> {
         return this
     }
 
