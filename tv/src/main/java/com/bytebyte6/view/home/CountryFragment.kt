@@ -6,7 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bytebyte6.common.BaseShareFragment
+import com.bytebyte6.common.doOnExitTransitionEndOneShot
 import com.bytebyte6.common.isSuccess
+import com.bytebyte6.common.logd
 import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.view.R
 import com.bytebyte6.view.adapter.CountryAdapter
@@ -37,28 +39,18 @@ class CountryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val countryAdapter = CountryAdapter().apply {
+        val countryAdapter = CountryAdapter(fragment = this).apply {
             onItemClick = { pos, itemView: View ->
-                homeToVideoList(
-                    itemView,
-                    currentList[pos].name
-                )
+                homeToVideoList(itemView, currentList[pos].name)
             }
             onItemLongClick = { pos, _ ->
-                AlertDialog.Builder(requireContext())
-                    .setTitle(R.string.tip)
-                    .setMessage(getString(R.string.tip_flag_wrong))
-                    .setPositiveButton(R.string.enter) { dialog, _ ->
-                        viewModel.changeImage(currentList[pos], pos)
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+                showDialog(pos)
                 true
             }
         }
         recyclerView = binding?.recyclerView
         imageClearHelper = countryAdapter
+
         binding?.apply {
             recyclerView.adapter = countryAdapter
             val gridLayoutManager = GridLayoutManager(view.context, 2)
@@ -77,5 +69,17 @@ class CountryFragment :
         viewModel.cs.observe(viewLifecycleOwner, Observer {
             countryAdapter.submitList(it)
         })
+    }
+
+    private fun CountryAdapter.showDialog(pos: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.tip)
+            .setMessage(getString(R.string.tip_flag_wrong))
+            .setPositiveButton(R.string.enter) { dialog, _ ->
+                viewModel.changeImage(currentList[pos], pos)
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 }

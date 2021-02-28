@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bytebyte6.viewmodel.HomeViewModel
 import com.bytebyte6.common.BaseShareFragment
 import com.bytebyte6.common.doOnExitTransitionEndOneShot
+import com.bytebyte6.common.logd
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.TabAdapter
 import com.bytebyte6.view.databinding.FragmentHomeBinding
@@ -42,9 +43,7 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenuMode()
-        doOnExitTransitionEndOneShot {
-            destroyViewPage()
-        }
+        doOnExitTransitionEndOneShot { destroyViewPage() }
         requireActivity().onBackPressedDispatcher.addCallback(
             this.viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -104,11 +103,8 @@ class HomeFragment : BaseShareFragment<FragmentHomeBinding>(R.layout.fragment_ho
     }
 
     private fun destroyViewPage() {
-        tabAdapter?.fs?.forEach {
-            //清理子片段资源
-            it.clearRecyclerView()
-        }
-        tabAdapter?.fs?.clear()
+        // 清理子片段资源
+        tabAdapter?.getCountryFragment()?.clearRecyclerView()
         tabAdapter = null
         //清除ViewPage资源
         mediator?.detach()

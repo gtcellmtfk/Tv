@@ -6,6 +6,7 @@ interface RecyclerViewClearHelper {
     var recyclerView: RecyclerView?
     var imageClearHelper: ImageClearHelper?
     fun clearRecyclerView() {
+        logd("clearRecyclerView")
         imageClearHelper?.clear()
         imageClearHelper = null
         recyclerView?.adapter = null

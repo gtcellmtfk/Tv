@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 
 /**
  * 用于转场动画结束时清理资源
+ * @see doOnExitTransitionEndOneShot(doOnExitTransition)
  */
 interface ImageClearHelper {
     val images: MutableSet<ImageView>

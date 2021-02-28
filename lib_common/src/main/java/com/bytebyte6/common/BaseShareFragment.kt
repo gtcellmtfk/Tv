@@ -31,7 +31,7 @@ abstract class BaseShareFragment<V : ViewBinding>(layoutId: Int) : BaseFragment<
 
     init {
         /**
-         * 退场时保持当前视图知道下个片段进场完成
+         * 退场时保持当前视图直到下个片段进场完成
          */
         exitTransition = Hold()
         /**

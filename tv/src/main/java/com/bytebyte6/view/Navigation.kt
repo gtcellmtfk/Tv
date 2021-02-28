@@ -93,11 +93,11 @@ fun Fragment.meToPlaylist(
     itemView: View
 ) {
     replaceWithShareElement(
-            PlaylistFragment.newInstance(
-                    playlistId, title, itemView.transitionName
-            ),
-            PlaylistFragment.TAG,
-            itemView
+        PlaylistFragment.newInstance(
+            playlistId, title, itemView.transitionName
+        ),
+        PlaylistFragment.TAG,
+        itemView
     )
 }
 

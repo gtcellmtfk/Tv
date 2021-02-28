@@ -18,3 +18,10 @@ fun ImageView.load(url: String) {
         .placeholder(R.drawable.landscape)
         .into(this)
 }
+
+fun ImageView.load(fragment: Fragment, url: String) {
+    GlideApp.with(fragment)
+        .load(url)
+        .placeholder(R.drawable.landscape)
+        .into(this)
+}

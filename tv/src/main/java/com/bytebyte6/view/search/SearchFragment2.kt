@@ -43,9 +43,7 @@ class SearchFragment2 : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        doOnSharedElementReturnTransitionEnd {
-            clearRecyclerView()
-        }
+        doOnSharedElementReturnTransitionEnd { clearRecyclerView() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
