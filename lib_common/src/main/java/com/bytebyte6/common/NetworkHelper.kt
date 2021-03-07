@@ -114,4 +114,8 @@ class NetworkHelper(context: Context) {
     fun isWifi() = getNetworkType() == NetworkType.WIFI
 
     fun isNone() = getNetworkType() == NetworkType.NONE
+
+    init {
+        postNetworkType()
+    }
 }

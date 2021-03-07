@@ -72,7 +72,7 @@ class PlayerViewModel(
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            if (isBehindLiveWindow(error)){
+            if (isBehindLiveWindow(error)) {
                 player?.seekToDefaultPosition()
                 player?.prepare()
                 return
@@ -120,9 +120,9 @@ class PlayerViewModel(
         if (player == null) {
             initPlayer()
         } else {
-            player?.addListener(eventListener)
-            player?.play()
-            _play.postValue(player)
+            player!!.addListener(eventListener)
+            player!!.play()
+            _play.postValue(player!!)
         }
     }
 
