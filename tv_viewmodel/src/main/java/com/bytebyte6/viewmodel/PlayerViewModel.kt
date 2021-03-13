@@ -72,7 +72,7 @@ class PlayerViewModel(
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            if (isBehindLiveWindow(error)){
+            if (isBehindLiveWindow(error)) {
                 player?.seekToDefaultPosition()
                 player?.prepare()
                 return
@@ -99,9 +99,7 @@ class PlayerViewModel(
                     // 当前网络为数据
                     // 用户设置只有Wifi状态下播放
                     // 播放缓存除外
-                    if (url.isNotEmpty()) {
-                        _showMobileDialog.postValue(Event(Unit))
-                    }
+                    _showMobileDialog.postValue(Event(Unit))
                 } else {
                     playOrInit()
                 }
@@ -116,25 +114,31 @@ class PlayerViewModel(
         initPlayer()
     }
 
+    fun onResume() {
+        _showProgressBar.postValue(true)
+        if (localPlay()) {
+            //本地播放
+            playOrInit()
+        } else {
+            //网络播放
+            user.observeForever(object : Observer<User> {
+                override fun onChanged(user1: User) {
+                    user.removeObserver(this)
+                    onlyWifiPlay = user1.playOnlyOnWifi
+                    networkType.observeForever(networkTypeObserver)
+                }
+            })
+        }
+    }
+
     fun playOrInit() {
         if (player == null) {
             initPlayer()
         } else {
-            player?.addListener(eventListener)
-            player?.play()
-            _play.postValue(player)
+            player!!.addListener(eventListener)
+            player!!.play()
+            _play.postValue(player!!)
         }
-    }
-
-    fun onResume() {
-        _showProgressBar.postValue(true)
-        user.observeForever(object : Observer<User> {
-            override fun onChanged(user1: User) {
-                user.removeObserver(this)
-                onlyWifiPlay = user1.playOnlyOnWifi
-                networkType.observeForever(networkTypeObserver)
-            }
-        })
     }
 
     fun onStop() {
@@ -150,7 +154,7 @@ class PlayerViewModel(
     }
 
     private fun initPlayer() {
-        player = if (url.isEmpty()) {
+        player = if (localPlay()) {
             getCachePlayer()
         } else {
             getPlayer()
@@ -161,6 +165,8 @@ class PlayerViewModel(
             _play.postValue(this)
         }
     }
+
+    private fun localPlay() = url.isEmpty()
 
     private fun getPlayer(): SimpleExoPlayer {
         val mediaItem = MediaItem.Builder()
