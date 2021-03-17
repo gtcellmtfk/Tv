@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.bytebyte6.common.KEY_TRANS_NAME
 import com.bytebyte6.common.isSuccess
+import com.bytebyte6.utils.GridSpaceDecoration
 import com.bytebyte6.view.*
 import com.bytebyte6.view.adapter.TvAdapter
 
@@ -21,7 +22,7 @@ class VideoDialog : BottomSheetDialogFragment() {
             return VideoDialog().apply {
                 arguments = Bundle().apply {
                     putString(KEY_TRANS_NAME, transName)
-                    putString(KEY_ITEM, item)
+                    putString(KEY_TITLE, item)
                 }
             }
         }
@@ -49,9 +50,12 @@ class VideoDialog : BottomSheetDialogFragment() {
             toPlayer(adapter.currentList[pos].url)
         }
 
+        viewModel.setKey(title)
+
         binding?.apply {
             recyclerView.adapter = adapter
             recyclerView.itemAnimator = null
+            recyclerView.addItemDecoration(GridSpaceDecoration())
         }
 
         viewModel.count(title).observe(viewLifecycleOwner, Observer {
@@ -64,6 +68,7 @@ class VideoDialog : BottomSheetDialogFragment() {
                 adapter.submitList(this)
             }
         })
+        viewModel.first()
     }
 
     override fun onDestroyView() {
