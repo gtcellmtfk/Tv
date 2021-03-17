@@ -1,3 +1,4 @@
+include(":test_ui_factory")
 include(
         ":tv_test",
         ":lib_test",

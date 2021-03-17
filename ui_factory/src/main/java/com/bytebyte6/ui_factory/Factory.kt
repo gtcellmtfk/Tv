@@ -9,3 +9,13 @@ interface Factory {
     fun provideFragment(entryName: String)
     fun provideAdapter(entryName: String)
 }
+
+interface Factory2 {
+    fun provideDataClass(room: Boolean, input: String)
+    fun provideDao()
+    fun provideRetrofit()
+    fun provideUseCase()
+    fun provideViewModel( )
+    fun provideFragment()
+    fun provideAdapter()
+}

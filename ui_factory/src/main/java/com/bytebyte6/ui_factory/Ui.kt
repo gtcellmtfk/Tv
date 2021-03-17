@@ -6,12 +6,13 @@ import javax.swing.filechooser.FileSystemView
 import kotlin.collections.LinkedHashMap
 
 class Ui(
-    private val entryPackageName: String = "com.bytebyte6.entry",
-    private val servicePackageName: String = "com.bytebyte6.service",
-    private val viewModelPackageName: String = "com.bytebyte6.app_tv_viewmodel.com.bytebyte.viewmodel",
-    private val fragmentPackageName: String = "com.bytebyte6.fragment",
-    private val useCasePackageName: String = "com.bytebyte6.usecase",
-    private val daoPackageName: String = "com.bytebyte6.dao"
+    private val packName:String="com.bytebyte6",
+    private val entryPackageName: String = "$packName.entry",
+    private val servicePackageName: String = "$packName.service",
+    private val viewModelPackageName: String = "$packName.viewmodel",
+    private val fragmentPackageName: String = "$packName.fragment",
+    private val useCasePackageName: String = "$packName.usecase",
+    private val daoPackageName: String = "$packName.dao"
 ) : Factory {
 
     private val entryDir: File
@@ -108,7 +109,9 @@ class Ui(
         fun main(args: Array<String>) {
             val string =
                 "User\nname:s\nage:i\naddress:e->Address country:s,city:s\nbooks:l->Book name:s,size:i"
-            Ui().apply {
+            Ui(
+                "com.example.test_ui_factory"
+            ).apply {
                 provideDataClass(true, string)
             }
         }
@@ -506,7 +509,7 @@ class Ui(
                 "import android.view.ViewGroup\n" +
                 "import androidx.recyclerview.widget.DiffUtil\n" +
                 "import androidx.recyclerview.widget.RecyclerView\n" +
-                "import com.bytebyte6.library.BaseListAdapter\n" +
+                "import com.bytebyte6.utils.BaseListAdapter\n" +
                 "\n" +
                 "class ${entryName}Adapter : BaseListAdapter<${entryName},${entryName}ViewHolder>(${entryName}Diff){\n" +
                 "    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ${entryName}ViewHolder {\n" +
@@ -532,7 +535,7 @@ class Ui(
                 "    }\n" +
                 "}\n" +
                 "\n" +
-                "object ${entryName}Diff : DiffUtil.ItemCallback<${entryName}>{\n" +
+                "object ${entryName}Diff : DiffUtil.ItemCallback<${entryName}>(){\n" +
                 "    override fun areItemsTheSame(oldItem: ${entryName}, newItem: ${entryName}): Boolean {\n" +
                 "        \n" +
                 "    }\n" +
@@ -550,7 +553,7 @@ class Ui(
                 "\n" +
                 "</FrameLayout>"
         this.createFile(adapter, "${entryName}Adapter.kt", fragmentDir)
-        this.createFile(xml, "item_$entryName.xml", layoutDir)
+        this.createFile(xml, "item_${entryName.toLowerCase(Locale.ROOT)}.xml", layoutDir)
     }
 
     private fun createFile(content: String, fileName: String, dir: File) {
